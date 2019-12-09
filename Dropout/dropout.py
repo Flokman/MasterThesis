@@ -13,6 +13,7 @@ from tensorflow.keras import backend as K
 
 import numpy as np
 import pandas as pd
+import tqdm
 from sklearn.metrics import accuracy_score
 
 import matplotlib.pyplot as plt
@@ -96,7 +97,6 @@ h_mc = mc_model.fit(x_train, y_train,
                     verbose=1,
                     validation_data=(x_test, y_test))
 
-import tqdm
 
 mc_predictions = []
 for i in tqdm.tqdm(range(500)):
