@@ -8,13 +8,13 @@ import csv
 dir_path = os.path.dirname(os.path.realpath(__file__))
 image_path = dir_path + '/Messidor2/IMAGES'
 
-imgwidth = 256
-imgheight = 256
-imgchannels = 3
+img_rows = 256
+img_cols = 256
+img_depth = 3
 
 shuffle_data = True  # shuffle the addresses
 
-hdf5_path = dir_path + '/Messidor2_' + str(imgwidth) + '.hdf5'  # file path for the created .hdf5 file
+hdf5_path = dir_path + '/Messidor2_' + str(img_rows) + '.hdf5'  # file path for the created .hdf5 file
 print(hdf5_path)
 
 images_path = dir_path + '/Messidor2/IMAGES/*' # the original data path
@@ -81,8 +81,8 @@ test_labels = labels[int(0.8*len(labels)):]
 import numpy as np
 import h5py
 
-train_shape = (len(train_addrs), imgwidth, imgheight, imgchannels)
-test_shape = (len(test_addrs), imgwidth, imgheight, imgchannels)
+train_shape = (len(train_addrs), img_rows, img_cols, img_depth)
+test_shape = (len(test_addrs), img_rows, img_cols, img_depth)
 
 # open a hdf5 file and create earrays 
 f = h5py.File(hdf5_path, mode='w')
@@ -110,7 +110,7 @@ for i in range(len(train_addrs)):
 
     addr = train_addrs[i]
     img = cv2.imread(addr)
-    img = cv2.resize(img, (imgwidth, imgheight), interpolation=cv2.INTER_CUBIC)# resize to (imgwidth, imgheight)
+    img = cv2.resize(img, (img_rows, img_cols), interpolation=cv2.INTER_CUBIC)# resize to (img_rows, img_cols)
     img = cv2.cvtColor(img, cv2.COLOR_BGR2RGB) # cv2 load images as BGR, convert it to RGB
     f["x_train"][i, ...] = img[None] 
 
@@ -122,7 +122,7 @@ for i in range(len(test_addrs)):
 
     addr = test_addrs[i]
     img = cv2.imread(addr)
-    img = cv2.resize(img, (imgwidth, imgheight), interpolation=cv2.INTER_CUBIC)
+    img = cv2.resize(img, (img_rows, img_cols), interpolation=cv2.INTER_CUBIC)
     img = cv2.cvtColor(img, cv2.COLOR_BGR2RGB)
     f["x_test"][i, ...] = img[None]
 
