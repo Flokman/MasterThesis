@@ -1,0 +1,55 @@
+
+The following have been reloaded with a version change:
+  1) FFTW/3.3.7-gompi-2018a => FFTW/3.3.7-gompic-2018a
+  2) OpenMPI/2.1.2-GCC-6.4.0-2.28 => OpenMPI/2.1.2-gcccuda-2018a
+  3) Python/3.6.4-foss-2018a => Python/3.6.4-fosscuda-2018a
+  4) ScaLAPACK/2.0.2-gompi-2018a-OpenBLAS-0.2.20 => ScaLAPACK/2.0.2-gompic-2018a-OpenBLAS-0.2.20
+
+
+The following have been reloaded with a version change:
+  1) Python/3.6.4-fosscuda-2018a => Python/3.6.4-foss-2018a
+
+/software/software/h5py/2.7.1-fosscuda-2018a-Python-3.6.4/lib/python3.6/site-packages/h5py-2.7.1-py3.6-linux-x86_64.egg/h5py/__init__.py:36: FutureWarning: Conversion of the second argument of issubdtype from `float` to `np.floating` is deprecated. In future, it will be treated as `np.float64 == np.dtype(float).type`.
+  from ._conv import register_converters as _register_converters
+Traceback (most recent call last):
+  File "dropoutmnist.py", line 16, in <module>
+    import tqdm
+ModuleNotFoundError: No module named 'tqdm'
+
+
+###############################################################################
+Peregrine Cluster
+Job 8945055 for user 's2934833'
+Finished at: Mon Dec  9 15:49:50 CET 2019
+
+Job details:
+============
+
+Name                : MCDropout
+User                : s2934833
+Partition           : gpu
+Nodes               : pg-gpu28
+Cores               : 12
+State               : FAILED
+Submit              : 2019-12-09T15:47:05
+Start               : 2019-12-09T15:49:38
+End                 : 2019-12-09T15:49:50
+Reserved walltime   : 00:10:00
+Used walltime       : 00:00:12
+Used CPU time       : 00:00:05 (efficiency:  4.16%)
+% User (Computation): 75.53%
+% System (I/O)      : 24.47%
+Mem reserved        : 32000M/node
+Max Mem used        : 0.00  (pg-gpu28)
+Max Disk Write      : 0.00  (pg-gpu28)
+Max Disk Read       : 0.00  (pg-gpu28)
+
+
+Acknowledgements:
+=================
+
+Please see this page if you want to acknowledge Peregrine in your publications:
+
+https://redmine.hpc.rug.nl/redmine/projects/peregrine/wiki/ScientificOutput
+
+################################################################################
