@@ -9,40 +9,47 @@ The following have been reloaded with a version change:
 The following have been reloaded with a version change:
   1) Python/3.6.4-fosscuda-2018a => Python/3.6.4-foss-2018a
 
+
+The following have been reloaded with a version change:
+  1) libxml2/2.9.7-GCCcore-6.4.0 => libxml2/2.9.4-GCCcore-6.4.0
+
 /software/software/h5py/2.7.1-fosscuda-2018a-Python-3.6.4/lib/python3.6/site-packages/h5py-2.7.1-py3.6-linux-x86_64.egg/h5py/__init__.py:36: FutureWarning: Conversion of the second argument of issubdtype from `float` to `np.floating` is deprecated. In future, it will be treated as `np.float64 == np.dtype(float).type`.
   from ._conv import register_converters as _register_converters
-Traceback (most recent call last):
-  File "dropout.py", line 16, in <module>
-    import tqdm
-ModuleNotFoundError: No module named 'tqdm'
+/home/s2934833/MasterThesis/Datasets/Messidor2_256.hdf5
+/home/s2934833/MasterThesis/Datasets/Messidor2/IMAGES/*
+
+
+
+
+Train data: 1000/1398
 
 
 ###############################################################################
 Peregrine Cluster
-Job 8944132 for user 's2934833'
-Finished at: Mon Dec  9 13:52:50 CET 2019
+Job 8951246 for user 's2934833'
+Finished at: Tue Dec 10 11:15:32 CET 2019
 
 Job details:
 ============
 
-Name                : MCDropout
+Name                : create_dataset
 User                : s2934833
 Partition           : gpu
-Nodes               : pg-gpu38
+Nodes               : pg-gpu10
 Cores               : 12
-State               : FAILED
-Submit              : 2019-12-09T13:34:35
-Start               : 2019-12-09T13:52:36
-End                 : 2019-12-09T13:52:49
-Reserved walltime   : 00:40:00
-Used walltime       : 00:00:13
-Used CPU time       : 00:00:04 (efficiency:  3.01%)
-% User (Computation): 74.17%
-% System (I/O)      : 25.83%
+State               : COMPLETED
+Submit              : 2019-12-10T11:12:25
+Start               : 2019-12-10T11:12:25
+End                 : 2019-12-10T11:15:32
+Reserved walltime   : 00:10:00
+Used walltime       : 00:03:07
+Used CPU time       : 00:01:51 (efficiency:  4.98%)
+% User (Computation): 76.16%
+% System (I/O)      : 23.84%
 Mem reserved        : 32000M/node
-Max Mem used        : 0.00  (pg-gpu38)
-Max Disk Write      : 0.00  (pg-gpu38)
-Max Disk Read       : 0.00  (pg-gpu38)
+Max Mem used        : 58.55M (pg-gpu10)
+Max Disk Write      : 215.04K (pg-gpu10)
+Max Disk Read       : 6.74M (pg-gpu10)
 
 
 Acknowledgements:
