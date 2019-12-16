@@ -18,25 +18,40 @@ import h5py
 
 from sklearn.metrics import accuracy_score
 
+import matplotlib as mpl
+mpl.use('Agg')
 import matplotlib.pyplot as plt
 plt.style.use("ggplot")
 
 fig_dir = os.path.join(os.getcwd(), datetime.datetime.now().strftime('%Y-%m-%d_%H-%M'))
 os.makedirs(fig_dir)
 
-dataset_name = '/Messidor2_256.hdf5'
-batch_size = 128
-num_classes = 5
-epochs = 15
-test_img_idx = 247
 
 # Input image dimensions
-img_rows, img_cols, img_depth = 256, 256, 3
+img_rows, img_cols, img_depth = 128,  128, 3
+dataset_name = '/Messidor2_' + str(img_rows) + '.hdf5'
+
+batch_size = 32
+num_classes = 5
+epochs = 20
+MCDO_amount_of_predictions = 500
+MCDO_batch_size = 1000
+
+from random import seed
+from random import randint
+test_img_idx =  randint(0, 350)
+
+print("dataset_name = {}, batch_size = {}, num_classes = {}, epochs = {}, MCDO_amount_of_predictions = {}, MCDO_batch_size = {}, test_img_idx = {}".format(dataset_name, batch_size, num_classes, epochs, MCDO_amount_of_predictions, MCDO_batch_size, test_img_idx))
+
+
+
 
 # Get dataset path
 dir_path_head_tail = os.path.split(os.path.dirname(os.path.realpath(__file__)))
 root_path = dir_path_head_tail[0] 
 data_path = root_path + '/Datasets' + dataset_name
+
+
 
 def load_data(path):
     with h5py.File(data_path, "r") as f:
@@ -46,8 +61,7 @@ def load_data(path):
 
 # Split the data between train and test sets
 (x_train, y_train), (x_test, y_test) = load_data(data_path)
-print(type(x_train),type(y_train),type(x_test),type(y_test))
-print(y_train, len(x_train))
+
 
 if K.image_data_format() == 'channels_first':
     x_train = x_train.reshape(x_train.shape[0], img_depth, img_rows, img_cols)
@@ -80,20 +94,12 @@ def get_dropout(input_tensor, p=0.5, mc=False):
 
 def get_model(mc=False, act="relu"):
     inp = Input(input_shape)
-    x = Conv2D(32, kernel_size=(7, 7), activation=act)(inp)
-    x = Conv2D(64, kernel_size=(7, 7), activation=act)(x)
-    x = MaxPooling2D(pool_size=(3, 3))(x)
-    x = get_dropout(x, p=0.25, mc=mc)
-    x = Flatten()(x)
-    x = Dense(128, activation=act)(x)
-    x = get_dropout(x, p=0.5, mc=mc)
-
-    x = Conv2D(256, kernel_size=(5, 5), activation=act)(inp)
-    x = Conv2D(512, kernel_size=(3, 3), activation=act)(x)
+    x = Conv2D(32, kernel_size=(3, 3), activation=act)(inp)
+    x = Conv2D(64, kernel_size=(2, 2), activation=act)(x)
     x = MaxPooling2D(pool_size=(2, 2))(x)
     x = get_dropout(x, p=0.25, mc=mc)
     x = Flatten()(x)
-    x = Dense(1024, activation=act)(x)
+    x = Dense(128, activation=act)(x)
     x = get_dropout(x, p=0.5, mc=mc)
     out = Dense(num_classes, activation='softmax')(x)
 
@@ -104,22 +110,22 @@ def get_model(mc=False, act="relu"):
                   metrics=['accuracy'])
     return model
 
-model = get_model(mc=False, act="relu")
+# model = get_model(mc=False, act="relu")
+
+# h = model.fit(x_train, y_train,
+#               batch_size=batch_size,
+#               epochs=epochs,
+#               verbose=1,
+#               validation_data=(x_test, y_test))
+
+# # score of the normal model
+# score = model.evaluate(x_test, y_test, verbose=1)
+# print('Test loss:', score[0])
+# print('Test accuracy:', score[1])
+
+print("Start fitting monte carlo dropout model")
+
 mc_model = get_model(mc=True, act="relu")
-print("models created")
-
-h = model.fit(x_train, y_train,
-              batch_size=batch_size,
-              epochs=epochs,
-              verbose=1,
-              validation_data=(x_test, y_test))
-
-# score of the normal model
-print("model fitted, starting evaluation")
-score = model.evaluate(x_test, y_test, verbose=1)
-
-print('Test loss:', score[0])
-print('Test accuracy:', score[1])
 
 h_mc = mc_model.fit(x_train, y_train,
                     batch_size=batch_size,
@@ -128,15 +134,13 @@ h_mc = mc_model.fit(x_train, y_train,
                     validation_data=(x_test, y_test))
 
 
-# import tqdm
-# mc_predictions = []
-# for i in tqdm.tqdm(range(500)):
-#     y_p = mc_model.predict(x_test, batch_size=1000)
-#     mc_predictions.append(y_p)
 
 mc_predictions = []
-for i in range(500):
-    y_p = mc_model.predict(x_test, batch_size=1000)
+
+progress_bar = tf.keras.utils.Progbar(target=MCDO_amount_of_predictions,interval=5)
+for i in range(MCDO_amount_of_predictions):
+    progress_bar.update(i)
+    y_p = mc_model.predict(x_test, batch_size=MCDO_batch_size)
     mc_predictions.append(y_p)
 
 # score of the mc model
@@ -152,16 +156,17 @@ print("MC-ensemble accuracy: {:.1%}".format(ensemble_acc))
 
 os.chdir(fig_dir)
 
-fig = plt.hist(accs)
+plt.hist(accs)
 plt.axvline(x=ensemble_acc, color="b")
-fig.savefig('ensemble_acc.png', dpi=fig.dpi)
+plt.savefig('ensemble_acc.png')
+plt.clf()
 
-plt.image.imsave('test_image_' + str(test_img_idx) + '.png', x_test[test_img_idx])
+plt.imsave('test_image_' + str(test_img_idx) + '.png', x_test[test_img_idx])
 
 
-p0 = np.array([p[idx] for p in mc_predictions])
+p0 = np.array([p[test_img_idx] for p in mc_predictions])
 print("posterior mean: {}".format(p0.mean(axis=0).argmax()))
-print("true label: {}".format(y_test[idx].argmax()))
+print("true label: {}".format(y_test[test_img_idx].argmax()))
 print()
 # probability + variance
 for i, (prob, var) in enumerate(zip(p0.mean(axis=0), p0.std(axis=0))):
@@ -169,10 +174,11 @@ for i, (prob, var) in enumerate(zip(p0.mean(axis=0), p0.std(axis=0))):
 
 
 x, y = list(range(len(p0.mean(axis=0)))), p0.mean(axis=0)
-fig = plt.plot(x, y)
-fig.savefig('prob_var_' + str(test_img_idx) + '.png', dpi=fig.dpi)
+plt.plot(x, y)
+plt.savefig('prob_var_' + str(test_img_idx) + '.png')
+plt.clf()
 
-fig, axes = plt.subplots(5, 2, figsize=(12,12))
+fig, axes = plt.subplots(5, 1, figsize=(12,6))
 
 for i, ax in enumerate(fig.get_axes()):
     ax.hist(p0[:,i], bins=100, range=(0,1))

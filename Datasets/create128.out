@@ -1,0 +1,62 @@
+
+The following have been reloaded with a version change:
+  1) FFTW/3.3.7-gompi-2018a => FFTW/3.3.7-gompic-2018a
+  2) OpenMPI/2.1.2-GCC-6.4.0-2.28 => OpenMPI/2.1.2-gcccuda-2018a
+  3) Python/3.6.4-foss-2018a => Python/3.6.4-fosscuda-2018a
+  4) ScaLAPACK/2.0.2-gompi-2018a-OpenBLAS-0.2.20 => ScaLAPACK/2.0.2-gompic-2018a-OpenBLAS-0.2.20
+
+
+The following have been reloaded with a version change:
+  1) Python/3.6.4-fosscuda-2018a => Python/3.6.4-foss-2018a
+
+
+The following have been reloaded with a version change:
+  1) libxml2/2.9.7-GCCcore-6.4.0 => libxml2/2.9.4-GCCcore-6.4.0
+
+/software/software/h5py/2.7.1-fosscuda-2018a-Python-3.6.4/lib/python3.6/site-packages/h5py-2.7.1-py3.6-linux-x86_64.egg/h5py/__init__.py:36: FutureWarning: Conversion of the second argument of issubdtype from `float` to `np.floating` is deprecated. In future, it will be treated as `np.float64 == np.dtype(float).type`.
+  from ._conv import register_converters as _register_converters
+/home/s2934833/MasterThesis/Datasets/Messidor2_128.hdf5
+/home/s2934833/MasterThesis/Datasets/Messidor2/IMAGES/*
+
+
+
+
+Train data: 1000/1398
+
+
+###############################################################################
+Peregrine Cluster
+Job 9048316 for user 's2934833'
+Finished at: Sun Dec 15 10:59:33 CET 2019
+
+Job details:
+============
+
+Name                : create_dataset
+User                : s2934833
+Partition           : gpu
+Nodes               : pg-gpu39
+Cores               : 12
+State               : COMPLETED
+Submit              : 2019-12-15T10:56:34
+Start               : 2019-12-15T10:56:35
+End                 : 2019-12-15T10:59:33
+Reserved walltime   : 00:10:00
+Used walltime       : 00:02:58
+Used CPU time       : 00:01:48 (efficiency:  5.09%)
+% User (Computation): 73.43%
+% System (I/O)      : 26.57%
+Mem reserved        : 32000M/node
+Max Mem used        : 58.04M (pg-gpu39)
+Max Disk Write      : 215.04K (pg-gpu39)
+Max Disk Read       : 6.74M (pg-gpu39)
+
+
+Acknowledgements:
+=================
+
+Please see this page if you want to acknowledge Peregrine in your publications:
+
+https://redmine.hpc.rug.nl/redmine/projects/peregrine/wiki/ScientificOutput
+
+################################################################################

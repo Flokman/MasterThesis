@@ -5,6 +5,8 @@ import os
 import os.path
 import csv
 
+print("niet alles is kapot")
+
 dir_path = os.path.dirname(os.path.realpath(__file__))
 image_path = dir_path + '/Messidor2/IMAGES'
 
@@ -14,7 +16,7 @@ img_depth = 3
 
 shuffle_data = True  # shuffle the addresses
 
-hdf5_path = dir_path + '/Messidor2_' + str(img_rows) + '.hdf5'  # file path for the created .hdf5 file
+hdf5_path = dir_path + '/Messidor2_PNG_' + str(img_rows) + '.hdf5'  # file path for the created .hdf5 file
 print(hdf5_path)
 
 images_path = dir_path + '/Messidor2/IMAGES/*' # the original data path
@@ -29,7 +31,9 @@ for im in addrs:
         im = im + 'jpg'
     baseaddrs.append(str(os.path.basename(im)))
 
+print("done")
 labels = []
+label_count = [0] * 5
 with open(dir_path + '/Messidor2' + '/messidor2_classes.csv') as f:
     reader = csv.reader(f, delimiter=';')
     next(reader) # skip header
@@ -46,6 +50,7 @@ with open(dir_path + '/Messidor2' + '/messidor2_classes.csv') as f:
                         row[1] = 0 
                     row[1] = int(float(row[1]))
                 labels.append(int(float(row[1])))
+                label_count[int(float(row[1]))] += 1
                 baseaddrs.pop(idx)
                 suc = 0
             else:
@@ -59,7 +64,7 @@ with open(dir_path + '/Messidor2' + '/messidor2_classes.csv') as f:
         if suc == 1:
             print("failed:", imaddrs)
     
-
+print("label_count:", label_count)
 
 # shuffle data
 if shuffle_data: 
