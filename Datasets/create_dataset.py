@@ -5,7 +5,6 @@ import os
 import os.path
 import csv
 
-print("niet alles is kapot")
 
 dir_path = os.path.dirname(os.path.realpath(__file__))
 image_path = dir_path + '/Messidor2/IMAGES'
@@ -31,7 +30,7 @@ for im in addrs:
         im = im + 'jpg'
     baseaddrs.append(str(os.path.basename(im)))
 
-print("done")
+
 labels = []
 label_count = [0] * 5
 with open(dir_path + '/Messidor2' + '/messidor2_classes.csv') as f:

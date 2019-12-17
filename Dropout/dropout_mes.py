@@ -25,15 +25,16 @@ plt.style.use("ggplot")
 
 fig_dir = os.path.join(os.getcwd(), datetime.datetime.now().strftime('%Y-%m-%d_%H-%M'))
 os.makedirs(fig_dir)
-
+log_dir = os.path.join(fig_dir,"logs/fit/" + datetime.datetime.now().strftime("%Y%m%d-%H%M%S"))
+os.makedirs(log_dir)
 
 # Input image dimensions
-img_rows, img_cols, img_depth = 128,  128, 3
-dataset_name = '/Messidor2_' + str(img_rows) + '.hdf5'
+img_rows, img_cols, img_depth = 256,  256, 3
+dataset_name = '/Messidor2_PNG_' + str(img_rows) + '.hdf5'
 
 batch_size = 32
 num_classes = 5
-epochs = 20
+epochs = 100
 MCDO_amount_of_predictions = 500
 MCDO_batch_size = 1000
 
@@ -92,7 +93,7 @@ def get_dropout(input_tensor, p=0.5, mc=False):
         return Dropout(p)(input_tensor)
 
 
-def get_model(mc=False, act="relu"):
+def create_model(mc=False, act="relu"):
     inp = Input(input_shape)
     x = Conv2D(32, kernel_size=(3, 3), activation=act)(inp)
     x = Conv2D(64, kernel_size=(2, 2), activation=act)(x)
@@ -110,7 +111,7 @@ def get_model(mc=False, act="relu"):
                   metrics=['accuracy'])
     return model
 
-# model = get_model(mc=False, act="relu")
+# model = create_model(mc=False, act="relu")
 
 # h = model.fit(x_train, y_train,
 #               batch_size=batch_size,
@@ -125,13 +126,18 @@ def get_model(mc=False, act="relu"):
 
 print("Start fitting monte carlo dropout model")
 
-mc_model = get_model(mc=True, act="relu")
+mc_model = create_model(mc=True, act="relu")
+
+os.chdir(fig_dir)
+logs_dir="/logs/fit/" + datetime.datetime.now().strftime("%Y%m%d-%H%M%S")
+tensorboard_callback = tf.keras.callbacks.TensorBoard(log_dir=log_dir)
 
 h_mc = mc_model.fit(x_train, y_train,
                     batch_size=batch_size,
                     epochs=epochs,
-                    verbose=1,
-                    validation_data=(x_test, y_test))
+                    verbose=2,
+                    validation_data=(x_test, y_test), 
+                    callbacks=[tensorboard_callback])
 
 
 
@@ -154,7 +160,7 @@ mc_ensemble_pred = np.array(mc_predictions).mean(axis=0).argmax(axis=1)
 ensemble_acc = accuracy_score(y_test.argmax(axis=1), mc_ensemble_pred)
 print("MC-ensemble accuracy: {:.1%}".format(ensemble_acc))
 
-os.chdir(fig_dir)
+tf.confusion_matrix(y_test.argmax(axis=1), mc_ensemble_pred)
 
 plt.hist(accs)
 plt.axvline(x=ensemble_acc, color="b")
