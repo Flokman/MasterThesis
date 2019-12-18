@@ -2,7 +2,6 @@
 from random import shuffle
 import glob
 import os 
-import os.path
 import csv
 
 
@@ -74,60 +73,39 @@ if shuffle_data:
                                # "addrs" then contains all the shuffled paths and 
                                # "labels" contains all the shuffled labels.
                                
-# Divide the data into 80% for train and 20% for test
-train_addrs = addrs[0:int(0.8*len(addrs))]
-train_labels = labels[0:int(0.8*len(labels))]
-
-test_addrs = addrs[int(0.8*len(addrs)):]
-test_labels = labels[int(0.8*len(labels)):]
 
 ##################### second part: create the h5py object #####################
 import numpy as np
 import h5py
 
-train_shape = (len(train_addrs), img_rows, img_cols, img_depth)
-test_shape = (len(test_addrs), img_rows, img_cols, img_depth)
+addrs_shape = (len(addrs), img_rows, img_cols, img_depth)
 
 # open a hdf5 file and create earrays 
 f = h5py.File(hdf5_path, mode='w')
 
 # PIL.Image: the pixels range is 0-255,dtype is uint.
 # matplotlib: the pixels range is 0-1,dtype is float.
-f.create_dataset("x_train", train_shape, np.uint8)
-f.create_dataset("x_test", test_shape, np.uint8)  
+f.create_dataset("x", addrs_shape, np.uint8)
 
-# the ".create_dataset" object is like a dictionary, the "train_labels" is the key. 
-f.create_dataset("y_train", (len(train_addrs),), np.uint8)
-f["y_train"][...] = train_labels
 
-f.create_dataset("y_test", (len(test_addrs),), np.uint8)
-f["y_test"][...] = test_labels
+# the ".create_dataset" object is like a dictionary, the "labels" is the key. 
+f.create_dataset("y", (len(addrs),), np.uint8)
+f["y"][...] = labels
+
 
 ######################## third part: write the images #########################
 import cv2
 
 # loop over train paths
-for i in range(len(train_addrs)):
+for i in range(len(addrs)):
   
     if i % 1000 == 0 and i > 1:
-        print ('Train data: {}/{}'.format(i, len(train_addrs)) )
+        print ('Image data: {}/{}'.format(i, len(addrs)) )
 
-    addr = train_addrs[i]
+    addr = addrs[i]
     img = cv2.imread(addr)
     img = cv2.resize(img, (img_rows, img_cols), interpolation=cv2.INTER_CUBIC)# resize to (img_rows, img_cols)
     img = cv2.cvtColor(img, cv2.COLOR_BGR2RGB) # cv2 load images as BGR, convert it to RGB
-    f["x_train"][i, ...] = img[None] 
-
-# loop over test paths
-for i in range(len(test_addrs)):
-
-    if i % 1000 == 0 and i > 1:
-        print ('Test data: {}/{}'.format(i, len(test_addrs)) )
-
-    addr = test_addrs[i]
-    img = cv2.imread(addr)
-    img = cv2.resize(img, (img_rows, img_cols), interpolation=cv2.INTER_CUBIC)
-    img = cv2.cvtColor(img, cv2.COLOR_BGR2RGB)
-    f["x_test"][i, ...] = img[None]
+    f["x"][i, ...] = img[None] 
 
 f.close()
