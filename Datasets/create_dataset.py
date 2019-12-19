@@ -86,10 +86,11 @@ f = h5py.File(hdf5_path, mode='w')
 # PIL.Image: the pixels range is 0-255,dtype is uint.
 # matplotlib: the pixels range is 0-1,dtype is float.
 f.create_dataset("x", addrs_shape, np.uint8)
-
+# f.create_dataset("x", addrs_shape, np.int32)
 
 # the ".create_dataset" object is like a dictionary, the "labels" is the key. 
 f.create_dataset("y", (len(addrs),), np.uint8)
+# f.create_dataset("y", (len(addrs),), np.int32)
 f["y"][...] = labels
 
 
