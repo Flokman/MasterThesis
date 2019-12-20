@@ -1,0 +1,9 @@
+Augmenting normalization finished after 5815.066236495972 seconds
+label count after norm: [1261, 1416, 1397, 1455, 1463]
+b:\Documents\Git\MasterThesis\Dropout/Messidor2_PNG_AUG_256.hdf5
+Saving finished after 6.019330978393555 seconds
+augmentation done
+dataset_name = /Messidor2_PNG_256.hdf5, batch_size = 32, num_classes = 5, epochs = 100, MCDO_amount_of_predictions = 500, MCDO_batch_size = 1000, test_img_idx = 151, train_test_split = 0.8, to_shufle = True, augmentation = True, label_count = [1021, 270, 347, 75, 35], label_normalizer = True, save_augmentation_to_hdf5 = True
+x_train shape: (5593, 256, 256, 3)
+5593 train samples
+1399 test samples

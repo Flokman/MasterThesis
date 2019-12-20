@@ -13,7 +13,7 @@ from tensorflow.keras import backend as K
 
 import numpy as np
 import pandas as pd
-import os, datetime
+import os, datetime, time
 import h5py
 from random import seed, randint, shuffle
 import multiprocessing
@@ -34,7 +34,7 @@ os.makedirs(log_dir)
 
 # Input image dimensions
 img_rows, img_cols, img_depth = 256,  256, 3
-dataset_name = '/Messidor2_PNG_' + str(img_rows) + '.hdf5'
+dataset_name = '/Messidor2_PNG_AUG_' + str(img_rows) + '.hdf5'
 
 batch_size = 32
 num_classes = 5
@@ -43,7 +43,7 @@ MCDO_amount_of_predictions = 500
 MCDO_batch_size = 1000
 train_test_split = 0.8 # Value between 0 and 1, e.g. 0.8 creates 80%/20% division train/test
 to_shuffle = True
-augmentation = True
+augmentation = False
 plot_imgs = True
 label_normalizer = True
 save_augmentation_to_hdf5 = True
@@ -66,6 +66,7 @@ def shuffle_data(x_to_shuff, y_to_shuff):
 def data_augmentation(x, y, label_count, label_normalizer):
     # Importing necessary functions 
     from tensorflow.keras.preprocessing.image import ImageDataGenerator, array_to_img, img_to_array, load_img
+    
     # Initialising the ImageDataGenerator class. 
     # We will pass in the augmentation parameters in the constructor. 
     datagen = ImageDataGenerator( 
@@ -76,6 +77,7 @@ def data_augmentation(x, y, label_count, label_normalizer):
             brightness_range = (0.5, 1.5)) 
     
     if label_normalizer == True:
+        start_aug = time.time()
         from random import choices
         goal_amount = int(max(label_count) * 1.2) # Also perform some augmentation on the class with most examples 
         print("goal amount", goal_amount)
@@ -102,7 +104,7 @@ def data_augmentation(x, y, label_count, label_normalizer):
             for i in range(1, amount_to_augment):
                 to_augment_x = np.append(to_augment_x, [(tups_to_augment[i])[0]], axis=0)
 
-            for i in range(0, amount_to_augment):
+            for i in range(0, amount_to_augment): #amount to augment
                 i = 0
                 # for batch in datagen.flow(to_augment_x, to_augment_y, batch_size=1, 
                 #             save_to_dir ='preview/' + str(label),  
@@ -114,8 +116,16 @@ def data_augmentation(x, y, label_count, label_normalizer):
                     i += 1
                     if i > 5:
                         break
+    
+        norm_done = time.time()
+        print("Augmenting normalization finished after {0} seconds".format(norm_done - start_aug))
+        label_count = [0] * num_classes
+        for lab in y:
+            label_count[int(lab)] += 1
+        print('label count after norm:', label_count)
 
     if save_augmentation_to_hdf5 == True:
+        start_sav = time.time()
         dir_path = os.path.dirname(os.path.realpath(__file__))
         hdf5_path = dir_path + '/Messidor2_PNG_AUG_' + str(img_rows) + '.hdf5'  # file path for the created .hdf5 file
         print(hdf5_path)
@@ -123,31 +133,18 @@ def data_augmentation(x, y, label_count, label_normalizer):
         # open a hdf5 file and create earrays 
         f = h5py.File(hdf5_path, mode='w')
 
-        # PIL.Image: the pixels range is 0-255,dtype is uint.
-        # matplotlib: the pixels range is 0-1,dtype is float.
-        f.create_dataset("x", x.shape, np.uint8)
+        f.create_dataset("x", data = x, dtype = 'uint8')
+        f.create_dataset("y", data = y, dtype = 'uint8')    
 
-        # the ".create_dataset" object is like a dictionary, the "labels" is the key. 
-        f.create_dataset("y", (len(x),), np.uint8)
-        f["y"][...] = y
-
-        # loop over train paths
-        for i in range(len(x)):
-        
-            if i % 1000 == 0 and i > 1:
-                print ('Image data: {}/{}'.format(i, len(x)) )
-
-            f["x"][i, ...] = x[i]
-
-            f.close()
-
-
+        f.close()
+        save_done = time.time()
+        print("Saving finished after {0} seconds".format(save_done - start_sav))
     return (x, y)
 
 def load_data(path, train_test_split, data_augmentation, to_shuffle):
     with h5py.File(data_path, "r") as f:
         x, y = np.array(f['x']), np.array(f['y'])
-
+    
     label_count = [0] * num_classes
     for lab in y:
         label_count[lab] += 1
@@ -157,8 +154,12 @@ def load_data(path, train_test_split, data_augmentation, to_shuffle):
 
     if augmentation == True:
         (x, y) = data_augmentation(x, y, label_count, label_normalizer)
+        print("augmentation done")
+        label_count = [0] * num_classes
+        for lab in y:
+            label_count[lab] += 1
 
-    print("augmentation done")
+
     # Divide the data into a train and test set
     x_train = x[0:int(train_test_split*len(x))]
     y_train = y[0:int(train_test_split*len(y))]
