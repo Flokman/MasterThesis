@@ -18,7 +18,6 @@ import h5py
 from random import seed, randint, shuffle
 import multiprocessing
 
-multiprocessing_cpu_count = multiprocessing.cpu_count()
 
 from sklearn.metrics import accuracy_score
 
@@ -40,7 +39,7 @@ batch_size = 32
 num_classes = 5
 epochs = 100
 MCDO_amount_of_predictions = 500
-MCDO_batch_size = 1000
+MCDO_batch_size = 250
 train_test_split = 0.8 # Value between 0 and 1, e.g. 0.8 creates 80%/20% division train/test
 to_shuffle = True
 augmentation = False
@@ -143,14 +142,19 @@ def data_augmentation(x, y, label_count, label_normalizer):
 
 def load_data(path, train_test_split, data_augmentation, to_shuffle):
     with h5py.File(data_path, "r") as f:
+<<<<<<< HEAD
+        (x, y) = np.array(f['x']), np.array(f['y'])
+
+=======
         x, y = np.array(f['x']), np.array(f['y'])
     
+>>>>>>> c1846d7844955b20e17bd06de8f560257335c39a
     label_count = [0] * num_classes
     for lab in y:
         label_count[lab] += 1
 
     if to_shuffle == True:
-        x, y = shuffle_data(x, y)
+        (x, y) = shuffle_data(x, y)
 
     if augmentation == True:
         (x, y) = data_augmentation(x, y, label_count, label_normalizer)
@@ -176,6 +180,10 @@ test_img_idx =  randint(0, len(x_test)) # For evaluation, this image is put in t
 
 print("dataset_name = {}, batch_size = {}, num_classes = {}, epochs = {}, MCDO_amount_of_predictions = {}, MCDO_batch_size = {}, test_img_idx = {}, train_test_split = {}, to_shuffle = {}, augmentation = {}, label_count = {}, label_normalizer = {}, save_augmentation_to_hdf5 = {}".format(dataset_name, batch_size, num_classes, epochs, MCDO_amount_of_predictions, MCDO_batch_size, test_img_idx, train_test_split, to_shuffle, augmentation, label_count, label_normalizer, save_augmentation_to_hdf5))
 
+x_train = np.asarray(x_train)
+y_train = np.asarray(y_train)
+x_test = np.asarray(x_test)
+y_test = np.asarray(y_test)
 
 if K.image_data_format() == 'channels_first':
     x_train = x_train.reshape(x_train.shape[0], img_depth, img_rows, img_cols)
@@ -185,6 +193,8 @@ else:
     x_train = x_train.reshape(x_train.shape[0], img_rows, img_cols, img_depth)
     x_test = x_test.reshape(x_test.shape[0], img_rows, img_cols, img_depth)
     input_shape = (img_rows, img_cols, img_depth)
+
+
 
 x_train = x_train.astype('float32')
 x_test = x_test.astype('float32')
