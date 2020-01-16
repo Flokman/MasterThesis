@@ -1,10 +1,10 @@
 #!/bin/bash
-#SBATCH --time=00:25:00
+#SBATCH --time=05:00:00
 
 #SBATCH --partition=gpu
-#SBATCH --gres=gpu:1
+#SBATCH --gres=gpu:v100:1
 #SBATCH --job-name=MCDropoutMNIST
-#SBATCH --mem=32000
+#SBATCH --mem=64000
 
 module load Python/3.6.4-foss-2018a
 module load TensorFlow/1.12.0-fosscuda-2018a-Python-3.6.4 

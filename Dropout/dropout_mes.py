@@ -9,7 +9,7 @@ from tensorflow.keras.layers import Dense, Dropout, Flatten
 from tensorflow.keras.layers import Conv2D, MaxPooling2D
 from tensorflow.keras import backend as K
 from tensorflow.keras.optimizers import RMSprop
-
+from tensorflow.keras import optimizers
 
 import numpy as np
 import pandas as pd
@@ -45,7 +45,7 @@ dataset_name = '/Messidor2_PNG_AUG_' + str(img_rows) + '.hdf5'
 
 batch_size = 64
 num_classes = 5
-epochs = 50
+epochs = 500
 MCDO_amount_of_predictions = 500
 MCDO_batch_size = 250
 train_test_split = 0.8 # Value between 0 and 1, e.g. 0.8 creates 80%/20% division train/test
@@ -54,6 +54,10 @@ augmentation = False
 plot_imgs = True
 label_normalizer = True
 save_augmentation_to_hdf5 = True
+add_dropout = True
+add_dropout = True
+MCDO = True
+learn_rate = 0.0001
 
 # Get dataset path
 dir_path_head_tail = os.path.split(os.path.dirname(os.path.realpath(__file__)))
@@ -180,7 +184,7 @@ def load_data(path, train_test_split, data_augmentation, to_shuffle):
 
 test_img_idx =  randint(0, len(x_test)) # For evaluation, this image is put in the fig_dir created above
 
-print("dataset_name = {}, batch_size = {}, num_classes = {}, epochs = {}, MCDO_amount_of_predictions = {}, MCDO_batch_size = {}, test_img_idx = {}, train_test_split = {}, to_shuffle = {}, augmentation = {}, label_count = {}, label_normalizer = {}, save_augmentation_to_hdf5 = {}".format(dataset_name, batch_size, num_classes, epochs, MCDO_amount_of_predictions, MCDO_batch_size, test_img_idx, train_test_split, to_shuffle, augmentation, label_count, label_normalizer, save_augmentation_to_hdf5))
+print("dataset_name = {}, batch_size = {}, num_classes = {}, epochs = {}, MCDO_amount_of_predictions = {}, MCDO_batch_size = {}, test_img_idx = {}, train_test_split = {}, to_shuffle = {}, augmentation = {}, label_count = {}, label_normalizer = {}, save_augmentation_to_hdf5 = {}, learn rate = {}".format(dataset_name, batch_size, num_classes, epochs, MCDO_amount_of_predictions, MCDO_batch_size, test_img_idx, train_test_split, to_shuffle, augmentation, label_count, label_normalizer, save_augmentation_to_hdf5, learn_rate))
 
 x_train = np.asarray(x_train)
 y_train = np.asarray(y_train)
@@ -428,21 +432,74 @@ def VGG16(include_top = True,
 
     return model
 
-mcdo_model = keras.models.Sequential()
+# mcdo_model = keras.models.Sequential()
+# mcdo_model.add(VGG16(include_top = False, weights = 'imagenet', input_shape = (img_rows, img_cols, img_depth), add_dropout = True, MCDO = True))
+# mcdo_model.add(Flatten())
+# mcdo_model.add(Dense(num_classes))
 
-mcdo_model.add(VGG16(include_top = False, weights = 'imagenet', input_shape = (img_rows, img_cols, img_depth), add_dropout = True, MCDO = True))
+from tensorflow.keras.applications.vgg16 import VGG16
+mcdo_model = VGG16(weights='imagenet', include_top=False, input_shape=(img_rows, img_cols, img_depth))
 
-mcdo_model.add(Flatten())
-mcdo_model.add(Dense(num_classes))
+def insert_intermediate_layer_in_keras(model, layer_id, p):
+    layers = [l for l in model.layers]
+
+    x = layers[0].output
+    for i in range(1, len(layers)):
+        if i == layer_id:
+            x = get_dropout(x, p, MCDO = True)
+        x = layers[i](x)
+    
+    new_model = Model(inputs=layers[0].input, outputs=x)
+    return new_model
+
+if add_dropout == True:
+    p_list = [0.2, 0.25, 0.3, 0.35, 0.4]
+    P_i = 0  
+    layer_id = 1
+    # Creating dictionary that maps layer names to the layers
+    # layer_dict = dict([(layer.name, layer) for layer in mcdo_model.layers])
+    layer_dict = dict([(layer.name, layer) for layer in mcdo_model.layers])
+
+    for layer_name in layer_dict:
+        layer_dict = dict([(layer.name, layer) for layer in mcdo_model.layers])
+        if layer_name.endswith('_pool'):
+            print(layer_name)
+            layer_index = list(layer_dict).index(layer_name)
+            print(layer_index)
+            # Add a dropout (trainable) layer
+            mcdo_model = insert_intermediate_layer_in_keras(mcdo_model, layer_index + 1, p_list[P_i])
+            P_i += 1
+
+
+            # mcdo_model.summary()
+
+    # Stacking a new simple convolutional network on top of it   
+    
+
+    layers = [l for l in mcdo_model.layers]
+    x = layers[0].output
+    for i in range(1, len(layers)):
+        x = layers[i](x)
+
+    x = get_dropout(x, p_list[P_i - 1], MCDO = True)
+    x = Flatten()(x)
+    x = Dense(num_classes, activation='softmax')(x)
+    
+
+
+    # Creating new model. Please note that this is NOT a Sequential() model.
+    mcdo_model = Model(inputs=layers[0].input, outputs=x)
+
+
 
 for layer in mcdo_model.layers:
     layer.trainable = True
 
 mcdo_model.summary()
 
-
+adam = optimizers.Adam(lr = learn_rate)
 mcdo_model.compile(
-    optimizer='adam',
+    optimizer=adam,
     loss='categorical_crossentropy',
     metrics=['accuracy']
 )
@@ -529,3 +586,7 @@ for i, ax in enumerate(fig.get_axes()):
     ax.label_outer()
 
 fig.savefig('sub_plots' + str(test_img_idx) + '.png', dpi=fig.dpi)
+
+# save model and architecture to single file
+mcdo_model.save("mcdo_model.h5")
+print("Saved mcdo_model to disk")

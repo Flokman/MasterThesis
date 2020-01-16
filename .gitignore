@@ -5,6 +5,7 @@ Datasets/Messidor2_128.hdf5
 Datasets/Messidor2_PNG_256.hdf5
 
 *.hdf5
+*.h5
 
 MobaXterm_Portable_v12.4/
 
