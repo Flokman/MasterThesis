@@ -10,6 +10,7 @@ from tensorflow.keras.layers import Conv2D, MaxPooling2D
 from tensorflow.keras import backend as K
 from tensorflow.keras import optimizers
 from tensorflow.keras.applications.vgg16 import VGG16
+from tensorflow.keras.models import load_model
 
 import numpy as np
 import pandas as pd
@@ -41,7 +42,7 @@ dataset_name = '/Messidor2_PNG_AUG_' + str(img_rows) + '.hdf5'
 
 batch_size = 64
 num_classes = 5
-epochs = 50
+epochs = 500
 MCBN_amount_of_predictions = 500
 MCBN_batch_size = 250
 train_test_split = 0.8 # Value between 0 and 1, e.g. 0.8 creates 80%/20% division train/test
@@ -51,10 +52,15 @@ plot_imgs = True
 label_normalizer = True
 save_augmentation_to_hdf5 = True
 add_batch_normalization = True
-add_batch_normalization_inside = False
+add_batch_normalization_inside = True
 train_all_layers = True
-weights_to_use = 'imagenet'
+only_after_specific_layer = False
+weights_to_use = None
 learn_rate = 0.0001
+
+load_trained_model = False
+model_loc = '2020-01-21_13-18-44/'
+model_name = 'MCBN_model.h5'
 
 # Get dataset path
 dir_path_head_tail = os.path.split(os.path.dirname(os.path.realpath(__file__)))
@@ -131,43 +137,81 @@ y_test = tf.keras.utils.to_categorical(y_test, num_classes)
 def get_batch_normalization(input_tensor):
     return BatchNormalization()(input_tensor, training = True)
 
-def insert_intermediate_layer_in_keras(model, layer_id, p):
+def insert_intermediate_layer_in_keras(model, layer_id):
     layers = [l for l in model.layers]
 
     x = layers[0].output
     for i in range(1, len(layers)):
         if i == layer_id:
-            x = get_batch_normalization(x, p, MCBN = True)
+            x = get_batch_normalization(x)
         x = layers[i](x)
     
     new_model = Model(inputs=layers[0].input, outputs=x)
     return new_model
 
+if load_trained_model == False:
+    # Load VGG16 model
+    MCBN_model = VGG16(weights = weights_to_use, include_top=False, input_shape=(img_rows, img_cols, img_depth))
 
-# Load VGG16 model
-MCBN_model = VGG16(weights = weights_to_use, include_top=False, input_shape=(img_rows, img_cols, img_depth))
-
-if add_batch_normalization == True:
-    if add_batch_normalization_inside == True:
-        p_list = [0.2, 0.25, 0.3, 0.35, 0.4]
-        P_i = 0  
-        layer_id = 1
-        # Creating dictionary that maps layer names to the layers
-        layer_dict = dict([(layer.name, layer) for layer in MCBN_model.layers])
-
-        for layer_name in layer_dict:
+    if add_batch_normalization == True:
+        if add_batch_normalization_inside == True: 
+            layer_id = 1
+            # Creating dictionary that maps layer names to the layers
             layer_dict = dict([(layer.name, layer) for layer in MCBN_model.layers])
-            if layer_name.endswith('_pool'):
-                print(layer_name)
-                layer_index = list(layer_dict).index(layer_name)
-                print(layer_index)
 
-                # Add a batch normalization (trainable) layer
-                MCBN_model = insert_intermediate_layer_in_keras(MCBN_model, layer_index + 1, p_list[P_i])
-                P_i += 1
+            for layer_name in layer_dict:
+                layer_dict = dict([(layer.name, layer) for layer in MCBN_model.layers])
+                if only_after_specific_layer == True:
+                    if layer_name.endswith('_pool'):
+                        print(layer_name)
+                        layer_index = list(layer_dict).index(layer_name)
+                        print(layer_index)
 
-                # MCBN_model.summary()
+                        # Add a batch normalization (trainable) layer
+                        MCBN_model = insert_intermediate_layer_in_keras(MCBN_model, layer_index + 1)
+                        
+                        # MCBN_model.summary()
+                else:
+                    print(layer_name)
+                    layer_index = list(layer_dict).index(layer_name)
+                    print(layer_index)
 
+                    # Add a batch normalization (trainable) layer
+                    MCBN_model = insert_intermediate_layer_in_keras(MCBN_model, layer_index + 1)
+                    
+
+
+            # Stacking a new simple convolutional network on top of vgg16  
+            layers = [l for l in MCBN_model.layers]
+            x = layers[0].output
+            for i in range(1, len(layers)):
+                x = layers[i](x)
+
+            # Classification block
+            x = get_batch_normalization(x)
+            x = Flatten(name='flatten')(x)
+            x = Dense(4096, activation='relu', name='fc1')(x)
+            x = get_batch_normalization(x)
+            x = Dense(4096, activation='relu', name='fc2')(x)
+            x = get_batch_normalization(x)
+            x = Dense(num_classes, activation='softmax', name='predictions')(x)
+        
+        else:
+            # Stacking a new simple convolutional network on top of vgg16  
+            layers = [l for l in MCBN_model.layers]
+            x = layers[0].output
+            for i in range(1, len(layers)):
+                x = layers[i](x)
+
+            # Classification block
+            x = Flatten(name='flatten')(x)
+            x = Dense(4096, activation='relu', name='fc1')(x)
+            x = get_batch_normalization(x)
+            x = Dense(4096, activation='relu', name='fc2')(x)
+            x = get_batch_normalization(x)
+            x = Dense(num_classes, activation='softmax', name='predictions')(x)
+
+    else:   
         # Stacking a new simple convolutional network on top of vgg16  
         layers = [l for l in MCBN_model.layers]
         x = layers[0].output
@@ -177,74 +221,55 @@ if add_batch_normalization == True:
         # Classification block
         x = Flatten(name='flatten')(x)
         x = Dense(4096, activation='relu', name='fc1')(x)
-        x = get_batch_normalization(x)
         x = Dense(4096, activation='relu', name='fc2')(x)
-        x = get_batch_normalization(x)
-        x = Dense(num_classes, activation='softmax', name='predictions')(x)
-    
-    else:
-        # Stacking a new simple convolutional network on top of vgg16  
-        layers = [l for l in MCBN_model.layers]
-        x = layers[0].output
-        for i in range(1, len(layers)):
-            x = layers[i](x)
-
-        # Classification block
-        x = Flatten(name='flatten')(x)
-        x = Dense(4096, activation='relu', name='fc1')(x)
-        x = get_batch_normalization(x)
-        x = Dense(4096, activation='relu', name='fc2')(x)
-        x = get_batch_normalization(x)
         x = Dense(num_classes, activation='softmax', name='predictions')(x)
 
-else:   
-    # Stacking a new simple convolutional network on top of vgg16  
-    layers = [l for l in MCBN_model.layers]
-    x = layers[0].output
-    for i in range(1, len(layers)):
-        x = layers[i](x)
 
-    # Classification block
-    x = Flatten(name='flatten')(x)
-    x = Dense(4096, activation='relu', name='fc1')(x)
-    x = Dense(4096, activation='relu', name='fc2')(x)
-    x = Dense(num_classes, activation='softmax', name='predictions')(x)
+    # Creating new model. Please note that this is NOT a Sequential() model.
+    MCBN_model = Model(inputs=layers[0].input, outputs=x)
 
+    if train_all_layers == True:
+        for layer in MCBN_model.layers:
+            layer.trainable = True
 
-# Creating new model. Please note that this is NOT a Sequential() model.
-MCBN_model = Model(inputs=layers[0].input, outputs=x)
+    MCBN_model.summary()
 
-if train_all_layers == True:
-    for layer in MCBN_model.layers:
-        layer.trainable = True
+    adam = optimizers.Adam(lr = learn_rate)
+    MCBN_model.compile(
+        optimizer=adam,
+        loss='categorical_crossentropy',
+        metrics=['accuracy']
+    )
 
-MCBN_model.summary()
+    print("Start fitting monte carlo batch_normalization model")
 
-adam = optimizers.Adam(lr = learn_rate)
-MCBN_model.compile(
-    optimizer=adam,
-    loss='categorical_crossentropy',
-    metrics=['accuracy']
-)
+    fig_dir = os.path.join(os.getcwd(), datetime.datetime.now().strftime('%Y-%m-%d_%H-%M-%S')) # Dir to store created figures
+    os.makedirs(fig_dir)
+    log_dir = os.path.join(fig_dir,"logs/fit/" + datetime.datetime.now().strftime("%Y%m%d-%H%M%S")) # Dir to store Tensorboard data
+    os.makedirs(log_dir)
 
-print("Start fitting monte carlo batch_normalization model")
+    os.chdir(fig_dir)
+    logs_dir="/logs/fit/" + datetime.datetime.now().strftime("%Y%m%d-%H%M%S")
+    tensorboard_callback = tf.keras.callbacks.TensorBoard(log_dir=log_dir)
 
-fig_dir = os.path.join(os.getcwd(), datetime.datetime.now().strftime('%Y-%m-%d_%H-%M-%S')) # Dir to store created figures
-os.makedirs(fig_dir)
-log_dir = os.path.join(fig_dir,"logs/fit/" + datetime.datetime.now().strftime("%Y%m%d-%H%M%S")) # Dir to store Tensorboard data
-os.makedirs(log_dir)
+    h_mc = MCBN_model.fit(x_train, y_train,
+                        batch_size=batch_size,
+                        epochs=epochs,
+                        verbose=2,
+                        validation_data=(x_test, y_test), 
+                        callbacks=[tensorboard_callback])
+else:
+    old_dir = os.getcwd()
+    os.chdir(model_loc)
+    MCBN_model = load_model(model_name)
+    MCBN_model.summary()
 
-os.chdir(fig_dir)
-logs_dir="/logs/fit/" + datetime.datetime.now().strftime("%Y%m%d-%H%M%S")
-tensorboard_callback = tf.keras.callbacks.TensorBoard(log_dir=log_dir)
-
-h_mc = MCBN_model.fit(x_train, y_train,
-                    batch_size=batch_size,
-                    epochs=epochs,
-                    verbose=2,
-                    validation_data=(x_test, y_test), 
-                    callbacks=[tensorboard_callback])
-
+    os.chdir(old_dir)
+    fig_dir = os.path.join(os.getcwd(), datetime.datetime.now().strftime('%Y-%m-%d_%H-%M-%S')) # Dir to store created figures
+    os.makedirs(fig_dir)
+    log_dir = os.path.join(fig_dir,"logs/fit/" + datetime.datetime.now().strftime("%Y%m%d-%H%M%S")) # Dir to store Tensorboard data
+    os.makedirs(log_dir)
+    os.chdir(fig_dir)
 
 
 mc_predictions = []
@@ -266,7 +291,10 @@ mc_ensemble_pred = np.array(mc_predictions).mean(axis=0).argmax(axis=1)
 ensemble_acc = accuracy_score(y_test.argmax(axis=1), mc_ensemble_pred)
 print("MC-ensemble accuracy: {:.1%}".format(ensemble_acc))
 
-tf.confusion_matrix(y_test.argmax(axis=1), mc_ensemble_pred)
+confusion = tf.confusion_matrix(labels = y_test.argmax(axis=1), predictions = mc_ensemble_pred, num_classes = num_classes)
+sess = tf.Session()
+with sess.as_default():
+        print(sess.run(confusion))
 
 plt.hist(accs)
 plt.axvline(x=ensemble_acc, color="b")
