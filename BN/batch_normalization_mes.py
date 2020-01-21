@@ -5,7 +5,7 @@ import tensorflow.keras as keras
 
 from tensorflow.keras.models import Sequential, Model
 from tensorflow.keras import Input, layers, models, utils
-from tensorflow.keras.layers import Dense, Dropout, Flatten 
+from tensorflow.keras.layers import Dense, Dropout, Flatten, BatchNormalization
 from tensorflow.keras.layers import Conv2D, MaxPooling2D
 from tensorflow.keras import backend as K
 from tensorflow.keras import optimizers
@@ -26,11 +26,7 @@ mpl.use('Agg')
 import matplotlib.pyplot as plt
 plt.style.use("ggplot")
 
-fig_dir = os.path.join(os.getcwd(), datetime.datetime.now().strftime('%Y-%m-%d_%H-%M')) # Dir to store created figures
-os.makedirs(fig_dir)
-log_dir = os.path.join(fig_dir,"logs/fit/" + datetime.datetime.now().strftime("%Y%m%d-%H%M%S")) # Dir to store Tensorboard data
-os.makedirs(log_dir)
-
+# https://github.com/icml-mcbn/mcbn
 
 WEIGHTS_PATH = ('https://github.com/fchollet/deep-learning-models/'
                 'releases/download/v0.1/'
@@ -45,9 +41,9 @@ dataset_name = '/Messidor2_PNG_AUG_' + str(img_rows) + '.hdf5'
 
 batch_size = 64
 num_classes = 5
-epochs = 500
-MCDO_amount_of_predictions = 500
-MCDO_batch_size = 250
+epochs = 50
+MCBN_amount_of_predictions = 500
+MCBN_batch_size = 250
 train_test_split = 0.8 # Value between 0 and 1, e.g. 0.8 creates 80%/20% division train/test
 to_shuffle = True
 augmentation = False
@@ -55,6 +51,9 @@ plot_imgs = True
 label_normalizer = True
 save_augmentation_to_hdf5 = True
 add_batch_normalization = True
+add_batch_normalization_inside = False
+train_all_layers = True
+weights_to_use = 'imagenet'
 learn_rate = 0.0001
 
 # Get dataset path
@@ -72,7 +71,7 @@ def shuffle_data(x_to_shuff, y_to_shuff):
     return (x, y)
 
 
-def load_data(path, train_test_split, data_augmentation, to_shuffle):
+def load_data(path, train_test_split, to_shuffle):
     with h5py.File(data_path, "r") as f:
         (x, y) = np.array(f['x']), np.array(f['y'])
     label_count = [0] * num_classes
@@ -93,11 +92,12 @@ def load_data(path, train_test_split, data_augmentation, to_shuffle):
     return (x_train, y_train), (x_test, y_test), label_count
 
 # Split the data between train and test sets
-(x_train, y_train), (x_test, y_test), label_count  = load_data(data_path, train_test_split, data_augmentation, to_shuffle)
+(x_train, y_train), (x_test, y_test), label_count  = load_data(data_path, train_test_split, to_shuffle)
 
 test_img_idx =  randint(0, len(x_test)) # For evaluation, this image is put in the fig_dir created above
 
-print("dataset_name = {}, batch_size = {}, num_classes = {}, epochs = {}, MCDO_amount_of_predictions = {}, MCDO_batch_size = {}, test_img_idx = {}, train_test_split = {}, to_shuffle = {}, augmentation = {}, label_count = {}, label_normalizer = {}, save_augmentation_to_hdf5 = {}, learn rate = {}".format(dataset_name, batch_size, num_classes, epochs, MCDO_amount_of_predictions, MCDO_batch_size, test_img_idx, train_test_split, to_shuffle, augmentation, label_count, label_normalizer, save_augmentation_to_hdf5, learn_rate))
+print("dataset_name = {}, batch_size = {}, num_classes = {}, epochs = {}, MCBN_amount_of_predictions = {}, MCBN_batch_size = {}, test_img_idx = {}, train_test_split = {}, to_shuffle = {}, augmentation = {}, label_count = {}, label_normalizer = {}, save_augmentation_to_hdf5 = {}, learn rate = {}, add_batch_normalization_inside = {}, train_all_layers = {}, weights_to_use = {}".format(
+    dataset_name, batch_size, num_classes, epochs, MCBN_amount_of_predictions, MCBN_batch_size, test_img_idx, train_test_split, to_shuffle, augmentation, label_count, label_normalizer, save_augmentation_to_hdf5, learn_rate, add_batch_normalization_inside, train_all_layers, weights_to_use))
 
 x_train = np.asarray(x_train)
 y_train = np.asarray(y_train)
@@ -128,12 +128,8 @@ y_train = tf.keras.utils.to_categorical(y_train, num_classes)
 y_test = tf.keras.utils.to_categorical(y_test, num_classes)
 
 
-def get_dropout(input_tensor, p = 0.5, MCDO = False):
-    if MCDO:
-        return Dropout(p)(input_tensor, training = True)
-    else:
-        return Dropout(p)(input_tensor)
-
+def get_batch_normalization(input_tensor):
+    return BatchNormalization()(input_tensor, training = True)
 
 def insert_intermediate_layer_in_keras(model, layer_id, p):
     layers = [l for l in model.layers]
@@ -141,7 +137,7 @@ def insert_intermediate_layer_in_keras(model, layer_id, p):
     x = layers[0].output
     for i in range(1, len(layers)):
         if i == layer_id:
-            x = get_dropout(x, p, MCDO = True)
+            x = get_batch_normalization(x, p, MCBN = True)
         x = layers[i](x)
     
     new_model = Model(inputs=layers[0].input, outputs=x)
@@ -149,80 +145,100 @@ def insert_intermediate_layer_in_keras(model, layer_id, p):
 
 
 # Load VGG16 model
-mcdo_model = VGG16(weights='imagenet', include_top=False, input_shape=(img_rows, img_cols, img_depth))
+MCBN_model = VGG16(weights = weights_to_use, include_top=False, input_shape=(img_rows, img_cols, img_depth))
 
-if add_dropout == True:
-    p_list = [0.2, 0.25, 0.3, 0.35, 0.4]
-    P_i = 0  
-    layer_id = 1
-    # Creating dictionary that maps layer names to the layers
-    layer_dict = dict([(layer.name, layer) for layer in mcdo_model.layers])
+if add_batch_normalization == True:
+    if add_batch_normalization_inside == True:
+        p_list = [0.2, 0.25, 0.3, 0.35, 0.4]
+        P_i = 0  
+        layer_id = 1
+        # Creating dictionary that maps layer names to the layers
+        layer_dict = dict([(layer.name, layer) for layer in MCBN_model.layers])
 
-    for layer_name in layer_dict:
-        layer_dict = dict([(layer.name, layer) for layer in mcdo_model.layers])
-        if layer_name.endswith('_pool'):
-            print(layer_name)
-            layer_index = list(layer_dict).index(layer_name)
-            print(layer_index)
+        for layer_name in layer_dict:
+            layer_dict = dict([(layer.name, layer) for layer in MCBN_model.layers])
+            if layer_name.endswith('_pool'):
+                print(layer_name)
+                layer_index = list(layer_dict).index(layer_name)
+                print(layer_index)
 
-            # Add a batch normalization (trainable) layer
-            mcdo_model = insert_intermediate_layer_in_keras(mcdo_model, layer_index + 1, p_list[P_i])
-            P_i += 1
+                # Add a batch normalization (trainable) layer
+                MCBN_model = insert_intermediate_layer_in_keras(MCBN_model, layer_index + 1, p_list[P_i])
+                P_i += 1
 
-            mcdo_model.summary()
+                # MCBN_model.summary()
 
-    # Stacking a new simple convolutional network on top of it   
-    layers = [l for l in mcdo_model.layers]
+        # Stacking a new simple convolutional network on top of vgg16  
+        layers = [l for l in MCBN_model.layers]
+        x = layers[0].output
+        for i in range(1, len(layers)):
+            x = layers[i](x)
+
+        # Classification block
+        x = Flatten(name='flatten')(x)
+        x = Dense(4096, activation='relu', name='fc1')(x)
+        x = get_batch_normalization(x)
+        x = Dense(4096, activation='relu', name='fc2')(x)
+        x = get_batch_normalization(x)
+        x = Dense(num_classes, activation='softmax', name='predictions')(x)
+    
+    else:
+        # Stacking a new simple convolutional network on top of vgg16  
+        layers = [l for l in MCBN_model.layers]
+        x = layers[0].output
+        for i in range(1, len(layers)):
+            x = layers[i](x)
+
+        # Classification block
+        x = Flatten(name='flatten')(x)
+        x = Dense(4096, activation='relu', name='fc1')(x)
+        x = get_batch_normalization(x)
+        x = Dense(4096, activation='relu', name='fc2')(x)
+        x = get_batch_normalization(x)
+        x = Dense(num_classes, activation='softmax', name='predictions')(x)
+
+else:   
+    # Stacking a new simple convolutional network on top of vgg16  
+    layers = [l for l in MCBN_model.layers]
     x = layers[0].output
     for i in range(1, len(layers)):
         x = layers[i](x)
 
-    x = get_dropout(x, p_list[P_i - 1], MCDO = True)
-    x = Flatten()(x)
-    x = Dense(num_classes, activation='softmax')(x)
-    
+    # Classification block
+    x = Flatten(name='flatten')(x)
+    x = Dense(4096, activation='relu', name='fc1')(x)
+    x = Dense(4096, activation='relu', name='fc2')(x)
+    x = Dense(num_classes, activation='softmax', name='predictions')(x)
 
 
-    # Creating new model. Please note that this is NOT a Sequential() model.
-    mcdo_model = Model(inputs=layers[0].input, outputs=x)
+# Creating new model. Please note that this is NOT a Sequential() model.
+MCBN_model = Model(inputs=layers[0].input, outputs=x)
 
+if train_all_layers == True:
+    for layer in MCBN_model.layers:
+        layer.trainable = True
 
-
-for layer in mcdo_model.layers:
-    layer.trainable = True
-
-mcdo_model.summary()
+MCBN_model.summary()
 
 adam = optimizers.Adam(lr = learn_rate)
-mcdo_model.compile(
+MCBN_model.compile(
     optimizer=adam,
     loss='categorical_crossentropy',
     metrics=['accuracy']
 )
 
+print("Start fitting monte carlo batch_normalization model")
 
-# model = create_model(mc=False, act="relu")
-
-# h = model.fit(x_train, y_train,
-#               batch_size=batch_size,
-#               epochs=epochs,
-#               verbose=1,
-#               validation_data=(x_test, y_test))
-
-# # score of the normal model
-# score = model.evaluate(x_test, y_test, verbose=1)
-# print('Test loss:', score[0])
-# print('Test accuracy:', score[1])
-
-print("Start fitting monte carlo dropout model")
-
-
+fig_dir = os.path.join(os.getcwd(), datetime.datetime.now().strftime('%Y-%m-%d_%H-%M-%S')) # Dir to store created figures
+os.makedirs(fig_dir)
+log_dir = os.path.join(fig_dir,"logs/fit/" + datetime.datetime.now().strftime("%Y%m%d-%H%M%S")) # Dir to store Tensorboard data
+os.makedirs(log_dir)
 
 os.chdir(fig_dir)
 logs_dir="/logs/fit/" + datetime.datetime.now().strftime("%Y%m%d-%H%M%S")
 tensorboard_callback = tf.keras.callbacks.TensorBoard(log_dir=log_dir)
 
-h_mc = mcdo_model.fit(x_train, y_train,
+h_mc = MCBN_model.fit(x_train, y_train,
                     batch_size=batch_size,
                     epochs=epochs,
                     verbose=2,
@@ -233,10 +249,10 @@ h_mc = mcdo_model.fit(x_train, y_train,
 
 mc_predictions = []
 
-progress_bar = tf.keras.utils.Progbar(target=MCDO_amount_of_predictions,interval=5)
-for i in range(MCDO_amount_of_predictions):
+progress_bar = tf.keras.utils.Progbar(target=MCBN_amount_of_predictions,interval=5)
+for i in range(MCBN_amount_of_predictions):
     progress_bar.update(i)
-    y_p = mcdo_model.predict(x_test, batch_size=MCDO_batch_size)
+    y_p = MCBN_model.predict(x_test, batch_size=MCBN_batch_size)
     mc_predictions.append(y_p)
 
 # score of the mc model
@@ -284,5 +300,5 @@ for i, ax in enumerate(fig.get_axes()):
 fig.savefig('sub_plots' + str(test_img_idx) + '.png', dpi=fig.dpi)
 
 # save model and architecture to single file
-mcdo_model.save("mcdo_model.h5")
-print("Saved mcdo_model to disk")
+MCBN_model.save("MCBN_model.h5")
+print("Saved MCBN_model to disk")

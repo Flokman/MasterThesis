@@ -26,12 +26,6 @@ mpl.use('Agg')
 import matplotlib.pyplot as plt
 plt.style.use("ggplot")
 
-fig_dir = os.path.join(os.getcwd(), datetime.datetime.now().strftime('%Y-%m-%d_%H-%M')) # Dir to store created figures
-os.makedirs(fig_dir)
-log_dir = os.path.join(fig_dir,"logs/fit/" + datetime.datetime.now().strftime("%Y%m%d-%H%M%S")) # Dir to store Tensorboard data
-os.makedirs(log_dir)
-
-
 WEIGHTS_PATH = ('https://github.com/fchollet/deep-learning-models/'
                 'releases/download/v0.1/'
                 'vgg16_weights_tf_dim_ordering_tf_kernels.h5')
@@ -55,9 +49,11 @@ plot_imgs = True
 label_normalizer = True
 save_augmentation_to_hdf5 = True
 add_dropout = True
-add_dropout = True
+add_dropout_inside = False
 MCDO = True
-learn_rate = 0.0001
+train_all_layers = True
+weights_to_use = 'imagenet'
+learn_rate = 0.001
 
 # Get dataset path
 dir_path_head_tail = os.path.split(os.path.dirname(os.path.realpath(__file__)))
@@ -184,7 +180,8 @@ def load_data(path, train_test_split, data_augmentation, to_shuffle):
 
 test_img_idx =  randint(0, len(x_test)) # For evaluation, this image is put in the fig_dir created above
 
-print("dataset_name = {}, batch_size = {}, num_classes = {}, epochs = {}, MCDO_amount_of_predictions = {}, MCDO_batch_size = {}, test_img_idx = {}, train_test_split = {}, to_shuffle = {}, augmentation = {}, label_count = {}, label_normalizer = {}, save_augmentation_to_hdf5 = {}, learn rate = {}".format(dataset_name, batch_size, num_classes, epochs, MCDO_amount_of_predictions, MCDO_batch_size, test_img_idx, train_test_split, to_shuffle, augmentation, label_count, label_normalizer, save_augmentation_to_hdf5, learn_rate))
+print("dataset_name = {}, batch_size = {}, num_classes = {}, epochs = {}, MCDO_amount_of_predictions = {}, MCDO_batch_size = {}, test_img_idx = {}, train_test_split = {}, to_shuffle = {}, augmentation = {}, label_count = {}, label_normalizer = {}, save_augmentation_to_hdf5 = {}, learn rate = {}, add_dropout_inside = {}, train_all_layers = {}, weights_to_use = {}".format(
+    dataset_name, batch_size, num_classes, epochs, MCDO_amount_of_predictions, MCDO_batch_size, test_img_idx, train_test_split, to_shuffle, augmentation, label_count, label_normalizer, save_augmentation_to_hdf5, learn_rate, add_dropout_inside, train_all_layers, weights_to_use))
 
 x_train = np.asarray(x_train)
 y_train = np.asarray(y_train)
@@ -438,7 +435,7 @@ def VGG16(include_top = True,
 # mcdo_model.add(Dense(num_classes))
 
 from tensorflow.keras.applications.vgg16 import VGG16
-mcdo_model = VGG16(weights='imagenet', include_top=False, input_shape=(img_rows, img_cols, img_depth))
+mcdo_model = VGG16(weights = weights_to_use, include_top=False, input_shape=(img_rows, img_cols, img_depth))
 
 def insert_intermediate_layer_in_keras(model, layer_id, p):
     layers = [l for l in model.layers]
@@ -453,47 +450,74 @@ def insert_intermediate_layer_in_keras(model, layer_id, p):
     return new_model
 
 if add_dropout == True:
-    p_list = [0.2, 0.25, 0.3, 0.35, 0.4]
-    P_i = 0  
-    layer_id = 1
-    # Creating dictionary that maps layer names to the layers
-    # layer_dict = dict([(layer.name, layer) for layer in mcdo_model.layers])
-    layer_dict = dict([(layer.name, layer) for layer in mcdo_model.layers])
-
-    for layer_name in layer_dict:
+    if add_dropout_inside == True:
+        p_list = [0.2, 0.25, 0.3, 0.35, 0.4]
+        P_i = 0  
+        layer_id = 1
+        # Creating dictionary that maps layer names to the layers
+        # layer_dict = dict([(layer.name, layer) for layer in mcdo_model.layers])
         layer_dict = dict([(layer.name, layer) for layer in mcdo_model.layers])
-        if layer_name.endswith('_pool'):
-            print(layer_name)
-            layer_index = list(layer_dict).index(layer_name)
-            print(layer_index)
-            # Add a dropout (trainable) layer
-            mcdo_model = insert_intermediate_layer_in_keras(mcdo_model, layer_index + 1, p_list[P_i])
-            P_i += 1
+
+        for layer_name in layer_dict:
+            layer_dict = dict([(layer.name, layer) for layer in mcdo_model.layers])
+            if layer_name.endswith('_pool'):
+                print(layer_name)
+                layer_index = list(layer_dict).index(layer_name)
+                print(layer_index)
+                # Add a dropout (trainable) layer
+                mcdo_model = insert_intermediate_layer_in_keras(mcdo_model, layer_index + 1, p_list[P_i])
+                P_i += 1
 
 
-            # mcdo_model.summary()
+        # Stacking a new simple convolutional network on top of vgg16  
+        layers = [l for l in mcdo_model.layers]
+        x = layers[0].output
+        for i in range(1, len(layers)):
+            x = layers[i](x)
 
-    # Stacking a new simple convolutional network on top of it   
+        # Classification block
+        x = Flatten(name='flatten')(x)
+        x = Dense(4096, activation='relu', name='fc1')(x)
+        x = get_dropout(x, 0.5, MCDO = True)
+        x = Dense(4096, activation='relu', name='fc2')(x)
+        x = get_dropout(x, 0.5, MCDO = True)
+        x = Dense(num_classes, activation='softmax', name='predictions')(x)
     
+    else:
+        # Stacking a new simple convolutional network on top of vgg16  
+        layers = [l for l in mcdo_model.layers]
+        x = layers[0].output
+        for i in range(1, len(layers)):
+            x = layers[i](x)
 
+        # Classification block
+        x = Flatten(name='flatten')(x)
+        x = Dense(4096, activation='relu', name='fc1')(x)
+        x = get_dropout(x, 0.5, MCDO = True)
+        x = Dense(4096, activation='relu', name='fc2')(x)
+        x = get_dropout(x, 0.5, MCDO = True)
+        x = Dense(num_classes, activation='softmax', name='predictions')(x)
+
+else:   
+    # Stacking a new simple convolutional network on top of vgg16  
     layers = [l for l in mcdo_model.layers]
     x = layers[0].output
     for i in range(1, len(layers)):
         x = layers[i](x)
 
-    x = get_dropout(x, p_list[P_i - 1], MCDO = True)
-    x = Flatten()(x)
-    x = Dense(num_classes, activation='softmax')(x)
-    
+    # Classification block
+    x = Flatten(name='flatten')(x)
+    x = Dense(4096, activation='relu', name='fc1')(x)
+    x = Dense(4096, activation='relu', name='fc2')(x)
+    x = Dense(num_classes, activation='softmax', name='predictions')(x)
 
 
-    # Creating new model. Please note that this is NOT a Sequential() model.
-    mcdo_model = Model(inputs=layers[0].input, outputs=x)
+# Creating new model. Please note that this is NOT a Sequential() model.
+mcdo_model = Model(inputs=layers[0].input, outputs=x)
 
-
-
-for layer in mcdo_model.layers:
-    layer.trainable = True
+if train_all_layers == True:
+    for layer in mcdo_model.layers:
+        layer.trainable = True
 
 mcdo_model.summary()
 
@@ -520,7 +544,10 @@ mcdo_model.compile(
 
 print("Start fitting monte carlo dropout model")
 
-
+fig_dir = os.path.join(os.getcwd(), datetime.datetime.now().strftime('%Y-%m-%d_%H-%M-%S')) # Dir to store created figures
+os.makedirs(fig_dir)
+log_dir = os.path.join(fig_dir,"logs/fit/" + datetime.datetime.now().strftime("%Y%m%d-%H%M%S")) # Dir to store Tensorboard data
+os.makedirs(log_dir)
 
 os.chdir(fig_dir)
 logs_dir="/logs/fit/" + datetime.datetime.now().strftime("%Y%m%d-%H%M%S")
