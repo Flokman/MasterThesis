@@ -3,6 +3,7 @@ Datasets/Messidor2/IMAGES
 Datasets/Messidor2_256.hdf5
 Datasets/Messidor2_128.hdf5
 Datasets/Messidor2_PNG_256.hdf5
+Test/test_images
 
 *.hdf5
 *.h5

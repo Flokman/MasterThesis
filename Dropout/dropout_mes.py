@@ -15,6 +15,7 @@ import numpy as np
 import pandas as pd
 import os, datetime, time
 import h5py
+import random
 from random import seed, randint, shuffle
 import multiprocessing
 
@@ -51,13 +52,13 @@ save_augmentation_to_hdf5 = True
 add_dropout = True
 MCDO = True
 train_all_layers = True
-add_dropout_inside = False
+add_dropout_inside = True
 weights_to_use = None
-learn_rate = 0.0001
+learn_rate = 0.00001
 
 load_trained_model = False
 model_loc = '2020-01-21_13-18-44/'
-model_name = 'MCBN_model.h5'
+model_name = 'mcdo_model.h5'
 
 # Get dataset path
 dir_path_head_tail = os.path.split(os.path.dirname(os.path.realpath(__file__)))
@@ -66,7 +67,9 @@ data_path = root_path + '/Datasets' + dataset_name
 
 def shuffle_data(x_to_shuff, y_to_shuff):
     combined = list(zip(x_to_shuff, y_to_shuff)) # use zip() to bind the images and label together
-    shuffle(combined)
+    random_seed = random.seed()
+    print("Random seed for replication: {}".format(random_seed))
+    random.shuffle(combined, random_seed)
  
     (x, y) = zip(*combined)  # *combined is used to separate all the tuples in the list combined,  
                                # "x" then contains all the shuffled images and 
@@ -640,6 +643,7 @@ for i, ax in enumerate(fig.get_axes()):
 
 fig.savefig('sub_plots' + str(test_img_idx) + '.png', dpi=fig.dpi)
 
-# save model and architecture to single file
-mcdo_model.save("mcdo_model.h5")
-print("Saved mcdo_model to disk")
+if load_trained_model == False:
+    # save model and architecture to single file
+    MCBN_model.save("MCBN_model.h5")
+    print("Saved MCBN_model to disk")

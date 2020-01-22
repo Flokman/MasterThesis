@@ -16,8 +16,10 @@ import numpy as np
 import pandas as pd
 import os, datetime, time
 import h5py
+import random
 from random import seed, randint, shuffle
 import multiprocessing
+import re
 
 
 from sklearn.metrics import accuracy_score
@@ -40,7 +42,7 @@ WEIGHTS_PATH_NO_TOP = ('https://github.com/fchollet/deep-learning-models/'
 img_rows, img_cols, img_depth = 256,  256, 3
 dataset_name = '/Messidor2_PNG_AUG_' + str(img_rows) + '.hdf5'
 
-batch_size = 64
+batch_size = 32
 num_classes = 5
 epochs = 500
 MCBN_amount_of_predictions = 500
@@ -54,9 +56,9 @@ save_augmentation_to_hdf5 = True
 add_batch_normalization = True
 add_batch_normalization_inside = True
 train_all_layers = True
-only_after_specific_layer = False
+only_after_specific_layer = True
 weights_to_use = None
-learn_rate = 0.0001
+learn_rate = 0.001
 
 load_trained_model = False
 model_loc = '2020-01-21_13-18-44/'
@@ -69,7 +71,9 @@ data_path = root_path + '/Datasets' + dataset_name
 
 def shuffle_data(x_to_shuff, y_to_shuff):
     combined = list(zip(x_to_shuff, y_to_shuff)) # use zip() to bind the images and label together
-    shuffle(combined)
+    random_seed = random.seed()
+    print("Random seed for replication: {}".format(random_seed))
+    random.shuffle(combined, random_seed)
  
     (x, y) = zip(*combined)  # *combined is used to separate all the tuples in the list combined,  
                                # "x" then contains all the shuffled images and 
@@ -162,7 +166,7 @@ if load_trained_model == False:
             for layer_name in layer_dict:
                 layer_dict = dict([(layer.name, layer) for layer in MCBN_model.layers])
                 if only_after_specific_layer == True:
-                    if layer_name.endswith('_pool'):
+                    if re.search('.*_conv.*', layer_name):
                         print(layer_name)
                         layer_index = list(layer_dict).index(layer_name)
                         print(layer_index)
@@ -188,7 +192,7 @@ if load_trained_model == False:
                 x = layers[i](x)
 
             # Classification block
-            x = get_batch_normalization(x)
+            # x = get_batch_normalization(x)
             x = Flatten(name='flatten')(x)
             x = Dense(4096, activation='relu', name='fc1')(x)
             x = get_batch_normalization(x)
@@ -327,6 +331,7 @@ for i, ax in enumerate(fig.get_axes()):
 
 fig.savefig('sub_plots' + str(test_img_idx) + '.png', dpi=fig.dpi)
 
-# save model and architecture to single file
-MCBN_model.save("MCBN_model.h5")
-print("Saved MCBN_model to disk")
+if load_trained_model == False:
+    # save model and architecture to single file
+    MCBN_model.save("MCBN_model.h5")
+    print("Saved MCBN_model to disk")
