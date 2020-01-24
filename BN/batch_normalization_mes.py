@@ -42,7 +42,7 @@ WEIGHTS_PATH_NO_TOP = ('https://github.com/fchollet/deep-learning-models/'
 img_rows, img_cols, img_depth = 256,  256, 3
 dataset_name = '/Messidor2_PNG_AUG_' + str(img_rows) + '.hdf5'
 
-batch_size = 32
+batch_size = 64
 num_classes = 5
 epochs = 500
 MCBN_amount_of_predictions = 500
@@ -57,8 +57,8 @@ add_batch_normalization = True
 add_batch_normalization_inside = True
 train_all_layers = True
 only_after_specific_layer = True
-weights_to_use = None
-learn_rate = 0.001
+weights_to_use = 'imagenet'
+learn_rate = 0.0001
 
 load_trained_model = False
 model_loc = '2020-01-21_13-18-44/'
