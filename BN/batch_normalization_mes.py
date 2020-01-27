@@ -44,9 +44,9 @@ dataset_name = '/Messidor2_PNG_AUG_' + str(img_rows) + '.hdf5'
 
 batch_size = 64
 num_classes = 5
-epochs = 500
-MCBN_amount_of_predictions = 500
-MCBN_batch_size = 250
+epochs = 1
+MCBN_amount_of_predictions = 10
+MCBN_batch_size = 64
 train_test_split = 0.8 # Value between 0 and 1, e.g. 0.8 creates 80%/20% division train/test
 to_shuffle = True
 augmentation = False
@@ -54,14 +54,15 @@ plot_imgs = True
 label_normalizer = True
 save_augmentation_to_hdf5 = True
 add_batch_normalization = True
-add_batch_normalization_inside = True
-train_all_layers = True
+add_batch_normalization_inside = False
+train_all_layers = False
 only_after_specific_layer = True
 weights_to_use = 'imagenet'
 learn_rate = 0.0001
 
 load_trained_model = False
-model_loc = '2020-01-21_13-18-44/'
+# model_loc = '2020-01-21_13-18-44/'
+model_loc = 'Imagenet_Yes_retrain_64B_50E_84'
 model_name = 'MCBN_model.h5'
 
 # Get dataset path
@@ -232,10 +233,16 @@ if load_trained_model == False:
     # Creating new model. Please note that this is NOT a Sequential() model.
     MCBN_model = Model(inputs=layers[0].input, outputs=x)
 
-    if train_all_layers == True:
+    if train_all_layers == True or add_batch_normalization_inside == True:
         for layer in MCBN_model.layers:
             layer.trainable = True
+    else:
+        for layer in MCBN_model.layers[:-6]:
+            layer.trainable = False
+        for layer in MCBN_model.layers:
+            print(layer, layer.trainable)
 
+    print('summary:')
     MCBN_model.summary()
 
     adam = optimizers.Adam(lr = learn_rate)
@@ -249,11 +256,11 @@ if load_trained_model == False:
 
     fig_dir = os.path.join(os.getcwd(), datetime.datetime.now().strftime('%Y-%m-%d_%H-%M-%S')) # Dir to store created figures
     os.makedirs(fig_dir)
-    log_dir = os.path.join(fig_dir,"logs/fit/" + datetime.datetime.now().strftime("%Y%m%d-%H%M%S")) # Dir to store Tensorboard data
+    log_dir = os.path.join(fig_dir,"logs" + os.path.sep + "fit" + os.path.sep + datetime.datetime.now().strftime("%Y%m%d-%H%M%S")) # Dir to store Tensorboard data
     os.makedirs(log_dir)
 
     os.chdir(fig_dir)
-    logs_dir="/logs/fit/" + datetime.datetime.now().strftime("%Y%m%d-%H%M%S")
+    logs_dir= os.path.sep +"logs" + os.path.sep + "fit" + os.path.sep + datetime.datetime.now().strftime("%Y%m%d-%H%M%S")
     tensorboard_callback = tf.keras.callbacks.TensorBoard(log_dir=log_dir)
 
     h_mc = MCBN_model.fit(x_train, y_train,
@@ -295,10 +302,10 @@ mc_ensemble_pred = np.array(mc_predictions).mean(axis=0).argmax(axis=1)
 ensemble_acc = accuracy_score(y_test.argmax(axis=1), mc_ensemble_pred)
 print("MC-ensemble accuracy: {:.1%}".format(ensemble_acc))
 
-confusion = tf.confusion_matrix(labels = y_test.argmax(axis=1), predictions = mc_ensemble_pred, num_classes = num_classes)
-sess = tf.Session()
-with sess.as_default():
-        print(sess.run(confusion))
+# confusion = tf.confusion_matrix(labels = y_test.argmax(axis=1), predictions = mc_ensemble_pred, num_classes = num_classes)
+# sess = tf.Session()
+# with sess.as_default():
+#         print(sess.run(confusion))
 
 plt.hist(accs)
 plt.axvline(x=ensemble_acc, color="b")

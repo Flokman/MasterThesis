@@ -11,6 +11,7 @@ from tensorflow.keras import backend as K
 from tensorflow.keras import optimizers
 from tensorflow.keras.applications.vgg16 import VGG16
 from tensorflow.keras.models import load_model
+from tensorflow.keras.preprocessing.image import ImageDataGenerator, array_to_img, img_to_array, load_img
 
 import numpy as np
 import pandas as pd
@@ -33,7 +34,7 @@ plt.style.use("ggplot")
 batch_size = 32
 num_classes = 5
 epochs = 100
-amount_of_predictions = 500
+amount_of_predictions = 5
 batch_size = 250
 train_test_split = 0.8 # Value between 0 and 1, e.g. 0.8 creates 80%/20% division train/test
 to_shuffle = True
@@ -49,12 +50,14 @@ weights_to_use = None
 learn_rate = 0.001
 
 load_trained_model = False
-model_to_use = '/Dropout'
-hdf5_dataset = False
-dataset_loc = '/test_images'
+model_to_use = os.path.sep + 'BN'
+hdf5_dataset = True
+MCBN_data = True
+minibatch_size = 32
+dataset_loc = os.path.sep + 'test_images'
 dataset_name = ''
 labels_avail = False
-img_rows, img_cols, img_depth = 256,  256, 3 # target image size to resize to
+img_height, img_width, img_depth = 256,  256, 3 # target image size to resize to
 
 dir_path_head_tail = os.path.split(os.path.dirname(os.path.realpath(__file__)))
 root_path = dir_path_head_tail[0] 
@@ -62,19 +65,53 @@ root_path = dir_path_head_tail[0]
 if model_to_use == '/Dropout':
     model_version = '/None_Yes_Retrain_64_73'
     model_name = 'mcdo_model.h5'
-elif model_to_use == '/BN':
-    model_version = ''
+elif model_to_use == (os.path.sep + 'BN'):
+    model_version = os.path.sep + '2020-01-24_16-21-21'
     model_name = 'MCBN_model.h5'
 
 # Get model path
-data_path = root_path + model_to_use + model_version + model_name
+model_path = root_path + model_to_use + model_version + model_name
+# print(model_path)
 
-# Get dataset path
-if hdf5_dataset == True:
+def shuffle_data(x_to_shuff, y_to_shuff):
+    combined = list(zip(x_to_shuff, y_to_shuff)) # use zip() to bind the images and label together
+    random_seed = random.randint(0,1000)
+    print("Random seed for replication: {}".format(random_seed))
+    random.seed(random_seed)
+    random.shuffle(combined)
+ 
+    (x, y) = zip(*combined)  # *combined is used to separate all the tuples in the list combined,  
+                               # "x" then contains all the shuffled images and 
+                               # "y" contains all the shuffled labels.
+    return (x, y)
+
+
+def load_data(path, train_test_split, to_shuffle):
+    with h5py.File(path, "r") as f:
+        (x, y) = np.array(f['x']), np.array(f['y'])
+    label_count = [0] * num_classes
+    for lab in y:
+        label_count[lab] += 1
+
+    if to_shuffle == True:
+        (x, y) = shuffle_data(x, y)
+
+
+    # Divide the data into a train and test set
+    x_train = x[0:int(train_test_split*len(x))]
+    y_train = y[0:int(train_test_split*len(y))]
+
+    x_test = x[int(train_test_split*len(x)):]
+    y_test = y[int(train_test_split*len(y)):]
+
+    return (x_train, y_train), (x_test, y_test), label_count
+
+
+def load_hdf5_dataset():
     # Input image dimensions
-    img_rows, img_cols, img_depth = 256,  256, 3
-    dataset_loc = '/Datasets'
-    dataset_name = '/Messidor2_PNG_AUG_' + str(img_rows) + '.hdf5'
+    img_height, img_width, img_depth = 256,  256, 3
+    dataset_loc = os.path.sep + 'Datasets'
+    dataset_name = os.path.sep + 'Messidor2_PNG_AUG_' + str(img_height) + '.hdf5'
     data_path = root_path + dataset_loc + dataset_name
     
     # Split the data between train and test sets
@@ -88,13 +125,13 @@ if hdf5_dataset == True:
     y_test = np.asarray(y_test)
 
     if K.image_data_format() == 'channels_first':
-        x_train = x_train.reshape(x_train.shape[0], img_depth, img_rows, img_cols)
-        x_test = x_test.reshape(x_test.shape[0], img_depth, img_rows, img_cols)
-        input_shape = (img_depth, img_rows, img_cols)
+        x_train = x_train.reshape(x_train.shape[0], img_depth, img_height, img_width)
+        x_test = x_test.reshape(x_test.shape[0], img_depth, img_height, img_width)
+        input_shape = (img_depth, img_height, img_width)
     else:
-        x_train = x_train.reshape(x_train.shape[0], img_rows, img_cols, img_depth)
-        x_test = x_test.reshape(x_test.shape[0], img_rows, img_cols, img_depth)
-        input_shape = (img_rows, img_cols, img_depth)
+        x_train = x_train.reshape(x_train.shape[0], img_height, img_width, img_depth)
+        x_test = x_test.reshape(x_test.shape[0], img_height, img_width, img_depth)
+        input_shape = (img_height, img_width, img_depth)
 
     x_train = x_train.astype('float32')
     x_test = x_test.astype('float32')
@@ -108,25 +145,39 @@ if hdf5_dataset == True:
     y_train = tf.keras.utils.to_categorical(y_train, num_classes)
     y_test = tf.keras.utils.to_categorical(y_test, num_classes)
 
-else:
-    data_path = os.getcwd() + dataset_loc
-    print(data_path)
+    return((x_train, y_train), (x_test, y_test))
+
+
+def load_new_images():
+    images_path = os.getcwd() + dataset_loc + os.path.sep + '*'
+    print(images_path)
 
     # get all the image paths 
     addrs = glob.glob(images_path)
-    x.shape = (len(addrs), img_rows, img_cols, img_depth)
-    x[:,0] = np.arange(len(addrs))
 
     for i in range(len(addrs)):
         if i % 1000 == 0 and i > 1:
             print ('Image data: {}/{}'.format(i, len(addrs)) )
 
-        addr = addrs[i]
-        img = cv2.imread(addr)
-        img = cv2.resize(img, (img_rows, img_cols), interpolation=cv2.INTER_CUBIC)# resize to (img_rows, img_cols)
-        img = cv2.cvtColor(img, cv2.COLOR_BGR2RGB) # cv2 load images as BGR, convert it to RGB
-        x[i, ...] = img[None]
-        print(x[i])
+        if i == 0:
+            addr = addrs[i]
+            img = load_img(addr, target_size = (img_height, img_width))
+            img_ar = img_to_array(img)
+            x = img_ar.reshape((1,) + img_ar.shape)
+        
+        else:
+            addr = addrs[i]
+            img = load_img(addr, target_size = (img_height, img_width))
+            img_ar = img_to_array(img)
+            img_ar = img_ar.reshape((1,) + img_ar.shape)
+            x = np.vstack((x,img_ar))
+
+    
+    test_img_idx =  randint(0, len(x)) # For evaluation, this image is put in the fig_dir created above
+    x = x.astype('float32')
+    x /= 255
+    print('x shape:', x.shape)
+    print(x.shape[0], 'x samples')
 
     if labels_avail == True: 
         baseaddrs = []
@@ -176,69 +227,89 @@ else:
         (x, y) = zip(*combined)
         # convert class vectors to binary class matrices
         y = tf.keras.utils.to_categorical(y_train, num_classes)
+        
+        return(x,y)
+    else:
+        return(x)
 
+
+def create_minibatch(x, y):
+    combined = list(zip(x, y)) # use zip() to bind the images and label together
+    random_seed = random.randint(0,1000)
+    print("Random seed minibatch for replication: {}".format(random_seed))
+    random.seed(random_seed)
+    random.shuffle(combined)
+    minibatch = combined[:minibatch_size]
     
-    test_img_idx =  randint(0, len(x)) # For evaluation, this image is put in the fig_dir created above
 
-    x = x.astype('float32')
-    x /= 255
-    print('x shape:', x.shape)
-    print(x.shape[0], 'x samples')
+    (x_minibatch, y_minibatch) = zip(*minibatch)  # *combined is used to separate all the tuples in the list combined,  
+                            # "x_minibatch" then contains all the shuffled images and 
+                            # "y_minibatch" contains all the shuffled labels. 
+    # x_minibatch = np.array(x_minibatch)
+    # print(x_minibatch.shape)
+    return(x_minibatch, y_minibatch)
 
-def shuffle_data(x_to_shuff, y_to_shuff):
-    combined = list(zip(x_to_shuff, y_to_shuff)) # use zip() to bind the images and label together
-    random_seed = random.seed()
-    print("Random seed for replication: {}".format(random_seed))
-    random.shuffle(combined, random_seed)
- 
-    (x, y) = zip(*combined)  # *combined is used to separate all the tuples in the list combined,  
-                               # "x" then contains all the shuffled images and 
-                               # "y" contains all the shuffled labels.
-    return (x, y)
+# Get dataset path
+if hdf5_dataset == True:
+    (x_train, y_train), (x_test, y_test) = load_hdf5_dataset()
 
+    if MCBN_data == True:
+        if labels_avail == True:
+            (x_pred, y_pred) = load_new_images()
+        else:
+            x_pred = load_new_images()
 
-def load_data(path, train_test_split, to_shuffle):
-    with h5py.File(data_path, "r") as f:
-        (x, y) = np.array(f['x']), np.array(f['y'])
-    label_count = [0] * num_classes
-    for lab in y:
-        label_count[lab] += 1
-
-    if to_shuffle == True:
-        (x, y) = shuffle_data(x, y)
-
-
-    # Divide the data into a train and test set
-    x_train = x[0:int(train_test_split*len(x))]
-    y_train = y[0:int(train_test_split*len(y))]
-
-    x_test = x[int(train_test_split*len(x)):]
-    y_test = y[int(train_test_split*len(y)):]
-
-    return (x_train, y_train), (x_test, y_test), label_count
+else:
+    if labels_avail == True:
+        (x_pred, y_pred) = load_new_images()
+    else:
+        x_pred = load_new_images()      
 
 
 
 old_dir = os.getcwd()
-os.chdir(model_loc)
+os.chdir(root_path + model_to_use + model_version + os.path.sep)
+print(os.getcwd())
 pre_trained_model = load_model(model_name)
+
+# Set model layers to untrainable
+for layer in pre_trained_model.layers:
+    layer.trainable = False
+# for l in pre_trained_model.layers:
+#     print(l.name, l.trainable)
 pre_trained_model.summary()
 
 os.chdir(old_dir)
 fig_dir = os.path.join(os.getcwd(), datetime.datetime.now().strftime('%Y-%m-%d_%H-%M-%S')) # Dir to store created figures
 os.makedirs(fig_dir)
-log_dir = os.path.join(fig_dir,"logs/fit/" + datetime.datetime.now().strftime("%Y%m%d-%H%M%S")) # Dir to store Tensorboard data
+log_dir = os.path.join(fig_dir,"logs" + os.path.sep + "fit" + os.path.sep + datetime.datetime.now().strftime("%Y%m%d-%H%M%S")) # Dir to store Tensorboard data
 os.makedirs(log_dir)
 os.chdir(fig_dir)
+logs_dir= os.path.sep +"logs" + os.path.sep + "fit" + os.path.sep + datetime.datetime.now().strftime("%Y%m%d-%H%M%S")
+tensorboard_callback = tf.keras.callbacks.TensorBoard(log_dir=log_dir)
 
+if MCBN_data == True:
+    mc_predictions = []
+    progress_bar = tf.keras.utils.Progbar(target=amount_of_predictions,interval=5)
+    for i in range(amount_of_predictions):
+        progress_bar.update(i)
+        # Create new random minibatch from train data
+        x_minibatch, y_minibatch = create_minibatch(x_train, y_train)
+        x_minibatch = np.asarray(x_minibatch)
+        y_minibatch = np.asarray(y_minibatch)
 
-mc_predictions = []
+        # Fit the BN layers with the new minibatch, leave all other weights the same
 
-progress_bar = tf.keras.utils.Progbar(target=amount_of_predictions,interval=5)
-for i in range(amount_of_predictions):
-    progress_bar.update(i)
-    y_p = pre_trained_model.predict(x_test, batch_size=batch_size)
-    mc_predictions.append(y_p)
+        pre_trained_model.fit(x_minibatch, y_minibatch,
+                            batch_size=minibatch_size,
+                            epochs=1,
+                            verbose=2, 
+                            callbacks=[tensorboard_callback])
+
+        y_p = pre_trained_model.predict(x_pred, batch_size=len(x_pred))
+        mc_predictions.append(y_p)
+        
+
 
 # score of the mc model
 accs = []
