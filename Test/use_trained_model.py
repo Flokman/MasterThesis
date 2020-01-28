@@ -21,8 +21,6 @@ import random
 from random import seed, randint, shuffle
 import glob
 import re
-import cv2
-
 
 from sklearn.metrics import accuracy_score
 
@@ -34,7 +32,7 @@ plt.style.use("ggplot")
 batch_size = 32
 num_classes = 5
 epochs = 100
-amount_of_predictions = 5
+amount_of_predictions = 50
 batch_size = 250
 train_test_split = 0.8 # Value between 0 and 1, e.g. 0.8 creates 80%/20% division train/test
 to_shuffle = True
@@ -53,7 +51,7 @@ load_trained_model = False
 model_to_use = os.path.sep + 'BN'
 hdf5_dataset = True
 MCBN_data = True
-minibatch_size = 32
+minibatch_size = 64
 dataset_loc = os.path.sep + 'test_images'
 dataset_name = ''
 labels_avail = False
@@ -273,10 +271,26 @@ print(os.getcwd())
 pre_trained_model = load_model(model_name)
 
 # Set model layers to untrainable
+# for layer in pre_trained_model.layers:
+#     layer.trainable = False
+
+layer_dict = dict([(layer.name, layer) for layer in pre_trained_model.layers])
 for layer in pre_trained_model.layers:
-    layer.trainable = False
-# for l in pre_trained_model.layers:
-#     print(l.name, l.trainable)
+    if re.search('.*_normalization.*', layer.name):
+        layer.trainable = True
+    else:
+        layer.trainable = False
+
+for l in pre_trained_model.layers:
+    print(l.name, l.trainable)
+
+adam = optimizers.Adam(lr = learn_rate)
+pre_trained_model.compile(
+    optimizer=adam,
+    loss='categorical_crossentropy',
+    metrics=['accuracy']
+)
+
 pre_trained_model.summary()
 
 os.chdir(old_dir)
@@ -310,50 +324,56 @@ if MCBN_data == True:
         mc_predictions.append(y_p)
         
 
+for i in range(len(x_pred)):
+    p0 = np.array([p[i] for p in mc_predictions])
+    print("posterior mean: {}".format(p0.mean(axis=0).argmax()))
+    # probability + variance
+    for i, (prob, var) in enumerate(zip(p0.mean(axis=0), p0.std(axis=0))):
+        print("class: {}; proba: {:.1%}; var: {:.2%} ".format(i, prob, var))
 
-# score of the mc model
-accs = []
-for y_p in mc_predictions:
-    acc = accuracy_score(y_test.argmax(axis=1), y_p.argmax(axis=1))
-    accs.append(acc)
-print("MC accuracy: {:.1%}".format(sum(accs)/len(accs)))
+# # score of the mc model
+# accs = []
+# for y_p in mc_predictions:
+#     acc = accuracy_score(y_pred.argmax(axis=1), y_p.argmax(axis=1))
+#     accs.append(acc)
+# print("MC accuracy: {:.1%}".format(sum(accs)/len(accs)))
 
-mc_ensemble_pred = np.array(mc_predictions).mean(axis=0).argmax(axis=1)
-ensemble_acc = accuracy_score(y_test.argmax(axis=1), mc_ensemble_pred)
-print("MC-ensemble accuracy: {:.1%}".format(ensemble_acc))
+# mc_ensemble_pred = np.array(mc_predictions).mean(axis=0).argmax(axis=1)
+# ensemble_acc = accuracy_score(y_pred.argmax(axis=1), mc_ensemble_pred)
+# print("MC-ensemble accuracy: {:.1%}".format(ensemble_acc))
 
-confusion = tf.confusion_matrix(labels = y_test.argmax(axis=1), predictions = mc_ensemble_pred, num_classes = num_classes)
-sess = tf.Session()
-with sess.as_default():
-        print(sess.run(confusion))
+# confusion = tf.confusion_matrix(labels = y_pred.argmax(axis=1), predictions = mc_ensemble_pred, num_classes = num_classes)
+# sess = tf.Session()
+# with sess.as_default():
+#         print(sess.run(confusion))
 
-plt.hist(accs)
-plt.axvline(x=ensemble_acc, color="b")
-plt.savefig('ensemble_acc.png')
-plt.clf()
+# plt.hist(accs)
+# plt.axvline(x=ensemble_acc, color="b")
+# plt.savefig('ensemble_acc.png')
+# plt.clf()
 
-plt.imsave('test_image_' + str(test_img_idx) + '.png', x_test[test_img_idx])
-
-
-p0 = np.array([p[test_img_idx] for p in mc_predictions])
-print("posterior mean: {}".format(p0.mean(axis=0).argmax()))
-print("true label: {}".format(y_test[test_img_idx].argmax()))
-print()
-# probability + variance
-for i, (prob, var) in enumerate(zip(p0.mean(axis=0), p0.std(axis=0))):
-    print("class: {}; proba: {:.1%}; var: {:.2%} ".format(i, prob, var))
+# plt.imsave('test_image_' + str(test_img_idx) + '.png', x_test[test_img_idx])
 
 
-x, y = list(range(len(p0.mean(axis=0)))), p0.mean(axis=0)
-plt.plot(x, y)
-plt.savefig('prob_var_' + str(test_img_idx) + '.png')
-plt.clf()
+# p0 = np.array([p[test_img_idx] for p in mc_predictions])
+# print("posterior mean: {}".format(p0.mean(axis=0).argmax()))
+# print("true label: {}".format(y_test[test_img_idx].argmax()))
+# print()
+# # probability + variance
+# for i, (prob, var) in enumerate(zip(p0.mean(axis=0), p0.std(axis=0))):
+#     print("class: {}; proba: {:.1%}; var: {:.2%} ".format(i, prob, var))
 
-fig, axes = plt.subplots(5, 1, figsize=(12,6))
 
-for i, ax in enumerate(fig.get_axes()):
-    ax.hist(p0[:,i], bins=100, range=(0,1))
-    ax.set_title(f"class {i}")
-    ax.label_outer()
+# x, y = list(range(len(p0.mean(axis=0)))), p0.mean(axis=0)
+# plt.plot(x, y)
+# plt.savefig('prob_var_' + str(test_img_idx) + '.png')
+# plt.clf()
 
-fig.savefig('sub_plots' + str(test_img_idx) + '.png', dpi=fig.dpi)
+# fig, axes = plt.subplots(5, 1, figsize=(12,6))
+
+# for i, ax in enumerate(fig.get_axes()):
+#     ax.hist(p0[:,i], bins=100, range=(0,1))
+#     ax.set_title(f"class {i}")
+#     ax.label_outer()
+
+# fig.savefig('sub_plots' + str(test_img_idx) + '.png', dpi=fig.dpi)
