@@ -1,368 +1,0 @@
-
-The following have been reloaded with a version change:
-  1) FFTW/3.3.7-gompic-2018a => FFTW/3.3.7-gompi-2018a
-  2) OpenMPI/2.1.2-gcccuda-2018a => OpenMPI/2.1.2-GCC-6.4.0-2.28
-  3) Python/3.6.4-fosscuda-2018a => Python/3.6.4-foss-2018a
-  4) ScaLAPACK/2.0.2-gompic-2018a-OpenBLAS-0.2.20 => ScaLAPACK/2.0.2-gompi-2018a-OpenBLAS-0.2.20
-
-2020-01-27 14:23:00.221471: I tensorflow/stream_executor/cuda/cuda_gpu_executor.cc:964] successful NUMA node read from SysFS had negative value (-1), but there must be at least one NUMA node, so returning NUMA node zero
-2020-01-27 14:23:00.222023: I tensorflow/core/common_runtime/gpu/gpu_device.cc:1432] Found device 0 with properties: 
-name: GRID V100D-32Q major: 7 minor: 0 memoryClockRate(GHz): 1.38
-pciBusID: 0000:02:00.0
-totalMemory: 31.87GiB freeMemory: 29.56GiB
-2020-01-27 14:23:00.222076: I tensorflow/core/common_runtime/gpu/gpu_device.cc:1511] Adding visible gpu devices: 0
-2020-01-27 14:23:00.732395: I tensorflow/core/common_runtime/gpu/gpu_device.cc:982] Device interconnect StreamExecutor with strength 1 edge matrix:
-2020-01-27 14:23:00.732486: I tensorflow/core/common_runtime/gpu/gpu_device.cc:988]      0 
-2020-01-27 14:23:00.732504: I tensorflow/core/common_runtime/gpu/gpu_device.cc:1001] 0:   N 
-2020-01-27 14:23:00.732615: I tensorflow/core/common_runtime/gpu/gpu_device.cc:1115] Created TensorFlow device (/job:localhost/replica:0/task:0/device:GPU:0 with 28669 MB memory) -> physical GPU (device: 0, name: GRID V100D-32Q, pci bus id: 0000:02:00.0, compute capability: 7.0)
-2020-01-27 14:23:00.733751: I tensorflow/core/common_runtime/process_util.cc:69] Creating new thread pool with default inter op setting: 2. Tune using inter_op_parallelism_threads for best performance.
-/software/software/h5py/2.7.1-fosscuda-2018a-Python-3.6.4/lib/python3.6/site-packages/h5py-2.7.1-py3.6-linux-x86_64.egg/h5py/__init__.py:36: FutureWarning: Conversion of the second argument of issubdtype from `float` to `np.floating` is deprecated. In future, it will be treated as `np.float64 == np.dtype(float).type`.
-  from ._conv import register_converters as _register_converters
-WARNING:tensorflow:Discrepancy between trainable weights and collected trainable weights, did you set `model.trainable` without calling `model.compile` after ?
-Random seed for replication: 393
-x_train shape: (5593, 256, 256, 3)
-5593 train samples
-1399 test samples
-/home/s2934833/MasterThesis/Test/test_images/*
-x shape: (3, 256, 256, 3)
-3 x samples
-/home/s2934833/MasterThesis/BN/2020-01-24_16-21-21
-_________________________________________________________________
-Layer (type)                 Output Shape              Param #   
-=================================================================
-input_1 (InputLayer)         (None, 256, 256, 3)       0         
-_________________________________________________________________
-block1_conv1 (Conv2D)        (None, 256, 256, 64)      1792      
-_________________________________________________________________
-batch_normalization (BatchNo (None, 256, 256, 64)      256       
-_________________________________________________________________
-block1_conv2 (Conv2D)        (None, 256, 256, 64)      36928     
-_________________________________________________________________
-batch_normalization_1 (Batch (None, 256, 256, 64)      256       
-_________________________________________________________________
-block1_pool (MaxPooling2D)   (None, 128, 128, 64)      0         
-_________________________________________________________________
-block2_conv1 (Conv2D)        (None, 128, 128, 128)     73856     
-_________________________________________________________________
-batch_normalization_2 (Batch (None, 128, 128, 128)     512       
-_________________________________________________________________
-block2_conv2 (Conv2D)        (None, 128, 128, 128)     147584    
-_________________________________________________________________
-batch_normalization_3 (Batch (None, 128, 128, 128)     512       
-_________________________________________________________________
-block2_pool (MaxPooling2D)   (None, 64, 64, 128)       0         
-_________________________________________________________________
-block3_conv1 (Conv2D)        (None, 64, 64, 256)       295168    
-_________________________________________________________________
-batch_normalization_4 (Batch (None, 64, 64, 256)       1024      
-_________________________________________________________________
-block3_conv2 (Conv2D)        (None, 64, 64, 256)       590080    
-_________________________________________________________________
-batch_normalization_5 (Batch (None, 64, 64, 256)       1024      
-_________________________________________________________________
-block3_conv3 (Conv2D)        (None, 64, 64, 256)       590080    
-_________________________________________________________________
-batch_normalization_6 (Batch (None, 64, 64, 256)       1024      
-_________________________________________________________________
-block3_pool (MaxPooling2D)   (None, 32, 32, 256)       0         
-_________________________________________________________________
-block4_conv1 (Conv2D)        (None, 32, 32, 512)       1180160   
-_________________________________________________________________
-batch_normalization_7 (Batch (None, 32, 32, 512)       2048      
-_________________________________________________________________
-block4_conv2 (Conv2D)        (None, 32, 32, 512)       2359808   
-_________________________________________________________________
-batch_normalization_8 (Batch (None, 32, 32, 512)       2048      
-_________________________________________________________________
-block4_conv3 (Conv2D)        (None, 32, 32, 512)       2359808   
-_________________________________________________________________
-batch_normalization_9 (Batch (None, 32, 32, 512)       2048      
-_________________________________________________________________
-block4_pool (MaxPooling2D)   (None, 16, 16, 512)       0         
-_________________________________________________________________
-block5_conv1 (Conv2D)        (None, 16, 16, 512)       2359808   
-_________________________________________________________________
-batch_normalization_10 (Batc (None, 16, 16, 512)       2048      
-_________________________________________________________________
-block5_conv2 (Conv2D)        (None, 16, 16, 512)       2359808   
-_________________________________________________________________
-batch_normalization_11 (Batc (None, 16, 16, 512)       2048      
-_________________________________________________________________
-block5_conv3 (Conv2D)        (None, 16, 16, 512)       2359808   
-_________________________________________________________________
-batch_normalization_12 (Batc (None, 16, 16, 512)       2048      
-_________________________________________________________________
-block5_pool (MaxPooling2D)   (None, 8, 8, 512)         0         
-_________________________________________________________________
-flatten (Flatten)            (None, 32768)             0         
-_________________________________________________________________
-fc1 (Dense)                  (None, 4096)              134221824 
-_________________________________________________________________
-batch_normalization_13 (Batc (None, 4096)              16384     
-_________________________________________________________________
-fc2 (Dense)                  (None, 4096)              16781312  
-_________________________________________________________________
-batch_normalization_14 (Batc (None, 4096)              16384     
-_________________________________________________________________
-predictions (Dense)          (None, 5)                 20485     
-=================================================================
-Total params: 331,551,114
-Trainable params: 165,763,141
-Non-trainable params: 165,787,973
-_________________________________________________________________
- 0/50 [..............................] - ETA: 0sWARNING:tensorflow:Discrepancy between trainable weights and collected trainable weights, did you set `model.trainable` without calling `model.compile` after ?
-Random seed minibatch for replication: 215
-Epoch 1/1
- - 10s - loss: 0.1960 - acc: 0.9531
- 1/50 [..............................] - ETA: 15:38WARNING:tensorflow:Discrepancy between trainable weights and collected trainable weights, did you set `model.trainable` without calling `model.compile` after ?
-Random seed minibatch for replication: 697
-Epoch 1/1
- - 1s - loss: 0.3010 - acc: 0.9688
- 2/50 [>.............................] - ETA: 11:12WARNING:tensorflow:Discrepancy between trainable weights and collected trainable weights, did you set `model.trainable` without calling `model.compile` after ?
-Random seed minibatch for replication: 414
-Epoch 1/1
- - 1s - loss: 0.3945 - acc: 0.9531
- 3/50 [>.............................] - ETA: 9:36 WARNING:tensorflow:Discrepancy between trainable weights and collected trainable weights, did you set `model.trainable` without calling `model.compile` after ?
-Random seed minibatch for replication: 78
-Epoch 1/1
- - 1s - loss: 0.4506 - acc: 0.9375
- 4/50 [=>............................] - ETA: 8:47WARNING:tensorflow:Discrepancy between trainable weights and collected trainable weights, did you set `model.trainable` without calling `model.compile` after ?
-Random seed minibatch for replication: 545
-Epoch 1/1
- - 1s - loss: 0.0311 - acc: 0.9844
- 5/50 [==>...........................] - ETA: 8:11WARNING:tensorflow:Discrepancy between trainable weights and collected trainable weights, did you set `model.trainable` without calling `model.compile` after ?
-Random seed minibatch for replication: 849
-Epoch 1/1
- - 1s - loss: 0.2063 - acc: 0.9531
- 6/50 [==>...........................] - ETA: 7:45WARNING:tensorflow:Discrepancy between trainable weights and collected trainable weights, did you set `model.trainable` without calling `model.compile` after ?
-Random seed minibatch for replication: 428
-Epoch 1/1
- - 1s - loss: 0.0954 - acc: 0.9688
- 7/50 [===>..........................] - ETA: 7:24WARNING:tensorflow:Discrepancy between trainable weights and collected trainable weights, did you set `model.trainable` without calling `model.compile` after ?
-Random seed minibatch for replication: 166
-Epoch 1/1
- - 1s - loss: 0.2399 - acc: 0.9688
- 8/50 [===>..........................] - ETA: 7:06WARNING:tensorflow:Discrepancy between trainable weights and collected trainable weights, did you set `model.trainable` without calling `model.compile` after ?
-Random seed minibatch for replication: 980
-Epoch 1/1
- - 1s - loss: 0.2430 - acc: 0.9531
- 9/50 [====>.........................] - ETA: 6:50WARNING:tensorflow:Discrepancy between trainable weights and collected trainable weights, did you set `model.trainable` without calling `model.compile` after ?
-Random seed minibatch for replication: 181
-Epoch 1/1
- - 1s - loss: 0.2556 - acc: 0.9531
-10/50 [=====>........................] - ETA: 6:36WARNING:tensorflow:Discrepancy between trainable weights and collected trainable weights, did you set `model.trainable` without calling `model.compile` after ?
-Random seed minibatch for replication: 232
-Epoch 1/1
- - 1s - loss: 0.4173 - acc: 0.9531
-11/50 [=====>........................] - ETA: 6:21WARNING:tensorflow:Discrepancy between trainable weights and collected trainable weights, did you set `model.trainable` without calling `model.compile` after ?
-Random seed minibatch for replication: 196
-Epoch 1/1
- - 1s - loss: 0.1710 - acc: 0.9688
-12/50 [======>.......................] - ETA: 6:09WARNING:tensorflow:Discrepancy between trainable weights and collected trainable weights, did you set `model.trainable` without calling `model.compile` after ?
-Random seed minibatch for replication: 708
-Epoch 1/1
- - 1s - loss: 0.4645 - acc: 0.9219
-13/50 [======>.......................] - ETA: 5:56WARNING:tensorflow:Discrepancy between trainable weights and collected trainable weights, did you set `model.trainable` without calling `model.compile` after ?
-Random seed minibatch for replication: 789
-Epoch 1/1
- - 1s - loss: 0.2554 - acc: 0.9688
-14/50 [=======>......................] - ETA: 5:44WARNING:tensorflow:Discrepancy between trainable weights and collected trainable weights, did you set `model.trainable` without calling `model.compile` after ?
-Random seed minibatch for replication: 458
-Epoch 1/1
- - 1s - loss: 0.7684 - acc: 0.8906
-15/50 [========>.....................] - ETA: 5:33WARNING:tensorflow:Discrepancy between trainable weights and collected trainable weights, did you set `model.trainable` without calling `model.compile` after ?
-Random seed minibatch for replication: 186
-Epoch 1/1
- - 1s - loss: 0.1160 - acc: 0.9844
-16/50 [========>.....................] - ETA: 5:21WARNING:tensorflow:Discrepancy between trainable weights and collected trainable weights, did you set `model.trainable` without calling `model.compile` after ?
-Random seed minibatch for replication: 448
-Epoch 1/1
- - 1s - loss: 0.4849 - acc: 0.9531
-17/50 [=========>....................] - ETA: 5:10WARNING:tensorflow:Discrepancy between trainable weights and collected trainable weights, did you set `model.trainable` without calling `model.compile` after ?
-Random seed minibatch for replication: 19
-Epoch 1/1
- - 1s - loss: 0.5278 - acc: 0.9375
-18/50 [=========>....................] - ETA: 5:00WARNING:tensorflow:Discrepancy between trainable weights and collected trainable weights, did you set `model.trainable` without calling `model.compile` after ?
-Random seed minibatch for replication: 744
-Epoch 1/1
- - 1s - loss: 0.3248 - acc: 0.9531
-19/50 [==========>...................] - ETA: 4:50WARNING:tensorflow:Discrepancy between trainable weights and collected trainable weights, did you set `model.trainable` without calling `model.compile` after ?
-Random seed minibatch for replication: 938
-Epoch 1/1
- - 1s - loss: 0.2839 - acc: 0.9531
-20/50 [===========>..................] - ETA: 4:39WARNING:tensorflow:Discrepancy between trainable weights and collected trainable weights, did you set `model.trainable` without calling `model.compile` after ?
-Random seed minibatch for replication: 438
-Epoch 1/1
- - 1s - loss: 0.2917 - acc: 0.9531
-21/50 [===========>..................] - ETA: 4:30WARNING:tensorflow:Discrepancy between trainable weights and collected trainable weights, did you set `model.trainable` without calling `model.compile` after ?
-Random seed minibatch for replication: 454
-Epoch 1/1
- - 1s - loss: 0.0949 - acc: 0.9688
-22/50 [============>.................] - ETA: 4:20WARNING:tensorflow:Discrepancy between trainable weights and collected trainable weights, did you set `model.trainable` without calling `model.compile` after ?
-Random seed minibatch for replication: 478
-Epoch 1/1
- - 1s - loss: 0.8770 - acc: 0.8594
-23/50 [============>.................] - ETA: 4:10WARNING:tensorflow:Discrepancy between trainable weights and collected trainable weights, did you set `model.trainable` without calling `model.compile` after ?
-Random seed minibatch for replication: 638
-Epoch 1/1
- - 1s - loss: 0.1023 - acc: 0.9688
-24/50 [=============>................] - ETA: 4:00WARNING:tensorflow:Discrepancy between trainable weights and collected trainable weights, did you set `model.trainable` without calling `model.compile` after ?
-Random seed minibatch for replication: 280
-Epoch 1/1
- - 1s - loss: 0.1557 - acc: 0.9531
-25/50 [==============>...............] - ETA: 3:50WARNING:tensorflow:Discrepancy between trainable weights and collected trainable weights, did you set `model.trainable` without calling `model.compile` after ?
-Random seed minibatch for replication: 188
-Epoch 1/1
- - 1s - loss: 0.1005 - acc: 0.9531
-26/50 [==============>...............] - ETA: 3:40WARNING:tensorflow:Discrepancy between trainable weights and collected trainable weights, did you set `model.trainable` without calling `model.compile` after ?
-Random seed minibatch for replication: 870
-Epoch 1/1
- - 1s - loss: 0.4400 - acc: 0.9219
-27/50 [===============>..............] - ETA: 3:31WARNING:tensorflow:Discrepancy between trainable weights and collected trainable weights, did you set `model.trainable` without calling `model.compile` after ?
-Random seed minibatch for replication: 891
-Epoch 1/1
- - 1s - loss: 0.0446 - acc: 0.9844
-28/50 [===============>..............] - ETA: 3:22WARNING:tensorflow:Discrepancy between trainable weights and collected trainable weights, did you set `model.trainable` without calling `model.compile` after ?
-Random seed minibatch for replication: 725
-Epoch 1/1
- - 1s - loss: 0.4225 - acc: 0.9062
-29/50 [================>.............] - ETA: 3:12WARNING:tensorflow:Discrepancy between trainable weights and collected trainable weights, did you set `model.trainable` without calling `model.compile` after ?
-Random seed minibatch for replication: 839
-Epoch 1/1
- - 1s - loss: 0.1609 - acc: 0.9688
-30/50 [=================>............] - ETA: 3:02WARNING:tensorflow:Discrepancy between trainable weights and collected trainable weights, did you set `model.trainable` without calling `model.compile` after ?
-Random seed minibatch for replication: 57
-Epoch 1/1
- - 1s - loss: 0.0597 - acc: 0.9688
-31/50 [=================>............] - ETA: 2:53WARNING:tensorflow:Discrepancy between trainable weights and collected trainable weights, did you set `model.trainable` without calling `model.compile` after ?
-Random seed minibatch for replication: 750
-Epoch 1/1
- - 1s - loss: 0.1069 - acc: 0.9375
-32/50 [==================>...........] - ETA: 2:44WARNING:tensorflow:Discrepancy between trainable weights and collected trainable weights, did you set `model.trainable` without calling `model.compile` after ?
-Random seed minibatch for replication: 824
-Epoch 1/1
- - 1s - loss: 0.2392 - acc: 0.9375
-33/50 [==================>...........] - ETA: 2:34WARNING:tensorflow:Discrepancy between trainable weights and collected trainable weights, did you set `model.trainable` without calling `model.compile` after ?
-Random seed minibatch for replication: 174
-Epoch 1/1
- - 1s - loss: 0.2248 - acc: 0.9531
-34/50 [===================>..........] - ETA: 2:25WARNING:tensorflow:Discrepancy between trainable weights and collected trainable weights, did you set `model.trainable` without calling `model.compile` after ?
-Random seed minibatch for replication: 889
-Epoch 1/1
- - 1s - loss: 0.1236 - acc: 0.9688
-35/50 [====================>.........] - ETA: 2:16WARNING:tensorflow:Discrepancy between trainable weights and collected trainable weights, did you set `model.trainable` without calling `model.compile` after ?
-Random seed minibatch for replication: 839
-Epoch 1/1
- - 1s - loss: 0.0058 - acc: 1.0000
-36/50 [====================>.........] - ETA: 2:07WARNING:tensorflow:Discrepancy between trainable weights and collected trainable weights, did you set `model.trainable` without calling `model.compile` after ?
-Random seed minibatch for replication: 57
-Epoch 1/1
- - 1s - loss: 0.0066 - acc: 1.0000
-37/50 [=====================>........] - ETA: 1:57WARNING:tensorflow:Discrepancy between trainable weights and collected trainable weights, did you set `model.trainable` without calling `model.compile` after ?
-Random seed minibatch for replication: 750
-Epoch 1/1
- - 1s - loss: 0.0317 - acc: 0.9688
-38/50 [=====================>........] - ETA: 1:48WARNING:tensorflow:Discrepancy between trainable weights and collected trainable weights, did you set `model.trainable` without calling `model.compile` after ?
-Random seed minibatch for replication: 824
-Epoch 1/1
- - 1s - loss: 0.0542 - acc: 0.9844
-39/50 [======================>.......] - ETA: 1:39WARNING:tensorflow:Discrepancy between trainable weights and collected trainable weights, did you set `model.trainable` without calling `model.compile` after ?
-Random seed minibatch for replication: 174
-Epoch 1/1
- - 1s - loss: 0.0574 - acc: 0.9844
-40/50 [=======================>......] - ETA: 1:30WARNING:tensorflow:Discrepancy between trainable weights and collected trainable weights, did you set `model.trainable` without calling `model.compile` after ?
-Random seed minibatch for replication: 889
-Epoch 1/1
- - 1s - loss: 0.0242 - acc: 0.9844
-41/50 [=======================>......] - ETA: 1:21WARNING:tensorflow:Discrepancy between trainable weights and collected trainable weights, did you set `model.trainable` without calling `model.compile` after ?
-Random seed minibatch for replication: 839
-Epoch 1/1
- - 1s - loss: 0.0019 - acc: 1.0000
-42/50 [========================>.....] - ETA: 1:12WARNING:tensorflow:Discrepancy between trainable weights and collected trainable weights, did you set `model.trainable` without calling `model.compile` after ?
-Random seed minibatch for replication: 57
-Epoch 1/1
- - 1s - loss: 0.0042 - acc: 1.0000
-43/50 [========================>.....] - ETA: 1:03WARNING:tensorflow:Discrepancy between trainable weights and collected trainable weights, did you set `model.trainable` without calling `model.compile` after ?
-Random seed minibatch for replication: 750
-Epoch 1/1
- - 1s - loss: 0.0231 - acc: 0.9844
-44/50 [=========================>....] - ETA: 54s WARNING:tensorflow:Discrepancy between trainable weights and collected trainable weights, did you set `model.trainable` without calling `model.compile` after ?
-Random seed minibatch for replication: 824
-Epoch 1/1
- - 1s - loss: 0.0151 - acc: 1.0000
-45/50 [==========================>...] - ETA: 45sWARNING:tensorflow:Discrepancy between trainable weights and collected trainable weights, did you set `model.trainable` without calling `model.compile` after ?
-Random seed minibatch for replication: 174
-Epoch 1/1
- - 1s - loss: 0.0051 - acc: 1.0000
-46/50 [==========================>...] - ETA: 36sWARNING:tensorflow:Discrepancy between trainable weights and collected trainable weights, did you set `model.trainable` without calling `model.compile` after ?
-Random seed minibatch for replication: 889
-Epoch 1/1
- - 1s - loss: 0.0037 - acc: 1.0000
-47/50 [===========================>..] - ETA: 27sWARNING:tensorflow:Discrepancy between trainable weights and collected trainable weights, did you set `model.trainable` without calling `model.compile` after ?
-Random seed minibatch for replication: 839
-Epoch 1/1
- - 1s - loss: 0.0018 - acc: 1.0000
-48/50 [===========================>..] - ETA: 18sWARNING:tensorflow:Discrepancy between trainable weights and collected trainable weights, did you set `model.trainable` without calling `model.compile` after ?
-Random seed minibatch for replication: 57
-Epoch 1/1
- - 1s - loss: 0.0034 - acc: 1.0000
-49/50 [============================>.] - ETA: 9s WARNING:tensorflow:Discrepancy between trainable weights and collected trainable weights, did you set `model.trainable` without calling `model.compile` after ?
-Random seed minibatch for replication: 750
-Epoch 1/1
- - 1s - loss: 0.0155 - acc: 1.0000
-posterior mean: 1
-class: 0; proba: 0.0%; var: 0.03% 
-class: 1; proba: 99.6%; var: 0.70% 
-class: 2; proba: 0.3%; var: 0.52% 
-class: 3; proba: 0.0%; var: 0.00% 
-class: 4; proba: 0.1%; var: 0.16% 
-posterior mean: 3
-class: 0; proba: 0.0%; var: 0.01% 
-class: 1; proba: 0.0%; var: 0.00% 
-class: 2; proba: 0.0%; var: 0.00% 
-class: 3; proba: 100.0%; var: 0.01% 
-class: 4; proba: 0.0%; var: 0.00% 
-posterior mean: 1
-class: 0; proba: 0.0%; var: 0.00% 
-class: 1; proba: 65.4%; var: 37.21% 
-class: 2; proba: 34.6%; var: 37.21% 
-class: 3; proba: 0.0%; var: 0.00% 
-class: 4; proba: 0.0%; var: 0.00% 
-
-
-###############################################################################
-Peregrine Cluster
-Job 9396587 for user 's2934833'
-Finished at: Mon Jan 27 14:30:47 CET 2020
-
-Job details:
-============
-
-Name                : use_trained_model
-User                : s2934833
-Partition           : gpu
-Nodes               : pg-gpu28
-Cores               : 12
-State               : COMPLETED
-Submit              : 2020-01-27T14:17:23
-Start               : 2020-01-27T14:22:44
-End                 : 2020-01-27T14:30:45
-Reserved walltime   : 00:30:00
-Used walltime       : 00:08:01
-Used CPU time       : 00:07:48 (efficiency:  8.12%)
-% User (Computation): 96.03%
-% System (I/O)      :  3.97%
-Mem reserved        : 32000M/node
-Max Mem used        : 9.42G (pg-gpu28)
-Max Disk Write      : 184.32K (pg-gpu28)
-Max Disk Read       : 6.44M (pg-gpu28)
-
-
-Acknowledgements:
-=================
-
-Please see this page if you want to acknowledge Peregrine in your publications:
-
-https://redmine.hpc.rug.nl/redmine/projects/peregrine/wiki/ScientificOutput
-
-################################################################################
