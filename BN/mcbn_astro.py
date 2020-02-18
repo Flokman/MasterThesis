@@ -34,7 +34,7 @@ DATASET_NAME = '/Messidor2_PNG_AUG_' + str(IMG_HEIGHT) + '.hdf5'
 
 BATCH_SIZE = 32
 NUM_CLASSES = 5
-EPOCHS = 1
+EPOCHS = 500
 AMOUNT_OF_PREDICTIONS = 50
 MCBN_BATCH_SIZE = 250
 TRAIN_TEST_SPLIT = 0.8 # Value between 0 and 1, e.g. 0.8 creates 80%/20% division train/test
@@ -43,7 +43,7 @@ TO_SHUFFLE = True
 AUGMENTATION = False
 LABEL_NORMALIZER = True
 SAVE_AUGMENTATION_TO_HDF5 = True
-ADD_DROPOUT = True
+ADD_MCBN = True
 MCBN = True
 TRAIN_ALL_LAYERS = True
 ONLY_AFTER_SPECIFIC_LAYER = True
@@ -314,7 +314,7 @@ def main():
     mcbn_model = VGG16(weights=WEIGHTS_TO_USE, include_top=False,
                        input_shape=(IMG_HEIGHT, IMG_WIDTH, IMG_DEPTH))
 
-    if ADD_DROPOUT:
+    if ADD_MCBN:
         mcbn_model = add_batch_normalization(mcbn_model)
 
     else:
@@ -370,7 +370,7 @@ def main():
     datagen = ImageDataGenerator(rescale=1./255)
     train_generator = datagen.flow(x_train[0:int(TRAIN_VAL_SPLIT*len(x_train))],
                                    y_train[0:int(TRAIN_VAL_SPLIT*len(y_train))],
-                                   batch_size = BATCH_SIZE)
+                                   batch_size=BATCH_SIZE)
     
     val_generator = datagen.flow(x_train[int(TRAIN_VAL_SPLIT*len(x_train)):],
                                  y_train[int(TRAIN_VAL_SPLIT*len(y_train)):],

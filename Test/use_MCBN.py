@@ -9,10 +9,14 @@ import csv
 import h5py
 import tensorflow as tf
 import numpy as np
+import astroNN
 
 from tensorflow import keras
 from tensorflow.keras import optimizers
+from tensorflow.keras.models import Model
+from tensorflow.keras.layers import Dense, BatchNormalization, Flatten
 from tensorflow.keras.models import load_model
+from tensorflow.keras.applications.vgg16 import VGG16
 from tensorflow.keras.preprocessing.image import img_to_array, load_img
 from astroNN import MCBatchNorm
 
@@ -23,7 +27,7 @@ TRAIN_TEST_SPLIT = 0.8 # Value between 0 and 1, e.g. 0.8 creates 80%/20% divisio
 TO_SHUFFLE = True
 LEARN_RATE = 0.001
 MODEL_TO_USE = os.path.sep + 'BN'
-MODEL_VERSION = os.path.sep + 'None_Retrain_Inside_32B_42E_20A_Astro'
+MODEL_VERSION = os.path.sep + '2020-02-18_12-06-47'
 MODEL_NAME = 'MCBN_model.h5'
 HDF5_DATASET = True
 MINIBATCH_SIZE = 128
@@ -35,6 +39,10 @@ IMG_HEIGHT, IMG_WIDTH, IMG_DEPTH = 256, 256, 3 # target image size to resize to
 
 DIR_PATH_HEAD_TAIL = os.path.split(os.path.dirname(os.path.realpath(__file__)))
 ROOT_PATH = DIR_PATH_HEAD_TAIL[0] 
+
+ONLY_AFTER_SPECIFIC_LAYER = True
+ADD_BATCH_NORMALIZATION_INSIDE = True
+MCBN = True
 
 
 def shuffle_data(x_to_shuff, y_to_shuff):
@@ -195,6 +203,92 @@ def create_minibatch(x, y):
     return(x_minibatch, y_minibatch)
 
 
+def get_mcbn(input_tensor):
+    ''' Returns a mcbn layer with probability prob, either trainable or not '''
+    if MCBN:
+        return astroNN.MCBatchNorm()(input_tensor)
+    else:
+        return BatchNormalization()(input_tensor)
+
+
+def insert_intermediate_layer_in_keras(model, layer_id):
+    ''' Insert a mcbn layer before the layer with layer_id '''
+    inter_layers = [l for l in model.layers]
+
+    x = inter_layers[0].output
+    for i in range(1, len(inter_layers)):
+        if i == layer_id:
+            x = get_mcbn(x)
+        x = inter_layers[i](x)
+
+    new_model = Model(inputs=inter_layers[0].input, outputs=x)
+    return new_model
+
+
+def add_batch_normalization(mcbn_model):
+    ''' Adds batch normalizaiton layers either after all pool and dense layers
+        or only after dense layers '''
+    if ADD_BATCH_NORMALIZATION_INSIDE:
+        # Creating dictionary that maps layer names to the layers
+        layer_dict = dict([(layer.name, layer) for layer in mcbn_model.layers])
+
+        for layer_name in layer_dict:
+            layer_dict = dict([(layer.name, layer) for layer in mcbn_model.layers])
+            if ONLY_AFTER_SPECIFIC_LAYER:
+                if re.search('.*_conv.*', layer_name):
+                    print(layer_name)
+                    layer_index = list(layer_dict).index(layer_name)
+                    print(layer_index)
+
+                    # Add a batch normalization (trainable) layer
+                    mcbn_model = insert_intermediate_layer_in_keras(mcbn_model, layer_index + 1)
+
+                    # mcbn_model.summary()
+            else:
+                print(layer_name)
+                layer_index = list(layer_dict).index(layer_name)
+                print(layer_index)
+
+                # Add a batch normalization (trainable) layer
+                mcbn_model = insert_intermediate_layer_in_keras(mcbn_model, layer_index + 1)
+
+
+
+        # Stacking a new simple convolutional network on top of vgg16
+        all_layers = [l for l in mcbn_model.layers]
+        x = all_layers[0].output
+        for i in range(1, len(all_layers)):
+            x = all_layers[i](x)
+
+        # Classification block
+        # x = get_mcbn(x)
+        x = Flatten(name='flatten')(x)
+        x = Dense(4096, activation='relu', name='fc1')(x)
+        x = get_mcbn(x)
+        x = Dense(4096, activation='relu', name='fc2')(x)
+        x = get_mcbn(x)
+        x = Dense(NUM_CLASSES, activation='softmax', name='predictions')(x)
+
+    else:
+        # Stacking a new simple convolutional network on top of vgg16
+        all_layers = [l for l in mcbn_model.layers]
+        x = all_layers[0].output
+        for i in range(1, len(all_layers)):
+            x = all_layers[i](x)
+
+        # Classification block
+        x = Flatten(name='flatten')(x)
+        x = Dense(4096, activation='relu', name='fc1')(x)
+        x = get_mcbn(x)
+        x = Dense(4096, activation='relu', name='fc2')(x)
+        x = get_mcbn(x)
+        x = Dense(NUM_CLASSES, activation='softmax', name='predictions')(x)
+
+    # Creating new model
+    mcbn_model = Model(inputs=all_layers[0].input, outputs=x)
+    return mcbn_model
+
+
 def main():
     ''' Main function '''
     # Get dataset path
@@ -210,12 +304,19 @@ def main():
     os.chdir(ROOT_PATH + MODEL_TO_USE + MODEL_VERSION + os.path.sep)
     print(os.getcwd())
     # pre_trained_model = tf.keras.models.load_model(MODEL_NAME, custom_objects={'MCBatchNorm': MCBatchNorm})
-    # Reload the model from the 2 files we saved
-    with open('mcbn_model_config.json') as json_file:
-        json_config = json_file.read()
-    pre_trained_model = keras.models.model_from_json(json_config)
-    pre_trained_model.load_weights('path_to_my_weights.h5')
+    
+    # # Reload the model from the 2 files we saved
+    # with open('mcbn_model_config.json') as json_file:
+    #     json_config = json_file.read()
+    # pre_trained_model = keras.models.model_from_json(json_config, custom_objects={'MCBatchNorm': MCBatchNorm})
+    # pre_trained_model.load_weights('path_to_my_weights.h5')
 
+    # VGG16 since it does not include batch normalization of mcbn by itself
+    pre_trained_model = VGG16(weights=None, include_top=False,
+                       input_shape=(IMG_HEIGHT, IMG_WIDTH, IMG_DEPTH))
+
+    pre_trained_model = add_batch_normalization(pre_trained_model)
+    
 
 
     # Set batch normalization layers to untrainable
@@ -233,25 +334,39 @@ def main():
         metrics=['accuracy']
     )
     pre_trained_model.summary()
-
-    os.chdir(old_dir)
+    pre_trained_model.load_weights('path_to_my_weights.h5', by_name=True)
+    ##### https://github.com/fizyr/keras-retinanet/issues/214 ####
+    
     mc_predictions = []
     progress_bar = tf.keras.utils.Progbar(target=MCBN_PREDICTIONS, interval=5)
+
+    # with tf.Session() as sess:
+    #     # Initialise all variables
+    #     sess.run(tf.global_variables_initializer())
+    #     sess.run(tf.local_variables_initializer())
+    #     pre_trained_model.load_weights('path_to_my_weights.h5')
+    #     os.chdir(old_dir)
+    #     for i in range(MCBN_PREDICTIONS):
+    #         progress_bar.update(i)
+    #         # Create new random minibatch from train data
+    #         x_minibatch, y_minibatch = create_minibatch(x_train, y_train)
+    #         x_minibatch = np.asarray(x_minibatch)
+    #         y_minibatch = np.asarray(y_minibatch)
+
+    #         # Fit the BN layers with the new minibatch, leave all other weights the same
+
+    #         pre_trained_model.fit(x_minibatch, y_minibatch,
+    #                             batch_size=MINIBATCH_SIZE,
+    #                             epochs=1,
+    #                             verbose=0)
+
+    #         y_p = pre_trained_model.predict(x_pred, batch_size=len(x_pred)) #Predict for bn look at (sigma and mu only one to chance, not the others)
+    #         mc_predictions.append(y_p)
+
+
     for i in range(MCBN_PREDICTIONS):
         progress_bar.update(i)
-        # Create new random minibatch from train data
-        x_minibatch, y_minibatch = create_minibatch(x_train, y_train)
-        x_minibatch = np.asarray(x_minibatch)
-        y_minibatch = np.asarray(y_minibatch)
-
-        # Fit the BN layers with the new minibatch, leave all other weights the same
-
-        pre_trained_model.fit(x_minibatch, y_minibatch,
-                            batch_size=MINIBATCH_SIZE,
-                            epochs=1,
-                            verbose=0)
-
-        y_p = pre_trained_model.predict(x_pred, batch_size=len(x_pred)) #Predict for bn look at (sigma and mu only one to chance, not the others)
+        y_p = pre_trained_model.predict(x_pred, batch_size=len(x_pred))
         mc_predictions.append(y_p)
 
     for i in range(len(x_pred)):

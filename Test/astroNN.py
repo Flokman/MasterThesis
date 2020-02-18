@@ -397,7 +397,8 @@ class MCBatchNorm(Layer):
             """
             config = {'epsilon': self.epsilon}
             base_config = super().get_config()
-            return {**dict(base_config.items()), **config}
+            # return {**dict(base_config.items()), **config}
+            return dict(list(base_config.items()) + list(config.items()))
 
 
     def compute_output_shape(self, input_shape):

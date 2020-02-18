@@ -33,7 +33,7 @@ DATASET_NAME = '/Messidor2_PNG_AUG_' + str(IMG_HEIGHT) + '.hdf5'
 BATCH_SIZE = 32
 NUM_CLASSES = 5
 EPOCHS = 500
-N_ENSEMBLE_MEMBERS = 20
+N_ENSEMBLE_MEMBERS = 10
 AMOUNT_OF_PREDICTIONS = 50
 TEST_BATCH_SIZE = 250
 TRAIN_TEST_SPLIT = 0.8 # Value between 0 and 1, e.g. 0.8 creates 80%/20% division train/test
@@ -241,9 +241,16 @@ def fit_model(sess, x_train, y_train, ensemble_model, log_dir, i):
                        validation_data=val_generator,
                        callbacks=[tensorboard_callback, early_stopping])
 
-    # save model and architecture to single file
-    ensemble_model.save("ensemble_model_{}.h5".format(i))
-    print("Saved ensemble_model to disk")
+    # # save model and architecture to single file
+    # ensemble_model.save("ensemble_model_{}.h5".format(i))
+    # print("Saved ensemble_model to disk")
+
+    # Save JSON config to disk
+    json_config = ensemble_model.to_json()
+    with open("ensemble_model_config_{}.json".format(i), 'w') as json_file:
+        json_file.write(json_config)
+    # Save weights to disk
+    ensemble_model.save_weights("ensemble_weights_{}.h5".format(i))
 
     return ensemble_model
 
