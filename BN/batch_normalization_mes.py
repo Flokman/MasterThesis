@@ -10,7 +10,9 @@ import h5py
 import numpy as np
 import tensorflow as tf
 import matplotlib as mpl
+mpl.use('Agg')
 import matplotlib.pyplot as plt
+plt.style.use("ggplot")
 
 from tensorflow.keras.models import Model
 from tensorflow.keras.layers import Dense, BatchNormalization, Flatten
@@ -18,9 +20,6 @@ from tensorflow.keras import optimizers
 from tensorflow.keras.applications.vgg16 import VGG16
 from tensorflow.keras.preprocessing.image import ImageDataGenerator
 from sklearn.metrics import accuracy_score
-
-mpl.use('Agg')
-plt.style.use("ggplot")
 
 WEIGHTS_PATH = ('https://github.com/fchollet/deep-learning-models/'
                 'releases/download/v0.1/'
@@ -39,6 +38,7 @@ EPOCHS = 150
 AMOUNT_OF_PREDICTIONS = 10
 MCBN_BATCH_SIZE = 64
 TRAIN_TEST_SPLIT = 0.8 # Value between 0 and 1, e.g. 0.8 creates 80%/20% division train/test
+TRAIN_VAL_SPLIT = 0.9
 TO_SHUFFLE = True
 AUGMENTATION = False
 LABEL_NORMALIZER = True
@@ -49,6 +49,7 @@ TRAIN_ALL_LAYERS = False
 ONLY_AFTER_SPECIFIC_LAYER = True
 WEIGHTS_TO_USE = 'imagenet'
 LEARN_RATE = 0.0001
+ES_PATIENCE = 15
 
 # Get dataset path
 DIR_PATH_HEAD_TAIL = os.path.split(os.path.dirname(os.path.realpath(__file__)))
@@ -150,7 +151,7 @@ def data_augmentation(x_aug, y_aug, label_count):
     return (x_aug, y_aug)
 
 
-def load_data(path, train_test_split, data_augmentation, to_shuffle):
+def load_data(path, to_shuffle):
     '''' Load a dataset from a hdf5 file '''
     with h5py.File(path, "r") as f:
         (x_load, y_load) = np.array(f['x']), np.array(f['y'])
@@ -162,7 +163,7 @@ def load_data(path, train_test_split, data_augmentation, to_shuffle):
         (x_load, y_load) = shuffle_data(x_load, y_load)
 
     if AUGMENTATION:
-        (x_load, y_load) = data_augmentation(x_load, y_load, label_count, LABEL_NORMALIZER)
+        (x_load, y_load) = data_augmentation(x_load, y_load, label_count)
         print("augmentation done")
         label_count = [0] * NUM_CLASSES
         for lab in y_load:
@@ -170,11 +171,11 @@ def load_data(path, train_test_split, data_augmentation, to_shuffle):
 
 
     # Divide the data into a train and test set
-    x_train = x_load[0:int(train_test_split*len(x_load))]
-    y_train = y_load[0:int(train_test_split*len(y_load))]
+    x_train = x_load[0:int(TRAIN_TEST_SPLIT*len(x_load))]
+    y_train = y_load[0:int(TRAIN_TEST_SPLIT*len(y_load))]
 
-    x_test = x_load[int(train_test_split*len(x_load)):]
-    y_test = y_load[int(train_test_split*len(y_load)):]
+    x_test = x_load[int(TRAIN_TEST_SPLIT*len(x_load)):]
+    y_test = y_load[int(TRAIN_TEST_SPLIT*len(y_load)):]
 
     return (x_train, y_train), (x_test, y_test), label_count
 
@@ -182,24 +183,29 @@ def load_data(path, train_test_split, data_augmentation, to_shuffle):
 def prepare_data():
     ''' Load the data and perform shuffle/augmentations if needed '''
     # Split the data between train and test sets
-    (x_train, y_train), (x_test, y_test), label_count = load_data(DATA_PATH, TRAIN_TEST_SPLIT,
-                                                                  data_augmentation, TO_SHUFFLE)
+    (x_train, y_train), (x_test, y_test), label_count = load_data(DATA_PATH, TO_SHUFFLE)
 
     # For evaluation, this image is put in the fig_dir created above
-    test_img_idx = random.randint(0, len(x_test))
+    test_img_idx = random.randint(0, len(x_test) - 1)
 
-    print("dataset_name = {}, batch_size = {}, num_classes = {}, epochs = {}, amount_of_predictions = {}, MCBN_batch_size = {}, test_img_idx = {}, train_test_split = {}, to_shuffle = {}, augmentation = {}, label_count = {}, label_normalizer = {}, save_augmentation_to_hdf5 = {}, learn rate = {}, add_bn_inside = {}, train_all_layers = {}, weights_to_use = {}".format(
-        DATASET_NAME, BATCH_SIZE, NUM_CLASSES, EPOCHS, AMOUNT_OF_PREDICTIONS, MCBN_BATCH_SIZE, test_img_idx, TRAIN_TEST_SPLIT, TO_SHUFFLE, AUGMENTATION, label_count, LABEL_NORMALIZER, SAVE_AUGMENTATION_TO_HDF5, LEARN_RATE, ADD_BATCH_NORMALIZATION_INSIDE, TRAIN_ALL_LAYERS, WEIGHTS_TO_USE))
+    print("""dataset_name = {}, batch_size = {}, num_classes = {}, epochs = {},
+        amount_of_predictions = {}, MCBN_batch_size = {}, test_img_idx = {},
+        train_test_split = {}, to_shuffle = {}, augmentation = {}, label_count = {},
+        label_normalizer = {}, save_augmentation_to_hdf5 = {}, learn rate = {},
+        add_bn_inside = {}, train_all_layers = {}, weights_to_use = {},
+        es_patience = {}, train_val_split = {}""".format(
+            DATASET_NAME, BATCH_SIZE, NUM_CLASSES, EPOCHS,
+            AMOUNT_OF_PREDICTIONS, MCBN_BATCH_SIZE, test_img_idx,
+            TRAIN_TEST_SPLIT, TO_SHUFFLE, AUGMENTATION, label_count,
+            LABEL_NORMALIZER, SAVE_AUGMENTATION_TO_HDF5, LEARN_RATE,
+            ADD_BATCH_NORMALIZATION_INSIDE, TRAIN_ALL_LAYERS, WEIGHTS_TO_USE,
+            ES_PATIENCE, TRAIN_VAL_SPLIT))
 
     x_train = np.asarray(x_train)
     y_train = np.asarray(y_train)
     x_test = np.asarray(x_test)
     y_test = np.asarray(y_test)
 
-    x_train = x_train.astype('float32')
-    x_test = x_test.astype('float32')
-    x_train /= 255
-    x_test /= 255
     print('x_train shape:', x_train.shape)
     print(x_train.shape[0], 'train samples')
     print(x_test.shape[0], 'test samples')
@@ -234,7 +240,6 @@ def add_batch_normalization(mcbn_model):
     ''' Adds batch normalizaiton layers either after all pool and dense layers
         or only after dense layers '''
     if ADD_BATCH_NORMALIZATION_INSIDE:
-        layer_id = 1
         # Creating dictionary that maps layer names to the layers
         layer_dict = dict([(layer.name, layer) for layer in mcbn_model.layers])
 
@@ -352,13 +357,24 @@ def main():
 
     os.chdir(fig_dir)
     tensorboard_callback = tf.keras.callbacks.TensorBoard(log_dir=log_dir)
+    early_stopping = tf.keras.callbacks.EarlyStopping(monitor='val_loss',
+                                                    mode='auto', verbose=1, patience=ES_PATIENCE)
 
-    mcbn_model.fit(x_train, y_train,
-                   batch_size=BATCH_SIZE,
+    datagen = ImageDataGenerator(rescale=1./255)
+    train_generator = datagen.flow(x_train[0:int(TRAIN_VAL_SPLIT*len(x_train))],
+                                   y_train[0:int(TRAIN_VAL_SPLIT*len(y_train))],
+                                   batch_size = BATCH_SIZE)
+    
+    val_generator = datagen.flow(x_train[int(TRAIN_VAL_SPLIT*len(x_train)):],
+                                 y_train[int(TRAIN_VAL_SPLIT*len(y_train)):],
+                                 batch_size=BATCH_SIZE)
+
+
+    mcbn_model.fit(train_generator,
                    epochs=EPOCHS,
                    verbose=2,
-                   validation_data=(x_test, y_test),
-                   callbacks=[tensorboard_callback])
+                   validation_data=val_generator,
+                   callbacks=[tensorboard_callback, early_stopping])
 
     mcbn_predictions = []
     progress_bar = tf.keras.utils.Progbar(target=AMOUNT_OF_PREDICTIONS, interval=5)

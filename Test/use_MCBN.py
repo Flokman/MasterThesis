@@ -10,19 +10,23 @@ import h5py
 import tensorflow as tf
 import numpy as np
 
+from tensorflow import keras
 from tensorflow.keras import optimizers
 from tensorflow.keras.models import load_model
 from tensorflow.keras.preprocessing.image import img_to_array, load_img
+from astroNN import MCBatchNorm
 
 # Hyperparameters
 NUM_CLASSES = 5
-MCBN_PREDICTIONS = 50
+MCBN_PREDICTIONS = 250
 TRAIN_TEST_SPLIT = 0.8 # Value between 0 and 1, e.g. 0.8 creates 80%/20% division train/test
 TO_SHUFFLE = True
 LEARN_RATE = 0.001
 MODEL_TO_USE = os.path.sep + 'BN'
+MODEL_VERSION = os.path.sep + 'None_Retrain_Inside_32B_42E_20A_Astro'
+MODEL_NAME = 'MCBN_model.h5'
 HDF5_DATASET = True
-MINIBATCH_SIZE = 64
+MINIBATCH_SIZE = 128
 TEST_IMAGES_LOCATION = os.path.sep + 'test_images'
 TEST_IMAGES_LABELS_NAME = 'test_images_labels'
 DATASET_NAME = ''
@@ -31,13 +35,6 @@ IMG_HEIGHT, IMG_WIDTH, IMG_DEPTH = 256, 256, 3 # target image size to resize to
 
 DIR_PATH_HEAD_TAIL = os.path.split(os.path.dirname(os.path.realpath(__file__)))
 ROOT_PATH = DIR_PATH_HEAD_TAIL[0] 
-
-if MODEL_TO_USE == '/Dropout':
-    MODEL_VERSION = '/None_Yes_Retrain_64_73'
-    MODEL_NAME = 'mcdo_model.h5'
-elif MODEL_TO_USE == (os.path.sep + 'BN'):
-    MODEL_VERSION = os.path.sep + '2020-01-24_16-21-21'
-    MODEL_NAME = 'mcbn_model.h5'
 
 
 def shuffle_data(x_to_shuff, y_to_shuff):
@@ -212,7 +209,14 @@ def main():
     old_dir = os.getcwd()
     os.chdir(ROOT_PATH + MODEL_TO_USE + MODEL_VERSION + os.path.sep)
     print(os.getcwd())
-    pre_trained_model = load_model(MODEL_NAME)
+    # pre_trained_model = tf.keras.models.load_model(MODEL_NAME, custom_objects={'MCBatchNorm': MCBatchNorm})
+    # Reload the model from the 2 files we saved
+    with open('mcbn_model_config.json') as json_file:
+        json_config = json_file.read()
+    pre_trained_model = keras.models.model_from_json(json_config)
+    pre_trained_model.load_weights('path_to_my_weights.h5')
+
+
 
     # Set batch normalization layers to untrainable
     for layer in pre_trained_model.layers:
@@ -247,7 +251,7 @@ def main():
                             epochs=1,
                             verbose=0)
 
-        y_p = pre_trained_model.predict(x_pred, batch_size=len(x_pred))
+        y_p = pre_trained_model.predict(x_pred, batch_size=len(x_pred)) #Predict for bn look at (sigma and mu only one to chance, not the others)
         mc_predictions.append(y_p)
 
     for i in range(len(x_pred)):

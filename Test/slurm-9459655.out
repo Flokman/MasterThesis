@@ -1,0 +1,73 @@
+
+The following have been reloaded with a version change:
+  1) FFTW/3.3.7-gompic-2018a => FFTW/3.3.7-gompi-2018a
+  2) OpenMPI/2.1.2-gcccuda-2018a => OpenMPI/2.1.2-GCC-6.4.0-2.28
+  3) Python/3.6.4-fosscuda-2018a => Python/3.6.4-foss-2018a
+  4) ScaLAPACK/2.0.2-gompic-2018a-OpenBLAS-0.2.20 => ScaLAPACK/2.0.2-gompi-2018a-OpenBLAS-0.2.20
+
+/software/software/h5py/2.7.1-fosscuda-2018a-Python-3.6.4/lib/python3.6/site-packages/h5py-2.7.1-py3.6-linux-x86_64.egg/h5py/__init__.py:36: FutureWarning: Conversion of the second argument of issubdtype from `float` to `np.floating` is deprecated. In future, it will be treated as `np.float64 == np.dtype(float).type`.
+  from ._conv import register_converters as _register_converters
+/home/s2934833/MasterThesis/Test/test_images/*
+x_pred shape: (5, 256, 256, 3)
+5 x_pred samples
+/home/s2934833/MasterThesis/Dropout/None_Retrain_Inside_32B_67E_53A_Astro
+Traceback (most recent call last):
+  File "use_MCDO.py", line 207, in <module>
+    main()
+  File "use_MCDO.py", line 182, in main
+    pre_trained_model = load_model(MODEL_NAME)
+  File "/software/software/TensorFlow/1.12.0-fosscuda-2018a-Python-3.6.4/lib/python3.6/site-packages/tensorflow/python/keras/engine/saving.py", line 230, in load_model
+    model = model_from_config(model_config, custom_objects=custom_objects)
+  File "/software/software/TensorFlow/1.12.0-fosscuda-2018a-Python-3.6.4/lib/python3.6/site-packages/tensorflow/python/keras/engine/saving.py", line 310, in model_from_config
+    return deserialize(config, custom_objects=custom_objects)
+  File "/software/software/TensorFlow/1.12.0-fosscuda-2018a-Python-3.6.4/lib/python3.6/site-packages/tensorflow/python/keras/layers/serialization.py", line 64, in deserialize
+    printable_module_name='layer')
+  File "/software/software/TensorFlow/1.12.0-fosscuda-2018a-Python-3.6.4/lib/python3.6/site-packages/tensorflow/python/keras/utils/generic_utils.py", line 173, in deserialize_keras_object
+    list(custom_objects.items())))
+  File "/software/software/TensorFlow/1.12.0-fosscuda-2018a-Python-3.6.4/lib/python3.6/site-packages/tensorflow/python/keras/engine/network.py", line 1292, in from_config
+    process_layer(layer_data)
+  File "/software/software/TensorFlow/1.12.0-fosscuda-2018a-Python-3.6.4/lib/python3.6/site-packages/tensorflow/python/keras/engine/network.py", line 1278, in process_layer
+    layer = deserialize_layer(layer_data, custom_objects=custom_objects)
+  File "/software/software/TensorFlow/1.12.0-fosscuda-2018a-Python-3.6.4/lib/python3.6/site-packages/tensorflow/python/keras/layers/serialization.py", line 64, in deserialize
+    printable_module_name='layer')
+  File "/software/software/TensorFlow/1.12.0-fosscuda-2018a-Python-3.6.4/lib/python3.6/site-packages/tensorflow/python/keras/utils/generic_utils.py", line 163, in deserialize_keras_object
+    raise ValueError('Unknown ' + printable_module_name + ': ' + class_name)
+ValueError: Unknown layer: MCDropout
+
+
+###############################################################################
+Peregrine Cluster
+Job 9459655 for user 's2934833'
+Finished at: Wed Feb  5 15:27:50 CET 2020
+
+Job details:
+============
+
+Name                : use_MCDO
+User                : s2934833
+Partition           : gpu
+Nodes               : pg-gpu19
+Cores               : 12
+State               : FAILED
+Submit              : 2020-02-05T15:24:47
+Start               : 2020-02-05T15:27:39
+End                 : 2020-02-05T15:27:50
+Reserved walltime   : 00:05:00
+Used walltime       : 00:00:11
+Used CPU time       : 00:00:05 (efficiency:  4.15%)
+% User (Computation): 77.04%
+% System (I/O)      : 22.94%
+Mem reserved        : 32000M/node
+Max Mem used        : 0.00  (pg-gpu19)
+Max Disk Write      : 0.00  (pg-gpu19)
+Max Disk Read       : 0.00  (pg-gpu19)
+
+
+Acknowledgements:
+=================
+
+Please see this page for information about acknowledging Peregrine in your publications:
+
+https://wiki.hpc.rug.nl/peregrine/additional_information/scientific_output
+
+################################################################################

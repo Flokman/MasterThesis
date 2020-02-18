@@ -7,6 +7,7 @@ import glob
 import csv
 import tensorflow as tf
 import numpy as np
+from astroNN import MCDropout
 
 from tensorflow.keras.models import load_model
 from tensorflow.keras.preprocessing.image import img_to_array, load_img
@@ -20,9 +21,8 @@ plt.style.use("ggplot")
 NUM_CLASSES = 5
 MCDO_PREDICTIONS = 250
 MCDO_BATCH_SIZE = 250
-LEARN_RATE = 0.001
 MODEL_TO_USE = os.path.sep + 'Dropout'
-MODEL_VERSION = '/None_Yes_Retrain_64_73'
+MODEL_VERSION = '/2020-02-11_13-48-17'
 MODEL_NAME = 'mcdo_model.h5'
 
 TEST_IMAGES_LOCATION = os.path.sep + 'test_images'
@@ -115,41 +115,6 @@ def load_new_images():
         return x_pred
 
 
-def main():
-    ''' Main function '''
-
-    if LABELS_AVAILABLE:
-        (x_pred, y_pred) = load_new_images()
-    else:
-        x_pred = load_new_images()
-
-    old_dir = os.getcwd()
-    os.chdir(ROOT_PATH + MODEL_TO_USE + MODEL_VERSION + os.path.sep)
-    print(os.getcwd())
-    pre_trained_model = load_model(MODEL_NAME)
-    pre_trained_model.summary()
-    os.chdir(old_dir)
-
-    mc_predictions = []
-
-    progress_bar = tf.keras.utils.Progbar(target=MCDO_PREDICTIONS, interval=5)
-    for i in range(MCDO_PREDICTIONS):
-        progress_bar.update(i)
-        y_p = pre_trained_model.predict(x_pred, batch_size=MCDO_BATCH_SIZE)
-        mc_predictions.append(y_p)
-
-    if LABELS_AVAILABLE:
-        # score on the test images (if label avaialable)
-        indepth_predictions(x_pred, y_pred, mc_predictions)
-    else:
-        for i in range(len(x_pred)):
-            p_0 = np.array([p[i] for p in mc_predictions])
-            print("posterior mean: {}".format(p_0.mean(axis=0).argmax()))
-            # probability + variance
-            for l, (prob, var) in enumerate(zip(p_0.mean(axis=0), p_0.std(axis=0))):
-                print("class: {}; proba: {:.1%}; var: {:.2%} ".format(l, prob, var))
-
-
 def indepth_predictions(x_pred, y_pred, mc_predictions):
     ''' Creates more indepth predictions (print on command line and create figures in folder) '''
     fig_dir = os.path.join(os.getcwd(), datetime.datetime.now().strftime('%Y-%m-%d_%H-%M-%S')) # Dir to store created figures
@@ -201,6 +166,42 @@ def indepth_predictions(x_pred, y_pred, mc_predictions):
             ax.label_outer()
 
         fig.savefig('sub_plots' + str(i) + '.png', dpi=fig.dpi)
+
+
+def main():
+    ''' Main function '''
+
+    if LABELS_AVAILABLE:
+        (x_pred, y_pred) = load_new_images()
+    else:
+        x_pred = load_new_images()
+
+    old_dir = os.getcwd()
+    os.chdir(ROOT_PATH + MODEL_TO_USE + MODEL_VERSION + os.path.sep)
+    print(os.getcwd())
+    pre_trained_model = load_model(MODEL_NAME, custom_objects={'MCDropout': MCDropout})
+    pre_trained_model.summary()
+    os.chdir(old_dir)
+
+    mc_predictions = []
+
+    progress_bar = tf.keras.utils.Progbar(target=MCDO_PREDICTIONS, interval=5)
+    for i in range(MCDO_PREDICTIONS):
+        progress_bar.update(i)
+        y_p = pre_trained_model.predict(x_pred, batch_size=MCDO_BATCH_SIZE)
+        mc_predictions.append(y_p)
+
+    if LABELS_AVAILABLE:
+        # score on the test images (if label avaialable)
+        indepth_predictions(x_pred, y_pred, mc_predictions)
+    else:
+        for i in range(len(x_pred)):
+            p_0 = np.array([p[i] for p in mc_predictions])
+            print("posterior mean: {}".format(p_0.mean(axis=0).argmax()))
+            # probability + variance
+            for l, (prob, var) in enumerate(zip(p_0.mean(axis=0), p_0.std(axis=0))):
+                print("class: {}; proba: {:.1%}; var: {:.2%} ".format(l, prob, var))
+
 
 if __name__ == "__main__":
     main()
