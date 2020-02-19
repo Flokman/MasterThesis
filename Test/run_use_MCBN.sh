@@ -2,7 +2,7 @@
 #SBATCH --time=00:10:00
 
 #SBATCH --partition=gpu
-#SBATCH --gres=gpu:v100:1
+#SBATCH --gres=gpu:1
 #SBATCH --job-name=use_MCBN
 #SBATCH --mem=32000
 

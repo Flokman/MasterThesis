@@ -303,38 +303,31 @@ def main():
     old_dir = os.getcwd()
     os.chdir(ROOT_PATH + MODEL_TO_USE + MODEL_VERSION + os.path.sep)
     print(os.getcwd())
-    # pre_trained_model = tf.keras.models.load_model(MODEL_NAME, custom_objects={'MCBatchNorm': MCBatchNorm})
-    
-    # # Reload the model from the 2 files we saved
-    # with open('mcbn_model_config.json') as json_file:
-    #     json_config = json_file.read()
-    # pre_trained_model = keras.models.model_from_json(json_config, custom_objects={'MCBatchNorm': MCBatchNorm})
-    # pre_trained_model.load_weights('path_to_my_weights.h5')
 
-    # VGG16 since it does not include batch normalization of mcbn by itself
-    pre_trained_model = VGG16(weights=None, include_top=False,
-                       input_shape=(IMG_HEIGHT, IMG_WIDTH, IMG_DEPTH))
-
-    pre_trained_model = add_batch_normalization(pre_trained_model)
-    
+    # Reload the model from the 2 files we saved
+    with open('mcbn_model_config.json') as json_file:
+        json_config = json_file.read()
+    pre_trained_model = tf.keras.models.model_from_json(json_config, custom_objects={'MCBatchNorm': MCBatchNorm})
+    pre_trained_model.load_weights('path_to_my_weights.h5')
 
 
     # Set batch normalization layers to untrainable
     for layer in pre_trained_model.layers:
-        if re.search('.*_normalization.*', layer.name):
+        if re.search('.*MCBatchNorm.*', layer.name):
             layer.trainable = True
+            print('yes')
         else:
             layer.trainable = False
         # print(layer.name, layer.trainable)
 
-    adam = optimizers.Adam(lr=LEARN_RATE)
-    pre_trained_model.compile(
-        optimizer=adam,
-        loss='categorical_crossentropy',
-        metrics=['accuracy']
-    )
-    pre_trained_model.summary()
-    pre_trained_model.load_weights('path_to_my_weights.h5', by_name=True)
+    # adam = optimizers.Adam(lr=LEARN_RATE)
+    # pre_trained_model.compile(
+    #     optimizer=adam,
+    #     loss='categorical_crossentropy',
+    #     metrics=['accuracy']
+    # )
+    # pre_trained_model.summary()
+
     ##### https://github.com/fizyr/keras-retinanet/issues/214 ####
     
     mc_predictions = []
