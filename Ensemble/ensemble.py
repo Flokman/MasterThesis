@@ -33,7 +33,7 @@ DATASET_NAME = '/Messidor2_PNG_AUG_' + str(IMG_HEIGHT) + '.hdf5'
 BATCH_SIZE = 32
 NUM_CLASSES = 5
 EPOCHS = 500
-N_ENSEMBLE_MEMBERS = 10
+N_ENSEMBLE_MEMBERS = 40
 AMOUNT_OF_PREDICTIONS = 50
 TEST_BATCH_SIZE = 250
 TRAIN_TEST_SPLIT = 0.8 # Value between 0 and 1, e.g. 0.8 creates 80%/20% division train/test
@@ -237,7 +237,7 @@ def fit_model(sess, x_train, y_train, ensemble_model, log_dir, i):
 
     ensemble_model.fit(train_generator,
                        epochs=EPOCHS,
-                       verbose=2,
+                       verbose=0,
                        validation_data=val_generator,
                        callbacks=[tensorboard_callback, early_stopping])
 

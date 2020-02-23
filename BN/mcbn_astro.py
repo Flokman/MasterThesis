@@ -4,7 +4,7 @@ import os
 import datetime
 import time
 import random
-import astroNN
+
 import h5py
 import re
 import numpy as np
@@ -20,6 +20,7 @@ from tensorflow.keras import optimizers
 from tensorflow.keras.applications.vgg16 import VGG16
 from tensorflow.keras.preprocessing.image import ImageDataGenerator
 from sklearn.metrics import accuracy_score
+from astroNN.nn.layers import MCBatchNorm
 
 WEIGHTS_PATH = ('https://github.com/fchollet/deep-learning-models/'
                 'releases/download/v0.1/'
@@ -34,7 +35,7 @@ DATASET_NAME = '/Messidor2_PNG_AUG_' + str(IMG_HEIGHT) + '.hdf5'
 
 BATCH_SIZE = 32
 NUM_CLASSES = 5
-EPOCHS = 500
+EPOCHS = 1
 AMOUNT_OF_PREDICTIONS = 50
 MCBN_BATCH_SIZE = 250
 TRAIN_TEST_SPLIT = 0.8 # Value between 0 and 1, e.g. 0.8 creates 80%/20% division train/test
@@ -222,7 +223,7 @@ def prepare_data():
 def get_mcbn(input_tensor):
     ''' Returns a mcbn layer with probability prob, either trainable or not '''
     if MCBN:
-        return astroNN.MCBatchNorm()(input_tensor)
+        return MCBatchNorm()(input_tensor)
     else:
         return BatchNormalization()(input_tensor)
 
@@ -315,7 +316,8 @@ def main():
                        input_shape=(IMG_HEIGHT, IMG_WIDTH, IMG_DEPTH))
 
     if ADD_MCBN:
-        mcbn_model = add_batch_normalization(mcbn_model)
+        with tf.init_scope():
+            mcbn_model = add_batch_normalization(mcbn_model)
 
     else:
         # Stacking a new simple convolutional network on top of vgg16

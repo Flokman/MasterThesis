@@ -1,0 +1,139 @@
+
+The following have been reloaded with a version change:
+  1) FFTW/3.3.8-gompic-2019b => FFTW/3.3.8-gompi-2019b
+  2) OpenMPI/3.1.4-gcccuda-2019b => OpenMPI/3.1.4-GCC-8.3.0
+  3) ScaLAPACK/2.0.2-gompic-2019b => ScaLAPACK/2.0.2-gompi-2019b
+  4) SciPy-bundle/2019.10-fosscuda-2019b-Python-3.7.4 => SciPy-bundle/2019.10-foss-2019b-Python-3.7.4
+
+--------------------------------------------------------------------------
+A process has executed an operation involving a call to the
+"fork()" system call to create a child process.  Open MPI is currently
+operating in a condition that could result in memory corruption or
+other system errors; your job may hang, crash, or produce silent
+data corruption.  The use of fork() (or system() or other calls that
+create child processes) is strongly discouraged.
+
+The process that invoked fork was:
+
+  Local host:          [[21601,1],0] (PID 3690)
+
+If you are *absolutely sure* that your application will successfully
+and correctly survive a call to fork(), you may disable this warning
+by setting the mpi_warn_on_fork MCA parameter to 0.
+--------------------------------------------------------------------------
+2020-02-23 10:21:18.193573: I tensorflow/stream_executor/platform/default/dso_loader.cc:44] Successfully opened dynamic library libcudart.so.10.1
+2020-02-23 10:21:33.431765: I tensorflow/stream_executor/platform/default/dso_loader.cc:44] Successfully opened dynamic library libcuda.so.1
+2020-02-23 10:21:33.458204: I tensorflow/core/common_runtime/gpu/gpu_device.cc:1555] Found device 0 with properties: 
+pciBusID: 0000:82:00.0 name: Tesla K40m computeCapability: 3.5
+coreClock: 0.745GHz coreCount: 15 deviceMemorySize: 11.17GiB deviceMemoryBandwidth: 268.58GiB/s
+2020-02-23 10:21:33.458322: I tensorflow/stream_executor/platform/default/dso_loader.cc:44] Successfully opened dynamic library libcudart.so.10.1
+2020-02-23 10:21:33.462260: I tensorflow/stream_executor/platform/default/dso_loader.cc:44] Successfully opened dynamic library libcublas.so.10
+2020-02-23 10:21:33.465555: I tensorflow/stream_executor/platform/default/dso_loader.cc:44] Successfully opened dynamic library libcufft.so.10
+2020-02-23 10:21:33.466988: I tensorflow/stream_executor/platform/default/dso_loader.cc:44] Successfully opened dynamic library libcurand.so.10
+2020-02-23 10:21:33.470699: I tensorflow/stream_executor/platform/default/dso_loader.cc:44] Successfully opened dynamic library libcusolver.so.10
+2020-02-23 10:21:33.472352: I tensorflow/stream_executor/platform/default/dso_loader.cc:44] Successfully opened dynamic library libcusparse.so.10
+2020-02-23 10:21:33.477847: I tensorflow/stream_executor/platform/default/dso_loader.cc:44] Successfully opened dynamic library libcudnn.so.7
+2020-02-23 10:21:33.480064: I tensorflow/core/common_runtime/gpu/gpu_device.cc:1697] Adding visible gpu devices: 0
+2020-02-23 10:21:33.484936: I tensorflow/core/common_runtime/gpu/gpu_device.cc:1555] Found device 0 with properties: 
+pciBusID: 0000:82:00.0 name: Tesla K40m computeCapability: 3.5
+coreClock: 0.745GHz coreCount: 15 deviceMemorySize: 11.17GiB deviceMemoryBandwidth: 268.58GiB/s
+2020-02-23 10:21:33.484982: I tensorflow/stream_executor/platform/default/dso_loader.cc:44] Successfully opened dynamic library libcudart.so.10.1
+2020-02-23 10:21:33.485023: I tensorflow/stream_executor/platform/default/dso_loader.cc:44] Successfully opened dynamic library libcublas.so.10
+2020-02-23 10:21:33.485072: I tensorflow/stream_executor/platform/default/dso_loader.cc:44] Successfully opened dynamic library libcufft.so.10
+2020-02-23 10:21:33.485110: I tensorflow/stream_executor/platform/default/dso_loader.cc:44] Successfully opened dynamic library libcurand.so.10
+2020-02-23 10:21:33.485147: I tensorflow/stream_executor/platform/default/dso_loader.cc:44] Successfully opened dynamic library libcusolver.so.10
+2020-02-23 10:21:33.485185: I tensorflow/stream_executor/platform/default/dso_loader.cc:44] Successfully opened dynamic library libcusparse.so.10
+2020-02-23 10:21:33.485223: I tensorflow/stream_executor/platform/default/dso_loader.cc:44] Successfully opened dynamic library libcudnn.so.7
+2020-02-23 10:21:33.487387: I tensorflow/core/common_runtime/gpu/gpu_device.cc:1697] Adding visible gpu devices: 0
+2020-02-23 10:21:33.487438: I tensorflow/stream_executor/platform/default/dso_loader.cc:44] Successfully opened dynamic library libcudart.so.10.1
+2020-02-23 10:21:33.918177: I tensorflow/core/common_runtime/gpu/gpu_device.cc:1096] Device interconnect StreamExecutor with strength 1 edge matrix:
+2020-02-23 10:21:33.918273: I tensorflow/core/common_runtime/gpu/gpu_device.cc:1102]      0 
+2020-02-23 10:21:33.918293: I tensorflow/core/common_runtime/gpu/gpu_device.cc:1115] 0:   N 
+2020-02-23 10:21:33.921576: I tensorflow/core/common_runtime/gpu/gpu_device.cc:1241] Created TensorFlow device (/job:localhost/replica:0/task:0/device:GPU:0 with 10741 MB memory) -> physical GPU (device: 0, name: Tesla K40m, pci bus id: 0000:82:00.0, compute capability: 3.5)
+2020-02-23 10:21:33.922387: I tensorflow/core/common_runtime/process_util.cc:147] Creating new thread pool with default inter op setting: 2. Tune using inter_op_parallelism_threads for best performance.
+Random seed for replication: 532
+dataset_name = /Messidor2_PNG_AUG_256.hdf5, batch_size = 32, num_classes = 5, epochs = 1,
+        MCBN_amount_of_predictions = 50, MCBN_batch_size = 250, test_img_idx = 115,
+        train_test_split = 0.8, to_shuffle = True, augmentation = False, label_count = [1261, 1416, 1397, 1455, 1463],
+        label_normalizer = True, save_augmentation_to_hdf5 = True, learn rate = 1e-05,
+        add_mcbn_inside = True, train_all_layers = True, weights_to_use = None,
+        mcbn = True, es_patience = 30, train_val_split = 0.9
+x_train shape: (5593, 256, 256, 3)
+5593 train samples
+1399 test samples
+block1_conv1
+1
+Traceback (most recent call last):
+  File "mcbn_astro.py", line 457, in <module>
+    main()
+  File "mcbn_astro.py", line 319, in main
+    mcbn_model = add_batch_normalization(mcbn_model)
+  File "mcbn_astro.py", line 261, in add_batch_normalization
+    mcbn_model = insert_intermediate_layer_in_keras(mcbn_model, layer_index + 1)
+  File "mcbn_astro.py", line 238, in insert_intermediate_layer_in_keras
+    x = get_mcbn(x)
+  File "mcbn_astro.py", line 226, in get_mcbn
+    return MCBatchNorm()(input_tensor)
+  File "/software/software/TensorFlow/2.1.0-fosscuda-2019b-Python-3.7.4/lib/python3.7/site-packages/tensorflow_core/python/keras/engine/base_layer.py", line 773, in __call__
+    outputs = call_fn(cast_inputs, *args, **kwargs)
+  File "/software/software/TensorFlow/2.1.0-fosscuda-2019b-Python-3.7.4/lib/python3.7/site-packages/tensorflow_core/python/autograph/impl/api.py", line 237, in wrapper
+    raise e.ag_error_metadata.to_exception(e)
+ValueError: in converted code:
+
+    /home/s2934833/.local/lib/python3.7/site-packages/astroNN/nn/layers.py:358 call  *
+        self.scale = tf.Variable(tf.ones([inputs.shape[-1]]))
+    /software/software/TensorFlow/2.1.0-fosscuda-2019b-Python-3.7.4/lib/python3.7/site-packages/tensorflow_core/python/ops/variables.py:260 __call__
+        return cls._variable_v2_call(*args, **kwargs)
+    /software/software/TensorFlow/2.1.0-fosscuda-2019b-Python-3.7.4/lib/python3.7/site-packages/tensorflow_core/python/ops/variables.py:254 _variable_v2_call
+        shape=shape)
+    /software/software/TensorFlow/2.1.0-fosscuda-2019b-Python-3.7.4/lib/python3.7/site-packages/tensorflow_core/python/ops/variables.py:235 <lambda>
+        previous_getter = lambda **kws: default_variable_creator_v2(None, **kws)
+    /software/software/TensorFlow/2.1.0-fosscuda-2019b-Python-3.7.4/lib/python3.7/site-packages/tensorflow_core/python/ops/variable_scope.py:2645 default_variable_creator_v2
+        shape=shape)
+    /software/software/TensorFlow/2.1.0-fosscuda-2019b-Python-3.7.4/lib/python3.7/site-packages/tensorflow_core/python/ops/variables.py:262 __call__
+        return super(VariableMetaclass, cls).__call__(*args, **kwargs)
+    /software/software/TensorFlow/2.1.0-fosscuda-2019b-Python-3.7.4/lib/python3.7/site-packages/tensorflow_core/python/ops/resource_variable_ops.py:1411 __init__
+        distribute_strategy=distribute_strategy)
+    /software/software/TensorFlow/2.1.0-fosscuda-2019b-Python-3.7.4/lib/python3.7/site-packages/tensorflow_core/python/ops/resource_variable_ops.py:1494 _init_from_args
+        raise ValueError("Tensor-typed variable initializers must either be "
+
+    ValueError: Tensor-typed variable initializers must either be wrapped in an init_scope or callable (e.g., `tf.Variable(lambda : tf.truncated_normal([10, 40]))`) when building functions. Please file a feature request if this restriction inconveniences you.
+
+
+
+###############################################################################
+Peregrine Cluster
+Job 9716551 for user 's2934833'
+Finished at: Sun Feb 23 10:21:36 CET 2020
+
+Job details:
+============
+
+Name                : mcbn_astro
+User                : s2934833
+Partition           : gpu
+Nodes               : pg-gpu02
+Cores               : 12
+State               : FAILED
+Submit              : 2020-02-23T10:20:31
+Start               : 2020-02-23T10:21:13
+End                 : 2020-02-23T10:21:36
+Reserved walltime   : 00:30:00
+Used walltime       : 00:00:23
+Used CPU time       : 00:00:12 (efficiency:  4.39%)
+% User (Computation): 56.73%
+% System (I/O)      : 43.26%
+Mem reserved        : 16000M/node
+Max Mem used        : 0.00  (pg-gpu02)
+Max Disk Write      : 0.00  (pg-gpu02)
+Max Disk Read       : 0.00  (pg-gpu02)
+
+
+Acknowledgements:
+=================
+
+Please see this page for information about acknowledging Peregrine in your publications:
+
+https://wiki.hpc.rug.nl/peregrine/additional_information/scientific_output
+
+################################################################################

@@ -18,11 +18,10 @@ import matplotlib.pyplot as plt
 plt.style.use("ggplot")
 
 # Hyperparameters
-NUM_CLASSES = 8
-N_ENSEMBLE_MEMBERS = 5
-BATCH_SIZE = 5
+NUM_CLASSES = 5
+N_ENSEMBLE_MEMBERS = 43
 MODEL_TO_USE = os.path.sep + 'Ensemble'
-MODEL_VERSION = '/2020-02-12_09-30-59'
+MODEL_VERSION = '/2020-02-20_11-17-44'
 MODEL_NAME = 'ensemble_model_'
 
 TEST_IMAGES_LOCATION = os.path.sep + 'test_images'
@@ -182,13 +181,19 @@ def main():
         old_dir = os.getcwd()
         print(os.getcwd())
         os.chdir(ROOT_PATH + MODEL_TO_USE + MODEL_VERSION + os.path.sep)
-        model_name = "{}{}.h5".format(MODEL_NAME, i)
-        pre_trained_model = load_model(model_name,)
+        # model_name = "{}{}.h5".format(MODEL_NAME, i)
+        # pre_trained_model = load_model(model_name)
+
+        # Reload the model from the 2 files we saved
+        with open('ensemble_model_config_{}.json'.format(i)) as json_file:
+            json_config = json_file.read()
+        pre_trained_model = tf.keras.models.model_from_json(json_config)
+        pre_trained_model.load_weights('ensemble_weights_{}.h5'.format(i))
         # pre_trained_model.summary()
         os.chdir(old_dir)
 
         progress_bar.update(i)
-        y_p = pre_trained_model.predict(x_pred, batch_size=BATCH_SIZE)
+        y_p = pre_trained_model.predict(x_pred, batch_size=len(x_pred))
         mc_predictions.append(y_p)
 
 
