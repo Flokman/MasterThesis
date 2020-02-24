@@ -15,12 +15,15 @@ import matplotlib.pyplot as plt
 plt.style.use("ggplot")
 
 from tensorflow.keras.models import Model
-from tensorflow.keras.layers import Dense, BatchNormalization, Flatten
+from tensorflow.keras.layers import Input, Dense, BatchNormalization, Flatten
 from tensorflow.keras import optimizers
 from tensorflow.keras.applications.vgg16 import VGG16
 from tensorflow.keras.preprocessing.image import ImageDataGenerator
 from sklearn.metrics import accuracy_score
-from astroNN.nn.layers import MCBatchNorm
+# from astroNN.nn.layers import MCBatchNorm
+from astroNNcopy import MCBatchNorm
+
+from tensorflow.keras import Input, layers, models, utils, backend
 
 WEIGHTS_PATH = ('https://github.com/fchollet/deep-learning-models/'
                 'releases/download/v0.1/'
@@ -236,6 +239,7 @@ def insert_intermediate_layer_in_keras(model, layer_id):
     for i in range(1, len(inter_layers)):
         if i == layer_id:
             x = get_mcbn(x)
+        print(inter_layers[i])
         x = inter_layers[i](x)
 
     new_model = Model(inputs=inter_layers[0].input, outputs=x)
@@ -306,34 +310,239 @@ def add_batch_normalization(mcbn_model):
     return mcbn_model
 
 
+def MCBNVGG16(include_top=True,
+          weights='imagenet',
+          input_tensor=None,
+          input_shape=None,
+          pooling=None,
+          classes=1000,
+          **kwargs):
+    """Instantiates the VGG16 architecture.
+    Optionally loads weights pre-trained on ImageNet.
+    Note that the data format convention used by the model is
+    the one specified in your Keras config at `~/.keras/keras.json`.
+    # Arguments
+        include_top: whether to include the 3 fully-connected
+            layers at the top of the network.
+        weights: one of `None` (random initialization),
+              'imagenet' (pre-training on ImageNet),
+              or the path to the weights file to be loaded.
+        input_tensor: optional Keras tensor
+            (i.e. output of `layers.Input()`)
+            to use as image input for the model.
+        input_shape: optional shape tuple, only to be specified
+            if `include_top` is False (otherwise the input shape
+            has to be `(224, 224, 3)`
+            (with `channels_last` data format)
+            or `(3, 224, 224)` (with `channels_first` data format).
+            It should have exactly 3 input channels,
+            and width and height should be no smaller than 32.
+            E.g. `(200, 200, 3)` would be one valid value.
+        pooling: Optional pooling mode for feature extraction
+            when `include_top` is `False`.
+            - `None` means that the output of the model will be
+                the 4D tensor output of the
+                last convolutional block.
+            - `avg` means that global average pooling
+                will be applied to the output of the
+                last convolutional block, and thus
+                the output of the model will be a 2D tensor.
+            - `max` means that global max pooling will
+                be applied.
+        classes: optional number of classes to classify images
+            into, only to be specified if `include_top` is True, and
+            if no `weights` argument is specified.
+    # Returns
+        A Keras model instance.
+    # Raises
+        ValueError: in case of invalid argument for `weights`,
+            or invalid input shape.
+    """
+
+
+    if not (weights in {'imagenet', None} or os.path.exists(weights)):
+        raise ValueError('The `weights` argument should be either '
+                         '`None` (random initialization), `imagenet` '
+                         '(pre-training on ImageNet), '
+                         'or the path to the weights file to be loaded.')
+
+    if weights == 'imagenet' and include_top and classes != 1000:
+        raise ValueError('If using `weights` as `"imagenet"` with `include_top`'
+                         ' as true, `classes` should be 1000')
+    # # Determine proper input shape
+    # input_shape = _obtain_input_shape(input_shape,
+    #                                   default_size=224,
+    #                                   min_size=32,
+    #                                   data_format=backend.image_data_format(),
+    #                                   require_flatten=include_top,
+    #                                   weights=weights)
+
+    if input_tensor is None:
+        img_input = layers.Input(shape=input_shape)
+    else:
+        if not backend.is_keras_tensor(input_tensor):
+            img_input = layers.Input(tensor=input_tensor, shape=input_shape)
+        else:
+            img_input = input_tensor
+    # Block 1
+    x = layers.Conv2D(64, (3, 3),
+                      activation='relu',
+                      padding='same',
+                      name='block1_conv1')(img_input)
+    x = MCBatchNorm()(x)
+    x = layers.Conv2D(64, (3, 3),
+                      activation='relu',
+                      padding='same',
+                      name='block1_conv2')(x)
+    x = MCBatchNorm()(x)
+    x = layers.MaxPooling2D((2, 2), strides=(2, 2), name='block1_pool')(x)
+
+    # Block 2
+    x = layers.Conv2D(128, (3, 3),
+                      activation='relu',
+                      padding='same',
+                      name='block2_conv1')(x)
+    x = MCBatchNorm()(x)
+    x = layers.Conv2D(128, (3, 3),
+                      activation='relu',
+                      padding='same',
+                      name='block2_conv2')(x)
+    x = MCBatchNorm()(x)
+    x = layers.MaxPooling2D((2, 2), strides=(2, 2), name='block2_pool')(x)
+
+    # Block 3
+    x = layers.Conv2D(256, (3, 3),
+                      activation='relu',
+                      padding='same',
+                      name='block3_conv1')(x)
+    x = MCBatchNorm()(x)
+    x = layers.Conv2D(256, (3, 3),
+                      activation='relu',
+                      padding='same',
+                      name='block3_conv2')(x)
+    x = MCBatchNorm()(x)
+    x = layers.Conv2D(256, (3, 3),
+                      activation='relu',
+                      padding='same',
+                      name='block3_conv3')(x)
+    x = MCBatchNorm()(x)
+    x = layers.MaxPooling2D((2, 2), strides=(2, 2), name='block3_pool')(x)
+
+    # Block 4
+    x = layers.Conv2D(512, (3, 3),
+                      activation='relu',
+                      padding='same',
+                      name='block4_conv1')(x)
+    x = MCBatchNorm()(x)
+    x = layers.Conv2D(512, (3, 3),
+                      activation='relu',
+                      padding='same',
+                      name='block4_conv2')(x)
+    x = MCBatchNorm()(x)
+    x = layers.Conv2D(512, (3, 3),
+                      activation='relu',
+                      padding='same',
+                      name='block4_conv3')(x)
+    x = MCBatchNorm()(x)
+    x = layers.MaxPooling2D((2, 2), strides=(2, 2), name='block4_pool')(x)
+
+    # Block 5
+    x = layers.Conv2D(512, (3, 3),
+                      activation='relu',
+                      padding='same',
+                      name='block5_conv1')(x)
+    x = MCBatchNorm()(x)
+    x = layers.Conv2D(512, (3, 3),
+                      activation='relu',
+                      padding='same',
+                      name='block5_conv2')(x)
+    x = MCBatchNorm()(x)
+    x = layers.Conv2D(512, (3, 3),
+                      activation='relu',
+                      padding='same',
+                      name='block5_conv3')(x)
+    x = MCBatchNorm()(x)
+    x = layers.MaxPooling2D((2, 2), strides=(2, 2), name='block5_pool')(x)
+
+    if include_top:
+        # Classification block
+        x = layers.Flatten(name='flatten')(x)
+        x = layers.Dense(4096, activation='relu', name='fc1')(x)
+        x = MCBatchNorm()(x)
+        x = layers.Dense(4096, activation='relu', name='fc2')(x)
+        x = MCBatchNorm()(x)
+        x = layers.Dense(classes, activation='softmax', name='predictions')(x)
+    else:
+        if pooling == 'avg':
+            x = layers.GlobalAveragePooling2D()(x)
+        elif pooling == 'max':
+            x = layers.GlobalMaxPooling2D()(x)
+
+    # Ensure that the model takes into account
+    # any potential predecessors of `input_tensor`.
+    if input_tensor is not None:
+        inputs = utils.get_source_inputs(input_tensor)
+    else:
+        inputs = img_input
+    # Create model.
+    model = models.Model(inputs, x, name='vgg16')
+
+    # Load weights.
+    if weights == 'imagenet':
+        if include_top:
+            weights_path = utils.get_file(
+                'vgg16_weights_tf_dim_ordering_tf_kernels.h5',
+                WEIGHTS_PATH,
+                cache_subdir='models',
+                file_hash='64373286793e3c8b2b4e3219cbf3544b')
+        else:
+            weights_path = utils.get_file(
+                'vgg16_weights_tf_dim_ordering_tf_kernels_notop.h5',
+                WEIGHTS_PATH_NO_TOP,
+                cache_subdir='models',
+                file_hash='6d6bbae143d832006294945121d1f1fc')
+        model.load_weights(weights_path)
+        if backend.backend() == 'theano':
+            utils.convert_all_kernels_in_model(model)
+    elif weights is not None:
+        model.load_weights(weights)
+
+    return model
+
+
 def main():
     ''' Main function '''
     # Load data
     x_train, y_train, x_test, y_test, test_img_idx = prepare_data()
 
-    # VGG16 since it does not include batch normalization of mcbn by itself
-    mcbn_model = VGG16(weights=WEIGHTS_TO_USE, include_top=False,
-                       input_shape=(IMG_HEIGHT, IMG_WIDTH, IMG_DEPTH))
+    # # VGG16 since it does not include batch normalization of mcbn by itself
+    # mcbn_model = VGG16(weights=WEIGHTS_TO_USE, include_top=False,
+    #                    input_shape=(IMG_HEIGHT, IMG_WIDTH, IMG_DEPTH))
+    
 
-    if ADD_MCBN:
-        with tf.init_scope():
-            mcbn_model = add_batch_normalization(mcbn_model)
+    mcbn_model = MCBNVGG16(weights=WEIGHTS_TO_USE, include_top=True,
+                           input_shape=(IMG_HEIGHT, IMG_WIDTH, IMG_DEPTH))
 
-    else:
-        # Stacking a new simple convolutional network on top of vgg16
-        all_layers = [l for l in mcbn_model.layers]
-        x = all_layers[0].output
-        for i in range(1, len(all_layers)):
-            x = all_layers[i](x)
 
-        # Classification block
-        x = Flatten(name='flatten')(x)
-        x = Dense(4096, activation='relu', name='fc1')(x)
-        x = Dense(4096, activation='relu', name='fc2')(x)
-        x = Dense(NUM_CLASSES, activation='softmax', name='predictions')(x)
+    # if ADD_MCBN:
+    #     with tf.init_scope():
+    #         mcbn_model = add_batch_normalization(mcbn_model)
 
-        # Creating new model
-        mcbn_model = Model(inputs=all_layers[0].input, outputs=x)
+    # else:
+    #     # Stacking a new simple convolutional network on top of vgg16
+    #     all_layers = [l for l in mcbn_model.layers]
+    #     x = all_layers[0].output
+    #     for i in range(1, len(all_layers)):
+    #         x = all_layers[i](x)
+
+    #     # Classification block
+    #     x = Flatten(name='flatten')(x)
+    #     x = Dense(4096, activation='relu', name='fc1')(x)
+    #     x = Dense(4096, activation='relu', name='fc2')(x)
+    #     x = Dense(NUM_CLASSES, activation='softmax', name='predictions')(x)
+
+    #     # Creating new model
+    #     mcbn_model = Model(inputs=all_layers[0].input, outputs=x)
 
     # if TRAIN_ALL_LAYERS or DROPOUT_INSIDE:
     #     for layer in mcbn_model.layers:
@@ -378,80 +587,77 @@ def main():
                                  y_train[int(TRAIN_VAL_SPLIT*len(y_train)):],
                                  batch_size=BATCH_SIZE)
 
-    with tf.Session() as sess:
-        # Initialise all variables
-        sess.run(tf.global_variables_initializer())
-        sess.run(tf.local_variables_initializer())
 
-        mcbn_model.fit(train_generator,
-                    epochs=EPOCHS,
-                    verbose=2,
-                    validation_data=val_generator,
-                    callbacks=[tensorboard_callback, early_stopping])
 
-        # # save model and architecture to single file
-        # mcbn_model.save("MCBN_model.h5")
-        # print("Saved mcbn_model to disk")
+    mcbn_model.fit(train_generator,
+                epochs=EPOCHS,
+                verbose=2,
+                validation_data=val_generator,
+                callbacks=[tensorboard_callback, early_stopping])
 
-        # Save JSON config to disk
-        json_config = mcbn_model.to_json()
-        with open('mcbn_model_config.json', 'w') as json_file:
-            json_file.write(json_config)
-        # Save weights to disk
-        mcbn_model.save_weights('path_to_my_weights.h5')
+    # # save model and architecture to single file
+    # mcbn_model.save("MCBN_model.h5")
+    # print("Saved mcbn_model to disk")
 
-        mcbn_predictions = []
-        progress_bar = tf.keras.utils.Progbar(target=AMOUNT_OF_PREDICTIONS, interval=5)
-        for i in range(AMOUNT_OF_PREDICTIONS):
-            progress_bar.update(i)
-            y_p = mcbn_model.predict(x_test, batch_size=MCBN_BATCH_SIZE)
-            mcbn_predictions.append(y_p)
+    # Save JSON config to disk
+    json_config = mcbn_model.to_json()
+    with open('mcbn_model_config.json', 'w') as json_file:
+        json_file.write(json_config)
+    # Save weights to disk
+    mcbn_model.save_weights('path_to_my_weights.h5')
 
-        # score of the MCBN model
-        accs = []
-        for y_p in mcbn_predictions:
-            acc = accuracy_score(y_test.argmax(axis=1), y_p.argmax(axis=1))
-            accs.append(acc)
-        print("MCBN accuracy: {:.1%}".format(sum(accs)/len(accs)))
+    mcbn_predictions = []
+    progress_bar = tf.keras.utils.Progbar(target=AMOUNT_OF_PREDICTIONS, interval=5)
+    for i in range(AMOUNT_OF_PREDICTIONS):
+        progress_bar.update(i)
+        y_p = mcbn_model.predict(x_test, batch_size=MCBN_BATCH_SIZE)
+        mcbn_predictions.append(y_p)
 
-        mcbn_ensemble_pred = np.array(mcbn_predictions).mean(axis=0).argmax(axis=1)
-        ensemble_acc = accuracy_score(y_test.argmax(axis=1), mcbn_ensemble_pred)
-        print("MCBN-ensemble accuracy: {:.1%}".format(ensemble_acc))
+    # score of the MCBN model
+    accs = []
+    for y_p in mcbn_predictions:
+        acc = accuracy_score(y_test.argmax(axis=1), y_p.argmax(axis=1))
+        accs.append(acc)
+    print("MCBN accuracy: {:.1%}".format(sum(accs)/len(accs)))
 
-        confusion = tf.confusion_matrix(labels=y_test.argmax(axis=1), predictions=mcbn_ensemble_pred,
-                                        num_classes=NUM_CLASSES)
-        sess = tf.Session()
-        with sess.as_default():
-            print(sess.run(confusion))
+    mcbn_ensemble_pred = np.array(mcbn_predictions).mean(axis=0).argmax(axis=1)
+    ensemble_acc = accuracy_score(y_test.argmax(axis=1), mcbn_ensemble_pred)
+    print("MCBN-ensemble accuracy: {:.1%}".format(ensemble_acc))
 
-        plt.hist(accs)
-        plt.axvline(x=ensemble_acc, color="b")
-        plt.savefig('ensemble_acc.png')
-        plt.clf()
+    confusion = tf.confusion_matrix(labels=y_test.argmax(axis=1), predictions=mcbn_ensemble_pred,
+                                    num_classes=NUM_CLASSES)
+    sess = tf.Session()
+    with sess.as_default():
+        print(sess.run(confusion))
 
-        plt.imsave('test_image_' + str(test_img_idx) + '.png', x_test[test_img_idx])
+    plt.hist(accs)
+    plt.axvline(x=ensemble_acc, color="b")
+    plt.savefig('ensemble_acc.png')
+    plt.clf()
 
-        p_0 = np.array([p[test_img_idx] for p in mcbn_predictions])
-        print("posterior mean: {}".format(p_0.mean(axis=0).argmax()))
-        print("true label: {}".format(y_test[test_img_idx].argmax()))
-        print()
-        # probability + variance
-        for i, (prob, var) in enumerate(zip(p_0.mean(axis=0), p_0.std(axis=0))):
-            print("class: {}; proba: {:.1%}; var: {:.2%} ".format(i, prob, var))
+    plt.imsave('test_image_' + str(test_img_idx) + '.png', x_test[test_img_idx])
 
-        x_axis, y_axis = list(range(len(p_0.mean(axis=0)))), p_0.mean(axis=0)
-        plt.plot(x_axis, y_axis)
-        plt.savefig('prob_var_' + str(test_img_idx) + '.png')
-        plt.clf()
+    p_0 = np.array([p[test_img_idx] for p in mcbn_predictions])
+    print("posterior mean: {}".format(p_0.mean(axis=0).argmax()))
+    print("true label: {}".format(y_test[test_img_idx].argmax()))
+    print()
+    # probability + variance
+    for i, (prob, var) in enumerate(zip(p_0.mean(axis=0), p_0.std(axis=0))):
+        print("class: {}; proba: {:.1%}; var: {:.2%} ".format(i, prob, var))
 
-        fig = plt.subplots(5, 1, figsize=(12, 6))[0]
+    x_axis, y_axis = list(range(len(p_0.mean(axis=0)))), p_0.mean(axis=0)
+    plt.plot(x_axis, y_axis)
+    plt.savefig('prob_var_' + str(test_img_idx) + '.png')
+    plt.clf()
 
-        for i, ax in enumerate(fig.get_axes()):
-            ax.hist(p_0[:, i], bins=100, range=(0, 1))
-            ax.set_title(f"class {i}")
-            ax.label_outer()
+    fig = plt.subplots(5, 1, figsize=(12, 6))[0]
 
-        fig.savefig('sub_plots' + str(test_img_idx) + '.png', dpi=fig.dpi)
+    for i, ax in enumerate(fig.get_axes()):
+        ax.hist(p_0[:, i], bins=100, range=(0, 1))
+        ax.set_title(f"class {i}")
+        ax.label_outer()
+
+    fig.savefig('sub_plots' + str(test_img_idx) + '.png', dpi=fig.dpi)
 
 
 if __name__ == "__main__":
