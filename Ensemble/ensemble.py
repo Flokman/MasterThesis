@@ -213,7 +213,7 @@ def prepare_data():
     return(x_train, y_train, x_test, y_test, test_img_idx)
 
 
-def fit_model(sess, x_train, y_train, ensemble_model, log_dir, i):
+def fit_model(x_train, y_train, ensemble_model, log_dir, i):
     x_train, y_train = shuffle_data(x_train, y_train)
     x_train = np.asarray(x_train)
     y_train = np.asarray(y_train)
@@ -231,9 +231,6 @@ def fit_model(sess, x_train, y_train, ensemble_model, log_dir, i):
     early_stopping = tf.keras.callbacks.EarlyStopping(monitor='val_loss',
                                                       mode='auto', verbose=1, patience=ES_PATIENCE)
 
-    # Initialise all variables
-    sess.run(tf.global_variables_initializer())
-    sess.run(tf.local_variables_initializer())
 
     ensemble_model.fit(train_generator,
                        epochs=EPOCHS,
@@ -312,61 +309,59 @@ def main():
 
 
 
-
-    with tf.Session() as sess:
-        ensemble = [fit_model(sess, x_train, y_train, ensemble_model, log_dir, i) for i in range(N_ENSEMBLE_MEMBERS)]
+    ensemble = [fit_model(x_train, y_train, ensemble_model, log_dir, i) for i in range(N_ENSEMBLE_MEMBERS)]
 
 
 
-        ensemble_predictions = [model.predict(x_test, batch_size=TEST_BATCH_SIZE) for model in ensemble]
-        # ensemble_predictions = array(ensemble_predictions)
+    ensemble_predictions = [model.predict(x_test, batch_size=TEST_BATCH_SIZE) for model in ensemble]
+    # ensemble_predictions = array(ensemble_predictions)
 
-        # score of the MCDO model
-        accs = []
-        for y_p in ensemble_predictions:
-            acc = accuracy_score(y_test.argmax(axis=1), y_p.argmax(axis=1))
-            accs.append(acc)
-        print("Highest acc of model in ensemble: {:.1%}".format(sum(accs)/len(accs)))
+    # score of the MCDO model
+    accs = []
+    for y_p in ensemble_predictions:
+        acc = accuracy_score(y_test.argmax(axis=1), y_p.argmax(axis=1))
+        accs.append(acc)
+    print("Highest acc of model in ensemble: {:.1%}".format(sum(accs)/len(accs)))
 
-        mcdo_ensemble_pred = np.array(ensemble_predictions).mean(axis=0).argmax(axis=1)
-        ensemble_acc = accuracy_score(y_test.argmax(axis=1), mcdo_ensemble_pred)
-        print("Mean ensemble accuracy: {:.1%}".format(ensemble_acc))
+    mcdo_ensemble_pred = np.array(ensemble_predictions).mean(axis=0).argmax(axis=1)
+    ensemble_acc = accuracy_score(y_test.argmax(axis=1), mcdo_ensemble_pred)
+    print("Mean ensemble accuracy: {:.1%}".format(ensemble_acc))
 
 
 
-        confusion = tf.confusion_matrix(labels=y_test.argmax(axis=1), predictions=mcdo_ensemble_pred,
-                                        num_classes=NUM_CLASSES)
+    confusion = tf.confusion_matrix(labels=y_test.argmax(axis=1), predictions=mcdo_ensemble_pred,
+                                    num_classes=NUM_CLASSES)
 
-        print(sess.run(confusion))
+    print(sess.run(confusion))
 
-        plt.hist(accs)
-        plt.axvline(x=ensemble_acc, color="b")
-        plt.savefig('ensemble_acc.png')
-        plt.clf()
+    plt.hist(accs)
+    plt.axvline(x=ensemble_acc, color="b")
+    plt.savefig('ensemble_acc.png')
+    plt.clf()
 
-        plt.imsave('test_image_' + str(test_img_idx) + '.png', x_test[test_img_idx])
+    plt.imsave('test_image_' + str(test_img_idx) + '.png', x_test[test_img_idx])
 
-        p_0 = np.array([p[test_img_idx] for p in ensemble_predictions])
-        print("posterior mean: {}".format(p_0.mean(axis=0).argmax()))
-        print("true label: {}".format(y_test[test_img_idx].argmax()))
-        print()
-        # probability + variance
-        for i, (prob, var) in enumerate(zip(p_0.mean(axis=0), p_0.std(axis=0))):
-            print("class: {}; proba: {:.1%}; var: {:.2%} ".format(i, prob, var))
+    p_0 = np.array([p[test_img_idx] for p in ensemble_predictions])
+    print("posterior mean: {}".format(p_0.mean(axis=0).argmax()))
+    print("true label: {}".format(y_test[test_img_idx].argmax()))
+    print()
+    # probability + variance
+    for i, (prob, var) in enumerate(zip(p_0.mean(axis=0), p_0.std(axis=0))):
+        print("class: {}; proba: {:.1%}; var: {:.2%} ".format(i, prob, var))
 
-        x_axis, y_axis = list(range(len(p_0.mean(axis=0)))), p_0.mean(axis=0)
-        plt.plot(x_axis, y_axis)
-        plt.savefig('prob_var_' + str(test_img_idx) + '.png')
-        plt.clf()
+    x_axis, y_axis = list(range(len(p_0.mean(axis=0)))), p_0.mean(axis=0)
+    plt.plot(x_axis, y_axis)
+    plt.savefig('prob_var_' + str(test_img_idx) + '.png')
+    plt.clf()
 
-        fig = plt.subplots(5, 1, figsize=(12, 6))[0]
+    fig = plt.subplots(5, 1, figsize=(12, 6))[0]
 
-        for i, ax in enumerate(fig.get_axes()):
-            ax.hist(p_0[:, i], bins=100, range=(0, 1))
-            ax.set_title(f"class {i}")
-            ax.label_outer()
+    for i, ax in enumerate(fig.get_axes()):
+        ax.hist(p_0[:, i], bins=100, range=(0, 1))
+        ax.set_title(f"class {i}")
+        ax.label_outer()
 
-        fig.savefig('sub_plots' + str(test_img_idx) + '.png', dpi=fig.dpi)
+    fig.savefig('sub_plots' + str(test_img_idx) + '.png', dpi=fig.dpi)
 
 
 if __name__ == "__main__":

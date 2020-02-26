@@ -21,7 +21,7 @@ from tensorflow.keras.applications.vgg16 import VGG16
 from tensorflow.keras.preprocessing.image import ImageDataGenerator
 from sklearn.metrics import accuracy_score
 # from astroNN.nn.layers import MCBatchNorm
-from astroNNcopy import MCBatchNorm
+from astroNNcustom import MCBatchNorm
 
 from tensorflow.keras import Input, layers, models, utils, backend
 
@@ -38,7 +38,7 @@ DATASET_NAME = '/Messidor2_PNG_AUG_' + str(IMG_HEIGHT) + '.hdf5'
 
 BATCH_SIZE = 32
 NUM_CLASSES = 5
-EPOCHS = 1
+EPOCHS = 5
 AMOUNT_OF_PREDICTIONS = 50
 MCBN_BATCH_SIZE = 250
 TRAIN_TEST_SPLIT = 0.8 # Value between 0 and 1, e.g. 0.8 creates 80%/20% division train/test
@@ -315,7 +315,7 @@ def MCBNVGG16(include_top=True,
           input_tensor=None,
           input_shape=None,
           pooling=None,
-          classes=1000,
+          classes=NUM_CLASSES,
           **kwargs):
     """Instantiates the VGG16 architecture.
     Optionally loads weights pre-trained on ImageNet.
@@ -389,12 +389,12 @@ def MCBNVGG16(include_top=True,
                       activation='relu',
                       padding='same',
                       name='block1_conv1')(img_input)
-    x = MCBatchNorm()(x)
+    x = MCBatchNorm(x)(x)
     x = layers.Conv2D(64, (3, 3),
                       activation='relu',
                       padding='same',
                       name='block1_conv2')(x)
-    x = MCBatchNorm()(x)
+    x = MCBatchNorm(x)(x)
     x = layers.MaxPooling2D((2, 2), strides=(2, 2), name='block1_pool')(x)
 
     # Block 2
@@ -402,12 +402,12 @@ def MCBNVGG16(include_top=True,
                       activation='relu',
                       padding='same',
                       name='block2_conv1')(x)
-    x = MCBatchNorm()(x)
+    x = MCBatchNorm(x)(x)
     x = layers.Conv2D(128, (3, 3),
                       activation='relu',
                       padding='same',
                       name='block2_conv2')(x)
-    x = MCBatchNorm()(x)
+    x = MCBatchNorm(x)(x)
     x = layers.MaxPooling2D((2, 2), strides=(2, 2), name='block2_pool')(x)
 
     # Block 3
@@ -415,17 +415,17 @@ def MCBNVGG16(include_top=True,
                       activation='relu',
                       padding='same',
                       name='block3_conv1')(x)
-    x = MCBatchNorm()(x)
+    x = MCBatchNorm(x)(x)
     x = layers.Conv2D(256, (3, 3),
                       activation='relu',
                       padding='same',
                       name='block3_conv2')(x)
-    x = MCBatchNorm()(x)
+    x = MCBatchNorm(x)(x)
     x = layers.Conv2D(256, (3, 3),
                       activation='relu',
                       padding='same',
                       name='block3_conv3')(x)
-    x = MCBatchNorm()(x)
+    x = MCBatchNorm(x)(x)
     x = layers.MaxPooling2D((2, 2), strides=(2, 2), name='block3_pool')(x)
 
     # Block 4
@@ -433,17 +433,17 @@ def MCBNVGG16(include_top=True,
                       activation='relu',
                       padding='same',
                       name='block4_conv1')(x)
-    x = MCBatchNorm()(x)
+    x = MCBatchNorm(x)(x)
     x = layers.Conv2D(512, (3, 3),
                       activation='relu',
                       padding='same',
                       name='block4_conv2')(x)
-    x = MCBatchNorm()(x)
+    x = MCBatchNorm(x)(x)
     x = layers.Conv2D(512, (3, 3),
                       activation='relu',
                       padding='same',
                       name='block4_conv3')(x)
-    x = MCBatchNorm()(x)
+    x = MCBatchNorm(x)(x)
     x = layers.MaxPooling2D((2, 2), strides=(2, 2), name='block4_pool')(x)
 
     # Block 5
@@ -451,26 +451,26 @@ def MCBNVGG16(include_top=True,
                       activation='relu',
                       padding='same',
                       name='block5_conv1')(x)
-    x = MCBatchNorm()(x)
+    x = MCBatchNorm(x)(x)
     x = layers.Conv2D(512, (3, 3),
                       activation='relu',
                       padding='same',
                       name='block5_conv2')(x)
-    x = MCBatchNorm()(x)
+    x = MCBatchNorm(x)(x)
     x = layers.Conv2D(512, (3, 3),
                       activation='relu',
                       padding='same',
                       name='block5_conv3')(x)
-    x = MCBatchNorm()(x)
+    x = MCBatchNorm(x)(x)
     x = layers.MaxPooling2D((2, 2), strides=(2, 2), name='block5_pool')(x)
 
     if include_top:
         # Classification block
         x = layers.Flatten(name='flatten')(x)
         x = layers.Dense(4096, activation='relu', name='fc1')(x)
-        x = MCBatchNorm()(x)
+        x = MCBatchNorm(x)(x)
         x = layers.Dense(4096, activation='relu', name='fc2')(x)
-        x = MCBatchNorm()(x)
+        x = MCBatchNorm(x)(x)
         x = layers.Dense(classes, activation='softmax', name='predictions')(x)
     else:
         if pooling == 'avg':
@@ -624,11 +624,9 @@ def main():
     ensemble_acc = accuracy_score(y_test.argmax(axis=1), mcbn_ensemble_pred)
     print("MCBN-ensemble accuracy: {:.1%}".format(ensemble_acc))
 
-    confusion = tf.confusion_matrix(labels=y_test.argmax(axis=1), predictions=mcbn_ensemble_pred,
+    confusion = tf.math.confusion_matrix(labels=y_test.argmax(axis=1), predictions=mcbn_ensemble_pred,
                                     num_classes=NUM_CLASSES)
-    sess = tf.Session()
-    with sess.as_default():
-        print(sess.run(confusion))
+    print(confusion)
 
     plt.hist(accs)
     plt.axvline(x=ensemble_acc, color="b")

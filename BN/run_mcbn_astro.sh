@@ -1,10 +1,10 @@
 #!/bin/bash
-#SBATCH --time=00:05:00
+#SBATCH --time=00:40:00
 
 #SBATCH --partition=gpu
 #SBATCH --gres=gpu:1
 #SBATCH --job-name=mcbn_astro
-#SBATCH --mem=16000
+#SBATCH --mem=32000
 
 module load Python/3.7.4-GCCcore-8.3.0
 module load TensorFlow/2.1.0-fosscuda-2019b-Python-3.7.4 
