@@ -2,6 +2,7 @@
 
 #https://stackoverflow.com/questions/49646304/keras-optimizing-two-outputs-with-a-custom-loss
 # https://stackoverflow.com/questions/46663013/what-is-y-true-and-y-pred-when-creating-a-custom-metric-in-keras
+# https://towardsdatascience.com/advanced-keras-constructing-complex-custom-losses-and-metrics-c07ca130a618
 
 import os
 import datetime
@@ -22,7 +23,10 @@ from tensorflow.keras.applications.vgg16 import VGG16
 from tensorflow.keras.preprocessing.image import ImageDataGenerator
 from sklearn.metrics import accuracy_score
 
-from tensorflow.keras import Input, layers, models, utils, backend
+from tensorflow.keras import Input, layers, models, utils
+from tensorflow.keras import backend as K
+
+# from customLoss import CategoricalVariance
 
 WEIGHTS_PATH = ('https://github.com/fchollet/deep-learning-models/'
                 'releases/download/v0.1/'
@@ -56,6 +60,49 @@ ES_PATIENCE = 30
 DIR_PATH_HEAD_TAIL = os.path.split(os.path.dirname(os.path.realpath(__file__)))
 ROOT_PATH = DIR_PATH_HEAD_TAIL[0]
 DATA_PATH = ROOT_PATH + '/Datasets' + DATASET_NAME
+
+@tf.function
+def categorical_variance(y_true, y_pred, from_logits=False, label_smoothing=0):
+    # y_true/pred has shape (batch, num_outputs)
+    y_pred = K.constant(y_pred) if not tf.is_tensor(y_pred) else y_pred
+    y_true = K.cast(y_true, y_pred.dtype)
+
+    # sess = tf.compat.v1.InteractiveSession()
+    
+
+    print("##############################################################")
+    # print(y_true)
+    print("##############################################################")
+    # tf.print(K.categorical_crossentropy(y_true, y_pred, from_logits=from_logits))
+    # y_true = y_true.eval()
+    # y_pred = y_pred.eval()
+    # print(K.eval(y_true))
+    if y_true.shape[0] != None:
+        batch_size = y_true.shape[0].numpy()
+        print("1")
+        num_class = y_true.shape[1].numpy() / 2
+        print("2")
+        y_true_cat = y_true[:,:num_class]
+        print("3")
+        y_pred_cat = y_pred[:,:num_class]
+        print("4")
+
+        cat_loss = K.categorical_crossentropy(y_true_cat, y_pred_cat, from_logits=from_logits)
+
+        print("5")
+        y_true_var = np.append(cat_loss, np.square(cat_loss[:,1:], axis=1))
+        y_pred_var = y_pred[:,num_class:]
+        
+        reg_loss = y_pred_var - y_true_var
+        
+        total_loss = tf.Tensor(np.append(cat_loss, reg_loss))
+        # sess.close()
+        return total_loss
+    cat_loss = K.categorical_crossentropy(y_true, y_pred, from_logits=from_logits)
+    # stacked = tf.stack(cat_loss, cat_loss)
+    return cat_loss
+
+
 
 def shuffle_data(x_to_shuff, y_to_shuff):
     ''' Shuffle the data randomly '''
@@ -190,17 +237,17 @@ def prepare_data():
     test_img_idx = random.randint(0, len(x_test) - 1)
 
     print("""dataset_name = {}, batch_size = {}, num_classes = {}, epochs = {},
-          test_img_idx = {}, train_test_split = {}, to_shuffle = {},
-          augmentation = {}, label_count = {}, label_normalizer = {},
-          save_augmentation_to_hdf5 = {}, learn rate = {}, train_all_layers = {},
-          weights_to_use = {}, es_patience = {}, train_val_split = {},
-          N_ENSEMBLE_MEMBERS = {}""".format(
-              DATASET_NAME, BATCH_SIZE, NUM_CLASSES, EPOCHS,
-              test_img_idx, TRAIN_TEST_SPLIT, TO_SHUFFLE,
-              AUGMENTATION, label_count, LABEL_NORMALIZER,
-              SAVE_AUGMENTATION_TO_HDF5, LEARN_RATE, TRAIN_ALL_LAYERS,
-              WEIGHTS_TO_USE, ES_PATIENCE, TRAIN_VAL_SPLIT,
-              N_ENSEMBLE_MEMBERS))
+        MCBN_amount_of_predictions = {}, test_img_idx = {},
+        train_test_split = {}, to_shuffle = {}, augmentation = {}, label_count = {},
+        label_normalizer = {}, save_augmentation_to_hdf5 = {}, learn rate = {},
+        train_all_layers = {}, weights_to_use = {},
+        es_patience = {}, train_val_split = {}""".format(
+            DATASET_NAME, BATCH_SIZE, NUM_CLASSES, EPOCHS,
+            AMOUNT_OF_PREDICTIONS, test_img_idx,
+            TRAIN_TEST_SPLIT, TO_SHUFFLE, AUGMENTATION, label_count,
+            LABEL_NORMALIZER, SAVE_AUGMENTATION_TO_HDF5, LEARN_RATE,
+            TRAIN_ALL_LAYERS, WEIGHTS_TO_USE,
+            ES_PATIENCE, TRAIN_VAL_SPLIT))
 
     x_train = np.asarray(x_train)
     y_train = np.asarray(y_train)
@@ -212,8 +259,8 @@ def prepare_data():
     print(x_test.shape[0], 'test samples')
 
     # convert class vectors to binary class matrices
-    y_train = tf.keras.utils.to_categorical(y_train, NUM_CLASSES)
-    y_test = tf.keras.utils.to_categorical(y_test, NUM_CLASSES)
+    y_train = tf.keras.utils.to_categorical(y_train, NUM_CLASSES*2)
+    y_test = tf.keras.utils.to_categorical(y_test, NUM_CLASSES*2)
 
     return(x_train, y_train, x_test, y_test, test_img_idx)
 
@@ -246,47 +293,59 @@ def main():
     # Creating new model
     variance_model = Model(inputs=all_layers[0].input, outputs=[classifier, regression])
 
-
-
-
-
-
-
     variance_model.summary()
 
     adam = optimizers.Adam(lr=LEARN_RATE)
     # sgd = optimizers.SGD(lr=LEARN_RATE)
+
     variance_model.compile(
         optimizer=adam,
-        loss='categorical_crossentropy',
+        loss=categorical_variance,
         metrics=['accuracy']
     )
 
     print("Start fitting")
-
+    
     # Dir to store created figures
     fig_dir = os.path.join(os.getcwd(), datetime.datetime.now().strftime('%Y-%m-%d_%H-%M-%S'))
     os.makedirs(fig_dir)
     # Dir to store Tensorboard data
-    log_dir = os.path.join(fig_dir, "logs/fit/" + datetime.datetime.now().strftime("%Y%m%d-%H%M%S"))
+    log_dir = os.path.join(fig_dir, "logs" + os.path.sep + "fit" + os.path.sep + datetime.datetime.now().strftime("%Y%m%d-%H%M%S"))
     os.makedirs(log_dir)
 
     os.chdir(fig_dir)
 
+    tensorboard_callback = tf.keras.callbacks.TensorBoard(log_dir=log_dir)
+    early_stopping = tf.keras.callbacks.EarlyStopping(monitor='val_loss',
+                                                      mode='auto', verbose=1, patience=ES_PATIENCE)
 
-    x_axis, y_axis = list(range(len(p_0.mean(axis=0)))), p_0.mean(axis=0)
-    plt.plot(x_axis, y_axis)
-    plt.savefig('prob_var_' + str(test_img_idx) + '.png')
-    plt.clf()
 
-    fig = plt.subplots(5, 1, figsize=(12, 6))[0]
+    datagen = ImageDataGenerator(rescale=1./255, dtype='ndarray')
+    train_generator = datagen.flow(x_train[0:int(TRAIN_VAL_SPLIT*len(x_train))],
+                                   y_train[0:int(TRAIN_VAL_SPLIT*len(y_train))],
+                                   batch_size=BATCH_SIZE)
+    
+    val_generator = datagen.flow(x_train[int(TRAIN_VAL_SPLIT*len(x_train)):],
+                                 y_train[int(TRAIN_VAL_SPLIT*len(y_train)):],
+                                 batch_size=BATCH_SIZE)
 
-    for i, ax in enumerate(fig.get_axes()):
-        ax.hist(p_0[:, i], bins=100, range=(0, 1))
-        ax.set_title(f"class {i}")
-        ax.label_outer()
 
-    fig.savefig('sub_plots' + str(test_img_idx) + '.png', dpi=fig.dpi)
+
+    variance_model.fit(train_generator,
+                epochs=EPOCHS,
+                verbose=2,
+                validation_data=val_generator,
+                callbacks=[tensorboard_callback, early_stopping])
+
+    # Save JSON config to disk
+    json_config = variance_model.to_json()
+    with open('variance_model_config.json', 'w') as json_file:
+        json_file.write(json_config)
+    # Save weights to disk
+    variance_model.save_weights('path_to_my_weights.h5')
+
+    variance_predictions = variance_model.predict(x_test)
+
 
 
 if __name__ == "__main__":

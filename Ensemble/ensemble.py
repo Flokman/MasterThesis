@@ -329,10 +329,9 @@ def main():
 
 
 
-    confusion = tf.confusion_matrix(labels=y_test.argmax(axis=1), predictions=mcdo_ensemble_pred,
+    confusion = tf.math.confusion_matrix(labels=y_test.argmax(axis=1), predictions=mcdo_ensemble_pred,
                                     num_classes=NUM_CLASSES)
-
-    print(sess.run(confusion))
+    print(confusion)
 
     plt.hist(accs)
     plt.axvline(x=ensemble_acc, color="b")

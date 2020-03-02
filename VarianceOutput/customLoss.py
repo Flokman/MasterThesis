@@ -8,7 +8,7 @@ import abc
 import six
 import numpy as np
 
-from . import backend as K
+from tensorflow.keras import backend as K
 from .utils import losses_utils
 from .utils.generic_utils import deserialize_keras_object
 from .utils.generic_utils import serialize_keras_object
@@ -322,6 +322,21 @@ class CategoricalCrossentropy(LossFunctionWrapper):
 						label_smoothing=label_smoothing)
 
 
+class CategoricalVariance(LossFunctionWrapper):
+
+		def __init__(self,
+								 from_logits=False,
+								 label_smoothing=0,
+								 reduction=losses_utils.Reduction.SUM_OVER_BATCH_SIZE,
+								 name='categorical_variance'):
+				super(CategoricalVariance, self).__init__(
+						categorical_variance,
+						name=name,
+						reduction=reduction,
+						from_logits=from_logits,
+						label_smoothing=label_smoothing)
+
+
 class SparseCategoricalCrossentropy(LossFunctionWrapper):
 		"""Computes the crossentropy loss between the labels and predictions.
 		Use this crossentropy loss function when there are two or more label classes.
@@ -615,13 +630,17 @@ def categorical_variance(y_true, y_pred, from_logits=False, label_smoothing=0):
 
 		batch_size = y_true.shape[0]
 		num_class = y_true.shape[1] / 2
-		y_true_cat = y_true[:,:num_class-1]
-		y_pred_cat = y_pred[:,:num_class-1]
-		cce = categorical_crossentropy(y_true_cat, y_pred_cat, from_logits=from_logits, label_smoothing = label_smoothing)
-		cce_squared = np.square(cce)
-		
-		y_true_var = cce[,:]
+		y_true_cat = y_true[:,:num_class]
+		y_pred_cat = y_pred[:,:num_class]
 
+		cat_loss = categorical_crossentropy(y_true_cat, y_pred_cat, from_logits=from_logits, label_smoothing = label_smoothing)
+		
+		y_true_var = np.append(cat_loss, np.square(cat_loss[:,1:], axis=1))
+		y_pred_var = y_pred[:,num_class:]
+		
+		reg_los = y_pred_var - y_true_var
+
+		return np.append(cat_loss, reg_los)
 
 
 def sparse_categorical_crossentropy(y_true, y_pred, from_logits=False, axis=-1):
