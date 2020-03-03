@@ -37,7 +37,7 @@ WEIGHTS_PATH_NO_TOP = ('https://github.com/fchollet/deep-learning-models/'
 
 # Input image dimensions
 IMG_HEIGHT, IMG_WIDTH, IMG_DEPTH = 256, 256, 3
-DATASET_NAME = '/Messidor2_PNG_AUG_' + str(IMG_HEIGHT) + '.hdf5'
+DATASET_NAME = os.path.sep + 'Messidor2_PNG_' + str(IMG_HEIGHT) + '.hdf5'
 
 BATCH_SIZE = 32
 NUM_CLASSES = 5
@@ -59,7 +59,7 @@ ES_PATIENCE = 30
 # Get dataset path
 DIR_PATH_HEAD_TAIL = os.path.split(os.path.dirname(os.path.realpath(__file__)))
 ROOT_PATH = DIR_PATH_HEAD_TAIL[0]
-DATA_PATH = ROOT_PATH + '/Datasets' + DATASET_NAME
+DATA_PATH = ROOT_PATH + os.path.sep + 'Datasets' + DATASET_NAME
 
 @tf.function
 def categorical_variance(y_true, y_pred, from_logits=False, label_smoothing=0):
@@ -77,20 +77,20 @@ def categorical_variance(y_true, y_pred, from_logits=False, label_smoothing=0):
     # y_true = y_true.eval()
     # y_pred = y_pred.eval()
     # print(K.eval(y_true))
-    if y_true.shape[0] != None:
+    if y_true.shape[0] is not None:
         batch_size = y_true.shape[0].numpy()
         print("1")
         num_class = y_true.shape[1].numpy() / 2
         print("2")
-        y_true_cat = y_true[:,:num_class]
+        y_true_cat = y_true[:, :num_class]
         print("3")
-        y_pred_cat = y_pred[:,:num_class]
+        y_pred_cat = y_pred[:, :num_class]
         print("4")
 
         cat_loss = K.categorical_crossentropy(y_true_cat, y_pred_cat, from_logits=from_logits)
 
         print("5")
-        y_true_var = np.append(cat_loss, np.square(cat_loss[:,1:], axis=1))
+        y_true_var = np.append(cat_loss, np.square(cat_loss[:, 1:], axis=1))
         y_pred_var = y_pred[:,num_class:]
         
         reg_loss = y_pred_var - y_true_var
@@ -285,13 +285,13 @@ def main():
     x = Flatten(name='flatten')(x)
     x = Dense(4096, activation='relu', name='fc1')(x)
     last_layer = Dense(4096, activation='relu', name='fc2')(x)
-    classifier = Dense(NUM_CLASSES, activation='softmax', name='classification')(last_layer)
+    classifier = Dense(NUM_CLASSES*2, activation='softmax', name='classification')(last_layer)
 
-    # Regression layer
-    regression = Dense(NUM_CLASSES, activation='linear', name='variance')(last_layer)
+    # # Regression layer
+    # regression = Dense(NUM_CLASSES, activation='linear', name='variance')(last_layer)
 
     # Creating new model
-    variance_model = Model(inputs=all_layers[0].input, outputs=[classifier, regression])
+    variance_model = Model(inputs=all_layers[0].input, outputs=[classifier])
 
     variance_model.summary()
 
