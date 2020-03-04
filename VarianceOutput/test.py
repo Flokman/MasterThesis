@@ -18,6 +18,7 @@ plt.style.use("ggplot")
 
 from tensorflow.keras.models import Model
 from tensorflow.keras.layers import Input, Dense, Dropout, Flatten, Conv2D, MaxPooling2D
+from tensorflow.keras.layers import concatenate
 from tensorflow.keras import optimizers
 from tensorflow.keras.datasets import mnist
 from tensorflow.keras.applications.vgg16 import VGG16
@@ -57,80 +58,6 @@ TRAIN_ALL_LAYERS = True
 WEIGHTS_TO_USE = None
 LEARN_RATE = 0.00001
 ES_PATIENCE = 30
-
-
-
-@tf.function
-def categorical_variance(y_true, y_pred, from_logits=False, label_smoothing=0):
-    # y_true/pred has shape (batch, num_outputs)
-    y_pred = K.constant(y_pred) if not tf.is_tensor(y_pred) else y_pred
-    y_true = K.cast(y_true, y_pred.dtype)
-
-    # sess = tf.compat.v1.InteractiveSession()
-    
-
-
-    # tf.print(K.categorical_crossentropy(y_true, y_pred, from_logits=from_logits))
-    # y_true = y_true.eval()
-    # y_pred = y_pred.eval()
-    # print(K.eval(y_true))
-    # tf.print(y_pred)
-    # print(y_true)
-    
-    if y_true.shape[1] is not None:
-        # print("##############################################################")
-        # print(y_true, y_pred)
-        # # tf.print(y_pred)
-        # num_class = int(y_true.shape[1] / 2)
-        # print(num_class)
-        # y_true_cat = y_true[:, :num_class]
-        # print(y_true_cat)
-        # y_pred_cat = y_pred[:, :num_class]
-        # print(y_pred_cat)
-
-        # cat_loss = K.mean(K.square(y_pred_cat - y_true_cat), axis=-1)
-        # y_pred_var = y_pred[:, num_class:]
-        # print(y_pred_var)
-        
-        # reg_loss = K.mean(K.square(y_pred_var - cat_loss), axis=-1) #one value, only for correct label
-        # print(cat_loss)
-        # print(reg_loss)
-        # total_loss = K.concatenate([cat_loss, reg_loss], axis=0)
-        # print(total_loss)
-        # tf.print(total_loss)
-
-        # print("##############################################################")
-        # return total_loss
-
-        print("##############################################################")
-        print(y_true, y_pred)
-        num_class = int(y_true.shape[1] / 2)
-        print(num_class)
-        y_true_cat = y_true[:, :num_class]
-        y_pred_cat = y_pred[:, :num_class]
-
-        # TEST SQUARED ERROR
-        y_true_var = y_pred_cat - y_true_cat
-        # y_pred_var = y_pred[:, num_class:]
-        
-        y_true = K.concatenate([y_true_cat, y_true_var])
-        print(y_true)
-        print(y_pred)
-        
-        total_loss = K.mean(K.square(y_pred - y_true), axis=-1)
-        print(total_loss)
-
-
-        print("##############################################################")
-        return total_loss
-    else:
-        cat_loss = K.categorical_crossentropy(y_true, y_pred, from_logits=from_logits)
-        print("##############################################################")
-        print(y_true)
-        print("##############################################################")
-
-        return cat_loss
-
 
 
 def shuffle_data(x_to_shuff, y_to_shuff):
@@ -294,8 +221,42 @@ def prepare_data():
     return(x_train, y_train, x_test, y_test, test_img_idx)
 
 
+def categorical_variance(y_true, y_pred, from_logits=False):
+    y_pred = K.constant(y_pred) if not tf.is_tensor(y_pred) else y_pred
+    y_true = K.cast(y_true, y_pred.dtype)
+    
+    if y_true.shape[1] is not None:
+        print("##############################################################")
+        print(y_true, y_pred)
+        num_class = int(y_true.shape[1] / 2)
+
+        y_true_cat = y_true[:, :num_class]
+        y_pred_cat = y_pred[:, :num_class]
+
+        y_true_var = K.square(y_pred_cat - y_true_cat)
+        # y_pred_var = y_pred[:, num_class:]
+        
+        y_true = K.concatenate([y_true_cat, y_true_var])
+        print(y_true)
+        print(y_pred)
+        
+        total_loss = K.mean(K.square(y_pred - y_true), axis=-1)
+        # total_loss = K.categorical_crossentropy(y_true, y_pred, from_logits=from_logits)
+        print(total_loss)
+        print("##############################################################")
+
+        return total_loss
+    else:
+        cat_loss = K.categorical_crossentropy(y_true, y_pred, from_logits=from_logits)
+        return cat_loss
+
+
 def mean_pred(y_true, y_pred):
-    return K.mean(y_pred)
+    return K.mean(y_true - y_pred)
+
+
+def custom_act(x):
+    return tf.clip_by_value(x, 0, 100)
 
 
 def main():
@@ -322,17 +283,23 @@ def main():
     y_test = tf.keras.utils.to_categorical(y_test, NUM_CLASSES*2)
 
 
-    variance_model = Sequential()
-    variance_model.add(Conv2D(32, kernel_size=(3, 3),
+    inputs = layers.Input(shape=input_shape)
+
+    x = Conv2D(32, kernel_size=(3, 3),
                     activation='relu',
-                    input_shape=input_shape))
-    variance_model.add(Conv2D(64, (3, 3), activation='relu'))
-    variance_model.add(MaxPooling2D(pool_size=(2, 2)))
-    variance_model.add(Dropout(0.25))
-    variance_model.add(Flatten())
-    variance_model.add(Dense(128, activation='relu'))
-    variance_model.add(Dropout(0.5))
-    variance_model.add(Dense(NUM_CLASSES*2, activation='linear'))
+                    input_shape=input_shape)(inputs)
+    x = Conv2D(64, (3, 3), activation='relu')(x)
+    x = MaxPooling2D(pool_size=(2, 2))(x)
+    x = Dropout(0.25)(x)
+    x = Flatten()(x)
+    x = Dense(128, activation='relu')(x)
+    last = Dropout(0.5)(x)
+    classification = Dense(NUM_CLASSES, activation='softmax')(last)
+    variance = Dense(NUM_CLASSES, activation='linear')(last)
+
+    out = concatenate([classification, variance])
+
+    variance_model = Model(inputs=inputs, outputs=out)
 
     variance_model.summary()
 
@@ -382,17 +349,27 @@ def main():
     print('Test loss:', score[0])
     print('Test accuracy:', score[1])
     variance_predictions = variance_model.predict(x_test)
-    for i in range(0,10):
+    for i in range(0, 5):
+        print("True label: {}".format(np.argmax(y_test[i])))
         pred = variance_predictions[i]
-        print(pred)
+        # print(pred)
         classif = pred[:NUM_CLASSES]
-        classif_max = max(classif)
-        classif_ind = classif.index(classif_max) #NUPY ARRAY NO INDEX
-        print(classif_max, classif_ind)
+        # classif = [(float(i)+1)/2 for i in classif]
+        classif_max = np.amax(classif)
+        classif_ind = np.argmax(classif)
+        print(classif)
+        print("Predicted value: {}, predicted class: {}".format(classif_max, classif_ind))
+
         var = pred[NUM_CLASSES:]
-        var_max = max(var)
-        var_ind = var.index(var_max)
-        print(var_max, var_ind)
+        print(var)
+        var_min = np.amin(var)
+        var_ind = np.argmin(var)
+        print("Min uncertainty: {}, min index: {}".format(var_min, var_ind))
+
+
+        print("")
+        print("Value of predicted class: {}".format(var[classif_ind]))
+        print("##############################################################")
 
 
 if __name__ == "__main__":
