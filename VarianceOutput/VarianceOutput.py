@@ -17,7 +17,7 @@ import matplotlib.pyplot as plt
 plt.style.use("ggplot")
 
 from tensorflow.keras.models import Model
-from tensorflow.keras.layers import Input, Dense, BatchNormalization, Flatten
+from tensorflow.keras.layers import Input, Dense, BatchNormalization, Flatten, concatenate
 from tensorflow.keras import optimizers
 from tensorflow.keras.applications.vgg16 import VGG16
 from tensorflow.keras.preprocessing.image import ImageDataGenerator
@@ -60,48 +60,6 @@ ES_PATIENCE = 30
 DIR_PATH_HEAD_TAIL = os.path.split(os.path.dirname(os.path.realpath(__file__)))
 ROOT_PATH = DIR_PATH_HEAD_TAIL[0]
 DATA_PATH = ROOT_PATH + os.path.sep + 'Datasets' + DATASET_NAME
-
-@tf.function
-def categorical_variance(y_true, y_pred, from_logits=False, label_smoothing=0):
-    # y_true/pred has shape (batch, num_outputs)
-    y_pred = K.constant(y_pred) if not tf.is_tensor(y_pred) else y_pred
-    y_true = K.cast(y_true, y_pred.dtype)
-
-    # sess = tf.compat.v1.InteractiveSession()
-    
-
-    print("##############################################################")
-    # print(y_true)
-    print("##############################################################")
-    # tf.print(K.categorical_crossentropy(y_true, y_pred, from_logits=from_logits))
-    # y_true = y_true.eval()
-    # y_pred = y_pred.eval()
-    # print(K.eval(y_true))
-    if y_true.shape[0] is not None:
-        batch_size = y_true.shape[0].numpy()
-        print("1")
-        num_class = y_true.shape[1].numpy() / 2
-        print("2")
-        y_true_cat = y_true[:, :num_class]
-        print("3")
-        y_pred_cat = y_pred[:, :num_class]
-        print("4")
-
-        cat_loss = K.categorical_crossentropy(y_true_cat, y_pred_cat, from_logits=from_logits)
-
-        print("5")
-        y_true_var = np.append(cat_loss, np.square(cat_loss[:, 1:], axis=1))
-        y_pred_var = y_pred[:,num_class:]
-        
-        reg_loss = y_pred_var - y_true_var
-        
-        total_loss = tf.Tensor(np.append(cat_loss, reg_loss))
-        # sess.close()
-        return total_loss
-    cat_loss = K.categorical_crossentropy(y_true, y_pred, from_logits=from_logits)
-    # stacked = tf.stack(cat_loss, cat_loss)
-    return cat_loss
-
 
 
 def shuffle_data(x_to_shuff, y_to_shuff):
@@ -265,6 +223,44 @@ def prepare_data():
     return(x_train, y_train, x_test, y_test, test_img_idx)
 
 
+def categorical_variance(y_true, y_pred, from_logits=False):
+    y_pred = K.constant(y_pred) if not tf.is_tensor(y_pred) else y_pred
+    y_true = K.cast(y_true, y_pred.dtype)
+    
+    if y_true.shape[1] is not None:
+        print("##############################################################")
+        print(y_true, y_pred)
+        num_class = int(y_true.shape[1] / 2)
+
+        y_true_cat = y_true[:, :num_class]
+        y_pred_cat = y_pred[:, :num_class]
+
+        y_true_var = K.square(y_pred_cat - y_true_cat)
+        # y_pred_var = y_pred[:, num_class:]
+        
+        y_true = K.concatenate([y_true_cat, y_true_var])
+        # tf.print(y_true)
+        # tf.print(y_pred)
+        
+        total_loss = K.mean(K.square(y_pred - y_true), axis=-1)
+        # total_loss = K.categorical_crossentropy(y_true, y_pred, from_logits=from_logits)
+        print(total_loss)
+        print("##############################################################")
+
+        return total_loss
+    else:
+        cat_loss = K.categorical_crossentropy(y_true, y_pred, from_logits=from_logits)
+        return cat_loss
+
+
+def mean_pred(y_true, y_pred):
+    return K.mean(y_pred)
+
+
+def custom_act(x):
+    return tf.clip_by_value(x, 0, 100)
+
+
 def main():
     ''' Main function '''
     # Load data
@@ -285,13 +281,13 @@ def main():
     x = Flatten(name='flatten')(x)
     x = Dense(4096, activation='relu', name='fc1')(x)
     last_layer = Dense(4096, activation='relu', name='fc2')(x)
-    classifier = Dense(NUM_CLASSES*2, activation='softmax', name='classification')(last_layer)
+    classification = Dense(NUM_CLASSES, activation='softmax')(last_layer)
+    variance = Dense(NUM_CLASSES, activation='linear')(last_layer)
 
-    # # Regression layer
-    # regression = Dense(NUM_CLASSES, activation='linear', name='variance')(last_layer)
+    out = concatenate([classification, variance])
 
     # Creating new model
-    variance_model = Model(inputs=all_layers[0].input, outputs=[classifier])
+    variance_model = Model(inputs=all_layers[0].input, outputs=out)
 
     variance_model.summary()
 
@@ -301,7 +297,7 @@ def main():
     variance_model.compile(
         optimizer=adam,
         loss=categorical_variance,
-        metrics=['accuracy']
+        metrics=[mean_pred]
     )
 
     print("Start fitting")
@@ -337,14 +333,31 @@ def main():
                 validation_data=val_generator,
                 callbacks=[tensorboard_callback, early_stopping])
 
-    # Save JSON config to disk
-    json_config = variance_model.to_json()
-    with open('variance_model_config.json', 'w') as json_file:
-        json_file.write(json_config)
-    # Save weights to disk
-    variance_model.save_weights('path_to_my_weights.h5')
-
+    score = variance_model.evaluate(x_test, y_test, verbose=0)
+    print('Test loss:', score[0])
+    print('Test accuracy:', score[1])
     variance_predictions = variance_model.predict(x_test)
+    for i in range(0, 5):
+        print("True label: {}".format(np.argmax(y_test[i])))
+        pred = variance_predictions[i]
+        # print(pred)
+        classif = pred[:NUM_CLASSES]
+        # classif = [(float(i)+1)/2 for i in classif]
+        classif_max = np.amax(classif)
+        classif_ind = np.argmax(classif)
+        print(classif)
+        print("Predicted value: {}, predicted class: {}".format(classif_max, classif_ind))
+
+        var = pred[NUM_CLASSES:]
+        print(var)
+        var_min = np.amin(var)
+        var_ind = np.argmin(var)
+        print("Min uncertainty: {}, min index: {}".format(var_min, var_ind))
+
+
+        print("")
+        print("Value of predicted class: {}".format(var[classif_ind]))
+        print("##############################################################")
 
 
 
