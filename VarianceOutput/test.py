@@ -44,7 +44,7 @@ img_rows, img_cols = 28, 28
 
 BATCH_SIZE = 128
 NUM_CLASSES = 10
-EPOCHS = 100
+EPOCHS = 12
 N_ENSEMBLE_MEMBERS = 40
 AMOUNT_OF_PREDICTIONS = 50
 TEST_BATCH_SIZE = 250
@@ -71,17 +71,22 @@ def categorical_variance(y_true, y_pred, from_logits=False):
 
         y_true_cat = y_true[:, :num_class]
         y_pred_cat = y_pred[:, :num_class]
+        cat_loss = K.categorical_crossentropy(y_true_cat, y_pred_cat, from_logits=from_logits)
 
         y_true_var = K.square(y_pred_cat - y_true_cat)
-        # y_pred_var = y_pred[:, num_class:]
+        y_pred_var = y_pred[:, num_class:]
+        var_loss = K.mean(K.square(y_pred_var - y_true_var), axis=-1)
         
-        y_true = K.concatenate([y_true_cat, y_true_var])
-        tf.print(y_true)
-        tf.print(y_pred)
+        # y_true = K.concatenate([y_true_cat, y_true_var])
+        # tf.print(y_true)
+        # tf.print(y_pred)
         
-        total_loss = K.mean(K.square(y_pred - y_true), axis=-1)
+        # total_loss = K.mean(K.square(y_pred - y_true), axis=-1)
         # total_loss = K.categorical_crossentropy(y_true, y_pred, from_logits=from_logits)
-        print(total_loss)
+        # print(total_loss)
+        
+        total_loss = cat_loss + var_loss
+
         print("##############################################################")
 
         return total_loss
@@ -91,7 +96,7 @@ def categorical_variance(y_true, y_pred, from_logits=False):
 
 
 def mean_pred(y_true, y_pred):
-    return K.mean(y_pred)
+    return K.mean(y_true - y_pred)
 
 
 def custom_act(x):
@@ -134,7 +139,7 @@ def main():
     x = Dense(128, activation='relu')(x)
     last = Dropout(0.5)(x)
     classification = Dense(NUM_CLASSES, activation='softmax')(last)
-    variance = Dense(NUM_CLASSES, activation='linear')(last)
+    variance = Dense(NUM_CLASSES, activation='softmax')(last)
 
     out = concatenate([classification, variance])
 
@@ -148,7 +153,7 @@ def main():
     variance_model.compile(
         optimizer=adam,
         loss=categorical_variance,
-        metrics=[mean_pred]
+        metrics=['acc']
     )
 
     print("Start fitting")
@@ -184,31 +189,53 @@ def main():
                 validation_data=val_generator,
                 callbacks=[tensorboard_callback, early_stopping])
 
-    score = variance_model.evaluate(x_test, y_test, verbose=0)
-    print('Test loss:', score[0])
-    print('Test accuracy:', score[1])
+    # score = variance_model.predict(x_test, y_test, verbose=0)
+    # print('Test loss:', score[0])
+    # print('Test accuracy:', score[1])
     variance_predictions = variance_model.predict(x_test)
-    for i in range(0, 5):
-        print("True label: {}".format(np.argmax(y_test[i])))
-        pred = variance_predictions[i]
-        # print(pred)
+    true_labels = [np.argmax(i) for i in y_test]
+    wrong = 0
+    correct = 0
+
+    for ind, pred in enumerate(variance_predictions):
+        true_label = true_labels[ind]
         classif = pred[:NUM_CLASSES]
-        # classif = [(float(i)+1)/2 for i in classif]
-        classif_max = np.amax(classif)
         classif_ind = np.argmax(classif)
-        print(classif)
-        print("Predicted value: {}, predicted class: {}".format(classif_max, classif_ind))
-
         var = pred[NUM_CLASSES:]
-        print(var)
-        var_min = np.amin(var)
-        var_ind = np.argmin(var)
-        print("Min uncertainty: {}, min index: {}".format(var_min, var_ind))
+        var_wrong = var[classif_ind]
+        var_correct = var[true_label]
+
+        if classif_ind != true_label:
+            wrong += 1
+            print("Pred: {}, true: {}".format(classif_ind, true_label))
+            print("Var_pred: {}, var_true: {}".format(var_wrong, var_correct))
+        else:
+            correct += 1
+    
+    print("Correct: {}, wrong: {}, accuracy: {}%".format(correct, wrong, 100- (wrong/correct)*100))
 
 
-        print("")
-        print("Value of predicted class: {}".format(var[classif_ind]))
-        print("##############################################################")
+    # for i in range(0, 5):
+    #     print("True label: {}".format(np.argmax(y_test[i])))
+    #     pred = variance_predictions[i]
+    #     # print(pred)
+    #     classif = pred[:NUM_CLASSES]
+    #     # classif = [(float(i)+1)/2 for i in classif]
+    #     classif_max = np.amax(classif)
+    #     classif_ind = np.argmax(classif)
+    #     print(classif)
+    #     print("Predicted value: {}, predicted class: {}".format(classif_max, classif_ind))
+
+    #     var = pred[NUM_CLASSES:]
+    #     print(var)
+    #     var_min = np.amin(var)
+    #     var_ind = np.argmin(var)
+    #     print("Min uncertainty: {}, min index: {}".format(var_min, var_ind))
+
+
+    #     print("")
+    #     print("Value of predicted class: {}".format(var[classif_ind]))
+    #     print("##############################################################")
 
 
 if __name__ == "__main__":

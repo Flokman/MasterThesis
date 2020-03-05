@@ -228,37 +228,21 @@ def categorical_variance(y_true, y_pred, from_logits=False):
     y_true = K.cast(y_true, y_pred.dtype)
     
     if y_true.shape[1] is not None:
-        print("##############################################################")
-        print(y_true, y_pred)
         num_class = int(y_true.shape[1] / 2)
 
         y_true_cat = y_true[:, :num_class]
         y_pred_cat = y_pred[:, :num_class]
+        cat_loss = K.categorical_crossentropy(y_true_cat, y_pred_cat, from_logits=from_logits)
 
         y_true_var = K.square(y_pred_cat - y_true_cat)
-        # y_pred_var = y_pred[:, num_class:]
-        
-        y_true = K.concatenate([y_true_cat, y_true_var])
-        # tf.print(y_true)
-        # tf.print(y_pred)
-        
-        total_loss = K.mean(K.square(y_pred - y_true), axis=-1)
-        # total_loss = K.categorical_crossentropy(y_true, y_pred, from_logits=from_logits)
-        print(total_loss)
-        print("##############################################################")
-
+        y_pred_var = y_pred[:, num_class:]
+        var_loss = K.mean(K.square(y_pred_var - y_true_var), axis=-1)
+               
+        total_loss = cat_loss + var_loss
         return total_loss
     else:
         cat_loss = K.categorical_crossentropy(y_true, y_pred, from_logits=from_logits)
         return cat_loss
-
-
-def mean_pred(y_true, y_pred):
-    return K.mean(y_pred)
-
-
-def custom_act(x):
-    return tf.clip_by_value(x, 0, 100)
 
 
 def main():
@@ -282,7 +266,7 @@ def main():
     x = Dense(4096, activation='relu', name='fc1')(x)
     last_layer = Dense(4096, activation='relu', name='fc2')(x)
     classification = Dense(NUM_CLASSES, activation='softmax')(last_layer)
-    variance = Dense(NUM_CLASSES, activation='linear')(last_layer)
+    variance = Dense(NUM_CLASSES, activation='softmax')(last_layer)
 
     out = concatenate([classification, variance])
 
@@ -297,7 +281,7 @@ def main():
     variance_model.compile(
         optimizer=adam,
         loss=categorical_variance,
-        metrics=[mean_pred]
+        metrics=['acc']
     )
 
     print("Start fitting")
@@ -333,32 +317,34 @@ def main():
                 validation_data=val_generator,
                 callbacks=[tensorboard_callback, early_stopping])
 
-    score = variance_model.evaluate(x_test, y_test, verbose=0)
-    print('Test loss:', score[0])
-    print('Test accuracy:', score[1])
+    # Save JSON config to disk
+    json_config = variance_model.to_json()
+    with open('variance_model_config.json', 'w') as json_file:
+        json_file.write(json_config)
+    # Save weights to disk
+    variance_model.save_weights('path_to_my_weights.h5')
+
     variance_predictions = variance_model.predict(x_test)
-    for i in range(0, 5):
-        print("True label: {}".format(np.argmax(y_test[i])))
-        pred = variance_predictions[i]
-        # print(pred)
+    true_labels = [np.argmax(i) for i in y_test]
+    wrong = 0
+    correct = 0
+
+    for ind, pred in enumerate(variance_predictions):
+        true_label = true_labels[ind]
         classif = pred[:NUM_CLASSES]
-        # classif = [(float(i)+1)/2 for i in classif]
-        classif_max = np.amax(classif)
         classif_ind = np.argmax(classif)
-        print(classif)
-        print("Predicted value: {}, predicted class: {}".format(classif_max, classif_ind))
-
         var = pred[NUM_CLASSES:]
-        print(var)
-        var_min = np.amin(var)
-        var_ind = np.argmin(var)
-        print("Min uncertainty: {}, min index: {}".format(var_min, var_ind))
+        var_wrong = var[classif_ind]
+        var_correct = var[true_label]
 
-
-        print("")
-        print("Value of predicted class: {}".format(var[classif_ind]))
-        print("##############################################################")
-
+        if classif_ind != true_label:
+            wrong += 1
+            print("Pred: {}, true: {}".format(classif_ind, true_label))
+            print("Var_pred: {}, var_true: {}".format(var_wrong, var_correct))
+        else:
+            correct += 1
+    
+    print("Correct: {}, wrong: {}, accuracy: {}%".format(correct, wrong, 100- (wrong/correct)*100))
 
 
 if __name__ == "__main__":
