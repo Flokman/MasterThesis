@@ -37,7 +37,7 @@ WEIGHTS_PATH_NO_TOP = ('https://github.com/fchollet/deep-learning-models/'
 
 # Input image dimensions
 IMG_HEIGHT, IMG_WIDTH, IMG_DEPTH = 256, 256, 3
-DATASET_NAME = os.path.sep + 'Messidor2_PNG_' + str(IMG_HEIGHT) + '.hdf5'
+DATASET_NAME = os.path.sep + 'Messidor2_PNG_AUG_' + str(IMG_HEIGHT) + '.hdf5'
 
 BATCH_SIZE = 32
 NUM_CLASSES = 5
