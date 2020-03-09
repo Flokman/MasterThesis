@@ -44,7 +44,7 @@ img_rows, img_cols = 28, 28
 
 BATCH_SIZE = 128
 NUM_CLASSES = 10
-EPOCHS = 12
+EPOCHS = 100
 N_ENSEMBLE_MEMBERS = 40
 AMOUNT_OF_PREDICTIONS = 50
 TEST_BATCH_SIZE = 250
@@ -57,42 +57,81 @@ SAVE_AUGMENTATION_TO_HDF5 = True
 TRAIN_ALL_LAYERS = True
 WEIGHTS_TO_USE = None
 LEARN_RATE = 0.0001
-ES_PATIENCE = 30
+ES_PATIENCE = 130
 
 
 def categorical_variance(y_true, y_pred, from_logits=False):
     y_pred = K.constant(y_pred) if not tf.is_tensor(y_pred) else y_pred
     y_true = K.cast(y_true, y_pred.dtype)
+
+    y_true_cat = y_true[:, :NUM_CLASSES]
+    y_pred_cat = y_pred[:, :NUM_CLASSES]
+    # cat_loss = K.mean(K.square(y_pred_cat - y_true_cat), axis=-1)
+    cat_loss = K.categorical_crossentropy(y_true_cat, y_pred_cat, from_logits=from_logits)
+    # tf.print(y_pred_cat)
+    # tf.print(y_pred[:, NUM_CLASSES:])
+
+    # y_true_var = K.square(y_pred_cat - y_true_cat)
+    # y_pred_var = y_pred[:, NUM_CLASSES:]
+    # var_loss = K.mean(K.square(y_pred_var - y_true_var), axis=-1)
+    # total_loss = cat_loss + var_loss
+
+    # return total_loss
+
+    mask = K.less_equal(cat_loss, tf.constant(0.01))
+    # tf.print(mask)
+    y_true_var = K.square(y_pred_cat - y_true_cat)
+    y_pred_var = y_pred[:, NUM_CLASSES:]
+    var_loss = K.mean(K.square(y_pred_var - y_true_var), axis=-1)
+    total_loss = cat_loss + var_loss
+    loss = K.switch(mask, total_loss, cat_loss)
+
+    return loss
+
     
-    if y_true.shape[1] is not None:
-        print("##############################################################")
-        print(y_true, y_pred)
-        num_class = int(y_true.shape[1] / 2)
+    # if y_true.shape[1] is not None:
+    #     print("##############################################################")
+    #     print(y_true, y_pred)
+    #     num_class = int(y_true.shape[1] / 2)
 
-        y_true_cat = y_true[:, :num_class]
-        y_pred_cat = y_pred[:, :num_class]
-        cat_loss = K.categorical_crossentropy(y_true_cat, y_pred_cat, from_logits=from_logits)
+    #     y_true_cat = y_true[:, :num_class]
+    #     y_pred_cat = y_pred[:, :num_class]
+    #     cat_loss = K.categorical_crossentropy(y_true_cat, y_pred_cat, from_logits=from_logits)
 
-        y_true_var = K.square(y_pred_cat - y_true_cat)
-        y_pred_var = y_pred[:, num_class:]
-        var_loss = K.mean(K.square(y_pred_var - y_true_var), axis=-1)
+    #     y_true_var = K.square(y_pred_cat - y_true_cat)
+    #     y_pred_var = y_pred[:, num_class:]
+    #     var_loss = K.mean(K.square(y_pred_var - y_true_var), axis=-1)
+    #     total_loss = cat_loss + var_loss
+
+    #     return total_loss
+
+
+    #     # if K.less_equal(cat_loss, tf.constant(1)):
+    #     #     y_true_var = K.square(y_pred_cat - y_true_cat)
+    #     #     y_pred_var = y_pred[:, num_class:]
+    #     #     var_loss = K.mean(K.square(y_pred_var - y_true_var), axis=-1)
+    #     #     total_loss = cat_loss + var_loss
+
+    #     #     return total_loss
+    #     # else:
+    #     #     return cat_loss
+
+    #     # y_true = K.concatenate([y_true_cat, y_true_var])
+    #     # tf.print(y_true)
+    #     # tf.print(y_pred)
         
-        # y_true = K.concatenate([y_true_cat, y_true_var])
-        # tf.print(y_true)
-        # tf.print(y_pred)
+    #     # total_loss = K.mean(K.square(y_pred - y_true), axis=-1)
+    #     # total_loss = K.categorical_crossentropy(y_true, y_pred, from_logits=from_logits)
+    #     # print(total_loss)
         
-        # total_loss = K.mean(K.square(y_pred - y_true), axis=-1)
-        # total_loss = K.categorical_crossentropy(y_true, y_pred, from_logits=from_logits)
-        # print(total_loss)
         
-        total_loss = cat_loss + var_loss
 
-        print("##############################################################")
+    #     print("##############################################################")
 
-        return total_loss
-    else:
-        cat_loss = K.categorical_crossentropy(y_true, y_pred, from_logits=from_logits)
-        return cat_loss
+        
+    # else:
+    #     cat_loss = K.categorical_crossentropy(y_true, y_pred, from_logits=from_logits)
+    #     return cat_loss
 
 
 def mean_pred(y_true, y_pred):
@@ -139,7 +178,7 @@ def main():
     x = Dense(128, activation='relu')(x)
     last = Dropout(0.5)(x)
     classification = Dense(NUM_CLASSES, activation='softmax')(last)
-    variance = Dense(NUM_CLASSES, activation='softmax')(last)
+    variance = Dense(NUM_CLASSES, activation='linear')(last)
 
     out = concatenate([classification, variance])
 
@@ -189,6 +228,14 @@ def main():
                 validation_data=val_generator,
                 callbacks=[tensorboard_callback, early_stopping])
 
+
+    # Save JSON config to disk
+    json_config = variance_model.to_json()
+    with open('variance_model_config.json', 'w') as json_file:
+        json_file.write(json_config)
+    # Save weights to disk
+    variance_model.save_weights('path_to_my_weights.h5')
+
     # score = variance_model.predict(x_test, y_test, verbose=0)
     # print('Test loss:', score[0])
     # print('Test accuracy:', score[1])
@@ -196,46 +243,73 @@ def main():
     true_labels = [np.argmax(i) for i in y_test]
     wrong = 0
     correct = 0
+    supercorrect = 0
+    notsupercorrect = 0
+    match = 0
+    notmatch = 0
+    varcorrect = 0
+    varwrong = 0
 
     for ind, pred in enumerate(variance_predictions):
         true_label = true_labels[ind]
         classif = pred[:NUM_CLASSES]
         classif_ind = np.argmax(classif)
-        var = pred[NUM_CLASSES:]
+        var = np.abs(pred[NUM_CLASSES:])
         var_wrong = var[classif_ind]
         var_correct = var[true_label]
+        var_low = np.argmin(var)
 
         if classif_ind != true_label:
             wrong += 1
-            print("Pred: {}, true: {}".format(classif_ind, true_label))
-            print("Var_pred: {}, var_true: {}".format(var_wrong, var_correct))
-        else:
+            # print("Pred: {}, true: {}".format(classif_ind, true_label))
+            # print("Var_pred: {}, var_true: {}".format(var_wrong, var_correct))
+        if classif_ind == true_label:
             correct += 1
+        if classif_ind == true_label and classif_ind == var_low:
+            supercorrect += 1
+        if classif_ind != true_label and classif_ind != var_low:
+            notsupercorrect += 1
+        if classif_ind == var_low:
+            match += 1
+        if classif_ind != var_low:
+            notmatch += 1
+        if var_low == true_label:
+            varcorrect +=1
+        if var_low != true_label:
+            varwrong  += 1
     
-    print("Correct: {}, wrong: {}, accuracy: {}%".format(correct, wrong, 100- (wrong/correct)*100))
+    total = len(variance_predictions)
+    print("Correct: {}, wrong: {}, accuracy: {}%".format(correct, wrong, (correct/(total))*100))
+    print("Varcorrect: {}, varwrong: {}, accuracy: {}%".format(varcorrect, varwrong, (varcorrect/(total))*100))
+    print("Supercorrect: {}, superwrong: {}, accuracy: {}%".format(supercorrect, notsupercorrect, (supercorrect/(total))*100))
+    print("match: {}, notmatch: {}, accuracy: {}%".format(match, notmatch, (match/(total))*100))
+
+    # print("Correct: {}, wrong: {}, accuracy: {}%".format(correct, wrong, (correct/(correct + wrong))*100))
+    # print("Supercorrect: {}, superwrong: {}, accuracy: {}%".format(supercorrect, notsupercorrect, (supercorrect/(supercorrect + notsupercorrect))*100))
+    # print("match: {}, notmatch: {}, accuracy: {}%".format(match, notmatch, (match/(match + notmatch))*100))
 
 
-    # for i in range(0, 5):
-    #     print("True label: {}".format(np.argmax(y_test[i])))
-    #     pred = variance_predictions[i]
-    #     # print(pred)
-    #     classif = pred[:NUM_CLASSES]
-    #     # classif = [(float(i)+1)/2 for i in classif]
-    #     classif_max = np.amax(classif)
-    #     classif_ind = np.argmax(classif)
-    #     print(classif)
-    #     print("Predicted value: {}, predicted class: {}".format(classif_max, classif_ind))
+    for i in range(0, 5):
+        print("True label: {}".format(np.argmax(y_test[i])))
+        pred = variance_predictions[i]
+        # print(pred)
+        classif = pred[:NUM_CLASSES]
+        # classif = [(float(i)+1)/2 for i in classif]
+        classif_max = np.amax(classif)
+        classif_ind = np.argmax(classif)
+        print(classif)
+        print("Predicted value: {}, predicted class: {}".format(classif_max, classif_ind))
 
-    #     var = pred[NUM_CLASSES:]
-    #     print(var)
-    #     var_min = np.amin(var)
-    #     var_ind = np.argmin(var)
-    #     print("Min uncertainty: {}, min index: {}".format(var_min, var_ind))
+        var = np.abs(pred[NUM_CLASSES:])
+        print(var)
+        var_min = np.amin(var)
+        var_ind = np.argmin(var)
+        print("Min uncertainty: {}, min index: {}".format(var_min, var_ind))
 
 
-    #     print("")
-    #     print("Value of predicted class: {}".format(var[classif_ind]))
-    #     print("##############################################################")
+        print("")
+        print("Value of predicted class: {}".format(var[classif_ind]))
+        print("##############################################################")
 
 
 if __name__ == "__main__":
