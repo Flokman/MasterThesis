@@ -1,0 +1,119 @@
+
+The following have been reloaded with a version change:
+  1) FFTW/3.3.8-gompic-2019b => FFTW/3.3.8-gompi-2019b
+  2) OpenMPI/3.1.4-gcccuda-2019b => OpenMPI/3.1.4-GCC-8.3.0
+  3) ScaLAPACK/2.0.2-gompic-2019b => ScaLAPACK/2.0.2-gompi-2019b
+  4) SciPy-bundle/2019.10-fosscuda-2019b-Python-3.7.4 => SciPy-bundle/2019.10-foss-2019b-Python-3.7.4
+
+2020-03-10 15:26:47.359089: I tensorflow/stream_executor/platform/default/dso_loader.cc:44] Successfully opened dynamic library libcudart.so.10.1
+2020-03-10 15:26:52.639923: I tensorflow/stream_executor/platform/default/dso_loader.cc:44] Successfully opened dynamic library libcuda.so.1
+2020-03-10 15:26:52.646718: I tensorflow/stream_executor/cuda/cuda_gpu_executor.cc:981] successful NUMA node read from SysFS had negative value (-1), but there must be at least one NUMA node, so returning NUMA node zero
+2020-03-10 15:26:52.647202: I tensorflow/core/common_runtime/gpu/gpu_device.cc:1555] Found device 0 with properties: 
+pciBusID: 0000:02:00.0 name: GRID V100D-32Q computeCapability: 7.0
+coreClock: 1.38GHz coreCount: 80 deviceMemorySize: 31.87GiB deviceMemoryBandwidth: 836.37GiB/s
+2020-03-10 15:26:52.647255: I tensorflow/stream_executor/platform/default/dso_loader.cc:44] Successfully opened dynamic library libcudart.so.10.1
+2020-03-10 15:26:52.650792: I tensorflow/stream_executor/platform/default/dso_loader.cc:44] Successfully opened dynamic library libcublas.so.10
+2020-03-10 15:26:52.653663: I tensorflow/stream_executor/platform/default/dso_loader.cc:44] Successfully opened dynamic library libcufft.so.10
+2020-03-10 15:26:52.654492: I tensorflow/stream_executor/platform/default/dso_loader.cc:44] Successfully opened dynamic library libcurand.so.10
+2020-03-10 15:26:52.657389: I tensorflow/stream_executor/platform/default/dso_loader.cc:44] Successfully opened dynamic library libcusolver.so.10
+2020-03-10 15:26:52.658777: I tensorflow/stream_executor/platform/default/dso_loader.cc:44] Successfully opened dynamic library libcusparse.so.10
+2020-03-10 15:26:52.663932: I tensorflow/stream_executor/platform/default/dso_loader.cc:44] Successfully opened dynamic library libcudnn.so.7
+2020-03-10 15:26:52.664109: I tensorflow/stream_executor/cuda/cuda_gpu_executor.cc:981] successful NUMA node read from SysFS had negative value (-1), but there must be at least one NUMA node, so returning NUMA node zero
+2020-03-10 15:26:52.664695: I tensorflow/stream_executor/cuda/cuda_gpu_executor.cc:981] successful NUMA node read from SysFS had negative value (-1), but there must be at least one NUMA node, so returning NUMA node zero
+2020-03-10 15:26:52.665113: I tensorflow/core/common_runtime/gpu/gpu_device.cc:1697] Adding visible gpu devices: 0
+2020-03-10 15:26:52.667828: I tensorflow/stream_executor/cuda/cuda_gpu_executor.cc:981] successful NUMA node read from SysFS had negative value (-1), but there must be at least one NUMA node, so returning NUMA node zero
+2020-03-10 15:26:52.668265: I tensorflow/core/common_runtime/gpu/gpu_device.cc:1555] Found device 0 with properties: 
+pciBusID: 0000:02:00.0 name: GRID V100D-32Q computeCapability: 7.0
+coreClock: 1.38GHz coreCount: 80 deviceMemorySize: 31.87GiB deviceMemoryBandwidth: 836.37GiB/s
+2020-03-10 15:26:52.668309: I tensorflow/stream_executor/platform/default/dso_loader.cc:44] Successfully opened dynamic library libcudart.so.10.1
+2020-03-10 15:26:52.668347: I tensorflow/stream_executor/platform/default/dso_loader.cc:44] Successfully opened dynamic library libcublas.so.10
+2020-03-10 15:26:52.668371: I tensorflow/stream_executor/platform/default/dso_loader.cc:44] Successfully opened dynamic library libcufft.so.10
+2020-03-10 15:26:52.668394: I tensorflow/stream_executor/platform/default/dso_loader.cc:44] Successfully opened dynamic library libcurand.so.10
+2020-03-10 15:26:52.668417: I tensorflow/stream_executor/platform/default/dso_loader.cc:44] Successfully opened dynamic library libcusolver.so.10
+2020-03-10 15:26:52.668440: I tensorflow/stream_executor/platform/default/dso_loader.cc:44] Successfully opened dynamic library libcusparse.so.10
+2020-03-10 15:26:52.668463: I tensorflow/stream_executor/platform/default/dso_loader.cc:44] Successfully opened dynamic library libcudnn.so.7
+2020-03-10 15:26:52.668570: I tensorflow/stream_executor/cuda/cuda_gpu_executor.cc:981] successful NUMA node read from SysFS had negative value (-1), but there must be at least one NUMA node, so returning NUMA node zero
+2020-03-10 15:26:52.669084: I tensorflow/stream_executor/cuda/cuda_gpu_executor.cc:981] successful NUMA node read from SysFS had negative value (-1), but there must be at least one NUMA node, so returning NUMA node zero
+2020-03-10 15:26:52.669478: I tensorflow/core/common_runtime/gpu/gpu_device.cc:1697] Adding visible gpu devices: 0
+2020-03-10 15:26:52.669529: I tensorflow/stream_executor/platform/default/dso_loader.cc:44] Successfully opened dynamic library libcudart.so.10.1
+2020-03-10 15:26:53.398077: I tensorflow/core/common_runtime/gpu/gpu_device.cc:1096] Device interconnect StreamExecutor with strength 1 edge matrix:
+2020-03-10 15:26:53.398162: I tensorflow/core/common_runtime/gpu/gpu_device.cc:1102]      0 
+2020-03-10 15:26:53.398177: I tensorflow/core/common_runtime/gpu/gpu_device.cc:1115] 0:   N 
+2020-03-10 15:26:53.398459: I tensorflow/stream_executor/cuda/cuda_gpu_executor.cc:981] successful NUMA node read from SysFS had negative value (-1), but there must be at least one NUMA node, so returning NUMA node zero
+2020-03-10 15:26:53.399100: I tensorflow/stream_executor/cuda/cuda_gpu_executor.cc:981] successful NUMA node read from SysFS had negative value (-1), but there must be at least one NUMA node, so returning NUMA node zero
+2020-03-10 15:26:53.399646: I tensorflow/stream_executor/cuda/cuda_gpu_executor.cc:981] successful NUMA node read from SysFS had negative value (-1), but there must be at least one NUMA node, so returning NUMA node zero
+2020-03-10 15:26:53.400050: I tensorflow/core/common_runtime/gpu/gpu_device.cc:1241] Created TensorFlow device (/job:localhost/replica:0/task:0/device:GPU:0 with 28652 MB memory) -> physical GPU (device: 0, name: GRID V100D-32Q, pci bus id: 0000:02:00.0, compute capability: 7.0)
+2020-03-10 15:26:53.400611: I tensorflow/core/common_runtime/process_util.cc:147] Creating new thread pool with default inter op setting: 2. Tune using inter_op_parallelism_threads for best performance.
+2020-03-10 15:26:54.921563: I tensorflow/stream_executor/platform/default/dso_loader.cc:44] Successfully opened dynamic library libcublas.so.10
+2020-03-10 15:26:55.210473: I tensorflow/stream_executor/platform/default/dso_loader.cc:44] Successfully opened dynamic library libcudnn.so.7
+/data/s2934833/MasterThesis/Test/test_images/*
+x_pred shape: (5, 256, 256, 3)
+5 x_pred samples
+Predicted class: 4, Uncertainty of prediction: 18.78%
+class: 0; proba: 0.0%; var: -3.38% 
+class: 1; proba: 0.0%; var: 1.37% 
+class: 2; proba: 43.1%; var: 10.45% 
+class: 3; proba: 1.6%; var: 4.12% 
+class: 4; proba: 55.3%; var: 18.78% 
+Predicted class: 3, Uncertainty of prediction: -7.47%
+class: 0; proba: 0.0%; var: -0.81% 
+class: 1; proba: 0.0%; var: 17.11% 
+class: 2; proba: 0.0%; var: -2.59% 
+class: 3; proba: 100.0%; var: -7.47% 
+class: 4; proba: 0.0%; var: 3.62% 
+Predicted class: 3, Uncertainty of prediction: 1.60%
+class: 0; proba: 33.2%; var: 7.48% 
+class: 1; proba: 0.0%; var: -6.77% 
+class: 2; proba: 4.0%; var: 8.86% 
+class: 3; proba: 62.8%; var: 1.60% 
+class: 4; proba: 0.0%; var: 6.95% 
+Predicted class: 3, Uncertainty of prediction: -0.75%
+class: 0; proba: 29.7%; var: -5.40% 
+class: 1; proba: 11.8%; var: -12.47% 
+class: 2; proba: 0.3%; var: -1.73% 
+class: 3; proba: 58.2%; var: -0.75% 
+class: 4; proba: 0.0%; var: 15.68% 
+Predicted class: 3, Uncertainty of prediction: 6.96%
+class: 0; proba: 0.0%; var: -11.81% 
+class: 1; proba: 4.2%; var: -2.42% 
+class: 2; proba: 25.4%; var: -5.57% 
+class: 3; proba: 66.3%; var: 6.96% 
+class: 4; proba: 4.0%; var: 3.05% 
+
+
+###############################################################################
+Peregrine Cluster
+Job 10028514 for user 's2934833'
+Finished at: Tue Mar 10 15:26:58 CET 2020
+
+Job details:
+============
+
+Name                : use_varianceOutput
+User                : s2934833
+Partition           : gpu
+Nodes               : pg-gpu11
+Cores               : 12
+State               : COMPLETED
+Submit              : 2020-03-10T13:48:37
+Start               : 2020-03-10T15:26:44
+End                 : 2020-03-10T15:26:58
+Reserved walltime   : 00:05:00
+Used walltime       : 00:00:14
+Used CPU time       : 00:00:10 (efficiency:  6.12%)
+% User (Computation): 68.48%
+% System (I/O)      : 31.51%
+Mem reserved        : 32000M/node
+Max Mem used        : 0.00  (pg-gpu11)
+Max Disk Write      : 0.00  (pg-gpu11)
+Max Disk Read       : 0.00  (pg-gpu11)
+
+
+Acknowledgements:
+=================
+
+Please see this page for information about acknowledging Peregrine in your publications:
+
+https://wiki.hpc.rug.nl/peregrine/additional_information/scientific_output
+
+################################################################################
