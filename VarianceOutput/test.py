@@ -44,20 +44,28 @@ img_rows, img_cols = 28, 28
 
 BATCH_SIZE = 128
 NUM_CLASSES = 10
-EPOCHS = 100
-N_ENSEMBLE_MEMBERS = 40
-AMOUNT_OF_PREDICTIONS = 50
+EPOCHS_1 = 12
+ES_PATIENCE_1 = 10
+EPOCHS_2 = 100
+ES_PATIENCE_2 = 5
+
 TEST_BATCH_SIZE = 250
 TRAIN_TEST_SPLIT = 0.8 # Value between 0 and 1, e.g. 0.8 creates 80%/20% division train/test
 TRAIN_VAL_SPLIT = 0.9
-TO_SHUFFLE = True
-AUGMENTATION = False
-LABEL_NORMALIZER = True
-SAVE_AUGMENTATION_TO_HDF5 = True
-TRAIN_ALL_LAYERS = True
-WEIGHTS_TO_USE = None
+
 LEARN_RATE = 0.0001
-ES_PATIENCE = 130
+
+
+def categorical_cross(y_true, y_pred, from_logits=False):
+    y_pred = K.constant(y_pred) if not tf.is_tensor(y_pred) else y_pred
+    y_true = K.cast(y_true, y_pred.dtype)
+
+    y_true_cat = y_true[:, :NUM_CLASSES]
+    y_pred_cat = y_pred[:, :NUM_CLASSES]
+    # cat_loss = K.mean(K.square(y_pred_cat - y_true_cat), axis=-1)
+    cat_loss = K.categorical_crossentropy(y_true_cat, y_pred_cat, from_logits=from_logits)
+    
+    return cat_loss
 
 
 def categorical_variance(y_true, y_pred, from_logits=False):
@@ -68,26 +76,24 @@ def categorical_variance(y_true, y_pred, from_logits=False):
     y_pred_cat = y_pred[:, :NUM_CLASSES]
     # cat_loss = K.mean(K.square(y_pred_cat - y_true_cat), axis=-1)
     cat_loss = K.categorical_crossentropy(y_true_cat, y_pred_cat, from_logits=from_logits)
-    # tf.print(y_pred_cat)
-    # tf.print(y_pred[:, NUM_CLASSES:])
 
+    y_pred_cat_abs = K.abs(y_pred_cat)
+    y_true_var = K.square(y_pred_cat_abs - y_true_cat)
+    y_pred_var = y_pred[:, NUM_CLASSES:]
+    var_loss = K.mean(K.square(y_pred_var - y_true_var), axis=-1)
+    total_loss = cat_loss + var_loss
+
+    return total_loss
+
+
+    # # mask = K.greater_equal(LOSS_SWITCH_COUNTER, tf.constant(BATCH_SIZE))
     # y_true_var = K.square(y_pred_cat - y_true_cat)
     # y_pred_var = y_pred[:, NUM_CLASSES:]
     # var_loss = K.mean(K.square(y_pred_var - y_true_var), axis=-1)
     # total_loss = cat_loss + var_loss
+    # # loss = K.switch(mask, total_loss, cat_loss)
 
-    # return total_loss
-
-    mask = K.less_equal(cat_loss, tf.constant(0.01))
-    # tf.print(mask)
-    y_true_var = K.square(y_pred_cat - y_true_cat)
-    y_pred_var = y_pred[:, NUM_CLASSES:]
-    var_loss = K.mean(K.square(y_pred_var - y_true_var), axis=-1)
-    total_loss = cat_loss + var_loss
-    loss = K.switch(mask, total_loss, cat_loss)
-
-    return loss
-
+    # return loss
     
     # if y_true.shape[1] is not None:
     #     print("##############################################################")
@@ -191,7 +197,7 @@ def main():
 
     variance_model.compile(
         optimizer=adam,
-        loss=categorical_variance,
+        loss=categorical_cross,
         metrics=['acc']
     )
 
@@ -207,8 +213,8 @@ def main():
     os.chdir(fig_dir)
 
     tensorboard_callback = tf.keras.callbacks.TensorBoard(log_dir=log_dir)
-    early_stopping = tf.keras.callbacks.EarlyStopping(monitor='val_loss',
-                                                      mode='auto', verbose=1, patience=ES_PATIENCE)
+    early_stopping_1 = tf.keras.callbacks.EarlyStopping(monitor='val_loss',
+                                                      mode='auto', verbose=1, patience=ES_PATIENCE_1)
 
 
     datagen = ImageDataGenerator(rescale=1./255)
@@ -223,10 +229,24 @@ def main():
 
 
     variance_model.fit(train_generator,
-                epochs=EPOCHS,
-                verbose=2,
-                validation_data=val_generator,
-                callbacks=[tensorboard_callback, early_stopping])
+                       epochs=EPOCHS_1,
+                       verbose=2,
+                       validation_data=val_generator,
+                       callbacks=[tensorboard_callback, early_stopping_1])
+
+    variance_model.compile(
+        optimizer=adam,
+        loss=categorical_variance,
+        metrics=['acc']
+    )
+    early_stopping_2 = tf.keras.callbacks.EarlyStopping(monitor='val_loss',
+                                                      mode='auto', verbose=1, patience=ES_PATIENCE_2)
+
+    variance_model.fit(train_generator,
+                       epochs=EPOCHS_2,
+                       verbose=2,
+                       validation_data=val_generator,
+                       callbacks=[tensorboard_callback, early_stopping_2])
 
 
     # Save JSON config to disk
@@ -255,14 +275,22 @@ def main():
         classif = pred[:NUM_CLASSES]
         classif_ind = np.argmax(classif)
         var = np.abs(pred[NUM_CLASSES:])
-        var_wrong = var[classif_ind]
+
+        for i in range(0, NUM_CLASSES):
+            raw_var = var[i]
+            if_true_error = pow((classif[i] - 1), 2)
+            var[i] = abs(if_true_error - raw_var)
+
+        var_pred = var[classif_ind]
         var_correct = var[true_label]
         var_low = np.argmin(var)
+
+
 
         if classif_ind != true_label:
             wrong += 1
             # print("Pred: {}, true: {}".format(classif_ind, true_label))
-            # print("Var_pred: {}, var_true: {}".format(var_wrong, var_correct))
+            # print("Var_pred: {}, var_true: {}".format(var_pred, var_correct))
         if classif_ind == true_label:
             correct += 1
         if classif_ind == true_label and classif_ind == var_low:

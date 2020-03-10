@@ -41,9 +41,11 @@ DATASET_NAME = os.path.sep + 'Messidor2_PNG_AUG_' + str(IMG_HEIGHT) + '.hdf5'
 
 BATCH_SIZE = 32
 NUM_CLASSES = 5
-EPOCHS = 500
-N_ENSEMBLE_MEMBERS = 40
-AMOUNT_OF_PREDICTIONS = 50
+EPOCHS_1 = 120
+ES_PATIENCE_1 = 30
+EPOCHS_2 = 300
+ES_PATIENCE_2 = 50
+
 TEST_BATCH_SIZE = 250
 TRAIN_TEST_SPLIT = 0.8 # Value between 0 and 1, e.g. 0.8 creates 80%/20% division train/test
 TRAIN_VAL_SPLIT = 0.9
@@ -54,7 +56,7 @@ SAVE_AUGMENTATION_TO_HDF5 = True
 TRAIN_ALL_LAYERS = True
 WEIGHTS_TO_USE = None
 LEARN_RATE = 0.00001
-ES_PATIENCE = 30
+
 
 # Get dataset path
 DIR_PATH_HEAD_TAIL = os.path.split(os.path.dirname(os.path.realpath(__file__)))
@@ -194,18 +196,18 @@ def prepare_data():
     # For evaluation, this image is put in the fig_dir created above
     test_img_idx = random.randint(0, len(x_test) - 1)
 
-    print("""dataset_name = {}, batch_size = {}, num_classes = {}, epochs = {},
-        MCBN_amount_of_predictions = {}, test_img_idx = {},
+    print("""dataset_name = {}, batch_size = {}, num_classes = {}, epochs_1 = {},
+        epochts_2 = {}, test_img_idx = {},
         train_test_split = {}, to_shuffle = {}, augmentation = {}, label_count = {},
         label_normalizer = {}, save_augmentation_to_hdf5 = {}, learn rate = {},
         train_all_layers = {}, weights_to_use = {},
-        es_patience = {}, train_val_split = {}""".format(
-            DATASET_NAME, BATCH_SIZE, NUM_CLASSES, EPOCHS,
-            AMOUNT_OF_PREDICTIONS, test_img_idx,
+        es_patience_1 = {}, es_patience_2 = {}, train_val_split = {}""".format(
+            DATASET_NAME, BATCH_SIZE, NUM_CLASSES, EPOCHS_1,
+            EPOCHS_2, test_img_idx,
             TRAIN_TEST_SPLIT, TO_SHUFFLE, AUGMENTATION, label_count,
             LABEL_NORMALIZER, SAVE_AUGMENTATION_TO_HDF5, LEARN_RATE,
             TRAIN_ALL_LAYERS, WEIGHTS_TO_USE,
-            ES_PATIENCE, TRAIN_VAL_SPLIT))
+            ES_PATIENCE_1, ES_PATIENCE_2, TRAIN_VAL_SPLIT))
 
     x_train = np.asarray(x_train)
     y_train = np.asarray(y_train)
@@ -223,27 +225,36 @@ def prepare_data():
     return(x_train, y_train, x_test, y_test, test_img_idx)
 
 
+def categorical_cross(y_true, y_pred, from_logits=False):
+    y_pred = K.constant(y_pred) if not tf.is_tensor(y_pred) else y_pred
+    y_true = K.cast(y_true, y_pred.dtype)
+
+    y_true_cat = y_true[:, :NUM_CLASSES]
+    y_pred_cat = y_pred[:, :NUM_CLASSES]
+    # cat_loss = K.mean(K.square(y_pred_cat - y_true_cat), axis=-1)
+    cat_loss = K.categorical_crossentropy(y_true_cat, y_pred_cat, from_logits=from_logits)
+    
+    return cat_loss
+
+
 def categorical_variance(y_true, y_pred, from_logits=False):
     y_pred = K.constant(y_pred) if not tf.is_tensor(y_pred) else y_pred
     y_true = K.cast(y_true, y_pred.dtype)
-    
-    if y_true.shape[1] is not None:
-        num_class = int(y_true.shape[1] / 2)
 
-        y_true_cat = y_true[:, :num_class]
-        y_pred_cat = y_pred[:, :num_class]
-        cat_loss = K.categorical_crossentropy(y_true_cat, y_pred_cat, from_logits=from_logits)
+    y_true_cat = y_true[:, :NUM_CLASSES]
+    y_pred_cat = y_pred[:, :NUM_CLASSES]
+    # cat_loss = K.mean(K.square(y_pred_cat - y_true_cat), axis=-1)
+    cat_loss = K.categorical_crossentropy(y_true_cat, y_pred_cat, from_logits=from_logits)
 
-        y_true_var = K.square(y_pred_cat - y_true_cat)
-        y_pred_var = y_pred[:, num_class:]
-        var_loss = K.mean(K.square(y_pred_var - y_true_var), axis=-1)
-               
-        total_loss = cat_loss + var_loss
-        return total_loss
-    else:
-        cat_loss = K.categorical_crossentropy(y_true, y_pred, from_logits=from_logits)
-        return cat_loss
+    # TODO: test first abs of y_pred_cat
+    # Is error only modelled after being right? Or also wrong?
+    y_pred_cat_abs = K.abs(y_pred_cat)
+    y_true_var = K.square(y_pred_cat_abs - y_true_cat)
+    y_pred_var = y_pred[:, NUM_CLASSES:]
+    var_loss = K.mean(K.square(y_pred_var - y_true_var), axis=-1)
+    total_loss = cat_loss + var_loss
 
+    return total_loss
 
 def main():
     ''' Main function '''
@@ -266,7 +277,7 @@ def main():
     x = Dense(4096, activation='relu', name='fc1')(x)
     last_layer = Dense(4096, activation='relu', name='fc2')(x)
     classification = Dense(NUM_CLASSES, activation='softmax')(last_layer)
-    variance = Dense(NUM_CLASSES, activation='softmax')(last_layer)
+    variance = Dense(NUM_CLASSES, activation='linear')(last_layer)
 
     out = concatenate([classification, variance])
 
@@ -280,7 +291,7 @@ def main():
 
     variance_model.compile(
         optimizer=adam,
-        loss=categorical_variance,
+        loss=categorical_cross,
         metrics=['acc']
     )
 
@@ -296,8 +307,8 @@ def main():
     os.chdir(fig_dir)
 
     tensorboard_callback = tf.keras.callbacks.TensorBoard(log_dir=log_dir)
-    early_stopping = tf.keras.callbacks.EarlyStopping(monitor='val_loss',
-                                                      mode='auto', verbose=1, patience=ES_PATIENCE)
+    early_stopping_1 = tf.keras.callbacks.EarlyStopping(monitor='val_loss',
+                                                      mode='auto', verbose=1, patience=ES_PATIENCE_1)
 
 
     datagen = ImageDataGenerator(rescale=1./255, dtype='ndarray')
@@ -312,10 +323,25 @@ def main():
 
 
     variance_model.fit(train_generator,
-                epochs=EPOCHS,
+                epochs=EPOCHS_1,
                 verbose=2,
                 validation_data=val_generator,
-                callbacks=[tensorboard_callback, early_stopping])
+                callbacks=[tensorboard_callback, early_stopping_1])
+
+    variance_model.compile(
+        optimizer=adam,
+        loss=categorical_variance,
+        metrics=['acc']
+    )
+
+    early_stopping_2 = tf.keras.callbacks.EarlyStopping(monitor='val_loss',
+                                                      mode='auto', verbose=1, patience=ES_PATIENCE_2)
+
+    variance_model.fit(train_generator,
+                       epochs=EPOCHS_2,
+                       verbose=2,
+                       validation_data=val_generator,
+                       callbacks=[tensorboard_callback, early_stopping_2])
 
     # Save JSON config to disk
     json_config = variance_model.to_json()
@@ -328,24 +354,53 @@ def main():
     true_labels = [np.argmax(i) for i in y_test]
     wrong = 0
     correct = 0
+    supercorrect = 0
+    notsupercorrect = 0
+    match = 0
+    notmatch = 0
+    varcorrect = 0
+    varwrong = 0
 
     for ind, pred in enumerate(variance_predictions):
         true_label = true_labels[ind]
         classif = pred[:NUM_CLASSES]
         classif_ind = np.argmax(classif)
-        var = pred[NUM_CLASSES:]
+        var = np.abs(pred[NUM_CLASSES:])
+
+        for i in range(0, NUM_CLASSES):
+            raw_var = var[i]
+            if_true_error = pow((classif[i] - 1), 2)
+            var[i] = abs(if_true_error - raw_var)
+
         var_wrong = var[classif_ind]
         var_correct = var[true_label]
+        var_low = np.argmin(var)
 
         if classif_ind != true_label:
             wrong += 1
-            print("Pred: {}, true: {}".format(classif_ind, true_label))
-            print("Var_pred: {}, var_true: {}".format(var_wrong, var_correct))
-        else:
+            # print("Pred: {}, true: {}".format(classif_ind, true_label))
+            # print("Var_pred: {}, var_true: {}".format(var_wrong, var_correct))
+        if classif_ind == true_label:
             correct += 1
+        if classif_ind == true_label and classif_ind == var_low:
+            supercorrect += 1
+        if classif_ind != true_label and classif_ind != var_low:
+            notsupercorrect += 1
+        if classif_ind == var_low:
+            match += 1
+        if classif_ind != var_low:
+            notmatch += 1
+        if var_low == true_label:
+            varcorrect +=1
+        if var_low != true_label:
+            varwrong  += 1
     
-    print("Correct: {}, wrong: {}, accuracy: {}%".format(correct, wrong, 100- (wrong/correct)*100))
-
+    # TODO check if var for actual class is beneath certain threshold
+    total = len(variance_predictions)
+    print("Correct: {}, wrong: {}, accuracy: {}%".format(correct, wrong, (correct/(total))*100))
+    print("Varcorrect: {}, varwrong: {}, accuracy: {}%".format(varcorrect, varwrong, (varcorrect/(total))*100))
+    print("Supercorrect: {}, superwrong: {}, accuracy: {}%".format(supercorrect, notsupercorrect, (supercorrect/(total))*100))
+    print("match: {}, notmatch: {}, accuracy: {}%".format(match, notmatch, (match/(total))*100))
 
 if __name__ == "__main__":
     main()
