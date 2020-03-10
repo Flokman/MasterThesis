@@ -19,7 +19,7 @@ plt.style.use("ggplot")
 # Hyperparameters
 NUM_CLASSES = 5
 MODEL_TO_USE = os.path.sep + 'VarianceOutput'
-MODEL_VERSION = '/2020-03-05_12-03-35'
+MODEL_VERSION = '/2020-03-10_12-04-07 MES'
 
 TEST_IMAGES_LOCATION = os.path.sep + 'test_images'
 TEST_IMAGES_LABELS_NAME = 'test_images_labels'
@@ -159,12 +159,15 @@ def main():
         for ind, pred in enumerate(variance_predictions):
             classif = pred[:NUM_CLASSES]
             classif_ind = np.argmax(classif)
-            var = pred[NUM_CLASSES:]
+            var = abs(pred[NUM_CLASSES:])
             var_pred = var[classif_ind]
-            print("Predicted class: {}, Uncertainty of prediction: {:.2%}".format(classif_ind, var_pred))
+            print("Predicted class: {}, Uncertainty of prediction: {:.2}".format(classif_ind, var_pred))
 
             for i in range(len(x_pred)):
-                print("class: {}; proba: {:.1%}; var: {:.2%} ".format(i, classif[i], var[i]))
+                raw_var = var[i]
+                if_true_error = pow((classif[i] - 1), 2)
+                difference = abs(if_true_error - raw_var)
+                print("class: {}; proba: {:.1%}; var: {:.2%} ".format(i, classif[i], difference))
 
 
 

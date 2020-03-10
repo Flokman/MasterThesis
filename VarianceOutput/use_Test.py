@@ -24,7 +24,7 @@ img_rows, img_cols = 28, 28
 # Hyperparameters
 NUM_CLASSES = 10
 MODEL_TO_USE = os.path.sep + 'VarianceOutput'
-MODEL_VERSION = '/2020-03-09_13-00-36'
+MODEL_VERSION = '/2020-03-10_16-20-24 MNIST'
 
 
 DIR_PATH_HEAD_TAIL = os.path.split(os.path.dirname(os.path.realpath(__file__)))
@@ -82,7 +82,13 @@ def main():
         classif = pred[:NUM_CLASSES]
         classif_ind = np.argmax(classif)
         var = np.abs(pred[NUM_CLASSES:])
-        var_wrong = var[classif_ind]
+
+        for i in range(0, NUM_CLASSES):
+            raw_var = var[i]
+            if_true_error = pow((classif[i] - y_test[ind][i]), 2)
+            var[i] = abs(if_true_error - raw_var)
+
+        var_pred = var[classif_ind]
         var_correct = var[true_label]
         var_low = np.argmin(var)
 
@@ -110,11 +116,6 @@ def main():
     print("Varcorrect: {}, varwrong: {}, accuracy: {}%".format(varcorrect, varwrong, (varcorrect/(total))*100))
     print("Supercorrect: {}, superwrong: {}, accuracy: {}%".format(supercorrect, notsupercorrect, (supercorrect/(total))*100))
     print("match: {}, notmatch: {}, accuracy: {}%".format(match, notmatch, (match/(total))*100))
-
-    # print("Correct: {}, wrong: {}, accuracy: {}%".format(correct, wrong, (correct/(correct + wrong))*100))
-    # print("Supercorrect: {}, superwrong: {}, accuracy: {}%".format(supercorrect, notsupercorrect, (supercorrect/(supercorrect + notsupercorrect))*100))
-    # print("match: {}, notmatch: {}, accuracy: {}%".format(match, notmatch, (match/(match + notmatch))*100))
-
 
     # for i in range(0, 5):
     #     print("True label: {}".format(np.argmax(y_test[i])))
@@ -145,25 +146,31 @@ def main():
 
     print("")
     var_list = [[] for _ in range(NUM_CLASSES)]
-    bins = np.arange(0, 0.2, 0.001).tolist()
+    bins = np.arange(0, 2, 0.05).tolist()
     for ind, pred in enumerate(variance_predictions):
         true_label = true_labels[ind]
         var_list[true_label].append(np.abs(pred[NUM_CLASSES:]))
 
+    fig, ((ax0, ax1, ax2, ax3), (ax4, ax5, ax6, ax7), (ax8, ax9, ax10, ax11)) = plt.subplots(3,4, figsize=(20,15))
     for lab in range(0, NUM_CLASSES):
-        label_dir =  os.path.join(fig_dir, str(lab))
-        os.makedirs(label_dir)
-        os.chdir(label_dir)
         hist_list = [[] for _ in range(NUM_CLASSES)]
-        for vars in var_list[lab]:
-            for label, variance in enumerate(vars):
+        for varians in var_list[lab]:
+            for label, variance in enumerate(varians):
                 hist_list[label].append(variance)
         for x in range(0, NUM_CLASSES):
-            plt.hist(hist_list[x], bins = bins)
-            plt.savefig('hist of vars of label_' + str(x) + '.png')
-            plt.clf()
-        os.chdir(fig_dir)
+            if x == lab:
+                eval('ax' + str(lab)).hist(hist_list[x], bins=bins, color='red', fill=True, label=x, histtype='step', stacked=True)
+            else:
+                eval('ax' + str(lab)).hist(hist_list[x], bins=bins, label=x, fill=False, histtype='step', stacked=True)
+        eval('ax' + str(lab)).legend()
+        eval('ax' + str(lab)).set_title('Class : {}'.format(lab))
 
+        os.chdir(fig_dir)
+    
+    for ax in fig.get_axes():
+        ax.label_outer()
+    fig.tight_layout()
+    fig.savefig('hist of all vars.png')
 
 if __name__ == "__main__":
     main()

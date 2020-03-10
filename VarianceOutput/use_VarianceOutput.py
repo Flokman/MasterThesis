@@ -1,8 +1,5 @@
-''' Trains a (pre trained) network with additional dropout layers for uncertainty estimation'''
-
-#https://stackoverflow.com/questions/49646304/keras-optimizing-two-outputs-with-a-custom-loss
-# https://stackoverflow.com/questions/46663013/what-is-y-true-and-y-pred-when-creating-a-custom-metric-in-keras
-# https://towardsdatascience.com/advanced-keras-constructing-complex-custom-losses-and-metrics-c07ca130a618
+''' Returns the prediction and uncertainty of images in /test_images of a pretrained (dropout)
+ network of choice '''
 
 import os
 import datetime
@@ -39,30 +36,23 @@ WEIGHTS_PATH_NO_TOP = ('https://github.com/fchollet/deep-learning-models/'
 IMG_HEIGHT, IMG_WIDTH, IMG_DEPTH = 256, 256, 3
 DATASET_NAME = os.path.sep + 'Messidor2_PNG_AUG_' + str(IMG_HEIGHT) + '.hdf5'
 
-BATCH_SIZE = 32
-NUM_CLASSES = 5
-EPOCHS_1 = 120
-ES_PATIENCE_1 = 30
-EPOCHS_2 = 300
-ES_PATIENCE_2 = 50
 
-TEST_BATCH_SIZE = 250
 TRAIN_TEST_SPLIT = 0.8 # Value between 0 and 1, e.g. 0.8 creates 80%/20% division train/test
 TRAIN_VAL_SPLIT = 0.9
 TO_SHUFFLE = True
 AUGMENTATION = False
 LABEL_NORMALIZER = True
 SAVE_AUGMENTATION_TO_HDF5 = True
-TRAIN_ALL_LAYERS = True
-WEIGHTS_TO_USE = None
-LEARN_RATE = 0.00001
+
+# Hyperparameters
+NUM_CLASSES = 5
+MODEL_TO_USE = os.path.sep + 'VarianceOutput'
+MODEL_VERSION = '/2020-03-10_12-04-07 MES'
 
 
-# Get dataset path
 DIR_PATH_HEAD_TAIL = os.path.split(os.path.dirname(os.path.realpath(__file__)))
-ROOT_PATH = DIR_PATH_HEAD_TAIL[0]
+ROOT_PATH = DIR_PATH_HEAD_TAIL[0] 
 DATA_PATH = ROOT_PATH + os.path.sep + 'Datasets' + DATASET_NAME
-
 
 def shuffle_data(x_to_shuff, y_to_shuff):
     ''' Shuffle the data randomly '''
@@ -196,18 +186,18 @@ def prepare_data():
     # For evaluation, this image is put in the fig_dir created above
     test_img_idx = random.randint(0, len(x_test) - 1)
 
-    print("""dataset_name = {}, batch_size = {}, num_classes = {}, epochs_1 = {},
-        epochts_2 = {}, test_img_idx = {},
-        train_test_split = {}, to_shuffle = {}, augmentation = {}, label_count = {},
-        label_normalizer = {}, save_augmentation_to_hdf5 = {}, learn rate = {},
-        train_all_layers = {}, weights_to_use = {},
-        es_patience_1 = {}, es_patience_2 = {}, train_val_split = {}""".format(
-            DATASET_NAME, BATCH_SIZE, NUM_CLASSES, EPOCHS_1,
-            EPOCHS_2, test_img_idx,
-            TRAIN_TEST_SPLIT, TO_SHUFFLE, AUGMENTATION, label_count,
-            LABEL_NORMALIZER, SAVE_AUGMENTATION_TO_HDF5, LEARN_RATE,
-            TRAIN_ALL_LAYERS, WEIGHTS_TO_USE,
-            ES_PATIENCE_1, ES_PATIENCE_2, TRAIN_VAL_SPLIT))
+    # print("""dataset_name = {}, batch_size = {}, num_classes = {}, epochs_1 = {},
+    #     epochts_2 = {}, test_img_idx = {},
+    #     train_test_split = {}, to_shuffle = {}, augmentation = {}, label_count = {},
+    #     label_normalizer = {}, save_augmentation_to_hdf5 = {}, learn rate = {},
+    #     train_all_layers = {}, weights_to_use = {},
+    #     es_patience_1 = {}, es_patience_2 = {}, train_val_split = {}""".format(
+    #         DATASET_NAME, BATCH_SIZE, NUM_CLASSES, EPOCHS_1,
+    #         EPOCHS_2, test_img_idx,
+    #         TRAIN_TEST_SPLIT, TO_SHUFFLE, AUGMENTATION, label_count,
+    #         LABEL_NORMALIZER, SAVE_AUGMENTATION_TO_HDF5, LEARN_RATE,
+    #         TRAIN_ALL_LAYERS, WEIGHTS_TO_USE,
+    #         ES_PATIENCE_1, ES_PATIENCE_2, TRAIN_VAL_SPLIT))
 
     x_train = np.asarray(x_train)
     y_train = np.asarray(y_train)
@@ -225,132 +215,24 @@ def prepare_data():
     return(x_train, y_train, x_test, y_test, test_img_idx)
 
 
-def categorical_cross(y_true, y_pred, from_logits=False):
-    y_pred = K.constant(y_pred) if not tf.is_tensor(y_pred) else y_pred
-    y_true = K.cast(y_true, y_pred.dtype)
-
-    y_true_cat = y_true[:, :NUM_CLASSES]
-    y_pred_cat = y_pred[:, :NUM_CLASSES]
-    # cat_loss = K.mean(K.square(y_pred_cat - y_true_cat), axis=-1)
-    cat_loss = K.categorical_crossentropy(y_true_cat, y_pred_cat, from_logits=from_logits)
-    
-    return cat_loss
-
-
-def categorical_variance(y_true, y_pred, from_logits=False):
-    y_pred = K.constant(y_pred) if not tf.is_tensor(y_pred) else y_pred
-    y_true = K.cast(y_true, y_pred.dtype)
-
-    y_true_cat = y_true[:, :NUM_CLASSES]
-    y_pred_cat = y_pred[:, :NUM_CLASSES]
-    # cat_loss = K.mean(K.square(y_pred_cat - y_true_cat), axis=-1)
-    cat_loss = K.categorical_crossentropy(y_true_cat, y_pred_cat, from_logits=from_logits)
-
-    # TODO: test first abs of y_pred_cat
-    # Is error only modelled after being right? Or also wrong?
-    y_pred_cat_abs = K.abs(y_pred_cat)
-    y_true_var = K.square(y_pred_cat_abs - y_true_cat)
-    y_pred_var = y_pred[:, NUM_CLASSES:]
-    var_loss = K.mean(K.square(y_pred_var - y_true_var), axis=-1)
-    total_loss = cat_loss + var_loss
-
-    return total_loss
-
 def main():
     ''' Main function '''
     # Load data
     x_train, y_train, x_test, y_test, test_img_idx = prepare_data()
 
-    # VGG16 since it does not include batch normalization of dropout by itself
-    variance_model = VGG16(weights=WEIGHTS_TO_USE, include_top=False,
-                       input_shape=(IMG_HEIGHT, IMG_WIDTH, IMG_DEPTH),
-                       classes=NUM_CLASSES)
 
-    # Stacking a new simple convolutional network on top of vgg16
-    all_layers = [l for l in variance_model.layers]
-    x = all_layers[0].output
-    for i in range(1, len(all_layers)):
-        x = all_layers[i](x)
+    old_dir = os.getcwd()
+    os.chdir(ROOT_PATH + MODEL_TO_USE + MODEL_VERSION + os.path.sep)
 
-    # Classification block
-    x = Flatten(name='flatten')(x)
-    x = Dense(4096, activation='relu', name='fc1')(x)
-    last_layer = Dense(4096, activation='relu', name='fc2')(x)
-    classification = Dense(NUM_CLASSES, activation='softmax')(last_layer)
-    variance = Dense(NUM_CLASSES, activation='linear')(last_layer)
+    # Reload the model from the 2 files we saved
+    with open('variance_model_config.json') as json_file:
+        json_config = json_file.read()
+    pre_trained_model = tf.keras.models.model_from_json(json_config)
+    pre_trained_model.load_weights('path_to_my_weights.h5')
+    # pre_trained_model.summary()
+    os.chdir(old_dir)
 
-    out = concatenate([classification, variance])
-
-    # Creating new model
-    variance_model = Model(inputs=all_layers[0].input, outputs=out)
-
-    variance_model.summary()
-
-    adam = optimizers.Adam(lr=LEARN_RATE)
-    # sgd = optimizers.SGD(lr=LEARN_RATE)
-
-    variance_model.compile(
-        optimizer=adam,
-        loss=categorical_cross,
-        metrics=['acc']
-    )
-
-    print("Start fitting")
-    
-    # Dir to store created figures
-    fig_dir = os.path.join(os.getcwd(), datetime.datetime.now().strftime('%Y-%m-%d_%H-%M-%S'))
-    os.makedirs(fig_dir)
-    # Dir to store Tensorboard data
-    log_dir = os.path.join(fig_dir, "logs" + os.path.sep + "fit" + os.path.sep + datetime.datetime.now().strftime("%Y%m%d-%H%M%S"))
-    os.makedirs(log_dir)
-
-    os.chdir(fig_dir)
-
-    tensorboard_callback = tf.keras.callbacks.TensorBoard(log_dir=log_dir)
-    early_stopping_1 = tf.keras.callbacks.EarlyStopping(monitor='val_loss',
-                                                      mode='auto', verbose=1, patience=ES_PATIENCE_1)
-
-
-    datagen = ImageDataGenerator(rescale=1./255, dtype='ndarray')
-    train_generator = datagen.flow(x_train[0:int(TRAIN_VAL_SPLIT*len(x_train))],
-                                   y_train[0:int(TRAIN_VAL_SPLIT*len(y_train))],
-                                   batch_size=BATCH_SIZE)
-    
-    val_generator = datagen.flow(x_train[int(TRAIN_VAL_SPLIT*len(x_train)):],
-                                 y_train[int(TRAIN_VAL_SPLIT*len(y_train)):],
-                                 batch_size=BATCH_SIZE)
-
-
-
-    variance_model.fit(train_generator,
-                epochs=EPOCHS_1,
-                verbose=2,
-                validation_data=val_generator,
-                callbacks=[tensorboard_callback, early_stopping_1])
-
-    variance_model.compile(
-        optimizer=adam,
-        loss=categorical_variance,
-        metrics=['acc']
-    )
-
-    early_stopping_2 = tf.keras.callbacks.EarlyStopping(monitor='val_loss',
-                                                      mode='auto', verbose=1, patience=ES_PATIENCE_2)
-
-    variance_model.fit(train_generator,
-                       epochs=EPOCHS_2,
-                       verbose=2,
-                       validation_data=val_generator,
-                       callbacks=[tensorboard_callback, early_stopping_2])
-
-    # Save JSON config to disk
-    json_config = variance_model.to_json()
-    with open('variance_model_config.json', 'w') as json_file:
-        json_file.write(json_config)
-    # Save weights to disk
-    variance_model.save_weights('path_to_my_weights.h5')
-
-    variance_predictions = variance_model.predict(x_test)
+    variance_predictions = pre_trained_model.predict(x_test)
     true_labels = [np.argmax(i) for i in y_test]
     wrong = 0
     correct = 0
@@ -369,10 +251,10 @@ def main():
 
         for i in range(0, NUM_CLASSES):
             raw_var = var[i]
-            if_true_error = pow((classif[i] - 1), 2)
+            if_true_error = pow((classif[i] - y_test[ind][i]), 2)
             var[i] = abs(if_true_error - raw_var)
 
-        var_wrong = var[classif_ind]
+        var_pred = var[classif_ind]
         var_correct = var[true_label]
         var_low = np.argmin(var)
 
@@ -395,12 +277,66 @@ def main():
         if var_low != true_label:
             varwrong  += 1
     
-    # TODO check if var for actual class is beneath certain threshold
     total = len(variance_predictions)
     print("Correct: {}, wrong: {}, accuracy: {}%".format(correct, wrong, (correct/(total))*100))
     print("Varcorrect: {}, varwrong: {}, accuracy: {}%".format(varcorrect, varwrong, (varcorrect/(total))*100))
     print("Supercorrect: {}, superwrong: {}, accuracy: {}%".format(supercorrect, notsupercorrect, (supercorrect/(total))*100))
     print("match: {}, notmatch: {}, accuracy: {}%".format(match, notmatch, (match/(total))*100))
+
+    # for i in range(0, 5):
+    #     print("True label: {}".format(np.argmax(y_test[i])))
+    #     pred = variance_predictions[i]
+    #     # print(pred)
+    #     classif = pred[:NUM_CLASSES]
+    #     # classif = [(float(i)+1)/2 for i in classif]
+    #     classif_max = np.amax(classif)
+    #     classif_ind = np.argmax(classif)
+    #     print(classif)
+    #     print("Predicted value: {}, predicted class: {}".format(classif_max, classif_ind))
+
+    #     var = np.abs(pred[NUM_CLASSES:])
+    #     print(var)
+    #     var_min = np.amin(var)
+    #     var_ind = np.argmin(var)
+    #     print("Min uncertainty: {}, min index: {}".format(var_min, var_ind))
+
+
+    #     print("")
+    #     print("Value of predicted class: {}".format(var[classif_ind]))
+    #     print("##############################################################")
+
+    # Dir to store created figures
+    fig_dir = os.path.join(os.getcwd(), datetime.datetime.now().strftime('%Y-%m-%d_%H-%M-%S'))
+    os.makedirs(fig_dir)
+    os.chdir(fig_dir)
+
+    print("")
+    var_list = [[] for _ in range(NUM_CLASSES)]
+    # bins = np.arange(0, 4, 0.05).tolist()
+    for ind, pred in enumerate(variance_predictions):
+        true_label = true_labels[ind]
+        var_list[true_label].append(np.abs(pred[NUM_CLASSES:]))
+
+    fig, ((ax0, ax1, ax2, ax3), (ax4, ax5, ax6, ax7), (ax8, ax9, ax10, ax11)) = plt.subplots(3, 2, figsize=(10, 15))
+    for lab in range(0, NUM_CLASSES):
+        hist_list = [[] for _ in range(NUM_CLASSES)]
+        for varians in var_list[lab]:
+            for label, variance in enumerate(varians):
+                hist_list[label].append(variance)
+        for x in range(0, NUM_CLASSES):
+            if x == lab:
+                eval('ax' + str(lab)).hist(hist_list[x], color='red', fill=True, label=x, histtype='step', stacked=True)
+            else:
+                eval('ax' + str(lab)).hist(hist_list[x], label=x, fill=False, histtype='step', stacked=True)
+        eval('ax' + str(lab)).legend()
+        eval('ax' + str(lab)).set_title('Class : {}'.format(lab))
+
+        os.chdir(fig_dir)
+    
+    for ax in fig.get_axes():
+        ax.label_outer()
+    fig.tight_layout()
+    fig.savefig('hist of all vars.png')
 
 if __name__ == "__main__":
     main()
