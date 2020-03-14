@@ -28,7 +28,7 @@ MCBN_PREDICTIONS = 250
 TRAIN_TEST_SPLIT = 0.8 # Value between 0 and 1, e.g. 0.8 creates 80%/20% division train/test
 TO_SHUFFLE = True
 LEARN_RATE = 0.001
-MODEL_TO_USE = os.path.sep + 'BN'
+MODEL_TO_USE = os.path.sep + 'MCBN'
 MODEL_VERSION = os.path.sep + '2020-02-26_11-48-44'
 MODEL_NAME = 'MCBN_model.h5'
 HDF5_DATASET = True
@@ -430,18 +430,19 @@ def main():
     print(os.getcwd())
 
     # Reload the model from the 2 files we saved
-    # with open('mcbn_model_config.json') as json_file:
-    #     json_config = json_file.read()
-    # pre_trained_model = tf.keras.models.model_from_json(json_config, custom_objects={'MCBatchNorm': MCBatchNorm})
-    pre_trained_model = MCBNVGG16(weights=None, include_top=True,
-                           input_shape=(IMG_HEIGHT, IMG_WIDTH, IMG_DEPTH))
+    with open('MCBN_model_config.json') as json_file:
+        json_config = json_file.read()
+    pre_trained_model = tf.keras.models.model_from_json(json_config)
+    pre_trained_model.load_weights('MCBN_weights_{}.h5'.format(i))
+    # pre_trained_model = MCBNVGG16(weights=None, include_top=True,
+    #                        input_shape=(IMG_HEIGHT, IMG_WIDTH, IMG_DEPTH))
     
-    pre_trained_model.load_weights('path_to_my_weights.h5')
+    # pre_trained_model.load_weights('path_to_my_weights.h5')
 
 
-    # Set batch normalization layers to untrainable
+    # Set onoly batch normalization layers to trainable
     for layer in pre_trained_model.layers:
-        if re.search('tf.*', layer.name):
+        if re.search('BatchNormalization.*', layer.name):
             layer.trainable = True
         else:
             layer.trainable = False
@@ -453,13 +454,12 @@ def main():
         loss='categorical_crossentropy',
         metrics=['accuracy']
     )
-    # pre_trained_model.summary()
+    pre_trained_model.summary()
 
     ##### https://github.com/fizyr/keras-retinanet/issues/214 ####
     
     mc_predictions = []
     progress_bar = tf.keras.utils.Progbar(target=MCBN_PREDICTIONS, interval=5)
-
 
     os.chdir(old_dir)
     org_model = pre_trained_model

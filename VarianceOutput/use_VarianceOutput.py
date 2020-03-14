@@ -47,7 +47,7 @@ SAVE_AUGMENTATION_TO_HDF5 = True
 # Hyperparameters
 NUM_CLASSES = 5
 MODEL_TO_USE = os.path.sep + 'VarianceOutput'
-MODEL_VERSION = '/2020-03-10_12-04-07 MES'
+MODEL_VERSION = '/2020-03-10_17-26-57 MES (abs)'
 
 
 DIR_PATH_HEAD_TAIL = os.path.split(os.path.dirname(os.path.realpath(__file__)))
@@ -242,7 +242,9 @@ def main():
     notmatch = 0
     varcorrect = 0
     varwrong = 0
+    mean_var = []
 
+    #Convert var pred to uncertainty
     for ind, pred in enumerate(variance_predictions):
         true_label = true_labels[ind]
         classif = pred[:NUM_CLASSES]
@@ -253,6 +255,19 @@ def main():
             raw_var = var[i]
             if_true_error = pow((classif[i] - y_test[ind][i]), 2)
             var[i] = abs(if_true_error - raw_var)
+        variance_predictions[ind][NUM_CLASSES:] = var
+
+    for ind, pred in enumerate(variance_predictions):
+        true_label = true_labels[ind]
+        classif = pred[:NUM_CLASSES]
+        classif_ind = np.argmax(classif)
+        var = pred[NUM_CLASSES:]
+        mean_var.append(np.mean(var))
+
+        # for i in range(0, NUM_CLASSES):
+        #     raw_var = var[i]
+        #     if_true_error = pow((classif[i] - y_test[ind][i]), 2)
+        #     var[i] = abs(if_true_error - raw_var)
 
         var_pred = var[classif_ind]
         var_correct = var[true_label]
@@ -276,12 +291,14 @@ def main():
             varcorrect +=1
         if var_low != true_label:
             varwrong  += 1
+        
     
     total = len(variance_predictions)
     print("Correct: {}, wrong: {}, accuracy: {}%".format(correct, wrong, (correct/(total))*100))
     print("Varcorrect: {}, varwrong: {}, accuracy: {}%".format(varcorrect, varwrong, (varcorrect/(total))*100))
     print("Supercorrect: {}, superwrong: {}, accuracy: {}%".format(supercorrect, notsupercorrect, (supercorrect/(total))*100))
     print("match: {}, notmatch: {}, accuracy: {}%".format(match, notmatch, (match/(total))*100))
+    print("Mean_var: {:.2%}, var_acc = {:.2%}".format(np.mean(mean_var), 1.0-(np.mean(mean_var))))
 
     # for i in range(0, 5):
     #     print("True label: {}".format(np.argmax(y_test[i])))
@@ -312,12 +329,12 @@ def main():
 
     print("")
     var_list = [[] for _ in range(NUM_CLASSES)]
-    # bins = np.arange(0, 4, 0.05).tolist()
+    bins = np.arange(0, 1, 0.025).tolist()
     for ind, pred in enumerate(variance_predictions):
         true_label = true_labels[ind]
-        var_list[true_label].append(np.abs(pred[NUM_CLASSES:]))
+        var_list[true_label].append(pred[NUM_CLASSES:])
 
-    fig, ((ax0, ax1, ax2, ax3), (ax4, ax5, ax6, ax7), (ax8, ax9, ax10, ax11)) = plt.subplots(3, 2, figsize=(10, 15))
+    fig, ((ax0, ax1, ax2), (ax3, ax4, ax5)) = plt.subplots(2, 3, figsize=(15, 10))
     for lab in range(0, NUM_CLASSES):
         hist_list = [[] for _ in range(NUM_CLASSES)]
         for varians in var_list[lab]:
@@ -325,9 +342,9 @@ def main():
                 hist_list[label].append(variance)
         for x in range(0, NUM_CLASSES):
             if x == lab:
-                eval('ax' + str(lab)).hist(hist_list[x], color='red', fill=True, label=x, histtype='step', stacked=True)
+                eval('ax' + str(lab)).hist(hist_list[x], color='red', bins=bins, fill=True, label=x, histtype='step', stacked=True)
             else:
-                eval('ax' + str(lab)).hist(hist_list[x], label=x, fill=False, histtype='step', stacked=True)
+                eval('ax' + str(lab)).hist(hist_list[x], label=x, bins=bins, fill=False, histtype='step', stacked=True)
         eval('ax' + str(lab)).legend()
         eval('ax' + str(lab)).set_title('Class : {}'.format(lab))
 

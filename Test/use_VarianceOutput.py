@@ -160,12 +160,16 @@ def main():
             classif = pred[:NUM_CLASSES]
             classif_ind = np.argmax(classif)
             var = abs(pred[NUM_CLASSES:])
-            var_pred = var[classif_ind]
-            print("Predicted class: {}, Uncertainty of prediction: {:.2}".format(classif_ind, var_pred))
+            if_true_error = pow((classif[classif_ind] - 1), 2)
+            var_pred = abs(if_true_error - var[classif_ind])
+            print("Predicted class: {}, Uncertainty of prediction: {:.2%}".format(classif_ind, var_pred))
 
             for i in range(len(x_pred)):
                 raw_var = var[i]
-                if_true_error = pow((classif[i] - 1), 2)
+                if classif[i] >= 0.5:
+                    if_true_error = pow((classif[i] - 1), 2)
+                else:
+                    if_true_error = pow((classif[i]), 2)
                 difference = abs(if_true_error - raw_var)
                 print("class: {}; proba: {:.1%}; var: {:.2%} ".format(i, classif[i], difference))
 

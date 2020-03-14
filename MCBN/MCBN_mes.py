@@ -1,9 +1,11 @@
-''' Trains a (pre trained) network with additional dropout layers for uncertainty estimation'''
+''' Trains a (pre trained) network with additional batch normalization layers
+    for uncertainty estimation'''
 
 import os
 import datetime
 import time
 import random
+import re
 import h5py
 import numpy as np
 import tensorflow as tf
@@ -13,7 +15,7 @@ import matplotlib.pyplot as plt
 plt.style.use("ggplot")
 
 from tensorflow.keras.models import Model
-from tensorflow.keras.layers import Dense, Flatten
+from tensorflow.keras.layers import Dense, BatchNormalization, Flatten
 from tensorflow.keras import optimizers
 from tensorflow.keras.applications.vgg16 import VGG16
 from tensorflow.keras.preprocessing.image import ImageDataGenerator
@@ -30,22 +32,25 @@ WEIGHTS_PATH_NO_TOP = ('https://github.com/fchollet/deep-learning-models/'
 IMG_HEIGHT, IMG_WIDTH, IMG_DEPTH = 256, 256, 3
 DATASET_NAME = '/Messidor2_PNG_AUG_' + str(IMG_HEIGHT) + '.hdf5'
 
-BATCH_SIZE = 32
+BATCH_SIZE = 64
 NUM_CLASSES = 5
-EPOCHS = 500
-N_ENSEMBLE_MEMBERS = 40
-AMOUNT_OF_PREDICTIONS = 50
-TEST_BATCH_SIZE = 250
+EPOCHS = 150
+MCBN_PREDICTIONS = 250
+MINIBATCH_SIZE = 128
+MCBN_BATCH_SIZE = 64
 TRAIN_TEST_SPLIT = 0.8 # Value between 0 and 1, e.g. 0.8 creates 80%/20% division train/test
 TRAIN_VAL_SPLIT = 0.9
 TO_SHUFFLE = True
 AUGMENTATION = False
 LABEL_NORMALIZER = True
 SAVE_AUGMENTATION_TO_HDF5 = True
-TRAIN_ALL_LAYERS = True
+ADD_BATCH_NORMALIZATION = True
+ADD_BATCH_NORMALIZATION_INSIDE = True
+TRAIN_ALL_LAYERS = False
+ONLY_AFTER_SPECIFIC_LAYER = True
 WEIGHTS_TO_USE = None
-LEARN_RATE = 0.00001
-ES_PATIENCE = 30
+LEARN_RATE = 0.0001
+ES_PATIENCE = 50
 
 # Get dataset path
 DIR_PATH_HEAD_TAIL = os.path.split(os.path.dirname(os.path.realpath(__file__)))
@@ -185,17 +190,17 @@ def prepare_data():
     test_img_idx = random.randint(0, len(x_test) - 1)
 
     print("""dataset_name = {}, batch_size = {}, num_classes = {}, epochs = {},
-          test_img_idx = {}, train_test_split = {}, to_shuffle = {},
-          augmentation = {}, label_count = {}, label_normalizer = {},
-          save_augmentation_to_hdf5 = {}, learn rate = {}, train_all_layers = {},
-          weights_to_use = {}, es_patience = {}, train_val_split = {},
-          N_ENSEMBLE_MEMBERS = {}""".format(
-              DATASET_NAME, BATCH_SIZE, NUM_CLASSES, EPOCHS,
-              test_img_idx, TRAIN_TEST_SPLIT, TO_SHUFFLE,
-              AUGMENTATION, label_count, LABEL_NORMALIZER,
-              SAVE_AUGMENTATION_TO_HDF5, LEARN_RATE, TRAIN_ALL_LAYERS,
-              WEIGHTS_TO_USE, ES_PATIENCE, TRAIN_VAL_SPLIT,
-              N_ENSEMBLE_MEMBERS))
+        MCBN_PREDICTIONS = {}, Mini_batch_size = {}, test_img_idx = {},
+        train_test_split = {}, to_shuffle = {}, augmentation = {}, label_count = {},
+        label_normalizer = {}, save_augmentation_to_hdf5 = {}, learn rate = {},
+        add_bn_inside = {}, train_all_layers = {}, weights_to_use = {},
+        es_patience = {}, train_val_split = {}""".format(
+            DATASET_NAME, BATCH_SIZE, NUM_CLASSES, EPOCHS,
+            MCBN_PREDICTIONS, MINIBATCH_SIZE, test_img_idx,
+            TRAIN_TEST_SPLIT, TO_SHUFFLE, AUGMENTATION, label_count,
+            LABEL_NORMALIZER, SAVE_AUGMENTATION_TO_HDF5, LEARN_RATE,
+            ADD_BATCH_NORMALIZATION_INSIDE, TRAIN_ALL_LAYERS, WEIGHTS_TO_USE,
+            ES_PATIENCE, TRAIN_VAL_SPLIT))
 
     x_train = np.asarray(x_train)
     y_train = np.asarray(y_train)
@@ -213,43 +218,104 @@ def prepare_data():
     return(x_train, y_train, x_test, y_test, test_img_idx)
 
 
-def fit_model(x_train, y_train, ensemble_model, log_dir, i):
-    x_train, y_train = shuffle_data(x_train, y_train)
-    x_train = np.asarray(x_train)
-    y_train = np.asarray(y_train)
-
-    datagen = ImageDataGenerator(rescale=1./255)
-    train_generator = datagen.flow(x_train[0:int(TRAIN_VAL_SPLIT*len(x_train))],
-                                   y_train[0:int(TRAIN_VAL_SPLIT*len(y_train))],
-                                   batch_size=BATCH_SIZE)
-
-    val_generator = datagen.flow(x_train[int(TRAIN_VAL_SPLIT*len(x_train)):],
-                                 y_train[int(TRAIN_VAL_SPLIT*len(y_train)):],
-                                 batch_size=BATCH_SIZE)
-
-    tensorboard_callback = tf.keras.callbacks.TensorBoard(log_dir=log_dir)
-    early_stopping = tf.keras.callbacks.EarlyStopping(monitor='val_loss',
-                                                      mode='auto', verbose=1, patience=ES_PATIENCE)
+def get_batch_normalization(input_tensor):
+    ''' Returns a trainable batch normalization layer '''
+    return BatchNormalization()(input_tensor, training=True)
 
 
-    ensemble_model.fit(train_generator,
-                       epochs=EPOCHS,
-                       verbose=0,
-                       validation_data=val_generator,
-                       callbacks=[tensorboard_callback, early_stopping])
+def insert_intermediate_layer_in_keras(model, layer_id):
+    ''' Insert a batch normalization layer before the layer with layer_id '''
+    inter_layers = [l for l in model.layers]
 
-    # # save model and architecture to single file
-    # ensemble_model.save("ensemble_model_{}.h5".format(i))
-    # print("Saved ensemble_model to disk")
+    x = inter_layers[0].output
+    for i in range(1, len(inter_layers)):
+        if i == layer_id:
+            x = get_batch_normalization(x)
+        x = inter_layers[i](x)
 
-    # Save JSON config to disk
-    json_config = ensemble_model.to_json()
-    with open("ensemble_model_config_{}.json".format(i), 'w') as json_file:
-        json_file.write(json_config)
-    # Save weights to disk
-    ensemble_model.save_weights("ensemble_weights_{}.h5".format(i))
+    new_model = Model(inputs=inter_layers[0].input, outputs=x)
+    return new_model
 
-    return ensemble_model
+
+def add_batch_normalization(mcbn_model):
+    ''' Adds batch normalizaiton layers either after all pool and dense layers
+        or only after dense layers '''
+    if ADD_BATCH_NORMALIZATION_INSIDE:
+        # Creating dictionary that maps layer names to the layers
+        layer_dict = dict([(layer.name, layer) for layer in mcbn_model.layers])
+
+        for layer_name in layer_dict:
+            layer_dict = dict([(layer.name, layer) for layer in mcbn_model.layers])
+            if ONLY_AFTER_SPECIFIC_LAYER:
+                if re.search('.*_conv.*', layer_name):
+                    print(layer_name)
+                    layer_index = list(layer_dict).index(layer_name)
+                    print(layer_index)
+
+                    # Add a batch normalization (trainable) layer
+                    mcbn_model = insert_intermediate_layer_in_keras(mcbn_model, layer_index + 1)
+
+                    # mcbn_model.summary()
+            else:
+                print(layer_name)
+                layer_index = list(layer_dict).index(layer_name)
+                print(layer_index)
+
+                # Add a batch normalization (trainable) layer
+                mcbn_model = insert_intermediate_layer_in_keras(mcbn_model, layer_index + 1)
+
+
+
+        # Stacking a new simple convolutional network on top of vgg16
+        all_layers = [l for l in mcbn_model.layers]
+        x = all_layers[0].output
+        for i in range(1, len(all_layers)):
+            x = all_layers[i](x)
+
+        # Classification block
+        # x = get_batch_normalization(x)
+        x = Flatten(name='flatten')(x)
+        x = Dense(4096, activation='relu', name='fc1')(x)
+        x = get_batch_normalization(x)
+        x = Dense(4096, activation='relu', name='fc2')(x)
+        x = get_batch_normalization(x)
+        x = Dense(NUM_CLASSES, activation='softmax', name='predictions')(x)
+
+    else:
+        # Stacking a new simple convolutional network on top of vgg16
+        all_layers = [l for l in mcbn_model.layers]
+        x = all_layers[0].output
+        for i in range(1, len(all_layers)):
+            x = all_layers[i](x)
+
+        # Classification block
+        x = Flatten(name='flatten')(x)
+        x = Dense(4096, activation='relu', name='fc1')(x)
+        x = get_batch_normalization(x)
+        x = Dense(4096, activation='relu', name='fc2')(x)
+        x = get_batch_normalization(x)
+        x = Dense(NUM_CLASSES, activation='softmax', name='predictions')(x)
+
+    # Creating new model
+    mcbn_model = Model(inputs=all_layers[0].input, outputs=x)
+    return mcbn_model
+
+
+def create_minibatch(x, y):
+    ''' Returns a minibatch of the train data '''
+    combined = list(zip(x, y)) # use zip() to bind the images and label together
+    random_seed = random.randint(0, 1000)
+    # print("Random seed minibatch for replication: {}".format(random_seed))
+    random.seed(random_seed)
+    random.shuffle(combined)
+    minibatch = combined[:MINIBATCH_SIZE]
+
+    (x_minibatch, y_minibatch) = zip(*minibatch)  
+                            # *combined is used to separate all the tuples in the list combined,
+                            # "x_minibatch" then contains all the shuffled images and
+                            # "y_minibatch" contains all the shuffled labels.
+
+    return(x_minibatch, y_minibatch)
 
 
 def main():
@@ -258,45 +324,48 @@ def main():
     x_train, y_train, x_test, y_test, test_img_idx = prepare_data()
 
     # VGG16 since it does not include batch normalization of dropout by itself
-    ensemble_model = VGG16(weights=WEIGHTS_TO_USE, include_top=False,
+    MCBN_model = VGG16(weights=WEIGHTS_TO_USE, include_top=False,
                        input_shape=(IMG_HEIGHT, IMG_WIDTH, IMG_DEPTH))
 
+    if ADD_BATCH_NORMALIZATION:
+        MCBN_model = add_batch_normalization(MCBN_model)
 
-    # Stacking a new simple convolutional network on top of vgg16
-    all_layers = [l for l in ensemble_model.layers]
-    x = all_layers[0].output
-    for i in range(1, len(all_layers)):
-        x = all_layers[i](x)
-
-    # Classification block
-    x = Flatten(name='flatten')(x)
-    x = Dense(4096, activation='relu', name='fc1')(x)
-    x = Dense(4096, activation='relu', name='fc2')(x)
-    x = Dense(NUM_CLASSES, activation='softmax', name='predictions')(x)
-
-    # Creating new model
-    ensemble_model = Model(inputs=all_layers[0].input, outputs=x)
-
-    if TRAIN_ALL_LAYERS:
-        for layer in ensemble_model.layers:
-            layer.trainable = True
     else:
-        for layer in ensemble_model.layers[:-6]:
+        # Stacking a new simple convolutional network on top of vgg16
+        all_layers = [l for l in MCBN_model.layers]
+        x = all_layers[0].output
+        for i in range(1, len(all_layers)):
+            x = all_layers[i](x)
+
+        # Classification block
+        x = Flatten(name='flatten')(x)
+        x = Dense(4096, activation='relu', name='fc1')(x)
+        x = Dense(4096, activation='relu', name='fc2')(x)
+        x = Dense(NUM_CLASSES, activation='softmax', name='predictions')(x)
+
+        # Creating new model.
+        MCBN_model = Model(inputs=all_layers[0].input, outputs=x)
+
+    if TRAIN_ALL_LAYERS or ADD_BATCH_NORMALIZATION_INSIDE:
+        for layer in MCBN_model.layers:
+            layer.trainable = True
+            print(layer, layer.trainable)
+    else:
+        for layer in MCBN_model.layers[:-6]:
             layer.trainable = False
-        for layer in ensemble_model.layers:
+        for layer in MCBN_model.layers:
             print(layer, layer.trainable)
 
-    ensemble_model.summary()
+    MCBN_model.summary()
 
     adam = optimizers.Adam(lr=LEARN_RATE)
-    # sgd = optimizers.SGD(lr=LEARN_RATE)
-    ensemble_model.compile(
+    MCBN_model.compile(
         optimizer=adam,
         loss='categorical_crossentropy',
         metrics=['accuracy']
     )
 
-    print("Start fitting monte carlo dropout model")
+    print("Start fitting monte carlo batch_normalization model")
 
     # Dir to store created figures
     fig_dir = os.path.join(os.getcwd(), datetime.datetime.now().strftime('%Y-%m-%d_%H-%M-%S'))
@@ -306,28 +375,67 @@ def main():
     os.makedirs(log_dir)
 
     os.chdir(fig_dir)
+    tensorboard_callback = tf.keras.callbacks.TensorBoard(log_dir=log_dir)
+    early_stopping = tf.keras.callbacks.EarlyStopping(monitor='val_loss',
+                                                    mode='auto', verbose=1, patience=ES_PATIENCE)
+
+    datagen = ImageDataGenerator(rescale=1./255)
+    train_generator = datagen.flow(x_train[0:int(TRAIN_VAL_SPLIT*len(x_train))],
+                                   y_train[0:int(TRAIN_VAL_SPLIT*len(y_train))],
+                                   batch_size = BATCH_SIZE)
+    
+    val_generator = datagen.flow(x_train[int(TRAIN_VAL_SPLIT*len(x_train)):],
+                                 y_train[int(TRAIN_VAL_SPLIT*len(y_train)):],
+                                 batch_size=BATCH_SIZE)
 
 
+    MCBN_model.fit(train_generator,
+                   epochs=EPOCHS,
+                   verbose=2,
+                   validation_data=val_generator,
+                   callbacks=[tensorboard_callback, early_stopping])
 
-    ensemble = [fit_model(x_train, y_train, ensemble_model, log_dir, i) for i in range(N_ENSEMBLE_MEMBERS)]
+    # Save JSON config to disk
+    json_config = MCBN_model.to_json()
+    with open('MCBN_model_config.json', 'w') as json_file:
+        json_file.write(json_config)
+    # Save weights to disk
+    MCBN_model.save_weights('MCBN_weights_.h5')
 
+    mcbn_predictions = []
+    progress_bar = tf.keras.utils.Progbar(target=MCBN_PREDICTIONS, interval=5)
+    
+    
+    org_model = MCBN_model
+    for i in range(MCBN_PREDICTIONS):
+        progress_bar.update(i)
+        # Create new random minibatch from train data
+        x_minibatch, y_minibatch = create_minibatch(x_train, y_train)
+        x_minibatch = np.asarray(x_minibatch)
+        y_minibatch = np.asarray(y_minibatch)
 
+        # Fit the BN layers with the new minibatch, leave all other weights the same
+        MCBN_model = org_model
+        MCBN_model.fit(x_minibatch, y_minibatch,
+                            batch_size=MINIBATCH_SIZE,
+                            epochs=1,
+                            verbose=0)
 
-    ensemble_predictions = [model.predict(x_test, batch_size=TEST_BATCH_SIZE) for model in ensemble]
-    # ensemble_predictions = array(ensemble_predictions)
+        y_p = MCBN_model.predict(x_test, batch_size=len(x_test)) #Predict for bn look at (sigma and mu only one to chance, not the others)
+        mcbn_predictions.append(y_p)
 
-    # score of the MCDO model
+    # score of the MCBN model
     accs = []
-    for y_p in ensemble_predictions:
+    for y_p in mcbn_predictions:
         acc = accuracy_score(y_test.argmax(axis=1), y_p.argmax(axis=1))
         accs.append(acc)
-    print("Highest acc of model in ensemble: {:.1%}".format(sum(accs)/len(accs)))
+    print("MCBN accuracy: {:.1%}".format(sum(accs)/len(accs)))
 
-    ensemble_pred = np.array(ensemble_predictions).mean(axis=0).argmax(axis=1)
-    ensemble_acc = accuracy_score(y_test.argmax(axis=1), ensemble_pred)
-    print("Mean ensemble accuracy: {:.1%}".format(ensemble_acc))
+    mcbn_ensemble_pred = np.array(mcbn_predictions).mean(axis=0).argmax(axis=1)
+    ensemble_acc = accuracy_score(y_test.argmax(axis=1), mcbn_ensemble_pred)
+    print("MCBN-ensemble accuracy: {:.1%}".format(ensemble_acc))
 
-    confusion = tf.math.confusion_matrix(labels=y_test.argmax(axis=1), predictions=ensemble_pred,
+    confusion = tf.math.confusion_matrix(labels=y_test.argmax(axis=1), predictions=mcbn_predictions,
                                     num_classes=NUM_CLASSES)
     print(confusion)
 
@@ -338,7 +446,7 @@ def main():
 
     plt.imsave('test_image_' + str(test_img_idx) + '.png', x_test[test_img_idx])
 
-    p_0 = np.array([p[test_img_idx] for p in ensemble_predictions])
+    p_0 = np.array([p[test_img_idx] for p in mcbn_predictions])
     print("posterior mean: {}".format(p_0.mean(axis=0).argmax()))
     print("true label: {}".format(y_test[test_img_idx].argmax()))
     print()
@@ -359,7 +467,6 @@ def main():
         ax.label_outer()
 
     fig.savefig('sub_plots' + str(test_img_idx) + '.png', dpi=fig.dpi)
-
 
 if __name__ == "__main__":
     main()
