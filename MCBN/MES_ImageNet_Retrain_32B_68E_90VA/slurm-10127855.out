@@ -1,0 +1,462 @@
+
+The following have been reloaded with a version change:
+  1) FFTW/3.3.8-gompic-2019b => FFTW/3.3.8-gompi-2019b
+  2) OpenMPI/3.1.4-gcccuda-2019b => OpenMPI/3.1.4-GCC-8.3.0
+  3) ScaLAPACK/2.0.2-gompic-2019b => ScaLAPACK/2.0.2-gompi-2019b
+  4) SciPy-bundle/2019.10-fosscuda-2019b-Python-3.7.4 => SciPy-bundle/2019.10-foss-2019b-Python-3.7.4
+
+2020-03-16 11:10:47.047437: I tensorflow/stream_executor/platform/default/dso_loader.cc:44] Successfully opened dynamic library libcudart.so.10.1
+2020-03-16 11:10:59.396469: I tensorflow/stream_executor/platform/default/dso_loader.cc:44] Successfully opened dynamic library libcuda.so.1
+2020-03-16 11:10:59.405037: I tensorflow/stream_executor/cuda/cuda_gpu_executor.cc:981] successful NUMA node read from SysFS had negative value (-1), but there must be at least one NUMA node, so returning NUMA node zero
+2020-03-16 11:10:59.405522: I tensorflow/core/common_runtime/gpu/gpu_device.cc:1555] Found device 0 with properties: 
+pciBusID: 0000:02:00.0 name: GRID V100D-32Q computeCapability: 7.0
+coreClock: 1.38GHz coreCount: 80 deviceMemorySize: 31.88GiB deviceMemoryBandwidth: 836.37GiB/s
+2020-03-16 11:10:59.405572: I tensorflow/stream_executor/platform/default/dso_loader.cc:44] Successfully opened dynamic library libcudart.so.10.1
+2020-03-16 11:10:59.411776: I tensorflow/stream_executor/platform/default/dso_loader.cc:44] Successfully opened dynamic library libcublas.so.10
+2020-03-16 11:10:59.416270: I tensorflow/stream_executor/platform/default/dso_loader.cc:44] Successfully opened dynamic library libcufft.so.10
+2020-03-16 11:10:59.418403: I tensorflow/stream_executor/platform/default/dso_loader.cc:44] Successfully opened dynamic library libcurand.so.10
+2020-03-16 11:10:59.422790: I tensorflow/stream_executor/platform/default/dso_loader.cc:44] Successfully opened dynamic library libcusolver.so.10
+2020-03-16 11:10:59.425771: I tensorflow/stream_executor/platform/default/dso_loader.cc:44] Successfully opened dynamic library libcusparse.so.10
+2020-03-16 11:10:59.432380: I tensorflow/stream_executor/platform/default/dso_loader.cc:44] Successfully opened dynamic library libcudnn.so.7
+2020-03-16 11:10:59.432594: I tensorflow/stream_executor/cuda/cuda_gpu_executor.cc:981] successful NUMA node read from SysFS had negative value (-1), but there must be at least one NUMA node, so returning NUMA node zero
+2020-03-16 11:10:59.433181: I tensorflow/stream_executor/cuda/cuda_gpu_executor.cc:981] successful NUMA node read from SysFS had negative value (-1), but there must be at least one NUMA node, so returning NUMA node zero
+2020-03-16 11:10:59.433558: I tensorflow/core/common_runtime/gpu/gpu_device.cc:1697] Adding visible gpu devices: 0
+2020-03-16 11:10:59.436645: I tensorflow/stream_executor/cuda/cuda_gpu_executor.cc:981] successful NUMA node read from SysFS had negative value (-1), but there must be at least one NUMA node, so returning NUMA node zero
+2020-03-16 11:10:59.437056: I tensorflow/core/common_runtime/gpu/gpu_device.cc:1555] Found device 0 with properties: 
+pciBusID: 0000:02:00.0 name: GRID V100D-32Q computeCapability: 7.0
+coreClock: 1.38GHz coreCount: 80 deviceMemorySize: 31.88GiB deviceMemoryBandwidth: 836.37GiB/s
+2020-03-16 11:10:59.437112: I tensorflow/stream_executor/platform/default/dso_loader.cc:44] Successfully opened dynamic library libcudart.so.10.1
+2020-03-16 11:10:59.437148: I tensorflow/stream_executor/platform/default/dso_loader.cc:44] Successfully opened dynamic library libcublas.so.10
+2020-03-16 11:10:59.437169: I tensorflow/stream_executor/platform/default/dso_loader.cc:44] Successfully opened dynamic library libcufft.so.10
+2020-03-16 11:10:59.437190: I tensorflow/stream_executor/platform/default/dso_loader.cc:44] Successfully opened dynamic library libcurand.so.10
+2020-03-16 11:10:59.437210: I tensorflow/stream_executor/platform/default/dso_loader.cc:44] Successfully opened dynamic library libcusolver.so.10
+2020-03-16 11:10:59.437231: I tensorflow/stream_executor/platform/default/dso_loader.cc:44] Successfully opened dynamic library libcusparse.so.10
+2020-03-16 11:10:59.437251: I tensorflow/stream_executor/platform/default/dso_loader.cc:44] Successfully opened dynamic library libcudnn.so.7
+2020-03-16 11:10:59.437356: I tensorflow/stream_executor/cuda/cuda_gpu_executor.cc:981] successful NUMA node read from SysFS had negative value (-1), but there must be at least one NUMA node, so returning NUMA node zero
+2020-03-16 11:10:59.437798: I tensorflow/stream_executor/cuda/cuda_gpu_executor.cc:981] successful NUMA node read from SysFS had negative value (-1), but there must be at least one NUMA node, so returning NUMA node zero
+2020-03-16 11:10:59.438172: I tensorflow/core/common_runtime/gpu/gpu_device.cc:1697] Adding visible gpu devices: 0
+2020-03-16 11:10:59.438222: I tensorflow/stream_executor/platform/default/dso_loader.cc:44] Successfully opened dynamic library libcudart.so.10.1
+2020-03-16 11:11:00.124262: I tensorflow/core/common_runtime/gpu/gpu_device.cc:1096] Device interconnect StreamExecutor with strength 1 edge matrix:
+2020-03-16 11:11:00.124386: I tensorflow/core/common_runtime/gpu/gpu_device.cc:1102]      0 
+2020-03-16 11:11:00.124402: I tensorflow/core/common_runtime/gpu/gpu_device.cc:1115] 0:   N 
+2020-03-16 11:11:00.124778: I tensorflow/stream_executor/cuda/cuda_gpu_executor.cc:981] successful NUMA node read from SysFS had negative value (-1), but there must be at least one NUMA node, so returning NUMA node zero
+2020-03-16 11:11:00.125487: I tensorflow/stream_executor/cuda/cuda_gpu_executor.cc:981] successful NUMA node read from SysFS had negative value (-1), but there must be at least one NUMA node, so returning NUMA node zero
+2020-03-16 11:11:00.126176: I tensorflow/stream_executor/cuda/cuda_gpu_executor.cc:981] successful NUMA node read from SysFS had negative value (-1), but there must be at least one NUMA node, so returning NUMA node zero
+2020-03-16 11:11:00.126603: I tensorflow/core/common_runtime/gpu/gpu_device.cc:1241] Created TensorFlow device (/job:localhost/replica:0/task:0/device:GPU:0 with 28652 MB memory) -> physical GPU (device: 0, name: GRID V100D-32Q, pci bus id: 0000:02:00.0, compute capability: 7.0)
+2020-03-16 11:11:00.126966: I tensorflow/core/common_runtime/process_util.cc:147] Creating new thread pool with default inter op setting: 2. Tune using inter_op_parallelism_threads for best performance.
+WARNING:tensorflow:sample_weight modes were coerced from
+  ...
+    to  
+  ['...']
+WARNING:tensorflow:sample_weight modes were coerced from
+  ...
+    to  
+  ['...']
+2020-03-16 11:11:13.182146: I tensorflow/stream_executor/platform/default/dso_loader.cc:44] Successfully opened dynamic library libcublas.so.10
+2020-03-16 11:11:13.496029: I tensorflow/stream_executor/platform/default/dso_loader.cc:44] Successfully opened dynamic library libcudnn.so.7
+2020-03-16 11:11:17.525211: I tensorflow/core/profiler/lib/profiler_session.cc:225] Profiler session started.
+2020-03-16 11:11:17.525378: I tensorflow/core/profiler/internal/gpu/cupti_tracer.cc:1259] Profiler found 1 GPUs
+2020-03-16 11:11:17.528912: I tensorflow/stream_executor/platform/default/dso_loader.cc:44] Successfully opened dynamic library libcupti.so.10.1
+2020-03-16 11:11:17.629508: E tensorflow/core/profiler/internal/gpu/cupti_tracer.cc:1307] function cupti_interface_->Subscribe( &subscriber_, (CUpti_CallbackFunc)ApiCallback, this)failed with error CUPTI_ERROR_VIRTUALIZED_DEVICE_NOT_SUPPORTED
+2020-03-16 11:11:17.629945: E tensorflow/core/profiler/internal/gpu/cupti_tracer.cc:1346] function cupti_interface_->ActivityRegisterCallbacks( AllocCuptiActivityBuffer, FreeCuptiActivityBuffer)failed with error CUPTI_ERROR_VIRTUALIZED_DEVICE_NOT_SUPPORTED
+2020-03-16 11:11:17.858928: E tensorflow/core/profiler/internal/gpu/cupti_tracer.cc:1329] function cupti_interface_->EnableCallback( 0 , subscriber_, CUPTI_CB_DOMAIN_DRIVER_API, cbid)failed with error CUPTI_ERROR_INVALID_PARAMETER
+2020-03-16 11:11:17.859059: I tensorflow/core/profiler/internal/gpu/device_tracer.cc:88]  GpuTracer has collected 0 callback api events and 0 activity events.
+Random seed for replication: 248
+dataset_name = /Messidor2_PNG_AUG_256.hdf5, batch_size = 32, num_classes = 5, epochs = 150,
+        MCBN_PREDICTIONS = 250, Mini_batch_size = 128, test_img_idx = 238,
+        train_test_split = 0.8, to_shuffle = True, augmentation = False, label_count = [1261, 1416, 1397, 1455, 1463],
+        label_normalizer = True, save_augmentation_to_hdf5 = True, learn rate = 0.0001,
+        add_bn_inside = True, train_all_layers = False, weights_to_use = imagenet,
+        es_patience = 50, train_val_split = 0.9
+x_train shape: (5593, 256, 256, 3)
+5593 train samples
+1399 test samples
+block1_conv1
+1
+block1_conv2
+3
+block2_conv1
+6
+block2_conv2
+8
+block3_conv1
+11
+block3_conv2
+13
+block3_conv3
+15
+block4_conv1
+18
+block4_conv2
+20
+block4_conv3
+22
+block5_conv1
+25
+block5_conv2
+27
+block5_conv3
+29
+<tensorflow.python.keras.engine.input_layer.InputLayer object at 0x7fced7531690> True
+<tensorflow.python.keras.layers.convolutional.Conv2D object at 0x7fced733e410> True
+<tensorflow.python.keras.layers.normalization_v2.BatchNormalization object at 0x7fced733eb10> True
+<tensorflow.python.keras.layers.convolutional.Conv2D object at 0x7fced733eed0> True
+<tensorflow.python.keras.layers.normalization_v2.BatchNormalization object at 0x7fce8014d250> True
+<tensorflow.python.keras.layers.pooling.MaxPooling2D object at 0x7fce940a8dd0> True
+<tensorflow.python.keras.layers.convolutional.Conv2D object at 0x7fce940ac210> True
+<tensorflow.python.keras.layers.normalization_v2.BatchNormalization object at 0x7fce800c3d90> True
+<tensorflow.python.keras.layers.convolutional.Conv2D object at 0x7fced728ead0> True
+<tensorflow.python.keras.layers.normalization_v2.BatchNormalization object at 0x7fce8004a6d0> True
+<tensorflow.python.keras.layers.pooling.MaxPooling2D object at 0x7fce940ac710> True
+<tensorflow.python.keras.layers.convolutional.Conv2D object at 0x7fced7a6c310> True
+<tensorflow.python.keras.layers.normalization_v2.BatchNormalization object at 0x7fce33b1b390> True
+<tensorflow.python.keras.layers.convolutional.Conv2D object at 0x7fce940c0f10> True
+<tensorflow.python.keras.layers.normalization_v2.BatchNormalization object at 0x7fce339355d0> True
+<tensorflow.python.keras.layers.convolutional.Conv2D object at 0x7fce940cea50> True
+<tensorflow.python.keras.layers.normalization_v2.BatchNormalization object at 0x7fce3367dbd0> True
+<tensorflow.python.keras.layers.pooling.MaxPooling2D object at 0x7fce940d7550> True
+<tensorflow.python.keras.layers.convolutional.Conv2D object at 0x7fce9405cfd0> True
+<tensorflow.python.keras.layers.normalization_v2.BatchNormalization object at 0x7fce20d23b90> True
+<tensorflow.python.keras.layers.convolutional.Conv2D object at 0x7fce940628d0> True
+<tensorflow.python.keras.layers.normalization_v2.BatchNormalization object at 0x7fce20b68b50> True
+<tensorflow.python.keras.layers.convolutional.Conv2D object at 0x7fce94067250> True
+<tensorflow.python.keras.layers.normalization_v2.BatchNormalization object at 0x7fce208ac350> True
+<tensorflow.python.keras.layers.pooling.MaxPooling2D object at 0x7fce9406d650> True
+<tensorflow.python.keras.layers.convolutional.Conv2D object at 0x7fce94070450> True
+<tensorflow.python.keras.layers.normalization_v2.BatchNormalization object at 0x7fce203bd510> True
+<tensorflow.python.keras.layers.convolutional.Conv2D object at 0x7fce9407cb90> True
+<tensorflow.python.keras.layers.normalization_v2.BatchNormalization object at 0x7fce1bf4f1d0> True
+<tensorflow.python.keras.layers.convolutional.Conv2D object at 0x7fce94082110> True
+<tensorflow.python.keras.layers.normalization_v2.BatchNormalization object at 0x7fce1bbce4d0> True
+<tensorflow.python.keras.layers.pooling.MaxPooling2D object at 0x7fce94085510> True
+<tensorflow.python.keras.layers.core.Flatten object at 0x7fce1b6f6f90> True
+<tensorflow.python.keras.layers.core.Dense object at 0x7fce208ac7d0> True
+<tensorflow.python.keras.layers.normalization_v2.BatchNormalization object at 0x7fce1b5d8650> True
+<tensorflow.python.keras.layers.core.Dense object at 0x7fce1b5dc810> True
+<tensorflow.python.keras.layers.normalization_v2.BatchNormalization object at 0x7fce1b5e3490> True
+<tensorflow.python.keras.layers.core.Dense object at 0x7fce1b540d50> True
+Model: "model_13"
+_________________________________________________________________
+Layer (type)                 Output Shape              Param #   
+=================================================================
+input_1 (InputLayer)         [(None, 256, 256, 3)]     0         
+_________________________________________________________________
+block1_conv1 (Conv2D)        (None, 256, 256, 64)      1792      
+_________________________________________________________________
+batch_normalization (BatchNo (None, 256, 256, 64)      256       
+_________________________________________________________________
+block1_conv2 (Conv2D)        (None, 256, 256, 64)      36928     
+_________________________________________________________________
+batch_normalization_1 (Batch (None, 256, 256, 64)      256       
+_________________________________________________________________
+block1_pool (MaxPooling2D)   (None, 128, 128, 64)      0         
+_________________________________________________________________
+block2_conv1 (Conv2D)        (None, 128, 128, 128)     73856     
+_________________________________________________________________
+batch_normalization_2 (Batch (None, 128, 128, 128)     512       
+_________________________________________________________________
+block2_conv2 (Conv2D)        (None, 128, 128, 128)     147584    
+_________________________________________________________________
+batch_normalization_3 (Batch (None, 128, 128, 128)     512       
+_________________________________________________________________
+block2_pool (MaxPooling2D)   (None, 64, 64, 128)       0         
+_________________________________________________________________
+block3_conv1 (Conv2D)        (None, 64, 64, 256)       295168    
+_________________________________________________________________
+batch_normalization_4 (Batch (None, 64, 64, 256)       1024      
+_________________________________________________________________
+block3_conv2 (Conv2D)        (None, 64, 64, 256)       590080    
+_________________________________________________________________
+batch_normalization_5 (Batch (None, 64, 64, 256)       1024      
+_________________________________________________________________
+block3_conv3 (Conv2D)        (None, 64, 64, 256)       590080    
+_________________________________________________________________
+batch_normalization_6 (Batch (None, 64, 64, 256)       1024      
+_________________________________________________________________
+block3_pool (MaxPooling2D)   (None, 32, 32, 256)       0         
+_________________________________________________________________
+block4_conv1 (Conv2D)        (None, 32, 32, 512)       1180160   
+_________________________________________________________________
+batch_normalization_7 (Batch (None, 32, 32, 512)       2048      
+_________________________________________________________________
+block4_conv2 (Conv2D)        (None, 32, 32, 512)       2359808   
+_________________________________________________________________
+batch_normalization_8 (Batch (None, 32, 32, 512)       2048      
+_________________________________________________________________
+block4_conv3 (Conv2D)        (None, 32, 32, 512)       2359808   
+_________________________________________________________________
+batch_normalization_9 (Batch (None, 32, 32, 512)       2048      
+_________________________________________________________________
+block4_pool (MaxPooling2D)   (None, 16, 16, 512)       0         
+_________________________________________________________________
+block5_conv1 (Conv2D)        (None, 16, 16, 512)       2359808   
+_________________________________________________________________
+batch_normalization_10 (Batc (None, 16, 16, 512)       2048      
+_________________________________________________________________
+block5_conv2 (Conv2D)        (None, 16, 16, 512)       2359808   
+_________________________________________________________________
+batch_normalization_11 (Batc (None, 16, 16, 512)       2048      
+_________________________________________________________________
+block5_conv3 (Conv2D)        (None, 16, 16, 512)       2359808   
+_________________________________________________________________
+batch_normalization_12 (Batc (None, 16, 16, 512)       2048      
+_________________________________________________________________
+block5_pool (MaxPooling2D)   (None, 8, 8, 512)         0         
+_________________________________________________________________
+flatten (Flatten)            (None, 32768)             0         
+_________________________________________________________________
+fc1 (Dense)                  (None, 4096)              134221824 
+_________________________________________________________________
+batch_normalization_13 (Batc (None, 4096)              16384     
+_________________________________________________________________
+fc2 (Dense)                  (None, 4096)              16781312  
+_________________________________________________________________
+batch_normalization_14 (Batc (None, 4096)              16384     
+_________________________________________________________________
+predictions (Dense)          (None, 5)                 20485     
+=================================================================
+Total params: 165,787,973
+Trainable params: 165,763,141
+Non-trainable params: 24,832
+_________________________________________________________________
+Start fitting monte carlo batch_normalization model
+Train for 158 steps, validate for 18 steps
+Epoch 1/150
+158/158 - 47s - loss: 2.0405 - accuracy: 0.4270 - val_loss: 1.9835 - val_accuracy: 0.4339
+Epoch 2/150
+158/158 - 37s - loss: 1.0575 - accuracy: 0.6042 - val_loss: 1.2157 - val_accuracy: 0.5589
+Epoch 3/150
+158/158 - 37s - loss: 0.6743 - accuracy: 0.7409 - val_loss: 0.7662 - val_accuracy: 0.7161
+Epoch 4/150
+158/158 - 37s - loss: 0.4713 - accuracy: 0.8301 - val_loss: 0.5891 - val_accuracy: 0.7982
+Epoch 5/150
+158/158 - 37s - loss: 0.3691 - accuracy: 0.8683 - val_loss: 0.6408 - val_accuracy: 0.7875
+Epoch 6/150
+158/158 - 37s - loss: 0.3015 - accuracy: 0.8897 - val_loss: 0.7683 - val_accuracy: 0.7911
+Epoch 7/150
+158/158 - 37s - loss: 0.2679 - accuracy: 0.9062 - val_loss: 0.6183 - val_accuracy: 0.8393
+Epoch 8/150
+158/158 - 37s - loss: 0.2190 - accuracy: 0.9205 - val_loss: 0.6261 - val_accuracy: 0.8321
+Epoch 9/150
+158/158 - 37s - loss: 0.1690 - accuracy: 0.9440 - val_loss: 0.7381 - val_accuracy: 0.8018
+Epoch 10/150
+158/158 - 37s - loss: 0.1662 - accuracy: 0.9438 - val_loss: 0.7358 - val_accuracy: 0.8357
+Epoch 11/150
+158/158 - 37s - loss: 0.1585 - accuracy: 0.9466 - val_loss: 0.6563 - val_accuracy: 0.8339
+Epoch 12/150
+158/158 - 37s - loss: 0.1182 - accuracy: 0.9611 - val_loss: 0.6701 - val_accuracy: 0.8286
+Epoch 13/150
+158/158 - 37s - loss: 0.0966 - accuracy: 0.9668 - val_loss: 0.6555 - val_accuracy: 0.8643
+Epoch 14/150
+158/158 - 37s - loss: 0.0552 - accuracy: 0.9803 - val_loss: 0.8098 - val_accuracy: 0.8304
+Epoch 15/150
+158/158 - 37s - loss: 0.0894 - accuracy: 0.9690 - val_loss: 0.9453 - val_accuracy: 0.8196
+Epoch 16/150
+158/158 - 37s - loss: 0.1791 - accuracy: 0.9444 - val_loss: 0.8906 - val_accuracy: 0.8000
+Epoch 17/150
+158/158 - 37s - loss: 0.1170 - accuracy: 0.9609 - val_loss: 0.6421 - val_accuracy: 0.8661
+Epoch 18/150
+158/158 - 37s - loss: 0.0896 - accuracy: 0.9732 - val_loss: 0.5379 - val_accuracy: 0.8750
+Epoch 19/150
+158/158 - 37s - loss: 0.0431 - accuracy: 0.9865 - val_loss: 0.7471 - val_accuracy: 0.8482
+Epoch 20/150
+158/158 - 37s - loss: 0.0490 - accuracy: 0.9851 - val_loss: 0.7791 - val_accuracy: 0.8804
+Epoch 21/150
+158/158 - 37s - loss: 0.0901 - accuracy: 0.9708 - val_loss: 0.7502 - val_accuracy: 0.8232
+Epoch 22/150
+158/158 - 37s - loss: 0.1094 - accuracy: 0.9656 - val_loss: 0.9206 - val_accuracy: 0.8411
+Epoch 23/150
+158/158 - 37s - loss: 0.0921 - accuracy: 0.9708 - val_loss: 0.9130 - val_accuracy: 0.8304
+Epoch 24/150
+158/158 - 37s - loss: 0.0713 - accuracy: 0.9768 - val_loss: 0.7561 - val_accuracy: 0.8804
+Epoch 25/150
+158/158 - 37s - loss: 0.0406 - accuracy: 0.9877 - val_loss: 0.7521 - val_accuracy: 0.8625
+Epoch 26/150
+158/158 - 37s - loss: 0.0432 - accuracy: 0.9847 - val_loss: 0.7535 - val_accuracy: 0.8786
+Epoch 27/150
+158/158 - 37s - loss: 0.0556 - accuracy: 0.9849 - val_loss: 0.6676 - val_accuracy: 0.8750
+Epoch 28/150
+158/158 - 37s - loss: 0.1127 - accuracy: 0.9664 - val_loss: 1.6659 - val_accuracy: 0.7214
+Epoch 29/150
+158/158 - 37s - loss: 0.1860 - accuracy: 0.9462 - val_loss: 0.7690 - val_accuracy: 0.8536
+Epoch 30/150
+158/158 - 37s - loss: 0.0595 - accuracy: 0.9825 - val_loss: 0.8375 - val_accuracy: 0.8589
+Epoch 31/150
+158/158 - 37s - loss: 0.0370 - accuracy: 0.9911 - val_loss: 0.7102 - val_accuracy: 0.8804
+Epoch 32/150
+158/158 - 37s - loss: 0.0234 - accuracy: 0.9924 - val_loss: 0.6788 - val_accuracy: 0.8929
+Epoch 33/150
+158/158 - 37s - loss: 0.0124 - accuracy: 0.9946 - val_loss: 0.6857 - val_accuracy: 0.8929
+Epoch 34/150
+158/158 - 37s - loss: 0.0071 - accuracy: 0.9982 - val_loss: 0.7617 - val_accuracy: 0.8946
+Epoch 35/150
+158/158 - 37s - loss: 0.0015 - accuracy: 0.9998 - val_loss: 0.7365 - val_accuracy: 0.8946
+Epoch 36/150
+158/158 - 37s - loss: 4.9437e-04 - accuracy: 0.9998 - val_loss: 0.7713 - val_accuracy: 0.8982
+Epoch 37/150
+158/158 - 37s - loss: 1.8544e-04 - accuracy: 1.0000 - val_loss: 0.7922 - val_accuracy: 0.8982
+Epoch 38/150
+158/158 - 37s - loss: 1.4148e-04 - accuracy: 1.0000 - val_loss: 0.8049 - val_accuracy: 0.8982
+Epoch 39/150
+158/158 - 37s - loss: 1.1377e-04 - accuracy: 1.0000 - val_loss: 0.8200 - val_accuracy: 0.8964
+Epoch 40/150
+158/158 - 37s - loss: 9.3166e-05 - accuracy: 1.0000 - val_loss: 0.8325 - val_accuracy: 0.8982
+Epoch 41/150
+158/158 - 37s - loss: 7.8815e-05 - accuracy: 1.0000 - val_loss: 0.8433 - val_accuracy: 0.9000
+Epoch 42/150
+158/158 - 37s - loss: 6.7181e-05 - accuracy: 1.0000 - val_loss: 0.8533 - val_accuracy: 0.9000
+Epoch 43/150
+158/158 - 37s - loss: 5.7670e-05 - accuracy: 1.0000 - val_loss: 0.8646 - val_accuracy: 0.8982
+Epoch 44/150
+158/158 - 37s - loss: 5.0366e-05 - accuracy: 1.0000 - val_loss: 0.8726 - val_accuracy: 0.8982
+Epoch 45/150
+158/158 - 37s - loss: 4.3926e-05 - accuracy: 1.0000 - val_loss: 0.8807 - val_accuracy: 0.9000
+Epoch 46/150
+158/158 - 37s - loss: 3.8429e-05 - accuracy: 1.0000 - val_loss: 0.8904 - val_accuracy: 0.8982
+Epoch 47/150
+158/158 - 37s - loss: 3.4022e-05 - accuracy: 1.0000 - val_loss: 0.8970 - val_accuracy: 0.8982
+Epoch 48/150
+158/158 - 37s - loss: 3.0233e-05 - accuracy: 1.0000 - val_loss: 0.9041 - val_accuracy: 0.9000
+Epoch 49/150
+158/158 - 37s - loss: 2.6720e-05 - accuracy: 1.0000 - val_loss: 0.9132 - val_accuracy: 0.8982
+Epoch 50/150
+158/158 - 37s - loss: 2.3977e-05 - accuracy: 1.0000 - val_loss: 0.9230 - val_accuracy: 0.8982
+Epoch 51/150
+158/158 - 37s - loss: 2.1178e-05 - accuracy: 1.0000 - val_loss: 0.9295 - val_accuracy: 0.8982
+Epoch 52/150
+158/158 - 37s - loss: 1.9113e-05 - accuracy: 1.0000 - val_loss: 0.9380 - val_accuracy: 0.8982
+Epoch 53/150
+158/158 - 37s - loss: 1.7183e-05 - accuracy: 1.0000 - val_loss: 0.9464 - val_accuracy: 0.8982
+Epoch 54/150
+158/158 - 37s - loss: 1.5316e-05 - accuracy: 1.0000 - val_loss: 0.9539 - val_accuracy: 0.8982
+Epoch 55/150
+158/158 - 37s - loss: 1.3974e-05 - accuracy: 1.0000 - val_loss: 0.9605 - val_accuracy: 0.8964
+Epoch 56/150
+158/158 - 37s - loss: 1.2729e-05 - accuracy: 1.0000 - val_loss: 0.9681 - val_accuracy: 0.8964
+Epoch 57/150
+158/158 - 37s - loss: 1.1356e-05 - accuracy: 1.0000 - val_loss: 0.9742 - val_accuracy: 0.8964
+Epoch 58/150
+158/158 - 37s - loss: 1.0329e-05 - accuracy: 1.0000 - val_loss: 0.9812 - val_accuracy: 0.8964
+Epoch 59/150
+158/158 - 37s - loss: 9.2829e-06 - accuracy: 1.0000 - val_loss: 0.9883 - val_accuracy: 0.8964
+Epoch 60/150
+158/158 - 37s - loss: 8.4433e-06 - accuracy: 1.0000 - val_loss: 0.9950 - val_accuracy: 0.8964
+Epoch 61/150
+158/158 - 37s - loss: 7.7070e-06 - accuracy: 1.0000 - val_loss: 1.0036 - val_accuracy: 0.8964
+Epoch 62/150
+158/158 - 37s - loss: 6.9923e-06 - accuracy: 1.0000 - val_loss: 1.0100 - val_accuracy: 0.8964
+Epoch 63/150
+158/158 - 37s - loss: 6.3329e-06 - accuracy: 1.0000 - val_loss: 1.0167 - val_accuracy: 0.8964
+Epoch 64/150
+158/158 - 37s - loss: 5.7420e-06 - accuracy: 1.0000 - val_loss: 1.0239 - val_accuracy: 0.8964
+Epoch 65/150
+158/158 - 37s - loss: 5.2162e-06 - accuracy: 1.0000 - val_loss: 1.0311 - val_accuracy: 0.8964
+Epoch 66/150
+158/158 - 37s - loss: 4.7790e-06 - accuracy: 1.0000 - val_loss: 1.0368 - val_accuracy: 0.8964
+Epoch 67/150
+158/158 - 37s - loss: 4.3429e-06 - accuracy: 1.0000 - val_loss: 1.0435 - val_accuracy: 0.8964
+Epoch 68/150
+158/158 - 37s - loss: 3.9529e-06 - accuracy: 1.0000 - val_loss: 1.0503 - val_accuracy: 0.8964
+Epoch 00068: early stopping
+input_1 False
+block1_conv1 False
+batch_normalization True
+block1_conv2 False
+batch_normalization_1 True
+block1_pool False
+block2_conv1 False
+batch_normalization_2 True
+block2_conv2 False
+batch_normalization_3 True
+block2_pool False
+block3_conv1 False
+batch_normalization_4 True
+block3_conv2 False
+batch_normalization_5 True
+block3_conv3 False
+batch_normalization_6 True
+block3_pool False
+block4_conv1 False
+batch_normalization_7 True
+block4_conv2 False
+batch_normalization_8 True
+block4_conv3 False
+batch_normalization_9 True
+block4_pool False
+block5_conv1 False
+batch_normalization_10 True
+block5_conv2 False
+batch_normalization_11 True
+block5_conv3 False
+batch_normalization_12 True
+block5_pool False
+flatten False
+fc1 False
+batch_normalization_13 True
+fc2 False
+batch_normalization_14 True
+predictions False
+  0/250 [..............................] - ETA: 0s2020-03-16 11:53:20.681519: W tensorflow/core/kernels/gpu_utils.cc:48] Failed to allocate memory for convolution redzone checking; skipping this check. This is benign and only means that we won't check cudnn for out-of-bounds reads and writes. This message will only be printed once.
+2020-03-16 11:53:20.683783: F tensorflow/stream_executor/cuda/cuda_dnn.cc:516] Check failed: cudnnSetTensorNdDescriptor(handle_.get(), elem_type, nd, dims.data(), strides.data()) == CUDNN_STATUS_SUCCESS (9 vs. 0)batch_descriptor: {count: 1399 feature_map_count: 64 spatial: 256 256  value_min: 0.000000 value_max: 0.000000 layout: BatchDepthYX}
+[pg-gpu25:31383] *** Process received signal ***
+[pg-gpu25:31383] Signal: Aborted (6)
+[pg-gpu25:31383] Signal code:  (-6)
+[pg-gpu25:31383] [ 0] /lib64/libpthread.so.0(+0xf5f0)[0x7fcf4b2725f0]
+[pg-gpu25:31383] [ 1] /lib64/libc.so.6(gsignal+0x37)[0x7fcf4acc8337]
+[pg-gpu25:31383] [ 2] /lib64/libc.so.6(abort+0x148)[0x7fcf4acc9a28]
+[pg-gpu25:31383] [ 3] /software/software/TensorFlow/2.1.0-fosscuda-2019b-Python-3.7.4/lib/python3.7/site-packages/tensorflow_core/python/_pywrap_tensorflow_internal.so(+0xb10a737)[0x7fcf0a234737]
+[pg-gpu25:31383] [ 4] /software/software/TensorFlow/2.1.0-fosscuda-2019b-Python-3.7.4/lib/python3.7/site-packages/tensorflow_core/python/../libtensorflow_framework.so.2(+0xb698cb)[0x7fcefd2d28cb]
+[pg-gpu25:31383] [ 5] /software/software/TensorFlow/2.1.0-fosscuda-2019b-Python-3.7.4/lib/python3.7/site-packages/tensorflow_core/python/../libtensorflow_framework.so.2(_ZN15stream_executor3gpu12CudnnSupport19DoFusedConvolveImplIffffEEN10tensorflow6StatusEPNS_6StreamERKNS_3dnn15BatchDescriptorERKNS_12DeviceMemoryIT_EET1_RKNS7_16FilterDescriptorESF_RKNS7_21ConvolutionDescriptorERKNSB_IT2_EESG_SA_RKNSB_IT0_EENS7_14ActivationModeESA_PSO_NS7_8DataTypeEPNS_16ScratchAllocatorERKNS7_15AlgorithmConfigEPNS7_13ProfileResultE+0x130)[0x7fcefe8f0960]
+[pg-gpu25:31383] [ 6] /software/software/TensorFlow/2.1.0-fosscuda-2019b-Python-3.7.4/lib/python3.7/site-packages/tensorflow_core/python/../libtensorflow_framework.so.2(_ZN15stream_executor3gpu12CudnnSupport15DoFusedConvolveEPNS_6StreamERKNS_3dnn15BatchDescriptorERKNS_12DeviceMemoryIfEEfRKNS4_16FilterDescriptorESB_RKNS4_21ConvolutionDescriptorESB_fS7_SB_NS4_14ActivationModeES7_PS9_PNS_16ScratchAllocatorERKNS4_15AlgorithmConfigEPNS4_13ProfileResultE+0x4c)[0x7fcefe8f151c]
+[pg-gpu25:31383] [ 7] /software/software/TensorFlow/2.1.0-fosscuda-2019b-Python-3.7.4/lib/python3.7/site-packages/tensorflow_core/python/_pywrap_tensorflow_internal.so(_ZN15stream_executor6Stream30ThenFusedConvolveWithAlgorithmERKNS_3dnn15BatchDescriptorERKNS_12DeviceMemoryIfEEfRKNS1_16FilterDescriptorES8_RKNS1_21ConvolutionDescriptorES8_fS4_S8_NS1_14ActivationModeES4_PS6_PNS_16ScratchAllocatorERKNS1_15AlgorithmConfigEPNS1_13ProfileResultE+0xd81)[0x7fcf09076961]
+[pg-gpu25:31383] [ 8] /software/software/TensorFlow/2.1.0-fosscuda-2019b-Python-3.7.4/lib/python3.7/site-packages/tensorflow_core/python/_pywrap_tensorflow_internal.so(_ZN10tensorflow25FindBestConvolveAlgorithmIfZNS_19LaunchFusedConv2DOpIN5Eigen9GpuDeviceEfEclEPNS_15OpKernelContextEbbRKNS_6TensorES9_NS_20FusedComputationTypeERKNS_20FusedComputationArgsERKNS_16Conv2DParametersERKNS_16Conv2DDimensionsEPS7_EUlN15stream_executor3dnn15AlgorithmConfigEPNSL_16ScratchAllocatorENSL_12DeviceMemoryIfEEPNSM_13ProfileResultEE0_ZNS4_clES6_bbS9_S9_SA_SD_SG_SJ_SK_EUlN4absl4SpanIKNS_14AutotuneResultEEEE1_EENS_6StatusERKNS_19FusedConvParametersET0_S6_PNSL_6StreamENSQ_IT_EERKT1_PSN_+0x670)[0x7fcf07c66510]
+[pg-gpu25:31383] [ 9] /software/software/TensorFlow/2.1.0-fosscuda-2019b-Python-3.7.4/lib/python3.7/site-packages/tensorflow_core/python/_pywrap_tensorflow_internal.so(_ZN10tensorflow19LaunchFusedConv2DOpIN5Eigen9GpuDeviceEfEclEPNS_15OpKernelContextEbbRKNS_6TensorES8_NS_20FusedComputationTypeERKNS_20FusedComputationArgsERKNS_16Conv2DParametersERKNS_16Conv2DDimensionsEPS6_+0xfec)[0x7fcf07c67c5c]
+[pg-gpu25:31383] [10] /software/software/TensorFlow/2.1.0-fosscuda-2019b-Python-3.7.4/lib/python3.7/site-packages/tensorflow_core/python/_pywrap_tensorflow_internal.so(_ZN10tensorflow13FusedConv2DOpIN5Eigen9GpuDeviceEfE7ComputeEPNS_15OpKernelContextE+0x1af)[0x7fcf07c6894f]
+[pg-gpu25:31383] [11] /software/software/TensorFlow/2.1.0-fosscuda-2019b-Python-3.7.4/lib/python3.7/site-packages/tensorflow_core/python/../libtensorflow_framework.so.2(_ZN10tensorflow13BaseGPUDevice7ComputeEPNS_8OpKernelEPNS_15OpKernelContextE+0xdb)[0x7fcefda5407b]
+[pg-gpu25:31383] [12] /software/software/TensorFlow/2.1.0-fosscuda-2019b-Python-3.7.4/lib/python3.7/site-packages/tensorflow_core/python/../libtensorflow_framework.so.2(+0x134a0a9)[0x7fcefdab30a9]
+[pg-gpu25:31383] [13] /software/software/TensorFlow/2.1.0-fosscuda-2019b-Python-3.7.4/lib/python3.7/site-packages/tensorflow_core/python/../libtensorflow_framework.so.2(+0x134a7cf)[0x7fcefdab37cf]
+[pg-gpu25:31383] [14] /software/software/TensorFlow/2.1.0-fosscuda-2019b-Python-3.7.4/lib/python3.7/site-packages/tensorflow_core/python/../libtensorflow_framework.so.2(_ZN5Eigen15ThreadPoolTemplIN10tensorflow6thread16EigenEnvironmentEE10WorkerLoopEi+0x48b)[0x7fcefe475f8b]
+[pg-gpu25:31383] [15] /software/software/TensorFlow/2.1.0-fosscuda-2019b-Python-3.7.4/lib/python3.7/site-packages/tensorflow_core/python/../libtensorflow_framework.so.2(_ZNSt17_Function_handlerIFvvEZN10tensorflow6thread16EigenEnvironment12CreateThreadESt8functionIS0_EEUlvE_E9_M_invokeERKSt9_Any_data+0x43)[0x7fcefe473763]
+[pg-gpu25:31383] [16] /software/software/GCCcore/8.3.0/lib64/libstdc++.so.6(+0xcf0df)[0x7fcf381f00df]
+[pg-gpu25:31383] [17] /lib64/libpthread.so.0(+0x7e65)[0x7fcf4b26ae65]
+[pg-gpu25:31383] [18] /lib64/libc.so.6(clone+0x6d)[0x7fcf4ad9088d]
+[pg-gpu25:31383] *** End of error message ***
+/var/spool/slurmd/job10127855/slurm_script: line 14: 31383 Aborted                 python Mess_MCBN.py
+
+
+###############################################################################
+Peregrine Cluster
+Job 10127855 for user 's2934833'
+Finished at: Mon Mar 16 11:53:21 CET 2020
+
+Job details:
+============
+
+Name                : MCBNMessidor2
+User                : s2934833
+Partition           : gpu
+Nodes               : pg-gpu25
+Cores               : 12
+State               : FAILED
+Submit              : 2020-03-16T10:31:06
+Start               : 2020-03-16T11:10:39
+End                 : 2020-03-16T11:53:21
+Reserved walltime   : 02:00:00
+Used walltime       : 00:42:42
+Used CPU time       : 00:35:12 (efficiency:  6.87%)
+% User (Computation): 69.93%
+% System (I/O)      : 30.07%
+Mem reserved        : 62.50G/node
+Max Mem used        : 8.18G (pg-gpu25)
+Max Disk Write      : 153.60K (pg-gpu25)
+Max Disk Read       : 5.35M (pg-gpu25)
+
+
+Acknowledgements:
+=================
+
+Please see this page for information about acknowledging Peregrine in your publications:
+
+https://wiki.hpc.rug.nl/peregrine/additional_information/scientific_output
+
+################################################################################

@@ -442,7 +442,7 @@ def main():
 
     # Set onoly batch normalization layers to trainable
     for layer in pre_trained_model.layers:
-        if re.search('BatchNormalization.*', layer.name):
+        if re.search('batch_normalization.*', layer.name):
             layer.trainable = True
         else:
             layer.trainable = False

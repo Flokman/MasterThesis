@@ -1,0 +1,362 @@
+
+The following have been reloaded with a version change:
+  1) FFTW/3.3.8-gompic-2019b => FFTW/3.3.8-gompi-2019b
+  2) OpenMPI/3.1.4-gcccuda-2019b => OpenMPI/3.1.4-GCC-8.3.0
+  3) ScaLAPACK/2.0.2-gompic-2019b => ScaLAPACK/2.0.2-gompi-2019b
+  4) SciPy-bundle/2019.10-fosscuda-2019b-Python-3.7.4 => SciPy-bundle/2019.10-foss-2019b-Python-3.7.4
+
+2020-03-14 12:14:10.578590: I tensorflow/stream_executor/platform/default/dso_loader.cc:44] Successfully opened dynamic library libcudart.so.10.1
+2020-03-14 12:14:23.024446: I tensorflow/stream_executor/platform/default/dso_loader.cc:44] Successfully opened dynamic library libcuda.so.1
+2020-03-14 12:14:23.032211: I tensorflow/stream_executor/cuda/cuda_gpu_executor.cc:981] successful NUMA node read from SysFS had negative value (-1), but there must be at least one NUMA node, so returning NUMA node zero
+2020-03-14 12:14:23.032749: I tensorflow/core/common_runtime/gpu/gpu_device.cc:1555] Found device 0 with properties: 
+pciBusID: 0000:02:00.0 name: GRID V100D-32Q computeCapability: 7.0
+coreClock: 1.38GHz coreCount: 80 deviceMemorySize: 31.87GiB deviceMemoryBandwidth: 836.37GiB/s
+2020-03-14 12:14:23.032822: I tensorflow/stream_executor/platform/default/dso_loader.cc:44] Successfully opened dynamic library libcudart.so.10.1
+2020-03-14 12:14:23.038699: I tensorflow/stream_executor/platform/default/dso_loader.cc:44] Successfully opened dynamic library libcublas.so.10
+2020-03-14 12:14:23.042597: I tensorflow/stream_executor/platform/default/dso_loader.cc:44] Successfully opened dynamic library libcufft.so.10
+2020-03-14 12:14:23.044037: I tensorflow/stream_executor/platform/default/dso_loader.cc:44] Successfully opened dynamic library libcurand.so.10
+2020-03-14 12:14:23.047932: I tensorflow/stream_executor/platform/default/dso_loader.cc:44] Successfully opened dynamic library libcusolver.so.10
+2020-03-14 12:14:23.050111: I tensorflow/stream_executor/platform/default/dso_loader.cc:44] Successfully opened dynamic library libcusparse.so.10
+2020-03-14 12:14:23.056438: I tensorflow/stream_executor/platform/default/dso_loader.cc:44] Successfully opened dynamic library libcudnn.so.7
+2020-03-14 12:14:23.056666: I tensorflow/stream_executor/cuda/cuda_gpu_executor.cc:981] successful NUMA node read from SysFS had negative value (-1), but there must be at least one NUMA node, so returning NUMA node zero
+2020-03-14 12:14:23.057312: I tensorflow/stream_executor/cuda/cuda_gpu_executor.cc:981] successful NUMA node read from SysFS had negative value (-1), but there must be at least one NUMA node, so returning NUMA node zero
+2020-03-14 12:14:23.057722: I tensorflow/core/common_runtime/gpu/gpu_device.cc:1697] Adding visible gpu devices: 0
+2020-03-14 12:14:23.060974: I tensorflow/stream_executor/cuda/cuda_gpu_executor.cc:981] successful NUMA node read from SysFS had negative value (-1), but there must be at least one NUMA node, so returning NUMA node zero
+2020-03-14 12:14:23.061437: I tensorflow/core/common_runtime/gpu/gpu_device.cc:1555] Found device 0 with properties: 
+pciBusID: 0000:02:00.0 name: GRID V100D-32Q computeCapability: 7.0
+coreClock: 1.38GHz coreCount: 80 deviceMemorySize: 31.87GiB deviceMemoryBandwidth: 836.37GiB/s
+2020-03-14 12:14:23.061487: I tensorflow/stream_executor/platform/default/dso_loader.cc:44] Successfully opened dynamic library libcudart.so.10.1
+2020-03-14 12:14:23.061525: I tensorflow/stream_executor/platform/default/dso_loader.cc:44] Successfully opened dynamic library libcublas.so.10
+2020-03-14 12:14:23.061547: I tensorflow/stream_executor/platform/default/dso_loader.cc:44] Successfully opened dynamic library libcufft.so.10
+2020-03-14 12:14:23.061567: I tensorflow/stream_executor/platform/default/dso_loader.cc:44] Successfully opened dynamic library libcurand.so.10
+2020-03-14 12:14:23.061588: I tensorflow/stream_executor/platform/default/dso_loader.cc:44] Successfully opened dynamic library libcusolver.so.10
+2020-03-14 12:14:23.061608: I tensorflow/stream_executor/platform/default/dso_loader.cc:44] Successfully opened dynamic library libcusparse.so.10
+2020-03-14 12:14:23.061628: I tensorflow/stream_executor/platform/default/dso_loader.cc:44] Successfully opened dynamic library libcudnn.so.7
+2020-03-14 12:14:23.061738: I tensorflow/stream_executor/cuda/cuda_gpu_executor.cc:981] successful NUMA node read from SysFS had negative value (-1), but there must be at least one NUMA node, so returning NUMA node zero
+2020-03-14 12:14:23.062215: I tensorflow/stream_executor/cuda/cuda_gpu_executor.cc:981] successful NUMA node read from SysFS had negative value (-1), but there must be at least one NUMA node, so returning NUMA node zero
+2020-03-14 12:14:23.062688: I tensorflow/core/common_runtime/gpu/gpu_device.cc:1697] Adding visible gpu devices: 0
+2020-03-14 12:14:23.062752: I tensorflow/stream_executor/platform/default/dso_loader.cc:44] Successfully opened dynamic library libcudart.so.10.1
+2020-03-14 12:14:23.949081: I tensorflow/core/common_runtime/gpu/gpu_device.cc:1096] Device interconnect StreamExecutor with strength 1 edge matrix:
+2020-03-14 12:14:23.949209: I tensorflow/core/common_runtime/gpu/gpu_device.cc:1102]      0 
+2020-03-14 12:14:23.949225: I tensorflow/core/common_runtime/gpu/gpu_device.cc:1115] 0:   N 
+2020-03-14 12:14:23.949645: I tensorflow/stream_executor/cuda/cuda_gpu_executor.cc:981] successful NUMA node read from SysFS had negative value (-1), but there must be at least one NUMA node, so returning NUMA node zero
+2020-03-14 12:14:23.950411: I tensorflow/stream_executor/cuda/cuda_gpu_executor.cc:981] successful NUMA node read from SysFS had negative value (-1), but there must be at least one NUMA node, so returning NUMA node zero
+2020-03-14 12:14:23.950951: I tensorflow/stream_executor/cuda/cuda_gpu_executor.cc:981] successful NUMA node read from SysFS had negative value (-1), but there must be at least one NUMA node, so returning NUMA node zero
+2020-03-14 12:14:23.951415: I tensorflow/core/common_runtime/gpu/gpu_device.cc:1241] Created TensorFlow device (/job:localhost/replica:0/task:0/device:GPU:0 with 28652 MB memory) -> physical GPU (device: 0, name: GRID V100D-32Q, pci bus id: 0000:02:00.0, compute capability: 7.0)
+2020-03-14 12:14:23.951809: I tensorflow/core/common_runtime/process_util.cc:147] Creating new thread pool with default inter op setting: 2. Tune using inter_op_parallelism_threads for best performance.
+WARNING:tensorflow:sample_weight modes were coerced from
+  ...
+    to  
+  ['...']
+WARNING:tensorflow:sample_weight modes were coerced from
+  ...
+    to  
+  ['...']
+2020-03-14 12:14:28.331559: I tensorflow/stream_executor/platform/default/dso_loader.cc:44] Successfully opened dynamic library libcublas.so.10
+2020-03-14 12:14:28.703643: I tensorflow/stream_executor/platform/default/dso_loader.cc:44] Successfully opened dynamic library libcudnn.so.7
+2020-03-14 12:14:31.566549: I tensorflow/core/profiler/lib/profiler_session.cc:225] Profiler session started.
+2020-03-14 12:14:31.566725: I tensorflow/core/profiler/internal/gpu/cupti_tracer.cc:1259] Profiler found 1 GPUs
+2020-03-14 12:14:31.569619: I tensorflow/stream_executor/platform/default/dso_loader.cc:44] Successfully opened dynamic library libcupti.so.10.1
+2020-03-14 12:14:31.670404: E tensorflow/core/profiler/internal/gpu/cupti_tracer.cc:1307] function cupti_interface_->Subscribe( &subscriber_, (CUpti_CallbackFunc)ApiCallback, this)failed with error CUPTI_ERROR_VIRTUALIZED_DEVICE_NOT_SUPPORTED
+2020-03-14 12:14:31.671180: E tensorflow/core/profiler/internal/gpu/cupti_tracer.cc:1346] function cupti_interface_->ActivityRegisterCallbacks( AllocCuptiActivityBuffer, FreeCuptiActivityBuffer)failed with error CUPTI_ERROR_VIRTUALIZED_DEVICE_NOT_SUPPORTED
+2020-03-14 12:14:31.689832: E tensorflow/core/profiler/internal/gpu/cupti_tracer.cc:1329] function cupti_interface_->EnableCallback( 0 , subscriber_, CUPTI_CB_DOMAIN_DRIVER_API, cbid)failed with error CUPTI_ERROR_INVALID_PARAMETER
+2020-03-14 12:14:31.689948: I tensorflow/core/profiler/internal/gpu/device_tracer.cc:88]  GpuTracer has collected 0 callback api events and 0 activity events.
+WARNING:tensorflow:sample_weight modes were coerced from
+  ...
+    to  
+  ['...']
+WARNING:tensorflow:sample_weight modes were coerced from
+  ...
+    to  
+  ['...']
+2020-03-14 12:23:41.273123: I tensorflow/core/profiler/lib/profiler_session.cc:225] Profiler session started.
+2020-03-14 12:23:41.273258: E tensorflow/core/profiler/internal/gpu/cupti_tracer.cc:1307] function cupti_interface_->Subscribe( &subscriber_, (CUpti_CallbackFunc)ApiCallback, this)failed with error CUPTI_ERROR_NOT_INITIALIZED
+2020-03-14 12:23:41.273302: E tensorflow/core/profiler/internal/gpu/cupti_tracer.cc:1346] function cupti_interface_->ActivityRegisterCallbacks( AllocCuptiActivityBuffer, FreeCuptiActivityBuffer)failed with error CUPTI_ERROR_NOT_INITIALIZED
+2020-03-14 12:23:41.288260: E tensorflow/core/profiler/internal/gpu/cupti_tracer.cc:1329] function cupti_interface_->EnableCallback( 0 , subscriber_, CUPTI_CB_DOMAIN_DRIVER_API, cbid)failed with error CUPTI_ERROR_INVALID_PARAMETER
+2020-03-14 12:23:41.288334: I tensorflow/core/profiler/internal/gpu/device_tracer.cc:88]  GpuTracer has collected 0 callback api events and 0 activity events.
+WARNING:tensorflow:sample_weight modes were coerced from
+  ...
+    to  
+  ['...']
+WARNING:tensorflow:sample_weight modes were coerced from
+  ...
+    to  
+  ['...']
+2020-03-14 12:31:07.835439: I tensorflow/core/profiler/lib/profiler_session.cc:225] Profiler session started.
+2020-03-14 12:31:07.835573: E tensorflow/core/profiler/internal/gpu/cupti_tracer.cc:1307] function cupti_interface_->Subscribe( &subscriber_, (CUpti_CallbackFunc)ApiCallback, this)failed with error CUPTI_ERROR_NOT_INITIALIZED
+2020-03-14 12:31:07.835605: E tensorflow/core/profiler/internal/gpu/cupti_tracer.cc:1346] function cupti_interface_->ActivityRegisterCallbacks( AllocCuptiActivityBuffer, FreeCuptiActivityBuffer)failed with error CUPTI_ERROR_NOT_INITIALIZED
+2020-03-14 12:31:07.850474: E tensorflow/core/profiler/internal/gpu/cupti_tracer.cc:1329] function cupti_interface_->EnableCallback( 0 , subscriber_, CUPTI_CB_DOMAIN_DRIVER_API, cbid)failed with error CUPTI_ERROR_INVALID_PARAMETER
+2020-03-14 12:31:07.850542: I tensorflow/core/profiler/internal/gpu/device_tracer.cc:88]  GpuTracer has collected 0 callback api events and 0 activity events.
+WARNING:tensorflow:sample_weight modes were coerced from
+  ...
+    to  
+  ['...']
+WARNING:tensorflow:sample_weight modes were coerced from
+  ...
+    to  
+  ['...']
+2020-03-14 12:38:56.391103: I tensorflow/core/profiler/lib/profiler_session.cc:225] Profiler session started.
+2020-03-14 12:38:56.391236: E tensorflow/core/profiler/internal/gpu/cupti_tracer.cc:1307] function cupti_interface_->Subscribe( &subscriber_, (CUpti_CallbackFunc)ApiCallback, this)failed with error CUPTI_ERROR_NOT_INITIALIZED
+2020-03-14 12:38:56.391277: E tensorflow/core/profiler/internal/gpu/cupti_tracer.cc:1346] function cupti_interface_->ActivityRegisterCallbacks( AllocCuptiActivityBuffer, FreeCuptiActivityBuffer)failed with error CUPTI_ERROR_NOT_INITIALIZED
+2020-03-14 12:38:56.406321: E tensorflow/core/profiler/internal/gpu/cupti_tracer.cc:1329] function cupti_interface_->EnableCallback( 0 , subscriber_, CUPTI_CB_DOMAIN_DRIVER_API, cbid)failed with error CUPTI_ERROR_INVALID_PARAMETER
+2020-03-14 12:38:56.406389: I tensorflow/core/profiler/internal/gpu/device_tracer.cc:88]  GpuTracer has collected 0 callback api events and 0 activity events.
+WARNING:tensorflow:sample_weight modes were coerced from
+  ...
+    to  
+  ['...']
+WARNING:tensorflow:sample_weight modes were coerced from
+  ...
+    to  
+  ['...']
+2020-03-14 12:46:43.849024: I tensorflow/core/profiler/lib/profiler_session.cc:225] Profiler session started.
+2020-03-14 12:46:43.849153: E tensorflow/core/profiler/internal/gpu/cupti_tracer.cc:1307] function cupti_interface_->Subscribe( &subscriber_, (CUpti_CallbackFunc)ApiCallback, this)failed with error CUPTI_ERROR_NOT_INITIALIZED
+2020-03-14 12:46:43.849184: E tensorflow/core/profiler/internal/gpu/cupti_tracer.cc:1346] function cupti_interface_->ActivityRegisterCallbacks( AllocCuptiActivityBuffer, FreeCuptiActivityBuffer)failed with error CUPTI_ERROR_NOT_INITIALIZED
+2020-03-14 12:46:43.863894: E tensorflow/core/profiler/internal/gpu/cupti_tracer.cc:1329] function cupti_interface_->EnableCallback( 0 , subscriber_, CUPTI_CB_DOMAIN_DRIVER_API, cbid)failed with error CUPTI_ERROR_INVALID_PARAMETER
+2020-03-14 12:46:43.863978: I tensorflow/core/profiler/internal/gpu/device_tracer.cc:88]  GpuTracer has collected 0 callback api events and 0 activity events.
+WARNING:tensorflow:sample_weight modes were coerced from
+  ...
+    to  
+  ['...']
+WARNING:tensorflow:sample_weight modes were coerced from
+  ...
+    to  
+  ['...']
+2020-03-14 12:55:51.243129: I tensorflow/core/profiler/lib/profiler_session.cc:225] Profiler session started.
+2020-03-14 12:55:51.243260: E tensorflow/core/profiler/internal/gpu/cupti_tracer.cc:1307] function cupti_interface_->Subscribe( &subscriber_, (CUpti_CallbackFunc)ApiCallback, this)failed with error CUPTI_ERROR_NOT_INITIALIZED
+2020-03-14 12:55:51.243305: E tensorflow/core/profiler/internal/gpu/cupti_tracer.cc:1346] function cupti_interface_->ActivityRegisterCallbacks( AllocCuptiActivityBuffer, FreeCuptiActivityBuffer)failed with error CUPTI_ERROR_NOT_INITIALIZED
+2020-03-14 12:55:51.258439: E tensorflow/core/profiler/internal/gpu/cupti_tracer.cc:1329] function cupti_interface_->EnableCallback( 0 , subscriber_, CUPTI_CB_DOMAIN_DRIVER_API, cbid)failed with error CUPTI_ERROR_INVALID_PARAMETER
+2020-03-14 12:55:51.258507: I tensorflow/core/profiler/internal/gpu/device_tracer.cc:88]  GpuTracer has collected 0 callback api events and 0 activity events.
+WARNING:tensorflow:sample_weight modes were coerced from
+  ...
+    to  
+  ['...']
+WARNING:tensorflow:sample_weight modes were coerced from
+  ...
+    to  
+  ['...']
+2020-03-14 13:03:37.804604: I tensorflow/core/profiler/lib/profiler_session.cc:225] Profiler session started.
+2020-03-14 13:03:37.804735: E tensorflow/core/profiler/internal/gpu/cupti_tracer.cc:1307] function cupti_interface_->Subscribe( &subscriber_, (CUpti_CallbackFunc)ApiCallback, this)failed with error CUPTI_ERROR_NOT_INITIALIZED
+2020-03-14 13:03:37.804766: E tensorflow/core/profiler/internal/gpu/cupti_tracer.cc:1346] function cupti_interface_->ActivityRegisterCallbacks( AllocCuptiActivityBuffer, FreeCuptiActivityBuffer)failed with error CUPTI_ERROR_NOT_INITIALIZED
+2020-03-14 13:03:37.819932: E tensorflow/core/profiler/internal/gpu/cupti_tracer.cc:1329] function cupti_interface_->EnableCallback( 0 , subscriber_, CUPTI_CB_DOMAIN_DRIVER_API, cbid)failed with error CUPTI_ERROR_INVALID_PARAMETER
+2020-03-14 13:03:37.820015: I tensorflow/core/profiler/internal/gpu/device_tracer.cc:88]  GpuTracer has collected 0 callback api events and 0 activity events.
+WARNING:tensorflow:sample_weight modes were coerced from
+  ...
+    to  
+  ['...']
+WARNING:tensorflow:sample_weight modes were coerced from
+  ...
+    to  
+  ['...']
+2020-03-14 13:19:08.154139: I tensorflow/core/profiler/lib/profiler_session.cc:225] Profiler session started.
+2020-03-14 13:19:08.154277: E tensorflow/core/profiler/internal/gpu/cupti_tracer.cc:1307] function cupti_interface_->Subscribe( &subscriber_, (CUpti_CallbackFunc)ApiCallback, this)failed with error CUPTI_ERROR_NOT_INITIALIZED
+2020-03-14 13:19:08.154310: E tensorflow/core/profiler/internal/gpu/cupti_tracer.cc:1346] function cupti_interface_->ActivityRegisterCallbacks( AllocCuptiActivityBuffer, FreeCuptiActivityBuffer)failed with error CUPTI_ERROR_NOT_INITIALIZED
+2020-03-14 13:19:08.169148: E tensorflow/core/profiler/internal/gpu/cupti_tracer.cc:1329] function cupti_interface_->EnableCallback( 0 , subscriber_, CUPTI_CB_DOMAIN_DRIVER_API, cbid)failed with error CUPTI_ERROR_INVALID_PARAMETER
+2020-03-14 13:19:08.169225: I tensorflow/core/profiler/internal/gpu/device_tracer.cc:88]  GpuTracer has collected 0 callback api events and 0 activity events.
+WARNING:tensorflow:sample_weight modes were coerced from
+  ...
+    to  
+  ['...']
+WARNING:tensorflow:sample_weight modes were coerced from
+  ...
+    to  
+  ['...']
+2020-03-14 14:21:31.886682: I tensorflow/core/profiler/lib/profiler_session.cc:225] Profiler session started.
+2020-03-14 14:21:31.886816: E tensorflow/core/profiler/internal/gpu/cupti_tracer.cc:1307] function cupti_interface_->Subscribe( &subscriber_, (CUpti_CallbackFunc)ApiCallback, this)failed with error CUPTI_ERROR_NOT_INITIALIZED
+2020-03-14 14:21:31.886872: E tensorflow/core/profiler/internal/gpu/cupti_tracer.cc:1346] function cupti_interface_->ActivityRegisterCallbacks( AllocCuptiActivityBuffer, FreeCuptiActivityBuffer)failed with error CUPTI_ERROR_NOT_INITIALIZED
+2020-03-14 14:21:31.901690: E tensorflow/core/profiler/internal/gpu/cupti_tracer.cc:1329] function cupti_interface_->EnableCallback( 0 , subscriber_, CUPTI_CB_DOMAIN_DRIVER_API, cbid)failed with error CUPTI_ERROR_INVALID_PARAMETER
+2020-03-14 14:21:31.901755: I tensorflow/core/profiler/internal/gpu/device_tracer.cc:88]  GpuTracer has collected 0 callback api events and 0 activity events.
+WARNING:tensorflow:sample_weight modes were coerced from
+  ...
+    to  
+  ['...']
+WARNING:tensorflow:sample_weight modes were coerced from
+  ...
+    to  
+  ['...']
+2020-03-14 17:20:37.911469: I tensorflow/core/profiler/lib/profiler_session.cc:225] Profiler session started.
+2020-03-14 17:20:37.911610: E tensorflow/core/profiler/internal/gpu/cupti_tracer.cc:1307] function cupti_interface_->Subscribe( &subscriber_, (CUpti_CallbackFunc)ApiCallback, this)failed with error CUPTI_ERROR_NOT_INITIALIZED
+2020-03-14 17:20:37.911642: E tensorflow/core/profiler/internal/gpu/cupti_tracer.cc:1346] function cupti_interface_->ActivityRegisterCallbacks( AllocCuptiActivityBuffer, FreeCuptiActivityBuffer)failed with error CUPTI_ERROR_NOT_INITIALIZED
+2020-03-14 17:20:37.927391: E tensorflow/core/profiler/internal/gpu/cupti_tracer.cc:1329] function cupti_interface_->EnableCallback( 0 , subscriber_, CUPTI_CB_DOMAIN_DRIVER_API, cbid)failed with error CUPTI_ERROR_INVALID_PARAMETER
+2020-03-14 17:20:37.927489: I tensorflow/core/profiler/internal/gpu/device_tracer.cc:88]  GpuTracer has collected 0 callback api events and 0 activity events.
+WARNING:tensorflow:sample_weight modes were coerced from
+  ...
+    to  
+  ['...']
+WARNING:tensorflow:sample_weight modes were coerced from
+  ...
+    to  
+  ['...']
+2020-03-14 20:22:08.780013: I tensorflow/core/profiler/lib/profiler_session.cc:225] Profiler session started.
+2020-03-14 20:22:08.780166: E tensorflow/core/profiler/internal/gpu/cupti_tracer.cc:1307] function cupti_interface_->Subscribe( &subscriber_, (CUpti_CallbackFunc)ApiCallback, this)failed with error CUPTI_ERROR_NOT_INITIALIZED
+2020-03-14 20:22:08.780225: E tensorflow/core/profiler/internal/gpu/cupti_tracer.cc:1346] function cupti_interface_->ActivityRegisterCallbacks( AllocCuptiActivityBuffer, FreeCuptiActivityBuffer)failed with error CUPTI_ERROR_NOT_INITIALIZED
+2020-03-14 20:22:08.796833: E tensorflow/core/profiler/internal/gpu/cupti_tracer.cc:1329] function cupti_interface_->EnableCallback( 0 , subscriber_, CUPTI_CB_DOMAIN_DRIVER_API, cbid)failed with error CUPTI_ERROR_INVALID_PARAMETER
+2020-03-14 20:22:08.796943: I tensorflow/core/profiler/internal/gpu/device_tracer.cc:88]  GpuTracer has collected 0 callback api events and 0 activity events.
+WARNING:tensorflow:sample_weight modes were coerced from
+  ...
+    to  
+  ['...']
+WARNING:tensorflow:sample_weight modes were coerced from
+  ...
+    to  
+  ['...']
+2020-03-14 20:29:50.689338: I tensorflow/core/profiler/lib/profiler_session.cc:225] Profiler session started.
+2020-03-14 20:29:50.689485: E tensorflow/core/profiler/internal/gpu/cupti_tracer.cc:1307] function cupti_interface_->Subscribe( &subscriber_, (CUpti_CallbackFunc)ApiCallback, this)failed with error CUPTI_ERROR_NOT_INITIALIZED
+2020-03-14 20:29:50.689524: E tensorflow/core/profiler/internal/gpu/cupti_tracer.cc:1346] function cupti_interface_->ActivityRegisterCallbacks( AllocCuptiActivityBuffer, FreeCuptiActivityBuffer)failed with error CUPTI_ERROR_NOT_INITIALIZED
+2020-03-14 20:29:50.706789: E tensorflow/core/profiler/internal/gpu/cupti_tracer.cc:1329] function cupti_interface_->EnableCallback( 0 , subscriber_, CUPTI_CB_DOMAIN_DRIVER_API, cbid)failed with error CUPTI_ERROR_INVALID_PARAMETER
+2020-03-14 20:29:50.706893: I tensorflow/core/profiler/internal/gpu/device_tracer.cc:88]  GpuTracer has collected 0 callback api events and 0 activity events.
+WARNING:tensorflow:sample_weight modes were coerced from
+  ...
+    to  
+  ['...']
+WARNING:tensorflow:sample_weight modes were coerced from
+  ...
+    to  
+  ['...']
+2020-03-14 23:32:45.169545: I tensorflow/core/profiler/lib/profiler_session.cc:225] Profiler session started.
+2020-03-14 23:32:45.169688: E tensorflow/core/profiler/internal/gpu/cupti_tracer.cc:1307] function cupti_interface_->Subscribe( &subscriber_, (CUpti_CallbackFunc)ApiCallback, this)failed with error CUPTI_ERROR_NOT_INITIALIZED
+2020-03-14 23:32:45.169721: E tensorflow/core/profiler/internal/gpu/cupti_tracer.cc:1346] function cupti_interface_->ActivityRegisterCallbacks( AllocCuptiActivityBuffer, FreeCuptiActivityBuffer)failed with error CUPTI_ERROR_NOT_INITIALIZED
+2020-03-14 23:32:45.185850: E tensorflow/core/profiler/internal/gpu/cupti_tracer.cc:1329] function cupti_interface_->EnableCallback( 0 , subscriber_, CUPTI_CB_DOMAIN_DRIVER_API, cbid)failed with error CUPTI_ERROR_INVALID_PARAMETER
+2020-03-14 23:32:45.185947: I tensorflow/core/profiler/internal/gpu/device_tracer.cc:88]  GpuTracer has collected 0 callback api events and 0 activity events.
+WARNING:tensorflow:sample_weight modes were coerced from
+  ...
+    to  
+  ['...']
+WARNING:tensorflow:sample_weight modes were coerced from
+  ...
+    to  
+  ['...']
+2020-03-15 02:33:43.949460: I tensorflow/core/profiler/lib/profiler_session.cc:225] Profiler session started.
+2020-03-15 02:33:43.949594: E tensorflow/core/profiler/internal/gpu/cupti_tracer.cc:1307] function cupti_interface_->Subscribe( &subscriber_, (CUpti_CallbackFunc)ApiCallback, this)failed with error CUPTI_ERROR_NOT_INITIALIZED
+2020-03-15 02:33:43.949625: E tensorflow/core/profiler/internal/gpu/cupti_tracer.cc:1346] function cupti_interface_->ActivityRegisterCallbacks( AllocCuptiActivityBuffer, FreeCuptiActivityBuffer)failed with error CUPTI_ERROR_NOT_INITIALIZED
+2020-03-15 02:33:43.965222: E tensorflow/core/profiler/internal/gpu/cupti_tracer.cc:1329] function cupti_interface_->EnableCallback( 0 , subscriber_, CUPTI_CB_DOMAIN_DRIVER_API, cbid)failed with error CUPTI_ERROR_INVALID_PARAMETER
+2020-03-15 02:33:43.965321: I tensorflow/core/profiler/internal/gpu/device_tracer.cc:88]  GpuTracer has collected 0 callback api events and 0 activity events.
+WARNING:tensorflow:sample_weight modes were coerced from
+  ...
+    to  
+  ['...']
+WARNING:tensorflow:sample_weight modes were coerced from
+  ...
+    to  
+  ['...']
+2020-03-15 02:42:38.552803: I tensorflow/core/profiler/lib/profiler_session.cc:225] Profiler session started.
+2020-03-15 02:42:38.552946: E tensorflow/core/profiler/internal/gpu/cupti_tracer.cc:1307] function cupti_interface_->Subscribe( &subscriber_, (CUpti_CallbackFunc)ApiCallback, this)failed with error CUPTI_ERROR_NOT_INITIALIZED
+2020-03-15 02:42:38.552978: E tensorflow/core/profiler/internal/gpu/cupti_tracer.cc:1346] function cupti_interface_->ActivityRegisterCallbacks( AllocCuptiActivityBuffer, FreeCuptiActivityBuffer)failed with error CUPTI_ERROR_NOT_INITIALIZED
+2020-03-15 02:42:38.568325: E tensorflow/core/profiler/internal/gpu/cupti_tracer.cc:1329] function cupti_interface_->EnableCallback( 0 , subscriber_, CUPTI_CB_DOMAIN_DRIVER_API, cbid)failed with error CUPTI_ERROR_INVALID_PARAMETER
+2020-03-15 02:42:38.568409: I tensorflow/core/profiler/internal/gpu/device_tracer.cc:88]  GpuTracer has collected 0 callback api events and 0 activity events.
+WARNING:tensorflow:sample_weight modes were coerced from
+  ...
+    to  
+  ['...']
+WARNING:tensorflow:sample_weight modes were coerced from
+  ...
+    to  
+  ['...']
+2020-03-15 02:50:56.432104: I tensorflow/core/profiler/lib/profiler_session.cc:225] Profiler session started.
+2020-03-15 02:50:56.432243: E tensorflow/core/profiler/internal/gpu/cupti_tracer.cc:1307] function cupti_interface_->Subscribe( &subscriber_, (CUpti_CallbackFunc)ApiCallback, this)failed with error CUPTI_ERROR_NOT_INITIALIZED
+2020-03-15 02:50:56.432287: E tensorflow/core/profiler/internal/gpu/cupti_tracer.cc:1346] function cupti_interface_->ActivityRegisterCallbacks( AllocCuptiActivityBuffer, FreeCuptiActivityBuffer)failed with error CUPTI_ERROR_NOT_INITIALIZED
+2020-03-15 02:50:56.448084: E tensorflow/core/profiler/internal/gpu/cupti_tracer.cc:1329] function cupti_interface_->EnableCallback( 0 , subscriber_, CUPTI_CB_DOMAIN_DRIVER_API, cbid)failed with error CUPTI_ERROR_INVALID_PARAMETER
+2020-03-15 02:50:56.448180: I tensorflow/core/profiler/internal/gpu/device_tracer.cc:88]  GpuTracer has collected 0 callback api events and 0 activity events.
+WARNING:tensorflow:sample_weight modes were coerced from
+  ...
+    to  
+  ['...']
+WARNING:tensorflow:sample_weight modes were coerced from
+  ...
+    to  
+  ['...']
+2020-03-15 05:50:58.230087: I tensorflow/core/profiler/lib/profiler_session.cc:225] Profiler session started.
+2020-03-15 05:50:58.230229: E tensorflow/core/profiler/internal/gpu/cupti_tracer.cc:1307] function cupti_interface_->Subscribe( &subscriber_, (CUpti_CallbackFunc)ApiCallback, this)failed with error CUPTI_ERROR_NOT_INITIALIZED
+2020-03-15 05:50:58.230262: E tensorflow/core/profiler/internal/gpu/cupti_tracer.cc:1346] function cupti_interface_->ActivityRegisterCallbacks( AllocCuptiActivityBuffer, FreeCuptiActivityBuffer)failed with error CUPTI_ERROR_NOT_INITIALIZED
+2020-03-15 05:50:58.247172: E tensorflow/core/profiler/internal/gpu/cupti_tracer.cc:1329] function cupti_interface_->EnableCallback( 0 , subscriber_, CUPTI_CB_DOMAIN_DRIVER_API, cbid)failed with error CUPTI_ERROR_INVALID_PARAMETER
+2020-03-15 05:50:58.247286: I tensorflow/core/profiler/internal/gpu/device_tracer.cc:88]  GpuTracer has collected 0 callback api events and 0 activity events.
+WARNING:tensorflow:sample_weight modes were coerced from
+  ...
+    to  
+  ['...']
+WARNING:tensorflow:sample_weight modes were coerced from
+  ...
+    to  
+  ['...']
+2020-03-15 06:03:35.598943: I tensorflow/core/profiler/lib/profiler_session.cc:225] Profiler session started.
+2020-03-15 06:03:35.599083: E tensorflow/core/profiler/internal/gpu/cupti_tracer.cc:1307] function cupti_interface_->Subscribe( &subscriber_, (CUpti_CallbackFunc)ApiCallback, this)failed with error CUPTI_ERROR_NOT_INITIALIZED
+2020-03-15 06:03:35.599115: E tensorflow/core/profiler/internal/gpu/cupti_tracer.cc:1346] function cupti_interface_->ActivityRegisterCallbacks( AllocCuptiActivityBuffer, FreeCuptiActivityBuffer)failed with error CUPTI_ERROR_NOT_INITIALIZED
+2020-03-15 06:03:35.614582: E tensorflow/core/profiler/internal/gpu/cupti_tracer.cc:1329] function cupti_interface_->EnableCallback( 0 , subscriber_, CUPTI_CB_DOMAIN_DRIVER_API, cbid)failed with error CUPTI_ERROR_INVALID_PARAMETER
+2020-03-15 06:03:35.614669: I tensorflow/core/profiler/internal/gpu/device_tracer.cc:88]  GpuTracer has collected 0 callback api events and 0 activity events.
+WARNING:tensorflow:sample_weight modes were coerced from
+  ...
+    to  
+  ['...']
+WARNING:tensorflow:sample_weight modes were coerced from
+  ...
+    to  
+  ['...']
+2020-03-15 09:04:22.374694: I tensorflow/core/profiler/lib/profiler_session.cc:225] Profiler session started.
+2020-03-15 09:04:22.374873: E tensorflow/core/profiler/internal/gpu/cupti_tracer.cc:1307] function cupti_interface_->Subscribe( &subscriber_, (CUpti_CallbackFunc)ApiCallback, this)failed with error CUPTI_ERROR_NOT_INITIALIZED
+2020-03-15 09:04:22.374925: E tensorflow/core/profiler/internal/gpu/cupti_tracer.cc:1346] function cupti_interface_->ActivityRegisterCallbacks( AllocCuptiActivityBuffer, FreeCuptiActivityBuffer)failed with error CUPTI_ERROR_NOT_INITIALIZED
+2020-03-15 09:04:22.391282: E tensorflow/core/profiler/internal/gpu/cupti_tracer.cc:1329] function cupti_interface_->EnableCallback( 0 , subscriber_, CUPTI_CB_DOMAIN_DRIVER_API, cbid)failed with error CUPTI_ERROR_INVALID_PARAMETER
+2020-03-15 09:04:22.391379: I tensorflow/core/profiler/internal/gpu/device_tracer.cc:88]  GpuTracer has collected 0 callback api events and 0 activity events.
+WARNING:tensorflow:sample_weight modes were coerced from
+  ...
+    to  
+  ['...']
+WARNING:tensorflow:sample_weight modes were coerced from
+  ...
+    to  
+  ['...']
+2020-03-15 11:57:40.991566: I tensorflow/core/profiler/lib/profiler_session.cc:225] Profiler session started.
+2020-03-15 11:57:40.991719: E tensorflow/core/profiler/internal/gpu/cupti_tracer.cc:1307] function cupti_interface_->Subscribe( &subscriber_, (CUpti_CallbackFunc)ApiCallback, this)failed with error CUPTI_ERROR_NOT_INITIALIZED
+2020-03-15 11:57:40.991752: E tensorflow/core/profiler/internal/gpu/cupti_tracer.cc:1346] function cupti_interface_->ActivityRegisterCallbacks( AllocCuptiActivityBuffer, FreeCuptiActivityBuffer)failed with error CUPTI_ERROR_NOT_INITIALIZED
+2020-03-15 11:57:41.006929: E tensorflow/core/profiler/internal/gpu/cupti_tracer.cc:1329] function cupti_interface_->EnableCallback( 0 , subscriber_, CUPTI_CB_DOMAIN_DRIVER_API, cbid)failed with error CUPTI_ERROR_INVALID_PARAMETER
+2020-03-15 11:57:41.007026: I tensorflow/core/profiler/internal/gpu/device_tracer.cc:88]  GpuTracer has collected 0 callback api events and 0 activity events.
+WARNING:tensorflow:sample_weight modes were coerced from
+  ...
+    to  
+  ['...']
+WARNING:tensorflow:sample_weight modes were coerced from
+  ...
+    to  
+  ['...']
+2020-03-15 12:08:33.767651: I tensorflow/core/profiler/lib/profiler_session.cc:225] Profiler session started.
+2020-03-15 12:08:33.767791: E tensorflow/core/profiler/internal/gpu/cupti_tracer.cc:1307] function cupti_interface_->Subscribe( &subscriber_, (CUpti_CallbackFunc)ApiCallback, this)failed with error CUPTI_ERROR_NOT_INITIALIZED
+2020-03-15 12:08:33.767823: E tensorflow/core/profiler/internal/gpu/cupti_tracer.cc:1346] function cupti_interface_->ActivityRegisterCallbacks( AllocCuptiActivityBuffer, FreeCuptiActivityBuffer)failed with error CUPTI_ERROR_NOT_INITIALIZED
+2020-03-15 12:08:33.783520: E tensorflow/core/profiler/internal/gpu/cupti_tracer.cc:1329] function cupti_interface_->EnableCallback( 0 , subscriber_, CUPTI_CB_DOMAIN_DRIVER_API, cbid)failed with error CUPTI_ERROR_INVALID_PARAMETER
+2020-03-15 12:08:33.783614: I tensorflow/core/profiler/internal/gpu/device_tracer.cc:88]  GpuTracer has collected 0 callback api events and 0 activity events.
+slurmstepd: error: *** JOB 10096456 ON pg-gpu30 CANCELLED AT 2020-03-15T12:14:24 DUE TO TIME LIMIT ***
+
+
+###############################################################################
+Peregrine Cluster
+Job 10096456 for user 's2934833'
+Finished at: Sun Mar 15 12:14:33 CET 2020
+
+Job details:
+============
+
+Name                : CIFAR10_Ensemble
+User                : s2934833
+Partition           : gpu
+Nodes               : pg-gpu30
+Cores               : 12
+State               : CANCELLED,TIMEOUT
+Submit              : 2020-03-14T12:06:12
+Start               : 2020-03-14T12:14:04
+End                 : 2020-03-15T12:14:27
+Reserved walltime   : 1-00:00:00
+Used walltime       : 1-00:00:23
+Used CPU time       : 1-00:11:50 (efficiency:  8.40%)
+% User (Computation): 80.95%
+% System (I/O)      : 19.05%
+Mem reserved        : 62.50G/node
+Max Mem used        : 15.35G (pg-gpu30)
+Max Disk Write      : 153.60K (pg-gpu30)
+Max Disk Read       : 5.34M (pg-gpu30)
+
+
+Acknowledgements:
+=================
+
+Please see this page for information about acknowledging Peregrine in your publications:
+
+https://wiki.hpc.rug.nl/peregrine/additional_information/scientific_output
+
+################################################################################

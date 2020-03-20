@@ -1,0 +1,77 @@
+
+The following have been reloaded with a version change:
+  1) FFTW/3.3.7-gompic-2018a => FFTW/3.3.7-gompi-2018a
+  2) OpenMPI/2.1.2-gcccuda-2018a => OpenMPI/2.1.2-GCC-6.4.0-2.28
+  3) Python/3.6.4-fosscuda-2018a => Python/3.6.4-foss-2018a
+  4) ScaLAPACK/2.0.2-gompic-2018a-OpenBLAS-0.2.20 => ScaLAPACK/2.0.2-gompi-2018a-OpenBLAS-0.2.20
+
+/software/software/h5py/2.7.1-fosscuda-2018a-Python-3.6.4/lib/python3.6/site-packages/h5py-2.7.1-py3.6-linux-x86_64.egg/h5py/__init__.py:36: FutureWarning: Conversion of the second argument of issubdtype from `float` to `np.floating` is deprecated. In future, it will be treated as `np.float64 == np.dtype(float).type`.
+  from ._conv import register_converters as _register_converters
+Dataset_name: CIFAR10, N_folders: 2, total mebers: 40
+/data/s2934833/MasterThesis/Test/test_images/*
+x_pred shape: (5, 32, 32, 3)
+5 x_pred samples
+/data/s2934833/MasterThesis/Test
+Traceback (most recent call last):
+  File "use_ensemble.py", line 234, in <module>
+    main()
+  File "use_ensemble.py", line 210, in main
+    pre_trained_model = tf.keras.models.model_from_json(json_config)
+  File "/software/software/TensorFlow/1.12.0-fosscuda-2018a-Python-3.6.4/lib/python3.6/site-packages/tensorflow/python/keras/engine/saving.py", line 351, in model_from_json
+    return deserialize(config, custom_objects=custom_objects)
+  File "/software/software/TensorFlow/1.12.0-fosscuda-2018a-Python-3.6.4/lib/python3.6/site-packages/tensorflow/python/keras/layers/serialization.py", line 64, in deserialize
+    printable_module_name='layer')
+  File "/software/software/TensorFlow/1.12.0-fosscuda-2018a-Python-3.6.4/lib/python3.6/site-packages/tensorflow/python/keras/utils/generic_utils.py", line 173, in deserialize_keras_object
+    list(custom_objects.items())))
+  File "/software/software/TensorFlow/1.12.0-fosscuda-2018a-Python-3.6.4/lib/python3.6/site-packages/tensorflow/python/keras/engine/network.py", line 1292, in from_config
+    process_layer(layer_data)
+  File "/software/software/TensorFlow/1.12.0-fosscuda-2018a-Python-3.6.4/lib/python3.6/site-packages/tensorflow/python/keras/engine/network.py", line 1278, in process_layer
+    layer = deserialize_layer(layer_data, custom_objects=custom_objects)
+  File "/software/software/TensorFlow/1.12.0-fosscuda-2018a-Python-3.6.4/lib/python3.6/site-packages/tensorflow/python/keras/layers/serialization.py", line 64, in deserialize
+    printable_module_name='layer')
+  File "/software/software/TensorFlow/1.12.0-fosscuda-2018a-Python-3.6.4/lib/python3.6/site-packages/tensorflow/python/keras/utils/generic_utils.py", line 175, in deserialize_keras_object
+    return cls.from_config(config['config'])
+  File "/software/software/TensorFlow/1.12.0-fosscuda-2018a-Python-3.6.4/lib/python3.6/site-packages/tensorflow/python/keras/engine/base_layer.py", line 1606, in from_config
+    return cls(**config)
+  File "/software/software/TensorFlow/1.12.0-fosscuda-2018a-Python-3.6.4/lib/python3.6/site-packages/tensorflow/python/keras/engine/input_layer.py", line 70, in __init__
+    raise ValueError('Unrecognized keyword arguments:', kwargs.keys())
+ValueError: ('Unrecognized keyword arguments:', dict_keys(['ragged']))
+
+
+###############################################################################
+Peregrine Cluster
+Job 10198679 for user 's2934833'
+Finished at: Thu Mar 19 16:26:23 CET 2020
+
+Job details:
+============
+
+Name                : use_ensemble
+User                : s2934833
+Partition           : gpu
+Nodes               : pg-gpu17
+Cores               : 12
+State               : FAILED
+Submit              : 2020-03-19T10:43:23
+Start               : 2020-03-19T16:26:07
+End                 : 2020-03-19T16:26:23
+Reserved walltime   : 00:10:00
+Used walltime       : 00:00:16
+Used CPU time       : 00:00:07 (efficiency:  4.11%)
+% User (Computation): 77.08%
+% System (I/O)      : 22.92%
+Mem reserved        : 32000M/node
+Max Mem used        : 0.00  (pg-gpu17)
+Max Disk Write      : 0.00  (pg-gpu17)
+Max Disk Read       : 0.00  (pg-gpu17)
+Average GPU usage   : 0.0% (pg-gpu17)
+
+
+Acknowledgements:
+=================
+
+Please see this page for information about acknowledging Peregrine in your publications:
+
+https://wiki.hpc.rug.nl/peregrine/additional_information/scientific_output
+
+################################################################################
