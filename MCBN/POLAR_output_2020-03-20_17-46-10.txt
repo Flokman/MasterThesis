@@ -1,0 +1,358 @@
+Random seed for replication: 199
+Random seed for replication: 570
+augmentation of train set done
+augmentation test set done
+dataset_name = /Polar_PNG_256.hdf5, batch_size = 16, num_classes = 3, epochs = 150,
+        MCBN_PREDICTIONS = 250, Mini_batch_size = 15, test_img_idx = 2,
+        train_test_split = 0.8, to_shuffle = True, augmentation = True, train_label_count = [42, 22, 120],
+        test_label_count = [14, 7, 33], label_normalizer = False, save_augmentation_to_hdf5 = False, learn rate = 0.01,
+        add_bn_inside = True, train_all_layers = False, weights_to_use = imagenet,
+        es_patience = 50, train_val_split = 0.9
+x_train shape: (184, 256, 256, 3)
+184 train samples
+54 test samples
+block1_conv1
+1
+block1_conv2
+3
+block2_conv1
+6
+block2_conv2
+8
+block3_conv1
+11
+block3_conv2
+13
+block3_conv3
+15
+block4_conv1
+18
+block4_conv2
+20
+block4_conv3
+22
+block5_conv1
+25
+block5_conv2
+27
+block5_conv3
+29
+<tensorflow.python.keras.engine.input_layer.InputLayer object at 0x7f4eadbb8a20> True
+<tensorflow.python.keras.layers.convolutional.Conv2D object at 0x7f4eb5b87cc0> True
+<tensorflow.python.keras.layers.normalization_v2.BatchNormalization object at 0x7f4ea092bdd8> True
+<tensorflow.python.keras.layers.convolutional.Conv2D object at 0x7f4ea4c6fda0> True
+<tensorflow.python.keras.layers.normalization_v2.BatchNormalization object at 0x7f4ea08a38d0> True
+<tensorflow.python.keras.layers.pooling.MaxPooling2D object at 0x7f4ea4c6fa20> True
+<tensorflow.python.keras.layers.convolutional.Conv2D object at 0x7f4ea4ca72b0> True
+<tensorflow.python.keras.layers.normalization_v2.BatchNormalization object at 0x7f4ea0829160> True
+<tensorflow.python.keras.layers.convolutional.Conv2D object at 0x7f4ea094eb70> True
+<tensorflow.python.keras.layers.normalization_v2.BatchNormalization object at 0x7f4e9c2b3240> True
+<tensorflow.python.keras.layers.pooling.MaxPooling2D object at 0x7f4ea094edd8> True
+<tensorflow.python.keras.layers.convolutional.Conv2D object at 0x7f4ea09575c0> True
+<tensorflow.python.keras.layers.normalization_v2.BatchNormalization object at 0x7f4e9c1ea2b0> True
+<tensorflow.python.keras.layers.convolutional.Conv2D object at 0x7f4ea0962908> True
+<tensorflow.python.keras.layers.normalization_v2.BatchNormalization object at 0x7f4e9c1449b0> True
+<tensorflow.python.keras.layers.convolutional.Conv2D object at 0x7f4ea0962ba8> True
+<tensorflow.python.keras.layers.normalization_v2.BatchNormalization object at 0x7f4e9c047358> True
+<tensorflow.python.keras.layers.pooling.MaxPooling2D object at 0x7f4ea096cfd0> True
+<tensorflow.python.keras.layers.convolutional.Conv2D object at 0x7f4ea08f4e10> True
+<tensorflow.python.keras.layers.normalization_v2.BatchNormalization object at 0x7f4e906c3978> True
+<tensorflow.python.keras.layers.convolutional.Conv2D object at 0x7f4ea08f4eb8> True
+<tensorflow.python.keras.layers.normalization_v2.BatchNormalization object at 0x7f4e90587c50> True
+<tensorflow.python.keras.layers.convolutional.Conv2D object at 0x7f4ea08fcfd0> True
+<tensorflow.python.keras.layers.normalization_v2.BatchNormalization object at 0x7f4e904542b0> True
+<tensorflow.python.keras.layers.pooling.MaxPooling2D object at 0x7f4ea0904c88> True
+<tensorflow.python.keras.layers.convolutional.Conv2D object at 0x7f4ea0904278> True
+<tensorflow.python.keras.layers.normalization_v2.BatchNormalization object at 0x7f4e902cefd0> True
+<tensorflow.python.keras.layers.convolutional.Conv2D object at 0x7f4ea0910d68> True
+<tensorflow.python.keras.layers.normalization_v2.BatchNormalization object at 0x7f4e901777f0> True
+<tensorflow.python.keras.layers.convolutional.Conv2D object at 0x7f4ea0910d30> True
+<tensorflow.python.keras.layers.normalization_v2.BatchNormalization object at 0x7f4e3c00eeb8> True
+<tensorflow.python.keras.layers.pooling.MaxPooling2D object at 0x7f4ea0916d68> True
+<tensorflow.python.keras.layers.core.Flatten object at 0x7f4e34668f60> True
+<tensorflow.python.keras.layers.core.Dense object at 0x7f4e34668fd0> True
+<tensorflow.python.keras.layers.normalization_v2.BatchNormalization object at 0x7f4e34451898> True
+<tensorflow.python.keras.layers.core.Dense object at 0x7f4e34451518> True
+<tensorflow.python.keras.layers.normalization_v2.BatchNormalization object at 0x7f4e34459208> True
+<tensorflow.python.keras.layers.core.Dense object at 0x7f4e3440d048> True
+Model: "model_13"
+_________________________________________________________________
+Layer (type)                 Output Shape              Param #   
+=================================================================
+input_1 (InputLayer)         [(None, 256, 256, 3)]     0         
+_________________________________________________________________
+block1_conv1 (Conv2D)        (None, 256, 256, 64)      1792      
+_________________________________________________________________
+batch_normalization (BatchNo (None, 256, 256, 64)      256       
+_________________________________________________________________
+block1_conv2 (Conv2D)        (None, 256, 256, 64)      36928     
+_________________________________________________________________
+batch_normalization_1 (Batch (None, 256, 256, 64)      256       
+_________________________________________________________________
+block1_pool (MaxPooling2D)   (None, 128, 128, 64)      0         
+_________________________________________________________________
+block2_conv1 (Conv2D)        (None, 128, 128, 128)     73856     
+_________________________________________________________________
+batch_normalization_2 (Batch (None, 128, 128, 128)     512       
+_________________________________________________________________
+block2_conv2 (Conv2D)        (None, 128, 128, 128)     147584    
+_________________________________________________________________
+batch_normalization_3 (Batch (None, 128, 128, 128)     512       
+_________________________________________________________________
+block2_pool (MaxPooling2D)   (None, 64, 64, 128)       0         
+_________________________________________________________________
+block3_conv1 (Conv2D)        (None, 64, 64, 256)       295168    
+_________________________________________________________________
+batch_normalization_4 (Batch (None, 64, 64, 256)       1024      
+_________________________________________________________________
+block3_conv2 (Conv2D)        (None, 64, 64, 256)       590080    
+_________________________________________________________________
+batch_normalization_5 (Batch (None, 64, 64, 256)       1024      
+_________________________________________________________________
+block3_conv3 (Conv2D)        (None, 64, 64, 256)       590080    
+_________________________________________________________________
+batch_normalization_6 (Batch (None, 64, 64, 256)       1024      
+_________________________________________________________________
+block3_pool (MaxPooling2D)   (None, 32, 32, 256)       0         
+_________________________________________________________________
+block4_conv1 (Conv2D)        (None, 32, 32, 512)       1180160   
+_________________________________________________________________
+batch_normalization_7 (Batch (None, 32, 32, 512)       2048      
+_________________________________________________________________
+block4_conv2 (Conv2D)        (None, 32, 32, 512)       2359808   
+_________________________________________________________________
+batch_normalization_8 (Batch (None, 32, 32, 512)       2048      
+_________________________________________________________________
+block4_conv3 (Conv2D)        (None, 32, 32, 512)       2359808   
+_________________________________________________________________
+batch_normalization_9 (Batch (None, 32, 32, 512)       2048      
+_________________________________________________________________
+block4_pool (MaxPooling2D)   (None, 16, 16, 512)       0         
+_________________________________________________________________
+block5_conv1 (Conv2D)        (None, 16, 16, 512)       2359808   
+_________________________________________________________________
+batch_normalization_10 (Batc (None, 16, 16, 512)       2048      
+_________________________________________________________________
+block5_conv2 (Conv2D)        (None, 16, 16, 512)       2359808   
+_________________________________________________________________
+batch_normalization_11 (Batc (None, 16, 16, 512)       2048      
+_________________________________________________________________
+block5_conv3 (Conv2D)        (None, 16, 16, 512)       2359808   
+_________________________________________________________________
+batch_normalization_12 (Batc (None, 16, 16, 512)       2048      
+_________________________________________________________________
+block5_pool (MaxPooling2D)   (None, 8, 8, 512)         0         
+_________________________________________________________________
+flatten (Flatten)            (None, 32768)             0         
+_________________________________________________________________
+fc1 (Dense)                  (None, 4096)              134221824 
+_________________________________________________________________
+batch_normalization_13 (Batc (None, 4096)              16384     
+_________________________________________________________________
+fc2 (Dense)                  (None, 4096)              16781312  
+_________________________________________________________________
+batch_normalization_14 (Batc (None, 4096)              16384     
+_________________________________________________________________
+predictions (Dense)          (None, 3)                 12291     
+=================================================================
+Total params: 165,779,779
+Trainable params: 165,754,947
+Non-trainable params: 24,832
+_________________________________________________________________
+Start fitting monte carlo batch_normalization model
+Train for 11 steps, validate for 2 steps
+Epoch 1/150
+11/11 - 9s - loss: 15.9435 - accuracy: 0.4121 - val_loss: 3.5495 - val_accuracy: 0.4737
+Epoch 2/150
+11/11 - 4s - loss: 7.1672 - accuracy: 0.4545 - val_loss: 3.9217 - val_accuracy: 0.5263
+Epoch 3/150
+11/11 - 4s - loss: 5.3494 - accuracy: 0.5030 - val_loss: 2.9118 - val_accuracy: 0.5789
+Epoch 4/150
+11/11 - 4s - loss: 4.4241 - accuracy: 0.5697 - val_loss: 1.9257 - val_accuracy: 0.4737
+Epoch 5/150
+11/11 - 4s - loss: 3.6944 - accuracy: 0.5273 - val_loss: 2.1018 - val_accuracy: 0.4211
+Epoch 6/150
+11/11 - 4s - loss: 3.1533 - accuracy: 0.5697 - val_loss: 3.3262 - val_accuracy: 0.4211
+Epoch 7/150
+11/11 - 4s - loss: 2.9035 - accuracy: 0.5939 - val_loss: 5.3571 - val_accuracy: 0.4737
+Epoch 8/150
+11/11 - 4s - loss: 2.2704 - accuracy: 0.6848 - val_loss: 3.9235 - val_accuracy: 0.4211
+Epoch 9/150
+11/11 - 4s - loss: 3.9550 - accuracy: 0.5636 - val_loss: 4.0550 - val_accuracy: 0.3684
+Epoch 10/150
+11/11 - 4s - loss: 2.7396 - accuracy: 0.6667 - val_loss: 2.9874 - val_accuracy: 0.4737
+Epoch 11/150
+11/11 - 4s - loss: 4.2760 - accuracy: 0.6061 - val_loss: 7.5133 - val_accuracy: 0.4737
+Epoch 12/150
+11/11 - 4s - loss: 3.1979 - accuracy: 0.6909 - val_loss: 6.2466 - val_accuracy: 0.4737
+Epoch 13/150
+11/11 - 4s - loss: 2.8044 - accuracy: 0.6848 - val_loss: 6.8659 - val_accuracy: 0.2632
+Epoch 14/150
+11/11 - 4s - loss: 1.7130 - accuracy: 0.7091 - val_loss: 6.4749 - val_accuracy: 0.3684
+Epoch 15/150
+11/11 - 4s - loss: 3.1389 - accuracy: 0.7394 - val_loss: 3.8719 - val_accuracy: 0.6316
+Epoch 16/150
+11/11 - 4s - loss: 2.3914 - accuracy: 0.7818 - val_loss: 8.1066 - val_accuracy: 0.5263
+Epoch 17/150
+11/11 - 4s - loss: 4.1890 - accuracy: 0.7030 - val_loss: 3.8174 - val_accuracy: 0.7368
+Epoch 18/150
+11/11 - 4s - loss: 2.6185 - accuracy: 0.6970 - val_loss: 3.4183 - val_accuracy: 0.6842
+Epoch 19/150
+11/11 - 4s - loss: 2.5551 - accuracy: 0.6788 - val_loss: 3.2019 - val_accuracy: 0.5263
+Epoch 20/150
+11/11 - 4s - loss: 2.3516 - accuracy: 0.7030 - val_loss: 3.6376 - val_accuracy: 0.5263
+Epoch 21/150
+11/11 - 4s - loss: 2.5125 - accuracy: 0.7030 - val_loss: 4.1816 - val_accuracy: 0.5789
+Epoch 22/150
+11/11 - 4s - loss: 1.7245 - accuracy: 0.6909 - val_loss: 1.7775 - val_accuracy: 0.5789
+Epoch 23/150
+11/11 - 4s - loss: 2.3048 - accuracy: 0.6606 - val_loss: 2.6815 - val_accuracy: 0.5263
+Epoch 24/150
+11/11 - 4s - loss: 1.3340 - accuracy: 0.7818 - val_loss: 5.7212 - val_accuracy: 0.4211
+Epoch 25/150
+11/11 - 4s - loss: 1.3176 - accuracy: 0.7273 - val_loss: 4.1230 - val_accuracy: 0.4737
+Epoch 26/150
+11/11 - 4s - loss: 0.6978 - accuracy: 0.7939 - val_loss: 2.9251 - val_accuracy: 0.5263
+Epoch 27/150
+11/11 - 4s - loss: 0.5095 - accuracy: 0.8788 - val_loss: 2.0876 - val_accuracy: 0.6316
+Epoch 28/150
+11/11 - 4s - loss: 0.4272 - accuracy: 0.9152 - val_loss: 2.3438 - val_accuracy: 0.7895
+Epoch 29/150
+11/11 - 4s - loss: 0.1036 - accuracy: 0.9636 - val_loss: 3.4262 - val_accuracy: 0.5789
+Epoch 30/150
+11/11 - 4s - loss: 0.0385 - accuracy: 0.9818 - val_loss: 3.9017 - val_accuracy: 0.5263
+Epoch 31/150
+11/11 - 4s - loss: 0.2479 - accuracy: 0.9273 - val_loss: 3.7695 - val_accuracy: 0.4737
+Epoch 32/150
+11/11 - 4s - loss: 0.2051 - accuracy: 0.9455 - val_loss: 2.4643 - val_accuracy: 0.6842
+Epoch 33/150
+11/11 - 4s - loss: 0.0934 - accuracy: 0.9515 - val_loss: 2.8476 - val_accuracy: 0.7368
+Epoch 34/150
+11/11 - 4s - loss: 0.0134 - accuracy: 1.0000 - val_loss: 3.6674 - val_accuracy: 0.5263
+Epoch 35/150
+11/11 - 4s - loss: 0.0375 - accuracy: 0.9879 - val_loss: 4.3164 - val_accuracy: 0.5263
+Epoch 36/150
+11/11 - 4s - loss: 0.0095 - accuracy: 1.0000 - val_loss: 4.0002 - val_accuracy: 0.5789
+Epoch 37/150
+11/11 - 4s - loss: 0.0047 - accuracy: 1.0000 - val_loss: 4.1941 - val_accuracy: 0.4737
+Epoch 38/150
+11/11 - 4s - loss: 0.0015 - accuracy: 1.0000 - val_loss: 4.4144 - val_accuracy: 0.4737
+Epoch 39/150
+11/11 - 4s - loss: 9.7797e-04 - accuracy: 1.0000 - val_loss: 4.5599 - val_accuracy: 0.5263
+Epoch 40/150
+11/11 - 4s - loss: 8.2093e-04 - accuracy: 1.0000 - val_loss: 4.7179 - val_accuracy: 0.5263
+Epoch 41/150
+11/11 - 4s - loss: 7.0969e-04 - accuracy: 1.0000 - val_loss: 4.9347 - val_accuracy: 0.5263
+Epoch 42/150
+11/11 - 4s - loss: 6.2436e-04 - accuracy: 1.0000 - val_loss: 5.0960 - val_accuracy: 0.5263
+Epoch 43/150
+11/11 - 4s - loss: 5.6998e-04 - accuracy: 1.0000 - val_loss: 5.1989 - val_accuracy: 0.5263
+Epoch 44/150
+11/11 - 4s - loss: 5.3132e-04 - accuracy: 1.0000 - val_loss: 5.2811 - val_accuracy: 0.5263
+Epoch 45/150
+11/11 - 4s - loss: 4.9891e-04 - accuracy: 1.0000 - val_loss: 5.3502 - val_accuracy: 0.5263
+Epoch 46/150
+11/11 - 4s - loss: 4.6398e-04 - accuracy: 1.0000 - val_loss: 5.4472 - val_accuracy: 0.5263
+Epoch 47/150
+11/11 - 4s - loss: 4.3881e-04 - accuracy: 1.0000 - val_loss: 5.5064 - val_accuracy: 0.5263
+Epoch 48/150
+11/11 - 4s - loss: 4.1428e-04 - accuracy: 1.0000 - val_loss: 5.5745 - val_accuracy: 0.5263
+Epoch 49/150
+11/11 - 4s - loss: 3.9483e-04 - accuracy: 1.0000 - val_loss: 5.6293 - val_accuracy: 0.5263
+Epoch 50/150
+11/11 - 4s - loss: 3.7588e-04 - accuracy: 1.0000 - val_loss: 5.6493 - val_accuracy: 0.5263
+Epoch 51/150
+11/11 - 4s - loss: 3.5979e-04 - accuracy: 1.0000 - val_loss: 5.6962 - val_accuracy: 0.5263
+Epoch 52/150
+11/11 - 4s - loss: 3.4288e-04 - accuracy: 1.0000 - val_loss: 5.7374 - val_accuracy: 0.5263
+Epoch 53/150
+11/11 - 4s - loss: 3.3088e-04 - accuracy: 1.0000 - val_loss: 5.7566 - val_accuracy: 0.5263
+Epoch 54/150
+11/11 - 4s - loss: 3.1587e-04 - accuracy: 1.0000 - val_loss: 5.7670 - val_accuracy: 0.5263
+Epoch 55/150
+11/11 - 4s - loss: 3.0415e-04 - accuracy: 1.0000 - val_loss: 5.7502 - val_accuracy: 0.5263
+Epoch 56/150
+11/11 - 4s - loss: 2.9288e-04 - accuracy: 1.0000 - val_loss: 5.7665 - val_accuracy: 0.5263
+Epoch 57/150
+11/11 - 4s - loss: 2.8144e-04 - accuracy: 1.0000 - val_loss: 5.7683 - val_accuracy: 0.5263
+Epoch 58/150
+11/11 - 4s - loss: 2.7189e-04 - accuracy: 1.0000 - val_loss: 5.7865 - val_accuracy: 0.5263
+Epoch 59/150
+11/11 - 4s - loss: 2.6318e-04 - accuracy: 1.0000 - val_loss: 5.7981 - val_accuracy: 0.5263
+Epoch 60/150
+11/11 - 4s - loss: 2.5473e-04 - accuracy: 1.0000 - val_loss: 5.7975 - val_accuracy: 0.5263
+Epoch 61/150
+11/11 - 4s - loss: 2.4730e-04 - accuracy: 1.0000 - val_loss: 5.7901 - val_accuracy: 0.5263
+Epoch 62/150
+11/11 - 4s - loss: 2.3933e-04 - accuracy: 1.0000 - val_loss: 5.7965 - val_accuracy: 0.5263
+Epoch 63/150
+11/11 - 4s - loss: 2.3124e-04 - accuracy: 1.0000 - val_loss: 5.7943 - val_accuracy: 0.5263
+Epoch 64/150
+11/11 - 4s - loss: 2.2386e-04 - accuracy: 1.0000 - val_loss: 5.8013 - val_accuracy: 0.5263
+Epoch 65/150
+11/11 - 4s - loss: 2.1882e-04 - accuracy: 1.0000 - val_loss: 5.8183 - val_accuracy: 0.5263
+Epoch 66/150
+11/11 - 4s - loss: 2.1149e-04 - accuracy: 1.0000 - val_loss: 5.8192 - val_accuracy: 0.5263
+Epoch 67/150
+11/11 - 4s - loss: 2.0596e-04 - accuracy: 1.0000 - val_loss: 5.8268 - val_accuracy: 0.5263
+Epoch 68/150
+11/11 - 4s - loss: 2.0080e-04 - accuracy: 1.0000 - val_loss: 5.8359 - val_accuracy: 0.5263
+Epoch 69/150
+11/11 - 4s - loss: 1.9569e-04 - accuracy: 1.0000 - val_loss: 5.8439 - val_accuracy: 0.5263
+Epoch 70/150
+11/11 - 4s - loss: 1.9016e-04 - accuracy: 1.0000 - val_loss: 5.8473 - val_accuracy: 0.5263
+Epoch 71/150
+11/11 - 4s - loss: 1.8509e-04 - accuracy: 1.0000 - val_loss: 5.8486 - val_accuracy: 0.5263
+Epoch 72/150
+11/11 - 4s - loss: 1.8088e-04 - accuracy: 1.0000 - val_loss: 5.8465 - val_accuracy: 0.5263
+Epoch 00072: early stopping
+input_1 False
+block1_conv1 False
+batch_normalization True
+block1_conv2 False
+batch_normalization_1 True
+block1_pool False
+block2_conv1 False
+batch_normalization_2 True
+block2_conv2 False
+batch_normalization_3 True
+block2_pool False
+block3_conv1 False
+batch_normalization_4 True
+block3_conv2 False
+batch_normalization_5 True
+block3_conv3 False
+batch_normalization_6 True
+block3_pool False
+block4_conv1 False
+batch_normalization_7 True
+block4_conv2 False
+batch_normalization_8 True
+block4_conv3 False
+batch_normalization_9 True
+block4_pool False
+block5_conv1 False
+batch_normalization_10 True
+block5_conv2 False
+batch_normalization_11 True
+block5_conv3 False
+batch_normalization_12 True
+block5_pool False
+flatten False
+fc1 False
+batch_normalization_13 True
+fc2 False
+batch_normalization_14 True
+predictions False
+  0/250 [..............................] - ETA: 0s  2/250 [..............................] - ETA: 10:33 12/250 [>.............................] - ETA: 3:22  22/250 [=>............................] - ETA: 2:37 32/250 [==>...........................] - ETA: 2:18 42/250 [====>.........................] - ETA: 2:05 52/250 [=====>........................] - ETA: 1:55 62/250 [======>.......................] - ETA: 1:47 72/250 [=======>......................] - ETA: 1:40 82/250 [========>.....................] - ETA: 1:33 92/250 [==========>...................] - ETA: 1:27102/250 [===========>..................] - ETA: 1:20112/250 [============>.................] - ETA: 1:15122/250 [=============>................] - ETA: 1:09132/250 [==============>...............] - ETA: 1:03142/250 [================>.............] - ETA: 57s 152/250 [=================>............] - ETA: 52s162/250 [==================>...........] - ETA: 46s172/250 [===================>..........] - ETA: 41s182/250 [====================>.........] - ETA: 35s192/250 [======================>.......] - ETA: 30s202/250 [=======================>......] - ETA: 25s212/250 [========================>.....] - ETA: 19s222/250 [=========================>....] - ETA: 14s232/250 [==========================>...] - ETA: 9s 242/250 [============================>.] - ETA: 4sMCBN accuracy: 55.6%
+MCBN-ensemble accuracy: 55.6%
+tf.Tensor(
+[[ 4  0 10]
+ [ 2  0  5]
+ [ 5  2 26]], shape=(3, 3), dtype=int32)
+posterior mean: 2
+true label: 2
+
+class: 0; proba: 0.0%; var: 0.00% 
+class: 1; proba: 0.1%; var: 0.51% 
+class: 2; proba: 99.9%; var: 0.51% 

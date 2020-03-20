@@ -1,11 +1,9 @@
-''' Trains a (pre trained) network with additional batch normalization layers
-    for uncertainty estimation'''
+''' Trains a (pre trained) network with additional dropout layers for uncertainty estimation'''
 
 import os
 import datetime
 import time
 import random
-import re
 import h5py
 import numpy as np
 import tensorflow as tf
@@ -15,7 +13,7 @@ import matplotlib.pyplot as plt
 plt.style.use("ggplot")
 
 from tensorflow.keras.models import Model
-from tensorflow.keras.layers import Dense, BatchNormalization, Flatten
+from tensorflow.keras.layers import Dense, Dropout, Flatten
 from tensorflow.keras import optimizers
 from tensorflow.keras.applications.vgg16 import VGG16
 from tensorflow.keras.preprocessing.image import ImageDataGenerator
@@ -30,32 +28,33 @@ WEIGHTS_PATH_NO_TOP = ('https://github.com/fchollet/deep-learning-models/'
 
 # Input image dimensions
 IMG_HEIGHT, IMG_WIDTH, IMG_DEPTH = 256, 256, 3
-DATASET_NAME = '/Messidor2_PNG_AUG_' + str(IMG_HEIGHT) + '.hdf5'
+DATASET_NAME = '/Polar_PNG_' + str(IMG_HEIGHT) + '.hdf5'
 
-BATCH_SIZE = 32
-NUM_CLASSES = 5
-EPOCHS = 150
-MCBN_PREDICTIONS = 250
-MINIBATCH_SIZE = 128
-MCBN_BATCH_SIZE = 64
+BATCH_SIZE = 16
+NUM_CLASSES = 3
+EPOCHS = 500
+AMOUNT_OF_PREDICTIONS = 50
+MCDO_BATCH_SIZE = 16
 TRAIN_TEST_SPLIT = 0.8 # Value between 0 and 1, e.g. 0.8 creates 80%/20% division train/test
 TRAIN_VAL_SPLIT = 0.9
 TO_SHUFFLE = True
 AUGMENTATION = False
 LABEL_NORMALIZER = True
 SAVE_AUGMENTATION_TO_HDF5 = True
-ADD_BATCH_NORMALIZATION = True
-ADD_BATCH_NORMALIZATION_INSIDE = True
-TRAIN_ALL_LAYERS = False
-ONLY_AFTER_SPECIFIC_LAYER = True
+ADD_DROPOUT = True
+MCDO = True
+TRAIN_ALL_LAYERS = True
+DROPOUT_INSIDE = True
 WEIGHTS_TO_USE = 'imagenet'
-LEARN_RATE = 0.0001
-ES_PATIENCE = 5
+LEARN_RATE = 0.01
+ES_PATIENCE = 50
+DROPOUTRATES = [0.05, 0.1, 0.15, 0.2, 0.25, 0.3, 0.5, 0.5]
 
 # Get dataset path
 DIR_PATH_HEAD_TAIL = os.path.split(os.path.dirname(os.path.realpath(__file__)))
-ROOT_PATH = DIR_PATH_HEAD_TAIL[0]
-DATA_PATH = ROOT_PATH + '/Datasets' + DATASET_NAME
+ONE_HIGHER_PATH = os.path.split(DIR_PATH_HEAD_TAIL[0])
+ROOT_PATH = ONE_HIGHER_PATH[0]
+DATA_PATH = ROOT_PATH + '/Polar_dataset' + DATASET_NAME
 
 def shuffle_data(x_to_shuff, y_to_shuff):
     ''' Shuffle the data randomly '''
@@ -155,51 +154,53 @@ def data_augmentation(x_aug, y_aug, label_count):
 def load_data(path, to_shuffle):
     '''' Load a dataset from a hdf5 file '''
     with h5py.File(path, "r") as f:
-        (x_load, y_load) = np.array(f['x']), np.array(f['y'])
-    label_count = [0] * NUM_CLASSES
-    for lab in y_load:
-        label_count[lab] += 1
+        (x_train_load, y_train_load, x_test_load, y_test_load) = np.array(f['x_train']), np.array(f['y_train']), np.array(f['x_test']), np.array(f['y_test'])
+    train_label_count = [0] * NUM_CLASSES
+    test_label_count = [0] * NUM_CLASSES
+    for lab in y_train_load:
+        train_label_count[lab] += 1
+    for lab in y_test_load:
+        test_label_count[lab] += 1
 
     if to_shuffle:
-        (x_load, y_load) = shuffle_data(x_load, y_load)
+        (x_train_load, y_train_load) = shuffle_data(x_train_load, y_train_load)
+        (x_test_load, y_test_load) = shuffle_data(x_test_load, y_test_load)
 
     if AUGMENTATION:
-        (x_load, y_load) = data_augmentation(x_load, y_load, label_count)
-        print("augmentation done")
-        label_count = [0] * NUM_CLASSES
-        for lab in y_load:
-            label_count[lab] += 1
+        (x_train_load, y_train_load) = data_augmentation(x_train_load, y_train_load, train_label_count)
+        print("augmentation of train set done")
+        train_label_count = [0] * NUM_CLASSES
+        for lab in y_train_load:
+            train_label_count[lab] += 1
+        
+        (x_test_load, y_test_load) = data_augmentation(x_test_load, y_test_load, test_label_count)
+        print("augmentation test set done")
+        test_label_count = [0] * NUM_CLASSES
+        for lab in y_test_load:
+            test_label_count[lab] += 1
 
-
-    # Divide the data into a train and test set
-    x_train = x_load[0:int(TRAIN_TEST_SPLIT*len(x_load))]
-    y_train = y_load[0:int(TRAIN_TEST_SPLIT*len(y_load))]
-
-    x_test = x_load[int(TRAIN_TEST_SPLIT*len(x_load)):]
-    y_test = y_load[int(TRAIN_TEST_SPLIT*len(y_load)):]
-
-    return (x_train, y_train), (x_test, y_test), label_count
+    return (x_train_load, y_train_load), (x_test_load, y_test_load), train_label_count, test_label_count
 
 
 def prepare_data():
     ''' Load the data and perform shuffle/augmentations if needed '''
     # Split the data between train and test sets
-    (x_train, y_train), (x_test, y_test), label_count = load_data(DATA_PATH, TO_SHUFFLE)
+    (x_train, y_train), (x_test, y_test), train_label_count, test_label_count = load_data(DATA_PATH, TO_SHUFFLE)
 
     # For evaluation, this image is put in the fig_dir created above
     test_img_idx = random.randint(0, len(x_test) - 1)
 
     print("""dataset_name = {}, batch_size = {}, num_classes = {}, epochs = {},
-        MCBN_PREDICTIONS = {}, Mini_batch_size = {}, test_img_idx = {},
-        train_test_split = {}, to_shuffle = {}, augmentation = {}, label_count = {},
-        label_normalizer = {}, save_augmentation_to_hdf5 = {}, learn rate = {},
-        add_bn_inside = {}, train_all_layers = {}, weights_to_use = {},
+        MCDO_PREDICTIONS = {}, MCDO_BATCH_SIZE = {}, test_img_idx = {},
+        train_test_split = {}, to_shuffle = {}, augmentation = {}, train_label_count = {},
+        test_label_count = {}, label_normalizer = {}, save_augmentation_to_hdf5 = {}, learn rate = {},
+        add_dropout_inside = {}, train_all_layers = {}, weights_to_use = {},
         es_patience = {}, train_val_split = {}""".format(
             DATASET_NAME, BATCH_SIZE, NUM_CLASSES, EPOCHS,
-            MCBN_PREDICTIONS, MINIBATCH_SIZE, test_img_idx,
-            TRAIN_TEST_SPLIT, TO_SHUFFLE, AUGMENTATION, label_count,
-            LABEL_NORMALIZER, SAVE_AUGMENTATION_TO_HDF5, LEARN_RATE,
-            ADD_BATCH_NORMALIZATION_INSIDE, TRAIN_ALL_LAYERS, WEIGHTS_TO_USE,
+            AMOUNT_OF_PREDICTIONS, MCDO_BATCH_SIZE, test_img_idx,
+            TRAIN_TEST_SPLIT, TO_SHUFFLE, AUGMENTATION, train_label_count,
+            test_label_count, LABEL_NORMALIZER, SAVE_AUGMENTATION_TO_HDF5, LEARN_RATE,
+            DROPOUT_INSIDE, TRAIN_ALL_LAYERS, WEIGHTS_TO_USE,
             ES_PATIENCE, TRAIN_VAL_SPLIT))
 
     x_train = np.asarray(x_train)
@@ -218,72 +219,64 @@ def prepare_data():
     return(x_train, y_train, x_test, y_test, test_img_idx)
 
 
-def get_batch_normalization(input_tensor):
-    ''' Returns a trainable batch normalization layer '''
-    return BatchNormalization()(input_tensor, training=True)
+def get_dropout(input_tensor, prob=0.5):
+    ''' Returns a dropout layer with probability prob, either trainable or not '''
+    if MCDO:
+        return Dropout(prob)(input_tensor, training=True)
+    else:
+        return Dropout(prob)(input_tensor)
 
 
-def insert_intermediate_layer_in_keras(model, layer_id):
-    ''' Insert a batch normalization layer before the layer with layer_id '''
+def insert_intermediate_layer_in_keras(model, layer_id, prob):
+    ''' Insert a dropout layer before the layer with layer_id '''
     inter_layers = [l for l in model.layers]
 
     x = inter_layers[0].output
     for i in range(1, len(inter_layers)):
         if i == layer_id:
-            x = get_batch_normalization(x)
+            x = get_dropout(x, prob)
         x = inter_layers[i](x)
 
     new_model = Model(inputs=inter_layers[0].input, outputs=x)
     return new_model
 
 
-def add_batch_normalization(mcbn_model):
-    ''' Adds batch normalizaiton layers either after all pool and dense layers
-        or only after dense layers '''
-    if ADD_BATCH_NORMALIZATION_INSIDE:
+def add_dropout(mcdo_model):
+    ''' Adds dropout layers either after all pool and dense layers or only after dense layers '''
+    if DROPOUT_INSIDE:
+        p_i = 0
         # Creating dictionary that maps layer names to the layers
-        layer_dict = dict([(layer.name, layer) for layer in mcbn_model.layers])
+        # layer_dict = dict([(layer.name, layer) for layer in mcdo_model.layers])
+        layer_dict = dict([(layer.name, layer) for layer in mcdo_model.layers])
 
         for layer_name in layer_dict:
-            layer_dict = dict([(layer.name, layer) for layer in mcbn_model.layers])
-            if ONLY_AFTER_SPECIFIC_LAYER:
-                if re.search('.*_conv.*', layer_name):
-                    print(layer_name)
-                    layer_index = list(layer_dict).index(layer_name)
-                    print(layer_index)
-
-                    # Add a batch normalization (trainable) layer
-                    mcbn_model = insert_intermediate_layer_in_keras(mcbn_model, layer_index + 1)
-
-                    # mcbn_model.summary()
-            else:
-                print(layer_name)
+            layer_dict = dict([(layer.name, layer) for layer in mcdo_model.layers])
+            if layer_name.endswith('_pool'):
                 layer_index = list(layer_dict).index(layer_name)
-                print(layer_index)
-
-                # Add a batch normalization (trainable) layer
-                mcbn_model = insert_intermediate_layer_in_keras(mcbn_model, layer_index + 1)
-
-
+                # Add a dropout (trainable) layer
+                mcdo_model = insert_intermediate_layer_in_keras(mcdo_model, layer_index + 1, DROPOUTRATES[p_i])
+                p_i += 1
 
         # Stacking a new simple convolutional network on top of vgg16
-        all_layers = [l for l in mcbn_model.layers]
+        all_layers = [l for l in mcdo_model.layers]
         x = all_layers[0].output
         for i in range(1, len(all_layers)):
             x = all_layers[i](x)
 
         # Classification block
-        # x = get_batch_normalization(x)
+        x = get_dropout(x, DROPOUTRATES[p_i])
+        p_i += 1
         x = Flatten(name='flatten')(x)
         x = Dense(4096, activation='relu', name='fc1')(x)
-        x = get_batch_normalization(x)
+        x = get_dropout(x, DROPOUTRATES[p_i])
+        p_i += 1
         x = Dense(4096, activation='relu', name='fc2')(x)
-        x = get_batch_normalization(x)
+        x = get_dropout(x, DROPOUTRATES[p_i])
         x = Dense(NUM_CLASSES, activation='softmax', name='predictions')(x)
 
     else:
         # Stacking a new simple convolutional network on top of vgg16
-        all_layers = [l for l in mcbn_model.layers]
+        all_layers = [l for l in mcdo_model.layers]
         x = all_layers[0].output
         for i in range(1, len(all_layers)):
             x = all_layers[i](x)
@@ -291,31 +284,14 @@ def add_batch_normalization(mcbn_model):
         # Classification block
         x = Flatten(name='flatten')(x)
         x = Dense(4096, activation='relu', name='fc1')(x)
-        x = get_batch_normalization(x)
+        x = get_dropout(x, 0.5)
         x = Dense(4096, activation='relu', name='fc2')(x)
-        x = get_batch_normalization(x)
+        x = get_dropout(x, 0.5)
         x = Dense(NUM_CLASSES, activation='softmax', name='predictions')(x)
 
     # Creating new model
-    mcbn_model = Model(inputs=all_layers[0].input, outputs=x)
-    return mcbn_model
-
-
-def create_minibatch(x, y):
-    ''' Returns a minibatch of the train data '''
-    combined = list(zip(x, y)) # use zip() to bind the images and label together
-    random_seed = random.randint(0, 1000)
-    # print("Random seed minibatch for replication: {}".format(random_seed))
-    random.seed(random_seed)
-    random.shuffle(combined)
-    minibatch = combined[:MINIBATCH_SIZE]
-
-    (x_minibatch, y_minibatch) = zip(*minibatch)  
-                            # *combined is used to separate all the tuples in the list combined,
-                            # "x_minibatch" then contains all the shuffled images and
-                            # "y_minibatch" contains all the shuffled labels.
-
-    return(x_minibatch, y_minibatch)
+    mcdo_model = Model(inputs=all_layers[0].input, outputs=x)
+    return mcdo_model
 
 
 def main():
@@ -324,15 +300,15 @@ def main():
     x_train, y_train, x_test, y_test, test_img_idx = prepare_data()
 
     # VGG16 since it does not include batch normalization of dropout by itself
-    MCBN_model = VGG16(weights=WEIGHTS_TO_USE, include_top=False,
+    MCDO_model = VGG16(weights=WEIGHTS_TO_USE, include_top=False,
                        input_shape=(IMG_HEIGHT, IMG_WIDTH, IMG_DEPTH))
 
-    if ADD_BATCH_NORMALIZATION:
-        MCBN_model = add_batch_normalization(MCBN_model)
+    if ADD_DROPOUT:
+        MCDO_model = add_dropout(MCDO_model)
 
     else:
         # Stacking a new simple convolutional network on top of vgg16
-        all_layers = [l for l in MCBN_model.layers]
+        all_layers = [l for l in MCDO_model.layers]
         x = all_layers[0].output
         for i in range(1, len(all_layers)):
             x = all_layers[i](x)
@@ -343,32 +319,32 @@ def main():
         x = Dense(4096, activation='relu', name='fc2')(x)
         x = Dense(NUM_CLASSES, activation='softmax', name='predictions')(x)
 
-        # Creating new model.
-        MCBN_model = Model(inputs=all_layers[0].input, outputs=x)
+        # Creating new model
+        MCDO_model = Model(inputs=all_layers[0].input, outputs=x)
 
-    if TRAIN_ALL_LAYERS or ADD_BATCH_NORMALIZATION_INSIDE:
-        for layer in MCBN_model.layers:
+    if TRAIN_ALL_LAYERS or DROPOUT_INSIDE:
+        for layer in MCDO_model.layers:
             layer.trainable = True
-            print(layer, layer.trainable)
     else:
-        for layer in MCBN_model.layers[:-6]:
+        for layer in MCDO_model.layers[:-6]:
             layer.trainable = False
-        for layer in MCBN_model.layers:
+        for layer in MCDO_model.layers:
             print(layer, layer.trainable)
 
-    MCBN_model.summary()
+    MCDO_model.summary()
 
     adam = optimizers.Adam(lr=LEARN_RATE)
-    MCBN_model.compile(
+    # sgd = optimizers.SGD(lr=LEARN_RATE)
+    MCDO_model.compile(
         optimizer=adam,
         loss='categorical_crossentropy',
         metrics=['accuracy']
     )
 
-    print("Start fitting monte carlo batch_normalization model")
+    print("Start fitting monte carlo dropout model")
 
     # Dir to store created figures
-    fig_dir = os.path.join(os.getcwd(), "MES" + os.path.sep + datetime.datetime.now().strftime('%Y-%m-%d_%H-%M-%S'))
+    fig_dir = os.path.join(os.getcwd(), "POLAR" + os.path.sep + datetime.datetime.now().strftime('%Y-%m-%d_%H-%M-%S'))
     os.makedirs(fig_dir)
     # Dir to store Tensorboard data
     log_dir = os.path.join(fig_dir, "logs/fit/" + datetime.datetime.now().strftime("%Y%m%d-%H%M%S"))
@@ -377,7 +353,7 @@ def main():
     os.chdir(fig_dir)
     tensorboard_callback = tf.keras.callbacks.TensorBoard(log_dir=log_dir)
     early_stopping = tf.keras.callbacks.EarlyStopping(monitor='val_loss',
-                                                    mode='auto', verbose=1, patience=ES_PATIENCE)
+                                                      mode='auto', verbose=1, patience=ES_PATIENCE)
 
     datagen = ImageDataGenerator(rescale=1./255)
     train_generator = datagen.flow(x_train[0:int(TRAIN_VAL_SPLIT*len(x_train))],
@@ -387,75 +363,39 @@ def main():
     val_generator = datagen.flow(x_train[int(TRAIN_VAL_SPLIT*len(x_train)):],
                                  y_train[int(TRAIN_VAL_SPLIT*len(y_train)):],
                                  batch_size=BATCH_SIZE)
-
-
-    MCBN_model.fit(train_generator,
+    
+    MCDO_model.fit(train_generator,
                    epochs=EPOCHS,
                    verbose=2,
                    validation_data=val_generator,
                    callbacks=[tensorboard_callback, early_stopping])
 
     # Save JSON config to disk
-    json_config = MCBN_model.to_json()
-    with open('MCBN_model_config.json', 'w') as json_file:
+    json_config = MCDO_model.to_json()
+    with open('MCDO_model_config.json', 'w') as json_file:
         json_file.write(json_config)
     # Save weights to disk
-    MCBN_model.save_weights('MCBN_weights_.h5')
+    MCDO_model.save_weights('MCDO_weights_.h5')
 
-    # Set onoly batch normalization layers to trainable
-    for layer in MCBN_model.layers:
-        if re.search('batch_normalization.*', layer.name):
-            layer.trainable = True
-        else:
-            layer.trainable = False
-        print(layer.name, layer.trainable)
-
-    adam = optimizers.Adam(lr=LEARN_RATE)
-    MCBN_model.compile(
-        optimizer=adam,
-        loss='categorical_crossentropy',
-        metrics=['accuracy']
-    )
-
-    mcbn_predictions = []
-    progress_bar = tf.keras.utils.Progbar(target=MCBN_PREDICTIONS, interval=5)
-    
-    
-    org_model = MCBN_model
-    for i in range(MCBN_PREDICTIONS):
+    mcdo_predictions = []
+    progress_bar = tf.keras.utils.Progbar(target=AMOUNT_OF_PREDICTIONS, interval=5)
+    for i in range(AMOUNT_OF_PREDICTIONS):
         progress_bar.update(i)
-        # Create new random minibatch from train data
-        x_minibatch, y_minibatch = create_minibatch(x_train, y_train)
-        x_minibatch = np.asarray(x_minibatch)
-        y_minibatch = np.asarray(y_minibatch)
+        y_p = MCDO_model.predict(x_test, batch_size=MCDO_BATCH_SIZE)
+        mcdo_predictions.append(y_p)
 
-        datagen = ImageDataGenerator(rescale=1./255)
-        minibatch_generator = datagen.flow(x_minibatch,
-                                    y_minibatch,
-                                    batch_size = MINIBATCH_SIZE)
-
-
-        # Fit the BN layers with the new minibatch, leave all other weights the same
-        MCBN_model = org_model
-        MCBN_model.fit(minibatch_generator,
-                            epochs=1,
-                            verbose=0)
-
-        y_p = MCBN_model.predict(x_test, batch_size=len(x_test)) #Predict for bn look at (sigma and mu only one to chance, not the others)
-        mcbn_predictions.append(y_p)
-
-    # score of the MCBN model
+    # score of the MCDO model
     accs = []
-    for y_p in mcbn_predictions:
+    for y_p in mcdo_predictions:
         acc = accuracy_score(y_test.argmax(axis=1), y_p.argmax(axis=1))
         accs.append(acc)
-    print("MCBN accuracy: {:.1%}".format(sum(accs)/len(accs)))
+    print("MCDO accuracy: {:.1%}".format(sum(accs)/len(accs)))
 
-    mcbn_ensemble_pred = np.array(mcbn_predictions).mean(axis=0).argmax(axis=1)
-    ensemble_acc = accuracy_score(y_test.argmax(axis=1), mcbn_ensemble_pred)
-    print("MCBN-ensemble accuracy: {:.1%}".format(ensemble_acc))
+    mcdo_ensemble_pred = np.array(mcdo_predictions).mean(axis=0).argmax(axis=1)
+    ensemble_acc = accuracy_score(y_test.argmax(axis=1), mcdo_ensemble_pred)
+    print("MCDO-ensemble accuracy: {:.1%}".format(ensemble_acc))
 
-    confusion = tf.math.confusion_matrix(labels=y_test.argmax(axis=1), predictions=mcbn_ensemble_pred,
+    confusion = tf.math.confusion_matrix(labels=y_test.argmax(axis=1), predictions=mcdo_ensemble_pred,
                                     num_classes=NUM_CLASSES)
     print(confusion)
 
@@ -466,7 +406,7 @@ def main():
 
     plt.imsave('test_image_' + str(test_img_idx) + '.png', x_test[test_img_idx])
 
-    p_0 = np.array([p[test_img_idx] for p in mcbn_predictions])
+    p_0 = np.array([p[test_img_idx] for p in mcdo_predictions])
     print("posterior mean: {}".format(p_0.mean(axis=0).argmax()))
     print("true label: {}".format(y_test[test_img_idx].argmax()))
     print()

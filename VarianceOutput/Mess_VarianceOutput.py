@@ -298,7 +298,7 @@ def main():
     print("Start fitting")
     
     # Dir to store created figures
-    fig_dir = os.path.join(os.getcwd(), datetime.datetime.now().strftime('%Y-%m-%d_%H-%M-%S'))
+    fig_dir = os.path.join(os.getcwd(), "MES" + os.path.sep + datetime.datetime.now().strftime('%Y-%m-%d_%H-%M-%S'))
     os.makedirs(fig_dir)
     # Dir to store Tensorboard data
     log_dir = os.path.join(fig_dir, "logs" + os.path.sep + "fit" + os.path.sep + datetime.datetime.now().strftime("%Y%m%d-%H%M%S"))

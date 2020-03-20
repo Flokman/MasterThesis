@@ -197,7 +197,7 @@ def main():
     print("Start fitting ensemble models")
 
     # Dir to store created figures
-    fig_dir = os.path.join(os.getcwd(), datetime.datetime.now().strftime('%Y-%m-%d_%H-%M-%S'))
+    fig_dir = os.path.join(os.getcwd(), "CIFAR10" + os.path.sep + datetime.datetime.now().strftime('%Y-%m-%d_%H-%M-%S'))
     os.makedirs(fig_dir)
     # Dir to store Tensorboard data
     log_dir = os.path.join(fig_dir, "logs/fit/" + datetime.datetime.now().strftime("%Y%m%d-%H%M%S"))
@@ -249,7 +249,7 @@ def main():
     plt.savefig('prob_var_' + str(test_img_idx) + '.png')
     plt.clf()
 
-    fig = plt.subplots(5, 1, figsize=(12, 6))[0]
+    fig = plt.subplots(NUM_CLASSES, 1, figsize=(12, 6))[0]
 
     for i, ax in enumerate(fig.get_axes()):
         ax.hist(p_0[:, i], bins=100, range=(0, 1))
