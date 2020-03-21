@@ -20,14 +20,13 @@ plt.style.use("ggplot")
 # DATASET_NAME = 'Messidor'
 DATASET_NAME = 'CIFAR10'
 
-MODEL_NAME = 'ensemble_model_'
 
 if DATASET_NAME == 'Messidor':
     # Hyperparameters Messidor
     NUM_CLASSES = 5
     N_FOLDERS = 2
     N_ENSEMBLE_MEMBERS = [43, 27]
-    MODEL_TO_USE = os.path.sep + 'Ensemble'
+    MODEL_TO_USE = os.path.sep + 'Ensemble' + os.path.sep + DATASET_NAME
     MODEL_VERSION = ['/MES_32B_43EN', '/MES_ImageNet_32B_27EN']
 
     IMG_HEIGHT, IMG_WIDTH, IMG_DEPTH = 256, 256, 3 # target image size to resize to
@@ -35,10 +34,12 @@ if DATASET_NAME == 'Messidor':
 if DATASET_NAME == 'CIFAR10':
     # Hyperparameters Messidor
     NUM_CLASSES = 10
-    N_FOLDERS = 2
-    N_ENSEMBLE_MEMBERS = [20, 20]
-    MODEL_TO_USE = os.path.sep + 'Ensemble'
-    MODEL_VERSION = ['/CIF_ImageNet_32B_20EN', '/CIF_ImageNet_32B_20EN_2']
+    N_FOLDERS = 1
+    # N_ENSEMBLE_MEMBERS = [20, 20]
+    N_ENSEMBLE_MEMBERS = [40]
+    MODEL_TO_USE = os.path.sep + 'Ensemble' + os.path.sep + DATASET_NAME + os.path.sep
+    # MODEL_VERSION = ['CIF_ImageNet_32B_20EN', 'CIF_ImageNet_32B_20EN_2']
+    MODEL_VERSION = ['2020-03-19_16-19-18']
 
     IMG_HEIGHT, IMG_WIDTH, IMG_DEPTH = 32, 32, 3 # target image size to resize to
 
@@ -203,6 +204,7 @@ def main():
             old_dir = os.getcwd()
             print(os.getcwd())
             os.chdir(ROOT_PATH + MODEL_TO_USE + MODEL_VERSION[i] + os.path.sep)
+            print(os.getcwd())
 
             # Reload the model from the 2 files we saved
             with open('ensemble_model_config_{}.json'.format(j)) as json_file:
@@ -229,6 +231,7 @@ def main():
             for l, (prob, var) in enumerate(zip(p_0.mean(axis=0), p_0.std(axis=0))):
                 print("class: {}; proba: {:.1%}; var: {:.2%} ".format(l, prob, var))
 
+# TODO: save testimage with in title predicted class, acc and prob
 
 if __name__ == "__main__":
     main()
