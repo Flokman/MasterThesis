@@ -48,31 +48,30 @@ if DATASET_NAME == 'MES':
     MODEL_NAME = 'MCBN_model.h5'
     IMG_HEIGHT, IMG_WIDTH, IMG_DEPTH = 256, 256, 3 # target image size to resize to
     DATASET_LOCATION = os.path.sep + 'Datasets'
-    DATASET_NAME = os.path.sep + 'Messidor2_PNG_AUG_' + str(IMG_HEIGHT) + '.hdf5'
-    DATA_PATH = ROOT_PATH + DATASET_LOCATION + DATASET_NAME
+    DATASET_HDF5 = os.path.sep + 'Messidor2_PNG_AUG_' + str(IMG_HEIGHT) + '.hdf5'
+    DATA_PATH = ROOT_PATH + DATASET_LOCATION + DATASET_HDF5
 
 if DATASET_NAME == 'CIFAR10':
+    from tensorflow.keras.datasets import cifar10
     NUM_CLASSES = 10
     MINIBATCH_SIZE = 128
     MODEL_TO_USE = os.path.sep + 'MCBN'
     MODEL_VERSION = os.path.sep + 'CIFAR_ImageNet_Retrain_32B_57E_87A'
     MODEL_NAME = 'MCBN_model.h5'
     IMG_HEIGHT, IMG_WIDTH, IMG_DEPTH = 32, 32, 3 # target image size to resize to
-    DATASET_LOCATION = os.path.sep + 'Datasets'
-    DATASET_NAME = os.path.sep + 'Messidor2_PNG_AUG_' + str(IMG_HEIGHT) + '.hdf5'
-    DATA_PATH = ROOT_PATH + DATASET_LOCATION + DATASET_NAME
 
 if DATASET_NAME == 'POLAR':
     NUM_CLASSES = 3
     MINIBATCH_SIZE = 16
     MODEL_TO_USE = os.path.sep + 'MCBN'
-    MODEL_VERSION = os.path.sep + 'POLAR_2020-03-20_17-59-32'
+    MODEL_VERSION = os.path.sep + '2020-03-22_10-50_imagenet_8B_51.9%A'
     MODEL_NAME = 'MCBN_model.h5'
     IMG_HEIGHT, IMG_WIDTH, IMG_DEPTH = 256, 256, 3 # target image size to resize to
     DIR_PATH_HEAD_TAIL = os.path.split(os.path.dirname(os.path.realpath(__file__)))
     ONE_HIGHER_PATH = os.path.split(DIR_PATH_HEAD_TAIL[0])
     ROOT_PATH = ONE_HIGHER_PATH[0]
-    DATA_PATH = ROOT_PATH + '/Polar_dataset' + DATASET_NAME
+    DATASET_HDF5 = '/Polar_PNG_' + str(IMG_HEIGHT) + '.hdf5'
+    DATA_PATH = ROOT_PATH + '/Polar_dataset' + DATASET_HDF5
 
 
 def shuffle_data(x_to_shuff, y_to_shuff):
@@ -91,27 +90,55 @@ def shuffle_data(x_to_shuff, y_to_shuff):
 
 def load_data(path, to_shuffle):
     '''' Load a dataset from a hdf5 file '''
-    with h5py.File(path, "r") as f:
-        (x_train_load, y_train_load, x_test_load, y_test_load) = np.array(f['x_train']), np.array(f['y_train']), np.array(f['x_test']), np.array(f['y_test'])
-    train_label_count = [0] * NUM_CLASSES
-    test_label_count = [0] * NUM_CLASSES
-    for lab in y_train_load:
-        train_label_count[lab] += 1
-    for lab in y_test_load:
-        test_label_count[lab] += 1
+    if DATASET_NAME == 'POLAR':
+        with h5py.File(path, "r") as f:
+            (x_train_load, y_train_load, x_test_load, y_test_load) = np.array(f['x_train']), np.array(f['y_train']), np.array(f['x_test']), np.array(f['y_test'])
+        train_label_count = [0] * NUM_CLASSES
+        test_label_count = [0] * NUM_CLASSES
+        for lab in y_train_load:
+            train_label_count[lab] += 1
+        for lab in y_test_load:
+            test_label_count[lab] += 1
 
-    if to_shuffle:
-        (x_train_load, y_train_load) = shuffle_data(x_train_load, y_train_load)
-        (x_test_load, y_test_load) = shuffle_data(x_test_load, y_test_load)
+        if to_shuffle:
+            (x_train_load, y_train_load) = shuffle_data(x_train_load, y_train_load)
+            (x_test_load, y_test_load) = shuffle_data(x_test_load, y_test_load)
 
-    return (x_train_load, y_train_load), (x_test_load, y_test_load), train_label_count, test_label_count
+        return (x_train_load, y_train_load), (x_test_load, y_test_load), train_label_count, test_label_count
+    
+    if DATASET_NAME == 'MES':
+        '''' Load a dataset from a hdf5 file '''
+        with h5py.File(path, "r") as f:
+            (x_load, y_load) = np.array(f['x']), np.array(f['y'])
+        label_count = [0] * NUM_CLASSES
+        for lab in y_load:
+            label_count[lab] += 1
+
+        if to_shuffle:
+            (x_load, y_load) = shuffle_data(x_load, y_load)
+
+        # Divide the data into a train and test set
+        x_train = x_load[0:int(TRAIN_TEST_SPLIT*len(x_load))]
+        y_train = y_load[0:int(TRAIN_TEST_SPLIT*len(y_load))]
+
+        x_test = x_load[int(TRAIN_TEST_SPLIT*len(x_load)):]
+        y_test = y_load[int(TRAIN_TEST_SPLIT*len(y_load)):]
+
+        return (x_train, y_train), (x_test, y_test), label_count
 
 
 def load_hdf5_dataset():
     ''' Load a dataset, split and put in right format'''
 
     # Split the data between train and test sets
-    (x_train, y_train), (x_test, y_test), train_label_count, test_label_count = load_data(DATA_PATH, TO_SHUFFLE)
+    if DATASET_NAME == 'POLAR':
+        (x_train, y_train), (x_test, y_test), train_label_count, test_label_count = load_data(DATA_PATH, TO_SHUFFLE)
+    
+    if DATASET_NAME == 'MES':
+        (x_train, y_train), (x_test, y_test), label_count = load_data(DATA_PATH, TO_SHUFFLE)
+
+    if DATASET_NAME == 'CIFAR10':
+        (x_train, y_train), (x_test, y_test) = cifar10.load_data()
     
     x_train = np.asarray(x_train)
     y_train = np.asarray(y_train)
@@ -236,19 +263,20 @@ def main():
     if LABELS_AVAILABLE:
         (x_train, y_train), (x_test, y_test) = load_hdf5_dataset()
         (x_test, y_test) = load_new_images()
+    
     else:
         (x_train, y_train), (x_test, y_test) = load_hdf5_dataset()
         x_test = load_new_images()
 
     old_dir = os.getcwd()
-    os.chdir(ROOT_PATH + MODEL_TO_USE + MODEL_VERSION + os.path.sep)
+    os.chdir(ROOT_PATH + os.path.sep + ONE_HIGHER_PATH[1] + MODEL_TO_USE + os.path.sep + DATASET_NAME + MODEL_VERSION + os.path.sep)
     print(os.getcwd())
 
     # Reload the model from the 2 files we saved
     with open('MCBN_model_config.json') as json_file:
         json_config = json_file.read()
     pre_trained_model = tf.keras.models.model_from_json(json_config)
-    pre_trained_model.load_weights('MCBN_weights_{}.h5'.format(i))
+    pre_trained_model.load_weights('MCBN_weights.h5')
 
     os.chdir(old_dir)
 

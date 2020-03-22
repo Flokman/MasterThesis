@@ -52,6 +52,9 @@ ONLY_AFTER_SPECIFIC_LAYER = True
 WEIGHTS_TO_USE = 'imagenet'
 LEARN_RATE = 0.0001
 ES_PATIENCE = 5
+MIN_DELTA = 0.005
+EARLY_MONITOR = 'val_accuracy'
+RESULTFOLDER = 'CIFAR10'
 
 # Get dataset path
 DIR_PATH_HEAD_TAIL = os.path.split(os.path.dirname(os.path.realpath(__file__)))
@@ -72,13 +75,13 @@ def prepare_data():
         train_test_split = {}, to_shuffle = {}, augmentation = {},
         label_normalizer = {}, save_augmentation_to_hdf5 = {}, learn rate = {},
         add_bn_inside = {}, train_all_layers = {}, weights_to_use = {},
-        es_patience = {}, train_val_split = {}""".format(
+        es_patience = {}, train_val_split = {}, MIN_DELTA = {}, Early_monitor = {}""".format(
             DATASET_NAME, BATCH_SIZE, NUM_CLASSES, EPOCHS,
             MCBN_PREDICTIONS, MINIBATCH_SIZE, test_img_idx,
             TRAIN_TEST_SPLIT, TO_SHUFFLE, AUGMENTATION,
             LABEL_NORMALIZER, SAVE_AUGMENTATION_TO_HDF5, LEARN_RATE,
             ADD_BATCH_NORMALIZATION_INSIDE, TRAIN_ALL_LAYERS, WEIGHTS_TO_USE,
-            ES_PATIENCE, TRAIN_VAL_SPLIT))
+            ES_PATIENCE, TRAIN_VAL_SPLIT, MIN_DELTA, EARLY_MONITOR))
 
     x_train = np.asarray(x_train)
     y_train = np.asarray(y_train)
@@ -246,7 +249,7 @@ def main():
     print("Start fitting monte carlo batch_normalization model")
 
     # Dir to store created figures
-    fig_dir = os.path.join(os.getcwd(), "CIFAR10" + os.path.sep + datetime.datetime.now().strftime('%Y-%m-%d_%H-%M-%S'))
+    fig_dir = os.path.join(os.getcwd(), RESULTFOLDER + os.path.sep + datetime.datetime.now().strftime('%Y-%m-%d_%H-%M-%S'))
     os.makedirs(fig_dir)
     # Dir to store Tensorboard data
     log_dir = os.path.join(fig_dir, "logs/fit/" + datetime.datetime.now().strftime("%Y%m%d-%H%M%S"))
@@ -254,7 +257,7 @@ def main():
 
     os.chdir(fig_dir)
     tensorboard_callback = tf.keras.callbacks.TensorBoard(log_dir=log_dir)
-    early_stopping = tf.keras.callbacks.EarlyStopping(monitor='val_loss',
+    early_stopping = tf.keras.callbacks.EarlyStopping(monitor=EARLY_MONITOR, min_delta = MIN_DELTA,
                                                     mode='auto', verbose=1, patience=ES_PATIENCE)
 
     datagen = ImageDataGenerator(rescale=1./255)
@@ -278,7 +281,7 @@ def main():
     with open('MCBN_model_config.json', 'w') as json_file:
         json_file.write(json_config)
     # Save weights to disk
-    MCBN_model.save_weights('MCBN_weights_.h5')
+    MCBN_model.save_weights('MCBN_weights.h5')
 
     # Set onoly batch normalization layers to trainable
     for layer in MCBN_model.layers:
@@ -332,6 +335,10 @@ def main():
     mcbn_ensemble_pred = np.array(mcbn_predictions).mean(axis=0).argmax(axis=1)
     ensemble_acc = accuracy_score(y_test.argmax(axis=1), mcbn_ensemble_pred)
     print("MCBN-ensemble accuracy: {:.1%}".format(ensemble_acc))
+
+    dir_path_head_tail = os.path.split(os.path.dirname(os.getcwd()))
+    new_path = dir_path_head_tail[0] + os.path.sep + RESULTFOLDER + os.path.sep + datetime.datetime.now().strftime('%Y-%m-%d_%H-%M') + '_' + WEIGHTS_TO_USE + '_' + str(BATCH_SIZE) + 'B' + '_{:.1%}A'.format(ensemble_acc)
+    os.rename(fig_dir, new_path)
 
     confusion = tf.math.confusion_matrix(labels=y_test.argmax(axis=1), predictions=mcbn_ensemble_pred,
                                     num_classes=NUM_CLASSES)

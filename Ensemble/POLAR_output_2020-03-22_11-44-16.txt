@@ -1,0 +1,108 @@
+Random seed for replication: 80
+Random seed for replication: 974
+augmentation of train set done
+augmentation test set done
+dataset_name = /Polar_PNG_256.hdf5, batch_size = 8, num_classes = 3, epochs = 500,
+          test_img_idx = 23, train_test_split = 0.8, to_shuffle = True,
+          augmentation = True, label_normalizer = False, train_label_count = [42, 22, 120], test_label_count = [14, 7, 33],
+          save_augmentation_to_hdf5 = False, learn rate = 0.01, train_all_layers = True,
+          weights_to_use = imagenet, es_patience = 10, train_val_split = 0.9,
+          N_ENSEMBLE_MEMBERS = 40, MIN_DELTA = 0.005, Early_monitor = val_accuracy
+x_train shape: (184, 256, 256, 3)
+184 train samples
+54 test samples
+Model: "model"
+_________________________________________________________________
+Layer (type)                 Output Shape              Param #   
+=================================================================
+input_1 (InputLayer)         [(None, 256, 256, 3)]     0         
+_________________________________________________________________
+block1_conv1 (Conv2D)        (None, 256, 256, 64)      1792      
+_________________________________________________________________
+block1_conv2 (Conv2D)        (None, 256, 256, 64)      36928     
+_________________________________________________________________
+block1_pool (MaxPooling2D)   (None, 128, 128, 64)      0         
+_________________________________________________________________
+block2_conv1 (Conv2D)        (None, 128, 128, 128)     73856     
+_________________________________________________________________
+block2_conv2 (Conv2D)        (None, 128, 128, 128)     147584    
+_________________________________________________________________
+block2_pool (MaxPooling2D)   (None, 64, 64, 128)       0         
+_________________________________________________________________
+block3_conv1 (Conv2D)        (None, 64, 64, 256)       295168    
+_________________________________________________________________
+block3_conv2 (Conv2D)        (None, 64, 64, 256)       590080    
+_________________________________________________________________
+block3_conv3 (Conv2D)        (None, 64, 64, 256)       590080    
+_________________________________________________________________
+block3_pool (MaxPooling2D)   (None, 32, 32, 256)       0         
+_________________________________________________________________
+block4_conv1 (Conv2D)        (None, 32, 32, 512)       1180160   
+_________________________________________________________________
+block4_conv2 (Conv2D)        (None, 32, 32, 512)       2359808   
+_________________________________________________________________
+block4_conv3 (Conv2D)        (None, 32, 32, 512)       2359808   
+_________________________________________________________________
+block4_pool (MaxPooling2D)   (None, 16, 16, 512)       0         
+_________________________________________________________________
+block5_conv1 (Conv2D)        (None, 16, 16, 512)       2359808   
+_________________________________________________________________
+block5_conv2 (Conv2D)        (None, 16, 16, 512)       2359808   
+_________________________________________________________________
+block5_conv3 (Conv2D)        (None, 16, 16, 512)       2359808   
+_________________________________________________________________
+block5_pool (MaxPooling2D)   (None, 8, 8, 512)         0         
+_________________________________________________________________
+flatten (Flatten)            (None, 32768)             0         
+_________________________________________________________________
+fc1 (Dense)                  (None, 4096)              134221824 
+_________________________________________________________________
+fc2 (Dense)                  (None, 4096)              16781312  
+_________________________________________________________________
+predictions (Dense)          (None, 3)                 12291     
+=================================================================
+Total params: 165,730,115
+Trainable params: 165,730,115
+Non-trainable params: 0
+_________________________________________________________________
+Start fitting ensemble models
+Epoch 00012: early stopping
+Epoch 00012: early stopping
+Epoch 00011: early stopping
+Epoch 00011: early stopping
+Epoch 00011: early stopping
+Epoch 00011: early stopping
+Epoch 00011: early stopping
+Epoch 00011: early stopping
+Epoch 00011: early stopping
+Epoch 00011: early stopping
+Epoch 00011: early stopping
+Epoch 00011: early stopping
+Epoch 00011: early stopping
+Epoch 00011: early stopping
+Epoch 00011: early stopping
+Epoch 00011: early stopping
+Epoch 00011: early stopping
+Epoch 00012: early stopping
+Epoch 00011: early stopping
+Epoch 00011: early stopping
+Epoch 00011: early stopping
+Epoch 00011: early stopping
+Epoch 00011: early stopping
+Epoch 00016: early stopping
+Epoch 00014: early stopping
+Epoch 00011: early stopping
+Epoch 00013: early stopping
+Epoch 00011: early stopping
+Epoch 00011: early stopping
+Epoch 00011: early stopping
+Epoch 00011: early stopping
+Epoch 00011: early stopping
+Epoch 00011: early stopping
+Epoch 00011: early stopping
+Epoch 00012: early stopping
+Epoch 00011: early stopping
+Epoch 00012: early stopping
+Epoch 00011: early stopping
+Epoch 00011: early stopping
+Epoch 00011: early stopping

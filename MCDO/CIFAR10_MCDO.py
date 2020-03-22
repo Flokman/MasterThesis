@@ -50,6 +50,9 @@ WEIGHTS_TO_USE = 'imagenet'
 LEARN_RATE = 0.00001
 ES_PATIENCE = 5
 DROPOUTRATES = [0.05, 0.1, 0.15, 0.2, 0.25, 0.3, 0.5, 0.5]
+MIN_DELTA = 0.005
+EARLY_MONITOR = 'val_accuracy'
+DATANAME = 'CIFAR10'
 
 # Get dataset path
 DIR_PATH_HEAD_TAIL = os.path.split(os.path.dirname(os.path.realpath(__file__)))
@@ -85,13 +88,13 @@ def prepare_data():
         train_test_split = {}, to_shuffle = {}, augmentation = {},
         label_normalizer = {}, save_augmentation_to_hdf5 = {}, learn rate = {},
         add_dropout_inside = {}, train_all_layers = {}, weights_to_use = {},
-        mcdo = {}, es_patience = {}, train_val_split = {}, Dropoutrates: {}""".format(
+        mcdo = {}, es_patience = {}, train_val_split = {}, Dropoutrates: {}, MIN_DELTA = {}, Early_monitor = {}""".format(
         DATASET_NAME, BATCH_SIZE, NUM_CLASSES, EPOCHS,
         AMOUNT_OF_PREDICTIONS, MCDO_BATCH_SIZE, test_img_idx,
         TRAIN_TEST_SPLIT, TO_SHUFFLE, AUGMENTATION,
         LABEL_NORMALIZER, SAVE_AUGMENTATION_TO_HDF5, LEARN_RATE,
         DROPOUT_INSIDE, TRAIN_ALL_LAYERS, WEIGHTS_TO_USE,
-        MCDO, ES_PATIENCE, TRAIN_VAL_SPLIT, DROPOUTRATES))
+        MCDO, ES_PATIENCE, TRAIN_VAL_SPLIT, DROPOUTRATES, MIN_DELTA, EARLY_MONITOR))
 
     x_train = np.asarray(x_train)
     y_train = np.asarray(y_train)
@@ -234,7 +237,7 @@ def main():
     print("Start fitting monte carlo dropout model")
 
     # Dir to store created figures
-    fig_dir = os.path.join(os.getcwd(), "CIFAR10" + os.path.sep + datetime.datetime.now().strftime('%Y-%m-%d_%H-%M-%S'))
+    fig_dir = os.path.join(os.getcwd(), DATANAME + os.path.sep + datetime.datetime.now().strftime('%Y-%m-%d_%H-%M-%S'))
     os.makedirs(fig_dir)
     # Dir to store Tensorboard data
     log_dir = os.path.join(fig_dir, "logs/fit/" + datetime.datetime.now().strftime("%Y%m%d-%H%M%S"))
@@ -242,8 +245,8 @@ def main():
 
     os.chdir(fig_dir)
     tensorboard_callback = tf.keras.callbacks.TensorBoard(log_dir=log_dir)
-    early_stopping = tf.keras.callbacks.EarlyStopping(monitor='val_loss',
-                                                      mode='auto', verbose=1, patience=ES_PATIENCE)
+    early_stopping = tf.keras.callbacks.EarlyStopping(monitor=EARLY_MONITOR, min_delta = MIN_DELTA,
+                                                    mode='auto', verbose=1, patience=ES_PATIENCE)
 
 
     datagen = ImageDataGenerator(rescale=1./255)
@@ -266,7 +269,7 @@ def main():
     with open('MCDO_model_config.json', 'w') as json_file:
         json_file.write(json_config)
     # Save weights to disk
-    MCDO_model.save_weights('MCDO_weights_.h5')
+    MCDO_model.save_weights('MCDO_weights.h5')
 
     mcdo_predictions = []
     progress_bar = tf.keras.utils.Progbar(target=AMOUNT_OF_PREDICTIONS, interval=5)
@@ -285,6 +288,10 @@ def main():
     mcdo_ensemble_pred = np.array(mcdo_predictions).mean(axis=0).argmax(axis=1)
     ensemble_acc = accuracy_score(y_test.argmax(axis=1), mcdo_ensemble_pred)
     print("MCDO-ensemble accuracy: {:.1%}".format(ensemble_acc))
+
+    dir_path_head_tail = os.path.split(os.path.dirname(os.getcwd()))
+    new_path = dir_path_head_tail[0] + os.path.sep + DATANAME + os.path.sep + datetime.datetime.now().strftime('%Y-%m-%d_%H-%M') + '_' + WEIGHTS_TO_USE + '_' + str(BATCH_SIZE) + 'B' + '_{:.1%}A'.format(ensemble_acc)
+    os.rename(fig_dir, new_path)
 
     confusion = tf.math.confusion_matrix(labels=y_test.argmax(axis=1), predictions=mcdo_ensemble_pred,
                                     num_classes=NUM_CLASSES)
