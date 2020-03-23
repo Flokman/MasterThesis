@@ -3,13 +3,13 @@
 
 import os
 import random
+import datetime
 import glob
 import re
 import csv
 import h5py
 import tensorflow as tf
 import numpy as np
-# import astroNN
 
 # from tensorflow import keras
 from tensorflow.keras import optimizers
@@ -22,13 +22,18 @@ from tensorflow.keras.preprocessing.image import ImageDataGenerator
 from sklearn.metrics import accuracy_score
 
 from tensorflow.keras import Input, layers, models, utils, backend
+import matplotlib as mpl
+mpl.use('Agg')
+import matplotlib.pyplot as plt
+plt.style.use("ggplot")
 
 # Hyperparameters
-DATASET_NAME = 'POLAR'
+DATANAME = 'CIFAR10'
+METHODENAME = 'MCBN'
 
 MCBN_PREDICTIONS = 250
 TRAIN_TEST_SPLIT = 0.8 # Value between 0 and 1, e.g. 0.8 creates 80%/20% division train/test
-LEARN_RATE = 0.001
+LEARN_RATE = 1
 
 HDF5_DATASET = False
 LABELS_AVAILABLE = False
@@ -38,38 +43,37 @@ TEST_IMAGES_LABELS_NAME = 'test_images_labels'
 
 
 DIR_PATH_HEAD_TAIL = os.path.split(os.path.dirname(os.path.realpath(__file__)))
-ROOT_PATH = DIR_PATH_HEAD_TAIL[0] 
+ONE_HIGHER_PATH = os.path.split(DIR_PATH_HEAD_TAIL[0])
+DATA_ROOT_PATH = DIR_PATH_HEAD_TAIL[0]
+ROOT_PATH = ONE_HIGHER_PATH[0]
 
-if DATASET_NAME == 'MES':
+if DATANAME == 'MES':
     NUM_CLASSES = 5
     MINIBATCH_SIZE = 128
-    MODEL_TO_USE = os.path.sep + 'MCBN'
+    MODEL_TO_USE = os.path.sep + METHODENAME
     MODEL_VERSION = os.path.sep + 'ImageNet_retrain_32B_144E_88A'
     MODEL_NAME = 'MCBN_model.h5'
     IMG_HEIGHT, IMG_WIDTH, IMG_DEPTH = 256, 256, 3 # target image size to resize to
     DATASET_LOCATION = os.path.sep + 'Datasets'
     DATASET_HDF5 = os.path.sep + 'Messidor2_PNG_AUG_' + str(IMG_HEIGHT) + '.hdf5'
-    DATA_PATH = ROOT_PATH + DATASET_LOCATION + DATASET_HDF5
+    DATA_PATH = DATA_ROOT_PATH + DATASET_LOCATION + DATASET_HDF5
 
-if DATASET_NAME == 'CIFAR10':
+if DATANAME == 'CIFAR10':
     from tensorflow.keras.datasets import cifar10
     NUM_CLASSES = 10
     MINIBATCH_SIZE = 128
-    MODEL_TO_USE = os.path.sep + 'MCBN'
+    MODEL_TO_USE = os.path.sep + METHODENAME
     MODEL_VERSION = os.path.sep + 'CIFAR_ImageNet_Retrain_32B_57E_87A'
     MODEL_NAME = 'MCBN_model.h5'
     IMG_HEIGHT, IMG_WIDTH, IMG_DEPTH = 32, 32, 3 # target image size to resize to
 
-if DATASET_NAME == 'POLAR':
+if DATANAME == 'POLAR':
     NUM_CLASSES = 3
     MINIBATCH_SIZE = 16
-    MODEL_TO_USE = os.path.sep + 'MCBN'
+    MODEL_TO_USE = os.path.sep + METHODENAME
     MODEL_VERSION = os.path.sep + '2020-03-22_10-50_imagenet_8B_51.9%A'
     MODEL_NAME = 'MCBN_model.h5'
     IMG_HEIGHT, IMG_WIDTH, IMG_DEPTH = 256, 256, 3 # target image size to resize to
-    DIR_PATH_HEAD_TAIL = os.path.split(os.path.dirname(os.path.realpath(__file__)))
-    ONE_HIGHER_PATH = os.path.split(DIR_PATH_HEAD_TAIL[0])
-    ROOT_PATH = ONE_HIGHER_PATH[0]
     DATASET_HDF5 = '/Polar_PNG_' + str(IMG_HEIGHT) + '.hdf5'
     DATA_PATH = ROOT_PATH + '/Polar_dataset' + DATASET_HDF5
 
@@ -90,7 +94,7 @@ def shuffle_data(x_to_shuff, y_to_shuff):
 
 def load_data(path, to_shuffle):
     '''' Load a dataset from a hdf5 file '''
-    if DATASET_NAME == 'POLAR':
+    if DATANAME == 'POLAR':
         with h5py.File(path, "r") as f:
             (x_train_load, y_train_load, x_test_load, y_test_load) = np.array(f['x_train']), np.array(f['y_train']), np.array(f['x_test']), np.array(f['y_test'])
         train_label_count = [0] * NUM_CLASSES
@@ -106,7 +110,7 @@ def load_data(path, to_shuffle):
 
         return (x_train_load, y_train_load), (x_test_load, y_test_load), train_label_count, test_label_count
     
-    if DATASET_NAME == 'MES':
+    if DATANAME == 'MES':
         '''' Load a dataset from a hdf5 file '''
         with h5py.File(path, "r") as f:
             (x_load, y_load) = np.array(f['x']), np.array(f['y'])
@@ -131,13 +135,13 @@ def load_hdf5_dataset():
     ''' Load a dataset, split and put in right format'''
 
     # Split the data between train and test sets
-    if DATASET_NAME == 'POLAR':
+    if DATANAME == 'POLAR':
         (x_train, y_train), (x_test, y_test), train_label_count, test_label_count = load_data(DATA_PATH, TO_SHUFFLE)
     
-    if DATASET_NAME == 'MES':
+    if DATANAME == 'MES':
         (x_train, y_train), (x_test, y_test), label_count = load_data(DATA_PATH, TO_SHUFFLE)
 
-    if DATASET_NAME == 'CIFAR10':
+    if DATANAME == 'CIFAR10':
         (x_train, y_train), (x_test, y_test) = cifar10.load_data()
     
     x_train = np.asarray(x_train)
@@ -254,9 +258,63 @@ def create_minibatch(x, y):
     return(x_minibatch, y_minibatch)
 
 
+def indepth_predictions(x_pred, y_pred, mc_predictions):
+    ''' Creates more indepth predictions (print on command line and create figures in folder) '''
+    # Dir to store created figures
+    fig_dir = os.path.join(os.getcwd(), METHODENAME + os.path.sep + DATANAME + os.path.sep + datetime.datetime.now().strftime('%Y-%m-%d_%H-%M-%S')) 
+    os.makedirs(fig_dir)
+    log_dir = os.path.join(fig_dir, "logs/fit/" + datetime.datetime.now().strftime("%Y%m%d-%H%M%S")) # Dir to store Tensorboard data
+    os.makedirs(log_dir)
+    os.chdir(fig_dir)
+
+    accs = []
+    for y_p in mc_predictions:
+        acc = accuracy_score(y_pred.argmax(axis=1), y_p.argmax(axis=1))
+        accs.append(acc)
+    print("MC accuracy: {:.1%}".format(sum(accs)/len(accs)))
+
+    mc_ensemble_pred = np.array(mc_predictions).mean(axis=0).argmax(axis=1)
+    ensemble_acc = accuracy_score(y_pred.argmax(axis=1), mc_ensemble_pred)
+    print("MC-ensemble accuracy: {:.1%}".format(ensemble_acc))
+
+    confusion = tf.confusion_matrix(labels=y_pred.argmax(axis=1), predictions=mc_ensemble_pred, num_classes=NUM_CLASSES)
+    sess = tf.Session()
+    with sess.as_default():
+        print(sess.run(confusion))
+
+    plt.hist(accs)
+    plt.axvline(x=ensemble_acc, color="b")
+    plt.savefig('ensemble_acc.png')
+    plt.clf()
+
+    for i in range(len(x_pred)):
+        p_0 = np.array([p[i] for p in mc_predictions])
+        print("posterior mean: {}".format(p_0.mean(axis=0).argmax()))
+        print("true label: {}".format(y_pred[i].argmax()))
+        print()
+        # probability + variance
+        for l, (prob, var) in enumerate(zip(p_0.mean(axis=0), p_0.std(axis=0))):
+            print("class: {}; proba: {:.1%}; var: {:.2%} ".format(l, prob, var))
+
+
+        x, y = list(range(len(p_0.mean(axis=0)))), p_0.mean(axis=0)
+        plt.plot(x, y)
+        plt.savefig('prob_var_' + str(i) + '.png')
+        plt.clf()
+
+        fig, axes = plt.subplots(5, 1, figsize=(12, 6))
+
+        for i, ax in enumerate(fig.get_axes()):
+            ax.hist(p_0[:, i], bins=100, range=(0, 1))
+            ax.set_title(f"class {i}")
+            ax.label_outer()
+
+        fig.savefig('sub_plots' + str(i) + '.png', dpi=fig.dpi)
+
+
 def main():
     ''' Main function '''
-    # Get dataset path
+    # Get dataset
     if HDF5_DATASET:
         (x_train, y_train), (x_test, y_test) = load_hdf5_dataset()
 
@@ -269,7 +327,7 @@ def main():
         x_test = load_new_images()
 
     old_dir = os.getcwd()
-    os.chdir(ROOT_PATH + os.path.sep + ONE_HIGHER_PATH[1] + MODEL_TO_USE + os.path.sep + DATASET_NAME + MODEL_VERSION + os.path.sep)
+    os.chdir(ROOT_PATH + os.path.sep + ONE_HIGHER_PATH[1] + MODEL_TO_USE + os.path.sep + DATANAME + MODEL_VERSION + os.path.sep)
     print(os.getcwd())
 
     # Reload the model from the 2 files we saved
@@ -295,12 +353,9 @@ def main():
         metrics=['accuracy']
     )
     pre_trained_model.summary()
-
-    ##### https://github.com/fizyr/keras-retinanet/issues/214 ####
     
     mcbn_predictions = []
     progress_bar = tf.keras.utils.Progbar(target=MCBN_PREDICTIONS, interval=5)
-
 
     org_model = pre_trained_model
     for i in range(MCBN_PREDICTIONS):
@@ -351,3 +406,57 @@ def main():
 
 if __name__== "__main__":
     main()
+
+# POLAR:
+
+    # Learn_rate = 0.001:
+    # posterior mean: 2
+    # class: 0; proba: 0.8%; var: 1.18%
+    # class: 1; proba: 6.2%; var: 5.64%
+    # class: 2; proba: 93.0%; var: 5.73%
+    # posterior mean: 2
+    # class: 0; proba: 24.8%; var: 19.64%
+    # class: 1; proba: 0.0%; var: 0.01%
+    # class: 2; proba: 75.2%; var: 19.63%
+    # posterior mean: 2
+    # class: 0; proba: 21.9%; var: 37.53%
+    # class: 1; proba: 0.0%; var: 0.00%
+    # class: 2; proba: 78.1%; var: 37.54%
+    # posterior mean: 2
+    # class: 0; proba: 0.3%; var: 0.45%
+    # class: 1; proba: 49.2%; var: 38.04%
+    # class: 2; proba: 50.5%; var: 37.75%
+    # posterior mean: 2
+    # class: 0; proba: 48.6%; var: 17.51%
+    # class: 1; proba: 0.1%; var: 0.19%
+    # class: 2; proba: 51.4%; var: 17.60%
+    # posterior mean: 2
+    # class: 0; proba: 0.0%; var: 0.01%
+    # class: 1; proba: 4.5%; var: 8.70%
+    # class: 2; proba: 95.5%; var: 8.70%
+
+    # Learn_rate = 1:
+    # posterior mean: 2
+    # class: 0; proba: 27.5%; var: 42.48%
+    # class: 1; proba: 3.1%; var: 16.02%
+    # class: 2; proba: 69.4%; var: 43.77%
+    # posterior mean: 2
+    # class: 0; proba: 10.6%; var: 28.36%
+    # class: 1; proba: 6.4%; var: 23.61%
+    # class: 2; proba: 83.0%; var: 35.04%
+    # posterior mean: 2
+    # class: 0; proba: 27.3%; var: 42.68%
+    # class: 1; proba: 3.3%; var: 17.57%
+    # class: 2; proba: 69.5%; var: 44.32%
+    # posterior mean: 0
+    # class: 0; proba: 48.7%; var: 48.03%
+    # class: 1; proba: 10.5%; var: 29.80%
+    # class: 2; proba: 40.8%; var: 47.32%
+    # posterior mean: 2
+    # class: 0; proba: 12.5%; var: 31.70%
+    # class: 1; proba: 1.6%; var: 11.13%
+    # class: 2; proba: 85.9%; var: 33.32%
+    # posterior mean: 2
+    # class: 0; proba: 15.9%; var: 34.35%
+    # class: 1; proba: 28.2%; var: 43.01%
+    # class: 2; proba: 55.9%; var: 47.64%
