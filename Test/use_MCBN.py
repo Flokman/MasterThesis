@@ -28,14 +28,14 @@ import matplotlib.pyplot as plt
 plt.style.use("ggplot")
 
 # Hyperparameters
-DATANAME = 'CIFAR10'
+DATANAME = 'POLAR'
 METHODENAME = 'MCBN'
 
 MCBN_PREDICTIONS = 250
 TRAIN_TEST_SPLIT = 0.8 # Value between 0 and 1, e.g. 0.8 creates 80%/20% division train/test
 LEARN_RATE = 1
 
-HDF5_DATASET = False
+HDF5_DATASET = True
 LABELS_AVAILABLE = False
 TO_SHUFFLE = True
 TEST_IMAGES_LOCATION = os.path.sep + 'test_images'

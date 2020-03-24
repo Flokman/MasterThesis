@@ -17,33 +17,40 @@ mpl.use('Agg')
 import matplotlib.pyplot as plt
 plt.style.use("ggplot")
 
-# DATASET_NAME = 'Messidor'
-DATASET_NAME = 'CIFAR10'
+DATANAME = 'POLAR'
+# DATANAME = 'Messidor'
+# DATANAME = 'CIFAR10'
 
+if DATANAME == 'POLAR':
+    # Hyperparameters Messidor
+    NUM_CLASSES = 3
+    N_FOLDERS = 1
+    N_ENSEMBLE_MEMBERS = [40]
+    MODEL_VERSION = ['2020-03-22_12-47_imagenet_8B_61.1%A']
+    IMG_HEIGHT, IMG_WIDTH, IMG_DEPTH = 256, 256, 3 # target image size to resize to
+    
 
-if DATASET_NAME == 'Messidor':
+if DATANAME == 'Messidor':
     # Hyperparameters Messidor
     NUM_CLASSES = 5
     N_FOLDERS = 2
     N_ENSEMBLE_MEMBERS = [43, 27]
-    MODEL_TO_USE = os.path.sep + 'Ensemble' + os.path.sep + DATASET_NAME
     MODEL_VERSION = ['/MES_32B_43EN', '/MES_ImageNet_32B_27EN']
-
     IMG_HEIGHT, IMG_WIDTH, IMG_DEPTH = 256, 256, 3 # target image size to resize to
 
-if DATASET_NAME == 'CIFAR10':
+
+if DATANAME == 'CIFAR10':
     # Hyperparameters Messidor
     NUM_CLASSES = 10
     N_FOLDERS = 1
     # N_ENSEMBLE_MEMBERS = [20, 20]
     N_ENSEMBLE_MEMBERS = [40]
-    MODEL_TO_USE = os.path.sep + 'Ensemble' + os.path.sep + DATASET_NAME + os.path.sep
     # MODEL_VERSION = ['CIF_ImageNet_32B_20EN', 'CIF_ImageNet_32B_20EN_2']
     MODEL_VERSION = ['2020-03-19_16-19-18']
-
     IMG_HEIGHT, IMG_WIDTH, IMG_DEPTH = 32, 32, 3 # target image size to resize to
 
 
+MODEL_TO_USE = os.path.sep + 'Ensemble' + os.path.sep + DATANAME + os.path.sep
 TEST_IMAGES_LOCATION = os.path.sep + 'test_images'
 TEST_IMAGES_LABELS_NAME = 'test_images_labels'
 LABELS_AVAILABLE = False
@@ -190,7 +197,7 @@ def indepth_predictions(x_pred, y_pred, mc_predictions):
 def main():
     ''' Main function '''
 
-    print("Dataset_name: {}, N_folders: {}, total mebers: {}".format(DATASET_NAME, N_FOLDERS, sum(N_ENSEMBLE_MEMBERS)))
+    print("Dataset_name: {}, N_folders: {}, total mebers: {}".format(DATANAME, N_FOLDERS, sum(N_ENSEMBLE_MEMBERS)))
 
     if LABELS_AVAILABLE:
         (x_pred, y_pred) = load_new_images()
@@ -200,24 +207,29 @@ def main():
     mc_predictions = []
     progress_bar = tf.keras.utils.Progbar(target=sum(N_ENSEMBLE_MEMBERS), interval=5)
     for i in range(N_FOLDERS):
+        old_dir = os.getcwd()
+        os.chdir(ROOT_PATH + MODEL_TO_USE + MODEL_VERSION[i] + os.path.sep)
+        with open('ensemble_model_config_0.json') as json_file:
+            json_config = json_file.read()
+        pre_trained_model = tf.keras.models.model_from_json(json_config)
+        os.chdir(old_dir)
+
         for j in range(N_ENSEMBLE_MEMBERS[i]):
             old_dir = os.getcwd()
-            print(os.getcwd())
             os.chdir(ROOT_PATH + MODEL_TO_USE + MODEL_VERSION[i] + os.path.sep)
-            print(os.getcwd())
+            # print(os.getcwd())
 
             # Reload the model from the 2 files we saved
-            with open('ensemble_model_config_{}.json'.format(j)) as json_file:
-                json_config = json_file.read()
-            pre_trained_model = tf.keras.models.model_from_json(json_config)
+
             pre_trained_model.load_weights('ensemble_weights_{}.h5'.format(j))
             # pre_trained_model.summary()
             os.chdir(old_dir)
 
             progress_bar.update(j)
             y_p = pre_trained_model.predict(x_pred, batch_size=len(x_pred))
+            print(y_p)
             mc_predictions.append(y_p)
-            K.clear_session()
+        K.clear_session()
 
 
     if LABELS_AVAILABLE:

@@ -19,13 +19,13 @@ import matplotlib.pyplot as plt
 plt.style.use("ggplot")
 
 # Hyperparameters
-DATANAME = 'CIFAR10'
+DATANAME = 'POLAR'
 METHODENAME = 'MCDO'
 
 MCDO_PREDICTIONS = 250
 TRAIN_TEST_SPLIT = 0.8 # Value between 0 and 1, e.g. 0.8 creates 80%/20% division train/test
 
-HDF5_DATASET = False
+HDF5_DATASET = True
 LABELS_AVAILABLE = False
 TO_SHUFFLE = True
 TEST_IMAGES_LOCATION = os.path.sep + 'test_images'
@@ -59,7 +59,7 @@ if DATANAME == 'CIFAR10':
 
 if DATANAME == 'POLAR':
     NUM_CLASSES = 3
-    MCDO_BATCH_SIZE = 32
+    MCDO_BATCH_SIZE = 16
     MODEL_TO_USE = os.path.sep + METHODENAME
     MODEL_VERSION = os.path.sep + '2020-03-22_10-56_imagenet_16B_61.1%A'
     MODEL_NAME = 'MCDO_model.h5'
