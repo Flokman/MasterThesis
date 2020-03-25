@@ -31,7 +31,7 @@ WEIGHTS_PATH_NO_TOP = ('https://github.com/fchollet/deep-learning-models/'
 IMG_HEIGHT, IMG_WIDTH, IMG_DEPTH = 256, 256, 3
 DATASET_NAME = '/Polar_PNG_' + str(IMG_HEIGHT) + '.hdf5'
 
-BATCH_SIZE = 8
+BATCH_SIZE = 4
 NUM_CLASSES = 3
 EPOCHS = 500
 N_ENSEMBLE_MEMBERS = 40
@@ -44,12 +44,13 @@ LABEL_NORMALIZER = False
 SAVE_AUGMENTATION_TO_HDF5 = False
 TRAIN_ALL_LAYERS = True
 WEIGHTS_TO_USE = 'imagenet'
-LEARN_RATE = 0.01
-ES_PATIENCE = 10
+LEARN_RATE = 0.0001
+ES_PATIENCE = 15
 RANDOMSEED = None
 MIN_DELTA = 0.005
 EARLY_MONITOR = 'val_accuracy'
 RESULTFOLDER = 'POLAR'
+BASELINE = 0.69
 
 # Get dataset path
 DIR_PATH_HEAD_TAIL = os.path.split(os.path.dirname(os.path.realpath(__file__)))
@@ -224,50 +225,7 @@ def prepare_data():
     return(x_train, y_train, x_test, y_test, test_img_idx)
 
 
-def fit_model(x_train, y_train, ensemble_model, log_dir, i, x_test):
-    datagen = ImageDataGenerator(rescale=1./255)
-    train_generator = datagen.flow(x_train[0:int(TRAIN_VAL_SPLIT*len(x_train))],
-                                   y_train[0:int(TRAIN_VAL_SPLIT*len(y_train))],
-                                   batch_size=BATCH_SIZE)
-
-    val_generator = datagen.flow(x_train[int(TRAIN_VAL_SPLIT*len(x_train)):],
-                                 y_train[int(TRAIN_VAL_SPLIT*len(y_train)):],
-                                 batch_size=BATCH_SIZE)
-
-    tensorboard_callback = tf.keras.callbacks.TensorBoard(log_dir=log_dir)
-    early_stopping = tf.keras.callbacks.EarlyStopping(monitor=EARLY_MONITOR, min_delta = MIN_DELTA,
-                                                    mode='auto', verbose=1, patience=ES_PATIENCE)
-
-    ensemble_model.fit(train_generator,
-                       epochs=EPOCHS,
-                       verbose=0,
-                       validation_data=val_generator,
-                       callbacks=[tensorboard_callback, early_stopping])
-
-    # # save model and architecture to single file
-    # ensemble_model.save("ensemble_model_{}.h5".format(i))
-    # print("Saved ensemble_model to disk")
-
-    # Save JSON config to disk
-    json_config = ensemble_model.to_json()
-    with open("ensemble_model_config_{}.json".format(i), 'w') as json_file:
-        json_file.write(json_config)
-    # Save weights to disk
-    ensemble_model.save_weights("ensemble_weights_{}.h5".format(i))
-
-    ensemble_prediction = ensemble_model.predict(x_test, batch_size=TEST_BATCH_SIZE)
-
-    # To save memory, clear memory and return something else
-    K.clear_session()
-
-    return ensemble_prediction
-
-
-def main():
-    ''' Main function '''
-    # Load data
-    x_train, y_train, x_test, y_test, test_img_idx = prepare_data()
-
+def fit_model(x_train, y_train, log_dir, i, x_test, y_test):
     # VGG16 since it does not include batch normalization of dropout by itself
     ensemble_model = VGG16(weights=WEIGHTS_TO_USE, include_top=False,
                        input_shape=(IMG_HEIGHT, IMG_WIDTH, IMG_DEPTH))
@@ -297,7 +255,7 @@ def main():
         for layer in ensemble_model.layers:
             print(layer, layer.trainable)
 
-    ensemble_model.summary()
+    # ensemble_model.summary()
 
     adam = optimizers.Adam(lr=LEARN_RATE)
     # sgd = optimizers.SGD(lr=LEARN_RATE)
@@ -306,6 +264,54 @@ def main():
         loss='categorical_crossentropy',
         metrics=['accuracy']
     )
+
+
+    datagen = ImageDataGenerator(rescale=1./255)
+    train_generator = datagen.flow(x_train[0:int(TRAIN_VAL_SPLIT*len(x_train))],
+                                   y_train[0:int(TRAIN_VAL_SPLIT*len(y_train))],
+                                   batch_size=BATCH_SIZE)
+
+    val_generator = datagen.flow(x_train[int(TRAIN_VAL_SPLIT*len(x_train)):],
+                                 y_train[int(TRAIN_VAL_SPLIT*len(y_train)):],
+                                 batch_size=BATCH_SIZE)
+
+    tensorboard_callback = tf.keras.callbacks.TensorBoard(log_dir=log_dir)
+    early_stopping = tf.keras.callbacks.EarlyStopping(monitor=EARLY_MONITOR, min_delta = MIN_DELTA,
+                                                    mode='max', verbose=1, patience=ES_PATIENCE,
+                                                    baseline=BASELINE)
+
+    ensemble_model.fit(train_generator,
+                       epochs=EPOCHS,
+                       verbose=2,
+                       validation_data=val_generator,
+                       callbacks=[tensorboard_callback, early_stopping])
+
+    # # save model and architecture to single file
+    # ensemble_model.save("ensemble_model_{}.h5".format(i))
+    # print("Saved ensemble_model to disk")
+
+    # Save JSON config to disk
+    json_config = ensemble_model.to_json()
+    with open("ensemble_model_config_{}.json".format(i), 'w') as json_file:
+        json_file.write(json_config)
+    # Save weights to disk
+    ensemble_model.save_weights("ensemble_weights_{}.h5".format(i))
+
+    ensemble_prediction = ensemble_model.predict(x_test, batch_size=TEST_BATCH_SIZE)
+
+    acc = accuracy_score(y_test.argmax(axis=1), ensemble_prediction.argmax(axis=1))
+
+    print("Highest acc of model in ensemble: {:.1%}".format(acc))
+    # To save memory, clear memory and return something else
+    K.clear_session()
+
+    return ensemble_prediction
+
+
+def main():
+    ''' Main function '''
+    # Load data
+    x_train, y_train, x_test, y_test, test_img_idx = prepare_data()
 
     print("Start fitting ensemble models")
 
@@ -318,7 +324,9 @@ def main():
 
     os.chdir(fig_dir)
 
-    ensemble_predictions = [fit_model(x_train, y_train, ensemble_model, log_dir, i, x_test) for i in range(N_ENSEMBLE_MEMBERS)]
+    ensemble_predictions = []
+    for i in range(N_ENSEMBLE_MEMBERS):
+        ensemble_predictions.append(fit_model(x_train, y_train, log_dir, i, x_test, y_test))
 
     # ensemble_predictions = [model.predict(x_test, batch_size=TEST_BATCH_SIZE) for model in ensemble]
     # ensemble_predictions = array(ensemble_predictions)

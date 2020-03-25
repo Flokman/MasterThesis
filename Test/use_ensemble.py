@@ -18,19 +18,19 @@ import matplotlib.pyplot as plt
 plt.style.use("ggplot")
 
 DATANAME = 'POLAR'
-# DATANAME = 'Messidor'
+# DATANAME = 'MES'
 # DATANAME = 'CIFAR10'
 
 if DATANAME == 'POLAR':
-    # Hyperparameters Messidor
+    # Hyperparameters Polar
     NUM_CLASSES = 3
     N_FOLDERS = 1
     N_ENSEMBLE_MEMBERS = [40]
-    MODEL_VERSION = ['2020-03-22_12-47_imagenet_8B_61.1%A']
+    MODEL_VERSION = ['2020-03-22_11-44-18']
     IMG_HEIGHT, IMG_WIDTH, IMG_DEPTH = 256, 256, 3 # target image size to resize to
     
 
-if DATANAME == 'Messidor':
+if DATANAME == 'MES':
     # Hyperparameters Messidor
     NUM_CLASSES = 5
     N_FOLDERS = 2
@@ -40,7 +40,7 @@ if DATANAME == 'Messidor':
 
 
 if DATANAME == 'CIFAR10':
-    # Hyperparameters Messidor
+    # Hyperparameters Cifar
     NUM_CLASSES = 10
     N_FOLDERS = 1
     # N_ENSEMBLE_MEMBERS = [20, 20]

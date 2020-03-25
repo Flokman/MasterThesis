@@ -1,53 +1,53 @@
-2020-03-24 16:14:47.712096: W tensorflow/stream_executor/platform/default/dso_loader.cc:55] Could not load dynamic library 'libnvinfer.so.6'; dlerror: libnvinfer.so.6: cannot open shared object file: No such file or directory
-2020-03-24 16:14:47.712155: W tensorflow/stream_executor/platform/default/dso_loader.cc:55] Could not load dynamic library 'libnvinfer_plugin.so.6'; dlerror: libnvinfer_plugin.so.6: cannot open shared object file: No such file or directory
-2020-03-24 16:14:47.712162: W tensorflow/compiler/tf2tensorrt/utils/py_utils.cc:30] Cannot dlopen some TensorRT libraries. If you would like to use Nvidia GPU with TensorRT, please make sure the missing libraries mentioned above are installed properly.
-2020-03-24 16:14:48.713629: I tensorflow/stream_executor/platform/default/dso_loader.cc:44] Successfully opened dynamic library libcuda.so.1
-2020-03-24 16:14:48.725751: I tensorflow/stream_executor/cuda/cuda_gpu_executor.cc:981] successful NUMA node read from SysFS had negative value (-1), but there must be at least one NUMA node, so returning NUMA node zero
-2020-03-24 16:14:48.726028: I tensorflow/core/common_runtime/gpu/gpu_device.cc:1555] Found device 0 with properties: 
+2020-03-25 11:07:54.248714: W tensorflow/stream_executor/platform/default/dso_loader.cc:55] Could not load dynamic library 'libnvinfer.so.6'; dlerror: libnvinfer.so.6: cannot open shared object file: No such file or directory
+2020-03-25 11:07:54.248772: W tensorflow/stream_executor/platform/default/dso_loader.cc:55] Could not load dynamic library 'libnvinfer_plugin.so.6'; dlerror: libnvinfer_plugin.so.6: cannot open shared object file: No such file or directory
+2020-03-25 11:07:54.248779: W tensorflow/compiler/tf2tensorrt/utils/py_utils.cc:30] Cannot dlopen some TensorRT libraries. If you would like to use Nvidia GPU with TensorRT, please make sure the missing libraries mentioned above are installed properly.
+2020-03-25 11:07:55.359937: I tensorflow/stream_executor/platform/default/dso_loader.cc:44] Successfully opened dynamic library libcuda.so.1
+2020-03-25 11:07:55.372062: I tensorflow/stream_executor/cuda/cuda_gpu_executor.cc:981] successful NUMA node read from SysFS had negative value (-1), but there must be at least one NUMA node, so returning NUMA node zero
+2020-03-25 11:07:55.372342: I tensorflow/core/common_runtime/gpu/gpu_device.cc:1555] Found device 0 with properties: 
 pciBusID: 0000:01:00.0 name: GeForce GTX 1070 computeCapability: 6.1
 coreClock: 1.683GHz coreCount: 15 deviceMemorySize: 7.93GiB deviceMemoryBandwidth: 238.66GiB/s
-2020-03-24 16:14:48.726175: I tensorflow/stream_executor/platform/default/dso_loader.cc:44] Successfully opened dynamic library libcudart.so.10.1
-2020-03-24 16:14:48.727662: I tensorflow/stream_executor/platform/default/dso_loader.cc:44] Successfully opened dynamic library libcublas.so.10
-2020-03-24 16:14:48.728940: I tensorflow/stream_executor/platform/default/dso_loader.cc:44] Successfully opened dynamic library libcufft.so.10
-2020-03-24 16:14:48.729108: I tensorflow/stream_executor/platform/default/dso_loader.cc:44] Successfully opened dynamic library libcurand.so.10
-2020-03-24 16:14:48.730324: I tensorflow/stream_executor/platform/default/dso_loader.cc:44] Successfully opened dynamic library libcusolver.so.10
-2020-03-24 16:14:48.730761: I tensorflow/stream_executor/platform/default/dso_loader.cc:44] Successfully opened dynamic library libcusparse.so.10
-2020-03-24 16:14:48.733149: I tensorflow/stream_executor/platform/default/dso_loader.cc:44] Successfully opened dynamic library libcudnn.so.7
-2020-03-24 16:14:48.733214: I tensorflow/stream_executor/cuda/cuda_gpu_executor.cc:981] successful NUMA node read from SysFS had negative value (-1), but there must be at least one NUMA node, so returning NUMA node zero
-2020-03-24 16:14:48.733506: I tensorflow/stream_executor/cuda/cuda_gpu_executor.cc:981] successful NUMA node read from SysFS had negative value (-1), but there must be at least one NUMA node, so returning NUMA node zero
-2020-03-24 16:14:48.733745: I tensorflow/core/common_runtime/gpu/gpu_device.cc:1697] Adding visible gpu devices: 0
-2020-03-24 16:14:48.734007: I tensorflow/core/platform/cpu_feature_guard.cc:142] Your CPU supports instructions that this TensorFlow binary was not compiled to use: AVX2 FMA
-2020-03-24 16:14:48.755907: I tensorflow/core/platform/profile_utils/cpu_utils.cc:94] CPU Frequency: 3192000000 Hz
-2020-03-24 16:14:48.756957: I tensorflow/compiler/xla/service/service.cc:168] XLA service 0x49a6cb0 initialized for platform Host (this does not guarantee that XLA will be used). Devices:
-2020-03-24 16:14:48.757003: I tensorflow/compiler/xla/service/service.cc:176]   StreamExecutor device (0): Host, Default Version
-2020-03-24 16:14:48.809432: I tensorflow/stream_executor/cuda/cuda_gpu_executor.cc:981] successful NUMA node read from SysFS had negative value (-1), but there must be at least one NUMA node, so returning NUMA node zero
-2020-03-24 16:14:48.809794: I tensorflow/compiler/xla/service/service.cc:168] XLA service 0x3b62ab0 initialized for platform CUDA (this does not guarantee that XLA will be used). Devices:
-2020-03-24 16:14:48.809807: I tensorflow/compiler/xla/service/service.cc:176]   StreamExecutor device (0): GeForce GTX 1070, Compute Capability 6.1
-2020-03-24 16:14:48.809916: I tensorflow/stream_executor/cuda/cuda_gpu_executor.cc:981] successful NUMA node read from SysFS had negative value (-1), but there must be at least one NUMA node, so returning NUMA node zero
-2020-03-24 16:14:48.810192: I tensorflow/core/common_runtime/gpu/gpu_device.cc:1555] Found device 0 with properties: 
+2020-03-25 11:07:55.372493: I tensorflow/stream_executor/platform/default/dso_loader.cc:44] Successfully opened dynamic library libcudart.so.10.1
+2020-03-25 11:07:55.373928: I tensorflow/stream_executor/platform/default/dso_loader.cc:44] Successfully opened dynamic library libcublas.so.10
+2020-03-25 11:07:55.375202: I tensorflow/stream_executor/platform/default/dso_loader.cc:44] Successfully opened dynamic library libcufft.so.10
+2020-03-25 11:07:55.375426: I tensorflow/stream_executor/platform/default/dso_loader.cc:44] Successfully opened dynamic library libcurand.so.10
+2020-03-25 11:07:55.376612: I tensorflow/stream_executor/platform/default/dso_loader.cc:44] Successfully opened dynamic library libcusolver.so.10
+2020-03-25 11:07:55.377120: I tensorflow/stream_executor/platform/default/dso_loader.cc:44] Successfully opened dynamic library libcusparse.so.10
+2020-03-25 11:07:55.379571: I tensorflow/stream_executor/platform/default/dso_loader.cc:44] Successfully opened dynamic library libcudnn.so.7
+2020-03-25 11:07:55.379637: I tensorflow/stream_executor/cuda/cuda_gpu_executor.cc:981] successful NUMA node read from SysFS had negative value (-1), but there must be at least one NUMA node, so returning NUMA node zero
+2020-03-25 11:07:55.380138: I tensorflow/stream_executor/cuda/cuda_gpu_executor.cc:981] successful NUMA node read from SysFS had negative value (-1), but there must be at least one NUMA node, so returning NUMA node zero
+2020-03-25 11:07:55.380476: I tensorflow/core/common_runtime/gpu/gpu_device.cc:1697] Adding visible gpu devices: 0
+2020-03-25 11:07:55.380657: I tensorflow/core/platform/cpu_feature_guard.cc:142] Your CPU supports instructions that this TensorFlow binary was not compiled to use: AVX2 FMA
+2020-03-25 11:07:55.403880: I tensorflow/core/platform/profile_utils/cpu_utils.cc:94] CPU Frequency: 3192000000 Hz
+2020-03-25 11:07:55.404649: I tensorflow/compiler/xla/service/service.cc:168] XLA service 0x4a6b840 initialized for platform Host (this does not guarantee that XLA will be used). Devices:
+2020-03-25 11:07:55.404674: I tensorflow/compiler/xla/service/service.cc:176]   StreamExecutor device (0): Host, Default Version
+2020-03-25 11:07:55.456759: I tensorflow/stream_executor/cuda/cuda_gpu_executor.cc:981] successful NUMA node read from SysFS had negative value (-1), but there must be at least one NUMA node, so returning NUMA node zero
+2020-03-25 11:07:55.457112: I tensorflow/compiler/xla/service/service.cc:168] XLA service 0x4a23b00 initialized for platform CUDA (this does not guarantee that XLA will be used). Devices:
+2020-03-25 11:07:55.457126: I tensorflow/compiler/xla/service/service.cc:176]   StreamExecutor device (0): GeForce GTX 1070, Compute Capability 6.1
+2020-03-25 11:07:55.457237: I tensorflow/stream_executor/cuda/cuda_gpu_executor.cc:981] successful NUMA node read from SysFS had negative value (-1), but there must be at least one NUMA node, so returning NUMA node zero
+2020-03-25 11:07:55.457514: I tensorflow/core/common_runtime/gpu/gpu_device.cc:1555] Found device 0 with properties: 
 pciBusID: 0000:01:00.0 name: GeForce GTX 1070 computeCapability: 6.1
 coreClock: 1.683GHz coreCount: 15 deviceMemorySize: 7.93GiB deviceMemoryBandwidth: 238.66GiB/s
-2020-03-24 16:14:48.810219: I tensorflow/stream_executor/platform/default/dso_loader.cc:44] Successfully opened dynamic library libcudart.so.10.1
-2020-03-24 16:14:48.810229: I tensorflow/stream_executor/platform/default/dso_loader.cc:44] Successfully opened dynamic library libcublas.so.10
-2020-03-24 16:14:48.810238: I tensorflow/stream_executor/platform/default/dso_loader.cc:44] Successfully opened dynamic library libcufft.so.10
-2020-03-24 16:14:48.810246: I tensorflow/stream_executor/platform/default/dso_loader.cc:44] Successfully opened dynamic library libcurand.so.10
-2020-03-24 16:14:48.810254: I tensorflow/stream_executor/platform/default/dso_loader.cc:44] Successfully opened dynamic library libcusolver.so.10
-2020-03-24 16:14:48.810262: I tensorflow/stream_executor/platform/default/dso_loader.cc:44] Successfully opened dynamic library libcusparse.so.10
-2020-03-24 16:14:48.810270: I tensorflow/stream_executor/platform/default/dso_loader.cc:44] Successfully opened dynamic library libcudnn.so.7
-2020-03-24 16:14:48.810299: I tensorflow/stream_executor/cuda/cuda_gpu_executor.cc:981] successful NUMA node read from SysFS had negative value (-1), but there must be at least one NUMA node, so returning NUMA node zero
-2020-03-24 16:14:48.810574: I tensorflow/stream_executor/cuda/cuda_gpu_executor.cc:981] successful NUMA node read from SysFS had negative value (-1), but there must be at least one NUMA node, so returning NUMA node zero
-2020-03-24 16:14:48.810825: I tensorflow/core/common_runtime/gpu/gpu_device.cc:1697] Adding visible gpu devices: 0
-2020-03-24 16:14:48.810846: I tensorflow/stream_executor/platform/default/dso_loader.cc:44] Successfully opened dynamic library libcudart.so.10.1
-2020-03-24 16:14:48.811514: I tensorflow/core/common_runtime/gpu/gpu_device.cc:1096] Device interconnect StreamExecutor with strength 1 edge matrix:
-2020-03-24 16:14:48.811523: I tensorflow/core/common_runtime/gpu/gpu_device.cc:1102]      0 
-2020-03-24 16:14:48.811527: I tensorflow/core/common_runtime/gpu/gpu_device.cc:1115] 0:   N 
-2020-03-24 16:14:48.811581: I tensorflow/stream_executor/cuda/cuda_gpu_executor.cc:981] successful NUMA node read from SysFS had negative value (-1), but there must be at least one NUMA node, so returning NUMA node zero
-2020-03-24 16:14:48.811859: I tensorflow/stream_executor/cuda/cuda_gpu_executor.cc:981] successful NUMA node read from SysFS had negative value (-1), but there must be at least one NUMA node, so returning NUMA node zero
-2020-03-24 16:14:48.812129: I tensorflow/core/common_runtime/gpu/gpu_device.cc:1241] Created TensorFlow device (/job:localhost/replica:0/task:0/device:GPU:0 with 7612 MB memory) -> physical GPU (device: 0, name: GeForce GTX 1070, pci bus id: 0000:01:00.0, compute capability: 6.1)
-2020-03-24 16:14:49.904780: W tensorflow/core/framework/cpu_allocator_impl.cc:81] Allocation of 536870912 exceeds 10% of system memory.
-2020-03-24 16:14:50.280349: I tensorflow/stream_executor/platform/default/dso_loader.cc:44] Successfully opened dynamic library libcublas.so.10
-2020-03-24 16:14:50.376721: I tensorflow/stream_executor/platform/default/dso_loader.cc:44] Successfully opened dynamic library libcudnn.so.7
-2020-03-24 16:14:52.101754: W tensorflow/core/framework/cpu_allocator_impl.cc:81] Allocation of 536870912 exceeds 10% of system memory.
-2020-03-24 16:14:53.208103: W tensorflow/core/framework/cpu_allocator_impl.cc:81] Allocation of 536870912 exceeds 10% of system memory.
-2020-03-24 16:14:54.352611: W tensorflow/core/framework/cpu_allocator_impl.cc:81] Allocation of 536870912 exceeds 10% of system memory.
-2020-03-24 16:14:55.367221: W tensorflow/core/framework/cpu_allocator_impl.cc:81] Allocation of 536870912 exceeds 10% of system memory.
+2020-03-25 11:07:55.457538: I tensorflow/stream_executor/platform/default/dso_loader.cc:44] Successfully opened dynamic library libcudart.so.10.1
+2020-03-25 11:07:55.457547: I tensorflow/stream_executor/platform/default/dso_loader.cc:44] Successfully opened dynamic library libcublas.so.10
+2020-03-25 11:07:55.457555: I tensorflow/stream_executor/platform/default/dso_loader.cc:44] Successfully opened dynamic library libcufft.so.10
+2020-03-25 11:07:55.457562: I tensorflow/stream_executor/platform/default/dso_loader.cc:44] Successfully opened dynamic library libcurand.so.10
+2020-03-25 11:07:55.457570: I tensorflow/stream_executor/platform/default/dso_loader.cc:44] Successfully opened dynamic library libcusolver.so.10
+2020-03-25 11:07:55.457577: I tensorflow/stream_executor/platform/default/dso_loader.cc:44] Successfully opened dynamic library libcusparse.so.10
+2020-03-25 11:07:55.457585: I tensorflow/stream_executor/platform/default/dso_loader.cc:44] Successfully opened dynamic library libcudnn.so.7
+2020-03-25 11:07:55.457615: I tensorflow/stream_executor/cuda/cuda_gpu_executor.cc:981] successful NUMA node read from SysFS had negative value (-1), but there must be at least one NUMA node, so returning NUMA node zero
+2020-03-25 11:07:55.457891: I tensorflow/stream_executor/cuda/cuda_gpu_executor.cc:981] successful NUMA node read from SysFS had negative value (-1), but there must be at least one NUMA node, so returning NUMA node zero
+2020-03-25 11:07:55.458141: I tensorflow/core/common_runtime/gpu/gpu_device.cc:1697] Adding visible gpu devices: 0
+2020-03-25 11:07:55.458160: I tensorflow/stream_executor/platform/default/dso_loader.cc:44] Successfully opened dynamic library libcudart.so.10.1
+2020-03-25 11:07:55.458772: I tensorflow/core/common_runtime/gpu/gpu_device.cc:1096] Device interconnect StreamExecutor with strength 1 edge matrix:
+2020-03-25 11:07:55.458779: I tensorflow/core/common_runtime/gpu/gpu_device.cc:1102]      0 
+2020-03-25 11:07:55.458783: I tensorflow/core/common_runtime/gpu/gpu_device.cc:1115] 0:   N 
+2020-03-25 11:07:55.458844: I tensorflow/stream_executor/cuda/cuda_gpu_executor.cc:981] successful NUMA node read from SysFS had negative value (-1), but there must be at least one NUMA node, so returning NUMA node zero
+2020-03-25 11:07:55.459125: I tensorflow/stream_executor/cuda/cuda_gpu_executor.cc:981] successful NUMA node read from SysFS had negative value (-1), but there must be at least one NUMA node, so returning NUMA node zero
+2020-03-25 11:07:55.459443: I tensorflow/core/common_runtime/gpu/gpu_device.cc:1241] Created TensorFlow device (/job:localhost/replica:0/task:0/device:GPU:0 with 7612 MB memory) -> physical GPU (device: 0, name: GeForce GTX 1070, pci bus id: 0000:01:00.0, compute capability: 6.1)
+2020-03-25 11:07:56.576338: W tensorflow/core/framework/cpu_allocator_impl.cc:81] Allocation of 536870912 exceeds 10% of system memory.
+2020-03-25 11:07:56.946126: I tensorflow/stream_executor/platform/default/dso_loader.cc:44] Successfully opened dynamic library libcublas.so.10
+2020-03-25 11:07:57.039139: I tensorflow/stream_executor/platform/default/dso_loader.cc:44] Successfully opened dynamic library libcudnn.so.7
+2020-03-25 11:07:58.606245: W tensorflow/core/framework/cpu_allocator_impl.cc:81] Allocation of 536870912 exceeds 10% of system memory.
+2020-03-25 11:07:59.713257: W tensorflow/core/framework/cpu_allocator_impl.cc:81] Allocation of 536870912 exceeds 10% of system memory.
+2020-03-25 11:08:00.757637: W tensorflow/core/framework/cpu_allocator_impl.cc:81] Allocation of 536870912 exceeds 10% of system memory.
+2020-03-25 11:08:01.823736: W tensorflow/core/framework/cpu_allocator_impl.cc:81] Allocation of 536870912 exceeds 10% of system memory.
