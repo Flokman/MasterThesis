@@ -14,7 +14,7 @@ mpl.use('Agg')
 import matplotlib.pyplot as plt
 plt.style.use("ggplot")
 
-from tensorflow.keras.models import Model
+from tensorflow.keras.models import Model, load_model
 from tensorflow.keras.layers import Dense, BatchNormalization, Flatten
 from tensorflow.keras import optimizers
 from tensorflow.keras.applications.vgg16 import VGG16
@@ -41,7 +41,8 @@ TRAIN_TEST_SPLIT = 0.8 # Value between 0 and 1, e.g. 0.8 creates 80%/20% divisio
 TRAIN_VAL_SPLIT = 0.9
 TO_SHUFFLE = True
 AUGMENTATION = True
-LABEL_NORMALIZER = False
+AUGMENT_TESTSET = False
+LABEL_NORMALIZER = True
 SAVE_AUGMENTATION_TO_HDF5 = False
 ADD_BATCH_NORMALIZATION = True
 ADD_BATCH_NORMALIZATION_INSIDE = True
@@ -103,6 +104,8 @@ def data_augmentation(x_aug, y_aug, label_count):
         for label, label_amount in enumerate(label_count):
             # Divided by 5 since 5 augmentations will be performed at a time
             amount_to_augment = int((goal_amount - label_amount)/5)
+            while amount_to_augment*NUM_CLASSES < 5:
+                amount_to_augment += 1
             print("amount to aug", amount_to_augment*NUM_CLASSES)
             print("class", label)
             tups_to_augment = random.choices(sorted_tup[label], k=amount_to_augment)
@@ -124,7 +127,7 @@ def data_augmentation(x_aug, y_aug, label_count):
                 for batch in datagen.flow(to_augment_x, to_augment_y, batch_size=1):
                     x_aug = np.append(x_aug[:], batch[0], axis=0)
                     y_aug = np.append(y_aug[:], batch[1], axis=0)
-                    print("{}/{}".format((len(x_aug) - x_org_len), amount_to_augment*NUM_CLASSES))
+                    # print("{}/{}".format((len(x_aug) - x_org_len), amount_to_augment*NUM_CLASSES))
                     i += 1
                     if i > 5:
                         break
@@ -175,13 +178,14 @@ def load_data(path, to_shuffle):
         print("augmentation of train set done")
         train_label_count = [0] * NUM_CLASSES
         for lab in y_train_load:
-            train_label_count[lab] += 1
+            train_label_count[int(lab)] += 1
         
-        (x_test_load, y_test_load) = data_augmentation(x_test_load, y_test_load, test_label_count)
-        print("augmentation test set done")
-        test_label_count = [0] * NUM_CLASSES
-        for lab in y_test_load:
-            test_label_count[lab] += 1
+        if AUGMENT_TESTSET:
+            (x_test_load, y_test_load) = data_augmentation(x_test_load, y_test_load, test_label_count)
+            print("augmentation test set done")
+            test_label_count = [0] * NUM_CLASSES
+            for lab in y_test_load:
+                test_label_count[int(lab)] += 1
 
     return (x_train_load, y_train_load), (x_test_load, y_test_load), train_label_count, test_label_count
 
@@ -383,6 +387,7 @@ def main():
     tensorboard_callback = tf.keras.callbacks.TensorBoard(log_dir=log_dir)
     early_stopping = tf.keras.callbacks.EarlyStopping(monitor=EARLY_MONITOR, min_delta = MIN_DELTA,
                                                     mode='auto', verbose=1, patience=ES_PATIENCE)
+    mc = tf.keras.callbacks.ModelCheckpoint('best_model.h5', monitor=EARLY_MONITOR, mode='min', save_best_only=True)
 
     datagen = ImageDataGenerator(rescale=1./255)
     train_generator = datagen.flow(x_train[0:int(TRAIN_VAL_SPLIT*len(x_train))],
@@ -397,7 +402,10 @@ def main():
                    epochs=EPOCHS,
                    verbose=2,
                    validation_data=val_generator,
-                   callbacks=[tensorboard_callback, early_stopping])
+                   callbacks=[tensorboard_callback, early_stopping, mc])
+    
+    MCBN_model = load_model('best_model.h5')
+    os.remove('best_model.h5')
 
     # Save JSON config to disk
     json_config = MCBN_model.to_json()
@@ -460,7 +468,10 @@ def main():
     print("MCBN-ensemble accuracy: {:.1%}".format(ensemble_acc))
 
     dir_path_head_tail = os.path.split(os.path.dirname(os.getcwd()))
-    new_path = dir_path_head_tail[0] + os.path.sep + DATANAME + os.path.sep + datetime.datetime.now().strftime('%Y-%m-%d_%H-%M') + '_' + WEIGHTS_TO_USE + '_' + str(BATCH_SIZE) + 'B' + '_{:.1%}A'.format(ensemble_acc)
+    if WEIGHTS_TO_USE != None:
+        new_path = dir_path_head_tail[0] + os.path.sep + DATANAME + os.path.sep + datetime.datetime.now().strftime('%Y-%m-%d_%H-%M') + '_' + WEIGHTS_TO_USE + '_' + str(BATCH_SIZE) + 'B' + '_{:.1%}A'.format(ensemble_acc)
+    else:
+        new_path = dir_path_head_tail[0] + os.path.sep + DATANAME + os.path.sep + datetime.datetime.now().strftime('%Y-%m-%d_%H-%M') + '_' + str(BATCH_SIZE) + 'B' + '_{:.1%}A'.format(ensemble_acc)
     os.rename(fig_dir, new_path)
 
     confusion = tf.math.confusion_matrix(labels=y_test.argmax(axis=1), predictions=mcbn_ensemble_pred,

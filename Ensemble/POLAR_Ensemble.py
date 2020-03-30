@@ -12,13 +12,17 @@ mpl.use('Agg')
 import matplotlib.pyplot as plt
 plt.style.use("ggplot")
 
-from tensorflow.keras.models import Model
+from tensorflow.keras.models import Model, load_model
 from tensorflow.keras.layers import Dense, Flatten
 from tensorflow.keras import optimizers
 from tensorflow.keras.applications.vgg16 import VGG16
 from tensorflow.keras.preprocessing.image import ImageDataGenerator
 from tensorflow.keras import backend as K
 from sklearn.metrics import accuracy_score
+
+from multiprocessing import Process, Queue
+from multiprocessing.pool import ThreadPool
+
 
 WEIGHTS_PATH = ('https://github.com/fchollet/deep-learning-models/'
                 'releases/download/v0.1/'
@@ -31,7 +35,7 @@ WEIGHTS_PATH_NO_TOP = ('https://github.com/fchollet/deep-learning-models/'
 IMG_HEIGHT, IMG_WIDTH, IMG_DEPTH = 256, 256, 3
 DATASET_NAME = '/Polar_PNG_' + str(IMG_HEIGHT) + '.hdf5'
 
-BATCH_SIZE = 4
+BATCH_SIZE = 16
 NUM_CLASSES = 3
 EPOCHS = 500
 N_ENSEMBLE_MEMBERS = 40
@@ -40,17 +44,18 @@ TRAIN_TEST_SPLIT = 0.8 # Value between 0 and 1, e.g. 0.8 creates 80%/20% divisio
 TRAIN_VAL_SPLIT = 0.9
 TO_SHUFFLE = True
 AUGMENTATION = True
-LABEL_NORMALIZER = False
+AUGMENT_TESTSET = False
+LABEL_NORMALIZER = True
 SAVE_AUGMENTATION_TO_HDF5 = False
-TRAIN_ALL_LAYERS = True
+TRAIN_ALL_LAYERS = False
 WEIGHTS_TO_USE = 'imagenet'
 LEARN_RATE = 0.0001
-ES_PATIENCE = 15
+ES_PATIENCE = 5
 RANDOMSEED = None
 MIN_DELTA = 0.005
 EARLY_MONITOR = 'val_accuracy'
-RESULTFOLDER = 'POLAR'
-BASELINE = 0.69
+DATANAME = 'POLAR'
+BASELINE = 0.6
 
 # Get dataset path
 DIR_PATH_HEAD_TAIL = os.path.split(os.path.dirname(os.path.realpath(__file__)))
@@ -105,6 +110,8 @@ def data_augmentation(x_aug, y_aug, label_count):
         for label, label_amount in enumerate(label_count):
             # Divided by 5 since 5 augmentations will be performed at a time
             amount_to_augment = int((goal_amount - label_amount)/5)
+            while amount_to_augment*NUM_CLASSES < 5:
+                amount_to_augment += 1
             print("amount to aug", amount_to_augment*NUM_CLASSES)
             print("class", label)
             tups_to_augment = random.choices(sorted_tup[label], k=amount_to_augment)
@@ -126,7 +133,7 @@ def data_augmentation(x_aug, y_aug, label_count):
                 for batch in datagen.flow(to_augment_x, to_augment_y, batch_size=1):
                     x_aug = np.append(x_aug[:], batch[0], axis=0)
                     y_aug = np.append(y_aug[:], batch[1], axis=0)
-                    print("{}/{}".format((len(x_aug) - x_org_len), amount_to_augment*NUM_CLASSES))
+                    # print("{}/{}".format((len(x_aug) - x_org_len), amount_to_augment*NUM_CLASSES))
                     i += 1
                     if i > 5:
                         break
@@ -177,13 +184,14 @@ def load_data(path, to_shuffle):
         print("augmentation of train set done")
         train_label_count = [0] * NUM_CLASSES
         for lab in y_train_load:
-            train_label_count[lab] += 1
+            train_label_count[int(lab)] += 1
         
-        (x_test_load, y_test_load) = data_augmentation(x_test_load, y_test_load, test_label_count)
-        print("augmentation test set done")
-        test_label_count = [0] * NUM_CLASSES
-        for lab in y_test_load:
-            test_label_count[lab] += 1
+        if AUGMENT_TESTSET:
+            (x_test_load, y_test_load) = data_augmentation(x_test_load, y_test_load, test_label_count)
+            print("augmentation test set done")
+            test_label_count = [0] * NUM_CLASSES
+            for lab in y_test_load:
+                test_label_count[int(lab)] += 1
 
     return (x_train_load, y_train_load), (x_test_load, y_test_load), train_label_count, test_label_count
 
@@ -225,7 +233,7 @@ def prepare_data():
     return(x_train, y_train, x_test, y_test, test_img_idx)
 
 
-def fit_model(x_train, y_train, log_dir, i, x_test, y_test):
+def fit_model(q, x_train, y_train, log_dir, i, x_test, y_test):
     # VGG16 since it does not include batch normalization of dropout by itself
     ensemble_model = VGG16(weights=WEIGHTS_TO_USE, include_top=False,
                        input_shape=(IMG_HEIGHT, IMG_WIDTH, IMG_DEPTH))
@@ -234,8 +242,8 @@ def fit_model(x_train, y_train, log_dir, i, x_test, y_test):
     # Stacking a new simple convolutional network on top of vgg16
     all_layers = [l for l in ensemble_model.layers]
     x = all_layers[0].output
-    for i in range(1, len(all_layers)):
-        x = all_layers[i](x)
+    for l in range(1, len(all_layers)):
+        x = all_layers[l](x)
 
     # Classification block
     x = Flatten(name='flatten')(x)
@@ -252,8 +260,8 @@ def fit_model(x_train, y_train, log_dir, i, x_test, y_test):
     else:
         for layer in ensemble_model.layers[:-6]:
             layer.trainable = False
-        for layer in ensemble_model.layers:
-            print(layer, layer.trainable)
+        # for layer in ensemble_model.layers:
+            # print(layer, layer.trainable)
 
     # ensemble_model.summary()
 
@@ -279,16 +287,19 @@ def fit_model(x_train, y_train, log_dir, i, x_test, y_test):
     early_stopping = tf.keras.callbacks.EarlyStopping(monitor=EARLY_MONITOR, min_delta = MIN_DELTA,
                                                     mode='max', verbose=1, patience=ES_PATIENCE,
                                                     baseline=BASELINE)
+    mc = tf.keras.callbacks.ModelCheckpoint('best_model.h5', monitor='val_loss', mode='min', save_best_only=True)
 
     ensemble_model.fit(train_generator,
                        epochs=EPOCHS,
                        verbose=2,
                        validation_data=val_generator,
-                       callbacks=[tensorboard_callback, early_stopping])
+                       callbacks=[tensorboard_callback, early_stopping, mc])
 
     # # save model and architecture to single file
     # ensemble_model.save("ensemble_model_{}.h5".format(i))
     # print("Saved ensemble_model to disk")
+    ensemble_model = load_model('best_model.h5')
+    os.remove('best_model.h5')
 
     # Save JSON config to disk
     json_config = ensemble_model.to_json()
@@ -301,11 +312,10 @@ def fit_model(x_train, y_train, log_dir, i, x_test, y_test):
 
     acc = accuracy_score(y_test.argmax(axis=1), ensemble_prediction.argmax(axis=1))
 
-    print("Highest acc of model in ensemble: {:.1%}".format(acc))
+    print("Acc of current model: {:.1%}".format(acc))
     # To save memory, clear memory and return something else
-    K.clear_session()
 
-    return ensemble_prediction
+    q.put(ensemble_prediction)
 
 
 def main():
@@ -316,17 +326,23 @@ def main():
     print("Start fitting ensemble models")
 
     # Dir to store created figures
-    fig_dir = os.path.join(os.getcwd(), RESULTFOLDER + os.path.sep + datetime.datetime.now().strftime('%Y-%m-%d_%H-%M-%S'))
+    fig_dir = os.path.join(os.getcwd(), DATANAME + os.path.sep + datetime.datetime.now().strftime('%Y-%m-%d_%H-%M-%S'))
     os.makedirs(fig_dir)
     # Dir to store Tensorboard data
     log_dir = os.path.join(fig_dir, "logs/fit/" + datetime.datetime.now().strftime("%Y%m%d-%H%M%S"))
     os.makedirs(log_dir)
 
     os.chdir(fig_dir)
-
+    
     ensemble_predictions = []
-    for i in range(N_ENSEMBLE_MEMBERS):
-        ensemble_predictions.append(fit_model(x_train, y_train, log_dir, i, x_test, y_test))
+    for i in range(0, N_ENSEMBLE_MEMBERS):
+        q = Queue()
+        p = Process(target=fit_model, args=(q, x_train, y_train, log_dir, i, x_test, y_test))
+        p.start()
+        result = q.get()
+        p.join() # this blocks until the process terminates
+        
+        ensemble_predictions.append(result)
 
     # ensemble_predictions = [model.predict(x_test, batch_size=TEST_BATCH_SIZE) for model in ensemble]
     # ensemble_predictions = array(ensemble_predictions)
@@ -343,7 +359,10 @@ def main():
     print("Mean ensemble accuracy: {:.1%}".format(ensemble_acc))
 
     dir_path_head_tail = os.path.split(os.path.dirname(os.getcwd()))
-    new_path = dir_path_head_tail[0] + os.path.sep + RESULTFOLDER + os.path.sep + datetime.datetime.now().strftime('%Y-%m-%d_%H-%M') + '_' + WEIGHTS_TO_USE + '_' + str(BATCH_SIZE) + 'B' + '_{:.1%}A'.format(ensemble_acc)
+    if WEIGHTS_TO_USE != None:
+        new_path = dir_path_head_tail[0] + os.path.sep + DATANAME + os.path.sep + datetime.datetime.now().strftime('%Y-%m-%d_%H-%M') + '_' + WEIGHTS_TO_USE + '_' + str(BATCH_SIZE) + 'B' + '_{:.1%}A'.format(ensemble_acc)
+    else:
+        new_path = dir_path_head_tail[0] + os.path.sep + DATANAME + os.path.sep + datetime.datetime.now().strftime('%Y-%m-%d_%H-%M') + '_' + str(BATCH_SIZE) + 'B' + '_{:.1%}A'.format(ensemble_acc)
     os.rename(fig_dir, new_path)
 
     confusion = tf.math.confusion_matrix(labels=y_test.argmax(axis=1), predictions=ensemble_pred,

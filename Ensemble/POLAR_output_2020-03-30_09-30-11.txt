@@ -1,0 +1,736 @@
+Random seed for replication: 912
+Random seed for replication: 777
+goal amount 144
+amount to aug 60
+class 0
+amount to aug 72
+class 1
+amount to aug 12
+class 2
+Augmenting normalization finished after 11.246569633483887 seconds
+label count after norm: [162, 166, 144]
+augmentation of train set done
+dataset_name = /Polar_PNG_256.hdf5, batch_size = 16, num_classes = 3, epochs = 500,
+          test_img_idx = 40, train_test_split = 0.8, to_shuffle = True,
+          augmentation = True, label_normalizer = True, train_label_count = [162, 166, 144], test_label_count = [14, 7, 33],
+          save_augmentation_to_hdf5 = False, learn rate = 0.0001, train_all_layers = False,
+          weights_to_use = imagenet, es_patience = 5, train_val_split = 0.9,
+          N_ENSEMBLE_MEMBERS = 40, MIN_DELTA = 0.005, Early_monitor = val_accuracy
+x_train shape: (472, 256, 256, 3)
+472 train samples
+54 test samples
+Start fitting ensemble models
+Train for 27 steps, validate for 3 steps
+Epoch 1/500
+27/27 - 8s - loss: 1.6115 - accuracy: 0.4646 - val_loss: 0.7430 - val_accuracy: 0.7708
+Epoch 2/500
+27/27 - 4s - loss: 0.4170 - accuracy: 0.8467 - val_loss: 1.4089 - val_accuracy: 0.5000
+Epoch 3/500
+27/27 - 4s - loss: 0.0961 - accuracy: 0.9764 - val_loss: 3.1503 - val_accuracy: 0.5000
+Epoch 4/500
+27/27 - 4s - loss: 0.0323 - accuracy: 0.9929 - val_loss: 1.8605 - val_accuracy: 0.5625
+Epoch 5/500
+27/27 - 4s - loss: 0.0049 - accuracy: 1.0000 - val_loss: 2.1846 - val_accuracy: 0.5625
+Epoch 6/500
+27/27 - 4s - loss: 0.0020 - accuracy: 1.0000 - val_loss: 2.3109 - val_accuracy: 0.5625
+Epoch 00006: early stopping
+Acc of current model: 61.1%
+Train for 27 steps, validate for 3 steps
+Epoch 1/500
+27/27 - 9s - loss: 1.7559 - accuracy: 0.4292 - val_loss: 1.0992 - val_accuracy: 0.3542
+Epoch 2/500
+27/27 - 4s - loss: 0.4324 - accuracy: 0.8420 - val_loss: 1.7570 - val_accuracy: 0.3958
+Epoch 3/500
+27/27 - 4s - loss: 0.1071 - accuracy: 0.9670 - val_loss: 1.8732 - val_accuracy: 0.5208
+Epoch 4/500
+27/27 - 4s - loss: 0.0349 - accuracy: 0.9953 - val_loss: 2.7317 - val_accuracy: 0.3542
+Epoch 5/500
+27/27 - 4s - loss: 0.0135 - accuracy: 0.9976 - val_loss: 3.2439 - val_accuracy: 0.4583
+Epoch 00005: early stopping
+Acc of current model: 61.1%
+Train for 27 steps, validate for 3 steps
+Epoch 1/500
+27/27 - 8s - loss: 1.4438 - accuracy: 0.5024 - val_loss: 1.1935 - val_accuracy: 0.4375
+Epoch 2/500
+27/27 - 4s - loss: 0.2669 - accuracy: 0.9245 - val_loss: 2.3679 - val_accuracy: 0.3958
+Epoch 3/500
+27/27 - 4s - loss: 0.0590 - accuracy: 0.9882 - val_loss: 1.9635 - val_accuracy: 0.5208
+Epoch 4/500
+27/27 - 4s - loss: 0.0394 - accuracy: 0.9882 - val_loss: 3.5564 - val_accuracy: 0.4583
+Epoch 5/500
+27/27 - 4s - loss: 0.0061 - accuracy: 1.0000 - val_loss: 2.2199 - val_accuracy: 0.5625
+Epoch 00005: early stopping
+Acc of current model: 61.1%
+Train for 27 steps, validate for 3 steps
+Epoch 1/500
+27/27 - 8s - loss: 1.4371 - accuracy: 0.5425 - val_loss: 1.6430 - val_accuracy: 0.2917
+Epoch 2/500
+27/27 - 4s - loss: 0.4471 - accuracy: 0.8420 - val_loss: 1.8268 - val_accuracy: 0.4792
+Epoch 3/500
+27/27 - 4s - loss: 0.1120 - accuracy: 0.9670 - val_loss: 2.3822 - val_accuracy: 0.5000
+Epoch 4/500
+27/27 - 4s - loss: 0.0249 - accuracy: 0.9976 - val_loss: 1.6670 - val_accuracy: 0.5833
+Epoch 5/500
+27/27 - 4s - loss: 0.0110 - accuracy: 0.9976 - val_loss: 2.6628 - val_accuracy: 0.5208
+Epoch 00005: early stopping
+Acc of current model: 61.1%
+Train for 27 steps, validate for 3 steps
+Epoch 1/500
+27/27 - 9s - loss: 1.6085 - accuracy: 0.5024 - val_loss: 1.2412 - val_accuracy: 0.3542
+Epoch 2/500
+27/27 - 4s - loss: 0.3567 - accuracy: 0.8750 - val_loss: 2.0187 - val_accuracy: 0.3958
+Epoch 3/500
+27/27 - 4s - loss: 0.1029 - accuracy: 0.9670 - val_loss: 1.9355 - val_accuracy: 0.5208
+Epoch 4/500
+27/27 - 4s - loss: 0.0303 - accuracy: 0.9929 - val_loss: 1.2798 - val_accuracy: 0.6250
+Epoch 5/500
+27/27 - 4s - loss: 0.0046 - accuracy: 1.0000 - val_loss: 2.1156 - val_accuracy: 0.5833
+Epoch 6/500
+27/27 - 4s - loss: 0.0011 - accuracy: 1.0000 - val_loss: 2.4482 - val_accuracy: 0.5833
+Epoch 7/500
+27/27 - 4s - loss: 4.9464e-04 - accuracy: 1.0000 - val_loss: 2.3600 - val_accuracy: 0.6042
+Epoch 8/500
+27/27 - 4s - loss: 3.1450e-04 - accuracy: 1.0000 - val_loss: 2.3068 - val_accuracy: 0.6250
+Epoch 9/500
+27/27 - 4s - loss: 2.0685e-04 - accuracy: 1.0000 - val_loss: 2.5203 - val_accuracy: 0.6042
+Epoch 00009: early stopping
+Acc of current model: 61.1%
+Train for 27 steps, validate for 3 steps
+Epoch 1/500
+27/27 - 10s - loss: 1.4492 - accuracy: 0.5448 - val_loss: 0.9454 - val_accuracy: 0.5208
+Epoch 2/500
+27/27 - 14s - loss: 0.3246 - accuracy: 0.8939 - val_loss: 0.6618 - val_accuracy: 0.6458
+Epoch 3/500
+27/27 - 4s - loss: 0.1313 - accuracy: 0.9693 - val_loss: 1.4601 - val_accuracy: 0.5000
+Epoch 4/500
+27/27 - 4s - loss: 0.0185 - accuracy: 0.9953 - val_loss: 2.4463 - val_accuracy: 0.5208
+Epoch 5/500
+27/27 - 4s - loss: 0.0061 - accuracy: 1.0000 - val_loss: 2.7549 - val_accuracy: 0.5208
+Epoch 6/500
+27/27 - 4s - loss: 0.0015 - accuracy: 1.0000 - val_loss: 2.2698 - val_accuracy: 0.5625
+Epoch 7/500
+27/27 - 4s - loss: 5.5090e-04 - accuracy: 1.0000 - val_loss: 2.1384 - val_accuracy: 0.5833
+Epoch 00007: early stopping
+Acc of current model: 61.1%
+Train for 27 steps, validate for 3 steps
+Epoch 1/500
+27/27 - 9s - loss: 1.4329 - accuracy: 0.5825 - val_loss: 0.9111 - val_accuracy: 0.5625
+Epoch 2/500
+27/27 - 15s - loss: 0.3049 - accuracy: 0.8892 - val_loss: 0.7703 - val_accuracy: 0.6875
+Epoch 3/500
+27/27 - 4s - loss: 0.0760 - accuracy: 0.9741 - val_loss: 1.2579 - val_accuracy: 0.5833
+Epoch 4/500
+27/27 - 4s - loss: 0.0563 - accuracy: 0.9741 - val_loss: 2.6754 - val_accuracy: 0.2917
+Epoch 5/500
+27/27 - 4s - loss: 0.0270 - accuracy: 0.9976 - val_loss: 2.5768 - val_accuracy: 0.4583
+Epoch 6/500
+27/27 - 4s - loss: 0.0033 - accuracy: 1.0000 - val_loss: 1.7171 - val_accuracy: 0.6042
+Epoch 7/500
+27/27 - 4s - loss: 8.4970e-04 - accuracy: 1.0000 - val_loss: 1.9382 - val_accuracy: 0.6042
+Epoch 00007: early stopping
+Acc of current model: 61.1%
+Train for 27 steps, validate for 3 steps
+Epoch 1/500
+27/27 - 9s - loss: 1.1132 - accuracy: 0.6627 - val_loss: 1.0216 - val_accuracy: 0.5417
+Epoch 2/500
+27/27 - 15s - loss: 0.2101 - accuracy: 0.9245 - val_loss: 0.6547 - val_accuracy: 0.7917
+Epoch 3/500
+27/27 - 4s - loss: 0.0588 - accuracy: 0.9858 - val_loss: 1.3442 - val_accuracy: 0.6667
+Epoch 4/500
+27/27 - 4s - loss: 0.0241 - accuracy: 0.9953 - val_loss: 1.8995 - val_accuracy: 0.5625
+Epoch 5/500
+27/27 - 4s - loss: 0.0029 - accuracy: 1.0000 - val_loss: 1.6778 - val_accuracy: 0.5625
+Epoch 6/500
+27/27 - 4s - loss: 8.8795e-04 - accuracy: 1.0000 - val_loss: 2.2037 - val_accuracy: 0.5625
+Epoch 7/500
+27/27 - 4s - loss: 4.0283e-04 - accuracy: 1.0000 - val_loss: 1.7987 - val_accuracy: 0.6042
+Epoch 00007: early stopping
+Acc of current model: 61.1%
+Train for 27 steps, validate for 3 steps
+Epoch 1/500
+27/27 - 9s - loss: 1.3156 - accuracy: 0.5708 - val_loss: 1.4817 - val_accuracy: 0.2917
+Epoch 2/500
+27/27 - 4s - loss: 0.3041 - accuracy: 0.8892 - val_loss: 1.5692 - val_accuracy: 0.4792
+Epoch 3/500
+27/27 - 14s - loss: 0.0510 - accuracy: 0.9906 - val_loss: 1.1252 - val_accuracy: 0.6667
+Epoch 4/500
+27/27 - 4s - loss: 0.0124 - accuracy: 0.9976 - val_loss: 2.7061 - val_accuracy: 0.5417
+Epoch 5/500
+27/27 - 4s - loss: 0.0021 - accuracy: 1.0000 - val_loss: 2.4571 - val_accuracy: 0.5625
+Epoch 6/500
+27/27 - 4s - loss: 7.2965e-04 - accuracy: 1.0000 - val_loss: 2.2211 - val_accuracy: 0.5833
+Epoch 7/500
+27/27 - 4s - loss: 3.7980e-04 - accuracy: 1.0000 - val_loss: 2.2421 - val_accuracy: 0.6042
+Epoch 8/500
+27/27 - 4s - loss: 2.7492e-04 - accuracy: 1.0000 - val_loss: 2.4400 - val_accuracy: 0.5833
+Epoch 00008: early stopping
+Acc of current model: 61.1%
+Train for 27 steps, validate for 3 steps
+Epoch 1/500
+27/27 - 9s - loss: 1.7124 - accuracy: 0.4929 - val_loss: 0.7131 - val_accuracy: 0.6667
+Epoch 2/500
+27/27 - 4s - loss: 0.3979 - accuracy: 0.8608 - val_loss: 1.6487 - val_accuracy: 0.3542
+Epoch 3/500
+27/27 - 4s - loss: 0.0948 - accuracy: 0.9764 - val_loss: 2.5950 - val_accuracy: 0.4375
+Epoch 4/500
+27/27 - 4s - loss: 0.0214 - accuracy: 0.9929 - val_loss: 2.2731 - val_accuracy: 0.5208
+Epoch 5/500
+27/27 - 4s - loss: 0.0064 - accuracy: 1.0000 - val_loss: 1.4125 - val_accuracy: 0.6458
+Epoch 6/500
+27/27 - 4s - loss: 0.0016 - accuracy: 1.0000 - val_loss: 2.3976 - val_accuracy: 0.5000
+Epoch 00006: early stopping
+Acc of current model: 61.1%
+Train for 27 steps, validate for 3 steps
+Epoch 1/500
+27/27 - 10s - loss: 0.9425 - accuracy: 0.6439 - val_loss: 1.1602 - val_accuracy: 0.4792
+Epoch 2/500
+27/27 - 4s - loss: 0.2290 - accuracy: 0.9245 - val_loss: 1.3245 - val_accuracy: 0.5625
+Epoch 3/500
+27/27 - 4s - loss: 0.0511 - accuracy: 0.9906 - val_loss: 1.2243 - val_accuracy: 0.6667
+Epoch 4/500
+27/27 - 4s - loss: 0.0326 - accuracy: 0.9858 - val_loss: 1.7816 - val_accuracy: 0.5833
+Epoch 5/500
+27/27 - 4s - loss: 0.0145 - accuracy: 0.9953 - val_loss: 3.0539 - val_accuracy: 0.5625
+Epoch 6/500
+27/27 - 4s - loss: 0.0049 - accuracy: 1.0000 - val_loss: 2.5842 - val_accuracy: 0.5625
+Epoch 7/500
+27/27 - 4s - loss: 8.1798e-04 - accuracy: 1.0000 - val_loss: 2.9563 - val_accuracy: 0.5417
+Epoch 8/500
+27/27 - 4s - loss: 2.7206e-04 - accuracy: 1.0000 - val_loss: 2.8349 - val_accuracy: 0.5625
+Epoch 00008: early stopping
+Acc of current model: 61.1%
+Train for 27 steps, validate for 3 steps
+Epoch 1/500
+27/27 - 9s - loss: 1.4536 - accuracy: 0.4929 - val_loss: 0.8932 - val_accuracy: 0.5833
+Epoch 2/500
+27/27 - 4s - loss: 0.3493 - accuracy: 0.8656 - val_loss: 1.9009 - val_accuracy: 0.4583
+Epoch 3/500
+27/27 - 4s - loss: 0.0598 - accuracy: 0.9811 - val_loss: 1.4771 - val_accuracy: 0.6042
+Epoch 4/500
+27/27 - 4s - loss: 0.0120 - accuracy: 0.9976 - val_loss: 1.8026 - val_accuracy: 0.5625
+Epoch 5/500
+27/27 - 4s - loss: 0.0030 - accuracy: 1.0000 - val_loss: 1.9082 - val_accuracy: 0.6042
+Epoch 00005: early stopping
+Acc of current model: 64.8%
+Train for 27 steps, validate for 3 steps
+Epoch 1/500
+27/27 - 10s - loss: 1.4578 - accuracy: 0.5142 - val_loss: 1.1213 - val_accuracy: 0.5208
+Epoch 2/500
+27/27 - 4s - loss: 0.3414 - accuracy: 0.8608 - val_loss: 1.1522 - val_accuracy: 0.6042
+Epoch 3/500
+27/27 - 14s - loss: 0.0662 - accuracy: 0.9858 - val_loss: 0.7112 - val_accuracy: 0.7708
+Epoch 4/500
+27/27 - 4s - loss: 0.0195 - accuracy: 0.9953 - val_loss: 2.0100 - val_accuracy: 0.5000
+Epoch 5/500
+27/27 - 4s - loss: 0.0026 - accuracy: 1.0000 - val_loss: 2.6975 - val_accuracy: 0.4792
+Epoch 6/500
+27/27 - 4s - loss: 8.3290e-04 - accuracy: 1.0000 - val_loss: 2.6193 - val_accuracy: 0.5417
+Epoch 7/500
+27/27 - 4s - loss: 4.2032e-04 - accuracy: 1.0000 - val_loss: 2.5696 - val_accuracy: 0.5417
+Epoch 8/500
+27/27 - 4s - loss: 2.5917e-04 - accuracy: 1.0000 - val_loss: 2.7097 - val_accuracy: 0.5417
+Epoch 00008: early stopping
+Acc of current model: 61.1%
+Train for 27 steps, validate for 3 steps
+Epoch 1/500
+27/27 - 9s - loss: 1.4918 - accuracy: 0.5189 - val_loss: 1.3650 - val_accuracy: 0.4375
+Epoch 2/500
+27/27 - 4s - loss: 0.2778 - accuracy: 0.9080 - val_loss: 3.1554 - val_accuracy: 0.2708
+Epoch 3/500
+27/27 - 14s - loss: 0.0943 - accuracy: 0.9575 - val_loss: 1.2602 - val_accuracy: 0.6458
+Epoch 4/500
+27/27 - 4s - loss: 0.0134 - accuracy: 1.0000 - val_loss: 1.5793 - val_accuracy: 0.5833
+Epoch 5/500
+27/27 - 4s - loss: 0.0025 - accuracy: 1.0000 - val_loss: 1.9356 - val_accuracy: 0.5625
+Epoch 6/500
+27/27 - 4s - loss: 9.4823e-04 - accuracy: 1.0000 - val_loss: 2.5798 - val_accuracy: 0.5208
+Epoch 7/500
+27/27 - 4s - loss: 5.1482e-04 - accuracy: 1.0000 - val_loss: 2.5525 - val_accuracy: 0.5208
+Epoch 8/500
+27/27 - 4s - loss: 3.0756e-04 - accuracy: 1.0000 - val_loss: 2.5498 - val_accuracy: 0.5208
+Epoch 00008: early stopping
+Acc of current model: 61.1%
+Train for 27 steps, validate for 3 steps
+Epoch 1/500
+27/27 - 10s - loss: 1.5237 - accuracy: 0.4623 - val_loss: 0.9375 - val_accuracy: 0.5000
+Epoch 2/500
+27/27 - 4s - loss: 0.3605 - accuracy: 0.8703 - val_loss: 1.6901 - val_accuracy: 0.5000
+Epoch 3/500
+27/27 - 4s - loss: 0.0989 - accuracy: 0.9693 - val_loss: 1.4449 - val_accuracy: 0.5417
+Epoch 4/500
+27/27 - 4s - loss: 0.0223 - accuracy: 0.9953 - val_loss: 1.2125 - val_accuracy: 0.6667
+Epoch 5/500
+27/27 - 4s - loss: 0.0051 - accuracy: 1.0000 - val_loss: 1.9065 - val_accuracy: 0.5833
+Epoch 6/500
+27/27 - 4s - loss: 0.0010 - accuracy: 1.0000 - val_loss: 2.3249 - val_accuracy: 0.5625
+Epoch 7/500
+27/27 - 4s - loss: 4.5097e-04 - accuracy: 1.0000 - val_loss: 2.1049 - val_accuracy: 0.6042
+Epoch 8/500
+27/27 - 4s - loss: 2.7661e-04 - accuracy: 1.0000 - val_loss: 2.2485 - val_accuracy: 0.6042
+Epoch 9/500
+27/27 - 4s - loss: 1.9660e-04 - accuracy: 1.0000 - val_loss: 2.3559 - val_accuracy: 0.5833
+Epoch 00009: early stopping
+Acc of current model: 61.1%
+Train for 27 steps, validate for 3 steps
+Epoch 1/500
+27/27 - 9s - loss: 1.6973 - accuracy: 0.4599 - val_loss: 1.2591 - val_accuracy: 0.3750
+Epoch 2/500
+27/27 - 13s - loss: 0.4640 - accuracy: 0.8255 - val_loss: 1.0727 - val_accuracy: 0.5208
+Epoch 3/500
+27/27 - 4s - loss: 0.1290 - accuracy: 0.9552 - val_loss: 1.1401 - val_accuracy: 0.6458
+Epoch 4/500
+27/27 - 13s - loss: 0.0421 - accuracy: 0.9858 - val_loss: 0.9246 - val_accuracy: 0.7292
+Epoch 5/500
+27/27 - 4s - loss: 0.0140 - accuracy: 0.9953 - val_loss: 2.8285 - val_accuracy: 0.5000
+Epoch 6/500
+27/27 - 4s - loss: 0.0026 - accuracy: 1.0000 - val_loss: 2.5081 - val_accuracy: 0.5000
+Epoch 7/500
+27/27 - 4s - loss: 8.2663e-04 - accuracy: 1.0000 - val_loss: 1.9258 - val_accuracy: 0.5833
+Epoch 8/500
+27/27 - 4s - loss: 4.4405e-04 - accuracy: 1.0000 - val_loss: 2.4438 - val_accuracy: 0.5417
+Epoch 9/500
+27/27 - 4s - loss: 2.6619e-04 - accuracy: 1.0000 - val_loss: 2.2236 - val_accuracy: 0.5833
+Epoch 00009: early stopping
+Acc of current model: 61.1%
+Train for 27 steps, validate for 3 steps
+Epoch 1/500
+27/27 - 9s - loss: 1.5806 - accuracy: 0.4670 - val_loss: 1.3640 - val_accuracy: 0.2917
+Epoch 2/500
+27/27 - 4s - loss: 0.4127 - accuracy: 0.8656 - val_loss: 1.7447 - val_accuracy: 0.4792
+Epoch 3/500
+27/27 - 4s - loss: 0.1109 - accuracy: 0.9717 - val_loss: 3.4072 - val_accuracy: 0.5000
+Epoch 4/500
+27/27 - 4s - loss: 0.0274 - accuracy: 0.9929 - val_loss: 2.1292 - val_accuracy: 0.5208
+Epoch 5/500
+27/27 - 4s - loss: 0.0071 - accuracy: 1.0000 - val_loss: 3.0751 - val_accuracy: 0.5000
+Epoch 00005: early stopping
+Acc of current model: 61.1%
+Train for 27 steps, validate for 3 steps
+Epoch 1/500
+27/27 - 9s - loss: 1.5069 - accuracy: 0.5542 - val_loss: 1.3506 - val_accuracy: 0.3125
+Epoch 2/500
+27/27 - 4s - loss: 0.3422 - accuracy: 0.8679 - val_loss: 1.6184 - val_accuracy: 0.4792
+Epoch 3/500
+27/27 - 4s - loss: 0.0729 - accuracy: 0.9788 - val_loss: 1.6652 - val_accuracy: 0.5417
+Epoch 4/500
+27/27 - 4s - loss: 0.0120 - accuracy: 0.9976 - val_loss: 2.0293 - val_accuracy: 0.5000
+Epoch 5/500
+27/27 - 4s - loss: 0.0026 - accuracy: 1.0000 - val_loss: 1.7203 - val_accuracy: 0.5417
+Epoch 00005: early stopping
+Acc of current model: 61.1%
+Train for 27 steps, validate for 3 steps
+Epoch 1/500
+27/27 - 9s - loss: 1.4384 - accuracy: 0.5094 - val_loss: 1.1266 - val_accuracy: 0.4583
+Epoch 2/500
+27/27 - 4s - loss: 0.3207 - accuracy: 0.8939 - val_loss: 1.6553 - val_accuracy: 0.5000
+Epoch 3/500
+27/27 - 4s - loss: 0.0766 - accuracy: 0.9811 - val_loss: 2.7814 - val_accuracy: 0.4375
+Epoch 4/500
+27/27 - 4s - loss: 0.0258 - accuracy: 0.9929 - val_loss: 1.9741 - val_accuracy: 0.5417
+Epoch 5/500
+27/27 - 4s - loss: 0.0195 - accuracy: 0.9953 - val_loss: 1.4911 - val_accuracy: 0.6250
+Epoch 6/500
+27/27 - 4s - loss: 0.0045 - accuracy: 1.0000 - val_loss: 1.1655 - val_accuracy: 0.6875
+Epoch 7/500
+27/27 - 4s - loss: 0.0011 - accuracy: 1.0000 - val_loss: 2.2957 - val_accuracy: 0.5833
+Epoch 8/500
+27/27 - 4s - loss: 3.6589e-04 - accuracy: 1.0000 - val_loss: 2.2362 - val_accuracy: 0.5833
+Epoch 9/500
+27/27 - 4s - loss: 2.3190e-04 - accuracy: 1.0000 - val_loss: 2.1761 - val_accuracy: 0.5833
+Epoch 10/500
+27/27 - 4s - loss: 1.7548e-04 - accuracy: 1.0000 - val_loss: 2.2458 - val_accuracy: 0.5833
+Epoch 11/500
+27/27 - 4s - loss: 1.3516e-04 - accuracy: 1.0000 - val_loss: 2.2709 - val_accuracy: 0.5833
+Epoch 00011: early stopping
+Acc of current model: 63.0%
+Train for 27 steps, validate for 3 steps
+Epoch 1/500
+27/27 - 10s - loss: 1.3345 - accuracy: 0.5637 - val_loss: 0.8683 - val_accuracy: 0.5417
+Epoch 2/500
+27/27 - 4s - loss: 0.2769 - accuracy: 0.9175 - val_loss: 2.4737 - val_accuracy: 0.4167
+Epoch 3/500
+27/27 - 4s - loss: 0.0785 - accuracy: 0.9788 - val_loss: 2.5441 - val_accuracy: 0.4583
+Epoch 4/500
+27/27 - 4s - loss: 0.0194 - accuracy: 0.9953 - val_loss: 1.0594 - val_accuracy: 0.7292
+Epoch 5/500
+27/27 - 4s - loss: 0.0072 - accuracy: 1.0000 - val_loss: 1.2819 - val_accuracy: 0.6875
+Epoch 6/500
+27/27 - 4s - loss: 0.0019 - accuracy: 1.0000 - val_loss: 3.7148 - val_accuracy: 0.5208
+Epoch 7/500
+27/27 - 4s - loss: 5.6728e-04 - accuracy: 1.0000 - val_loss: 2.2957 - val_accuracy: 0.5625
+Epoch 8/500
+27/27 - 4s - loss: 2.9391e-04 - accuracy: 1.0000 - val_loss: 2.6884 - val_accuracy: 0.5625
+Epoch 9/500
+27/27 - 4s - loss: 1.9371e-04 - accuracy: 1.0000 - val_loss: 2.6885 - val_accuracy: 0.5833
+Epoch 00009: early stopping
+Acc of current model: 61.1%
+Train for 27 steps, validate for 3 steps
+Epoch 1/500
+27/27 - 9s - loss: 1.4170 - accuracy: 0.5189 - val_loss: 0.8130 - val_accuracy: 0.6042
+Epoch 2/500
+27/27 - 4s - loss: 0.3652 - accuracy: 0.8774 - val_loss: 1.5336 - val_accuracy: 0.5208
+Epoch 3/500
+27/27 - 4s - loss: 0.1053 - accuracy: 0.9646 - val_loss: 2.0885 - val_accuracy: 0.4792
+Epoch 4/500
+27/27 - 4s - loss: 0.0665 - accuracy: 0.9741 - val_loss: 2.7886 - val_accuracy: 0.5000
+Epoch 5/500
+27/27 - 4s - loss: 0.0450 - accuracy: 0.9811 - val_loss: 1.1264 - val_accuracy: 0.6250
+Epoch 6/500
+27/27 - 4s - loss: 0.0056 - accuracy: 1.0000 - val_loss: 1.5586 - val_accuracy: 0.6042
+Epoch 7/500
+27/27 - 4s - loss: 0.0013 - accuracy: 1.0000 - val_loss: 1.9742 - val_accuracy: 0.5833
+Epoch 8/500
+27/27 - 4s - loss: 7.4467e-04 - accuracy: 1.0000 - val_loss: 2.0057 - val_accuracy: 0.5833
+Epoch 9/500
+27/27 - 4s - loss: 4.0229e-04 - accuracy: 1.0000 - val_loss: 2.1230 - val_accuracy: 0.5833
+Epoch 10/500
+27/27 - 4s - loss: 2.6169e-04 - accuracy: 1.0000 - val_loss: 2.1375 - val_accuracy: 0.5833
+Epoch 00010: early stopping
+Acc of current model: 61.1%
+Train for 27 steps, validate for 3 steps
+Epoch 1/500
+27/27 - 9s - loss: 1.3933 - accuracy: 0.5307 - val_loss: 1.6905 - val_accuracy: 0.2708
+Epoch 2/500
+27/27 - 15s - loss: 0.3674 - accuracy: 0.8821 - val_loss: 1.4666 - val_accuracy: 0.4583
+Epoch 3/500
+27/27 - 14s - loss: 0.0878 - accuracy: 0.9811 - val_loss: 1.0061 - val_accuracy: 0.7083
+Epoch 4/500
+27/27 - 4s - loss: 0.0162 - accuracy: 0.9976 - val_loss: 2.7970 - val_accuracy: 0.4792
+Epoch 5/500
+27/27 - 4s - loss: 0.0035 - accuracy: 1.0000 - val_loss: 1.8862 - val_accuracy: 0.5417
+Epoch 6/500
+27/27 - 4s - loss: 9.9390e-04 - accuracy: 1.0000 - val_loss: 1.8161 - val_accuracy: 0.5833
+Epoch 7/500
+27/27 - 4s - loss: 4.6461e-04 - accuracy: 1.0000 - val_loss: 2.6266 - val_accuracy: 0.5208
+Epoch 8/500
+27/27 - 4s - loss: 2.6368e-04 - accuracy: 1.0000 - val_loss: 2.1995 - val_accuracy: 0.5833
+Epoch 00008: early stopping
+Acc of current model: 61.1%
+Train for 27 steps, validate for 3 steps
+Epoch 1/500
+27/27 - 10s - loss: 1.3669 - accuracy: 0.5448 - val_loss: 1.6136 - val_accuracy: 0.4583
+Epoch 2/500
+27/27 - 4s - loss: 0.3563 - accuracy: 0.8868 - val_loss: 1.8081 - val_accuracy: 0.5417
+Epoch 3/500
+27/27 - 4s - loss: 0.0729 - accuracy: 0.9788 - val_loss: 2.4305 - val_accuracy: 0.5000
+Epoch 4/500
+27/27 - 4s - loss: 0.0262 - accuracy: 0.9929 - val_loss: 2.1128 - val_accuracy: 0.5625
+Epoch 5/500
+27/27 - 4s - loss: 0.0044 - accuracy: 1.0000 - val_loss: 2.3398 - val_accuracy: 0.5417
+Epoch 00005: early stopping
+Acc of current model: 59.3%
+Train for 27 steps, validate for 3 steps
+Epoch 1/500
+27/27 - 9s - loss: 1.5064 - accuracy: 0.5142 - val_loss: 1.3304 - val_accuracy: 0.4792
+Epoch 2/500
+27/27 - 4s - loss: 0.2833 - accuracy: 0.9080 - val_loss: 1.8347 - val_accuracy: 0.5000
+Epoch 3/500
+27/27 - 4s - loss: 0.0523 - accuracy: 0.9882 - val_loss: 2.4732 - val_accuracy: 0.5208
+Epoch 4/500
+27/27 - 4s - loss: 0.0743 - accuracy: 0.9788 - val_loss: 1.3788 - val_accuracy: 0.7083
+Epoch 5/500
+27/27 - 4s - loss: 0.0210 - accuracy: 0.9953 - val_loss: 2.5761 - val_accuracy: 0.5417
+Epoch 6/500
+27/27 - 4s - loss: 0.0054 - accuracy: 1.0000 - val_loss: 1.6939 - val_accuracy: 0.6875
+Epoch 7/500
+27/27 - 4s - loss: 5.5742e-04 - accuracy: 1.0000 - val_loss: 1.7781 - val_accuracy: 0.7083
+Epoch 8/500
+27/27 - 4s - loss: 2.7993e-04 - accuracy: 1.0000 - val_loss: 1.7654 - val_accuracy: 0.7083
+Epoch 9/500
+27/27 - 4s - loss: 1.9565e-04 - accuracy: 1.0000 - val_loss: 1.7401 - val_accuracy: 0.7083
+Epoch 00009: early stopping
+Acc of current model: 61.1%
+Train for 27 steps, validate for 3 steps
+Epoch 1/500
+27/27 - 10s - loss: 1.3112 - accuracy: 0.5684 - val_loss: 0.7087 - val_accuracy: 0.6875
+Epoch 2/500
+27/27 - 4s - loss: 0.3022 - accuracy: 0.8774 - val_loss: 1.0150 - val_accuracy: 0.6458
+Epoch 3/500
+27/27 - 4s - loss: 0.0974 - accuracy: 0.9693 - val_loss: 2.5768 - val_accuracy: 0.5000
+Epoch 4/500
+27/27 - 4s - loss: 0.0266 - accuracy: 0.9906 - val_loss: 2.9150 - val_accuracy: 0.5000
+Epoch 5/500
+27/27 - 4s - loss: 0.0065 - accuracy: 1.0000 - val_loss: 1.7582 - val_accuracy: 0.5833
+Epoch 6/500
+27/27 - 4s - loss: 0.0015 - accuracy: 1.0000 - val_loss: 2.3410 - val_accuracy: 0.5208
+Epoch 00006: early stopping
+Acc of current model: 61.1%
+Train for 27 steps, validate for 3 steps
+Epoch 1/500
+27/27 - 10s - loss: 1.4766 - accuracy: 0.4929 - val_loss: 1.2655 - val_accuracy: 0.3333
+Epoch 2/500
+27/27 - 4s - loss: 0.3030 - accuracy: 0.9009 - val_loss: 1.3609 - val_accuracy: 0.5208
+Epoch 3/500
+27/27 - 4s - loss: 0.0842 - accuracy: 0.9693 - val_loss: 2.5677 - val_accuracy: 0.3958
+Epoch 4/500
+27/27 - 4s - loss: 0.0169 - accuracy: 0.9976 - val_loss: 1.3462 - val_accuracy: 0.6667
+Epoch 5/500
+27/27 - 4s - loss: 0.0032 - accuracy: 1.0000 - val_loss: 1.3264 - val_accuracy: 0.6667
+Epoch 6/500
+27/27 - 4s - loss: 9.8640e-04 - accuracy: 1.0000 - val_loss: 2.4649 - val_accuracy: 0.5625
+Epoch 7/500
+27/27 - 4s - loss: 4.5459e-04 - accuracy: 1.0000 - val_loss: 2.2717 - val_accuracy: 0.5625
+Epoch 8/500
+27/27 - 4s - loss: 2.7608e-04 - accuracy: 1.0000 - val_loss: 2.2559 - val_accuracy: 0.5625
+Epoch 9/500
+27/27 - 4s - loss: 1.9336e-04 - accuracy: 1.0000 - val_loss: 2.3465 - val_accuracy: 0.5625
+Epoch 00009: early stopping
+Acc of current model: 59.3%
+Train for 27 steps, validate for 3 steps
+Epoch 1/500
+27/27 - 10s - loss: 1.2642 - accuracy: 0.5708 - val_loss: 0.9261 - val_accuracy: 0.5417
+Epoch 2/500
+27/27 - 4s - loss: 0.3121 - accuracy: 0.8939 - val_loss: 1.1948 - val_accuracy: 0.5208
+Epoch 3/500
+27/27 - 4s - loss: 0.0591 - accuracy: 0.9906 - val_loss: 1.2875 - val_accuracy: 0.6250
+Epoch 4/500
+27/27 - 4s - loss: 0.0157 - accuracy: 0.9976 - val_loss: 2.6182 - val_accuracy: 0.4583
+Epoch 5/500
+27/27 - 4s - loss: 0.0039 - accuracy: 1.0000 - val_loss: 1.9691 - val_accuracy: 0.5625
+Epoch 6/500
+27/27 - 4s - loss: 0.0018 - accuracy: 1.0000 - val_loss: 2.5218 - val_accuracy: 0.5625
+Epoch 7/500
+27/27 - 4s - loss: 6.2966e-04 - accuracy: 1.0000 - val_loss: 1.9897 - val_accuracy: 0.5625
+Epoch 8/500
+27/27 - 4s - loss: 3.3043e-04 - accuracy: 1.0000 - val_loss: 2.4206 - val_accuracy: 0.5625
+Epoch 00008: early stopping
+Acc of current model: 63.0%
+Train for 27 steps, validate for 3 steps
+Epoch 1/500
+27/27 - 10s - loss: 1.5625 - accuracy: 0.4858 - val_loss: 1.4708 - val_accuracy: 0.2292
+Epoch 2/500
+27/27 - 15s - loss: 0.4080 - accuracy: 0.8349 - val_loss: 0.9028 - val_accuracy: 0.6667
+Epoch 3/500
+27/27 - 4s - loss: 0.1000 - accuracy: 0.9693 - val_loss: 2.1981 - val_accuracy: 0.5208
+Epoch 4/500
+27/27 - 4s - loss: 0.0233 - accuracy: 0.9953 - val_loss: 1.1982 - val_accuracy: 0.7292
+Epoch 5/500
+27/27 - 4s - loss: 0.0067 - accuracy: 1.0000 - val_loss: 2.1403 - val_accuracy: 0.5625
+Epoch 6/500
+27/27 - 4s - loss: 0.0014 - accuracy: 1.0000 - val_loss: 1.7775 - val_accuracy: 0.6250
+Epoch 7/500
+27/27 - 4s - loss: 0.0010 - accuracy: 1.0000 - val_loss: 2.3616 - val_accuracy: 0.5833
+Epoch 8/500
+27/27 - 4s - loss: 4.0773e-04 - accuracy: 1.0000 - val_loss: 2.6667 - val_accuracy: 0.5833
+Epoch 9/500
+27/27 - 4s - loss: 2.2330e-04 - accuracy: 1.0000 - val_loss: 2.6593 - val_accuracy: 0.5833
+Epoch 00009: early stopping
+Acc of current model: 61.1%
+Train for 27 steps, validate for 3 steps
+Epoch 1/500
+27/27 - 10s - loss: 1.2183 - accuracy: 0.5967 - val_loss: 0.7896 - val_accuracy: 0.6458
+Epoch 2/500
+27/27 - 4s - loss: 0.2808 - accuracy: 0.9009 - val_loss: 2.6681 - val_accuracy: 0.2292
+Epoch 3/500
+27/27 - 4s - loss: 0.1152 - accuracy: 0.9646 - val_loss: 1.9428 - val_accuracy: 0.5625
+Epoch 4/500
+27/27 - 4s - loss: 0.0405 - accuracy: 0.9882 - val_loss: 1.2420 - val_accuracy: 0.6667
+Epoch 5/500
+27/27 - 4s - loss: 0.0095 - accuracy: 0.9976 - val_loss: 1.8339 - val_accuracy: 0.6042
+Epoch 6/500
+27/27 - 4s - loss: 0.0013 - accuracy: 1.0000 - val_loss: 2.3742 - val_accuracy: 0.5833
+Epoch 7/500
+27/27 - 4s - loss: 4.9482e-04 - accuracy: 1.0000 - val_loss: 2.2543 - val_accuracy: 0.5833
+Epoch 8/500
+27/27 - 4s - loss: 3.3947e-04 - accuracy: 1.0000 - val_loss: 2.3974 - val_accuracy: 0.5833
+Epoch 9/500
+27/27 - 4s - loss: 2.4787e-04 - accuracy: 1.0000 - val_loss: 2.3554 - val_accuracy: 0.5833
+Epoch 00009: early stopping
+Acc of current model: 61.1%
+Train for 27 steps, validate for 3 steps
+Epoch 1/500
+27/27 - 10s - loss: 1.3971 - accuracy: 0.5212 - val_loss: 0.5835 - val_accuracy: 0.7500
+Epoch 2/500
+27/27 - 4s - loss: 0.3322 - accuracy: 0.8962 - val_loss: 1.7961 - val_accuracy: 0.4375
+Epoch 3/500
+27/27 - 4s - loss: 0.1229 - accuracy: 0.9575 - val_loss: 1.7941 - val_accuracy: 0.4792
+Epoch 4/500
+27/27 - 4s - loss: 0.0525 - accuracy: 0.9858 - val_loss: 0.9695 - val_accuracy: 0.7500
+Epoch 5/500
+27/27 - 4s - loss: 0.0183 - accuracy: 0.9906 - val_loss: 2.1751 - val_accuracy: 0.5000
+Epoch 6/500
+27/27 - 4s - loss: 0.0020 - accuracy: 1.0000 - val_loss: 2.5351 - val_accuracy: 0.5625
+Epoch 00006: early stopping
+Acc of current model: 61.1%
+Train for 27 steps, validate for 3 steps
+Epoch 1/500
+27/27 - 10s - loss: 1.2441 - accuracy: 0.5920 - val_loss: 0.9031 - val_accuracy: 0.6042
+Epoch 2/500
+27/27 - 4s - loss: 0.2762 - accuracy: 0.9057 - val_loss: 1.9471 - val_accuracy: 0.4583
+Epoch 3/500
+27/27 - 4s - loss: 0.0672 - accuracy: 0.9764 - val_loss: 1.7792 - val_accuracy: 0.5417
+Epoch 4/500
+27/27 - 4s - loss: 0.0423 - accuracy: 0.9788 - val_loss: 2.5240 - val_accuracy: 0.5000
+Epoch 5/500
+27/27 - 4s - loss: 0.0100 - accuracy: 1.0000 - val_loss: 2.4599 - val_accuracy: 0.5208
+Epoch 00005: early stopping
+Acc of current model: 61.1%
+Train for 27 steps, validate for 3 steps
+Epoch 1/500
+27/27 - 9s - loss: 1.3880 - accuracy: 0.5684 - val_loss: 1.2617 - val_accuracy: 0.3958
+Epoch 2/500
+27/27 - 13s - loss: 0.2606 - accuracy: 0.9127 - val_loss: 1.0133 - val_accuracy: 0.5625
+Epoch 3/500
+27/27 - 4s - loss: 0.0658 - accuracy: 0.9788 - val_loss: 1.9706 - val_accuracy: 0.5000
+Epoch 4/500
+27/27 - 4s - loss: 0.0171 - accuracy: 1.0000 - val_loss: 1.4459 - val_accuracy: 0.5833
+Epoch 5/500
+27/27 - 4s - loss: 0.0028 - accuracy: 1.0000 - val_loss: 2.0345 - val_accuracy: 0.5208
+Epoch 00005: early stopping
+Acc of current model: 61.1%
+Train for 27 steps, validate for 3 steps
+Epoch 1/500
+27/27 - 9s - loss: 1.3572 - accuracy: 0.5425 - val_loss: 1.0463 - val_accuracy: 0.3958
+Epoch 2/500
+27/27 - 4s - loss: 0.2912 - accuracy: 0.9127 - val_loss: 3.0179 - val_accuracy: 0.2500
+Epoch 3/500
+27/27 - 4s - loss: 0.1408 - accuracy: 0.9387 - val_loss: 2.3235 - val_accuracy: 0.5208
+Epoch 4/500
+27/27 - 4s - loss: 0.0429 - accuracy: 0.9929 - val_loss: 1.0951 - val_accuracy: 0.6875
+Epoch 5/500
+27/27 - 4s - loss: 0.0065 - accuracy: 1.0000 - val_loss: 1.3206 - val_accuracy: 0.6667
+Epoch 6/500
+27/27 - 4s - loss: 0.0019 - accuracy: 1.0000 - val_loss: 1.2889 - val_accuracy: 0.7083
+Epoch 7/500
+27/27 - 4s - loss: 7.9989e-04 - accuracy: 1.0000 - val_loss: 1.7823 - val_accuracy: 0.6042
+Epoch 8/500
+27/27 - 4s - loss: 4.7542e-04 - accuracy: 1.0000 - val_loss: 1.7717 - val_accuracy: 0.6458
+Epoch 9/500
+27/27 - 4s - loss: 3.0985e-04 - accuracy: 1.0000 - val_loss: 1.8180 - val_accuracy: 0.6667
+Epoch 10/500
+27/27 - 4s - loss: 2.0787e-04 - accuracy: 1.0000 - val_loss: 2.0036 - val_accuracy: 0.6042
+Epoch 11/500
+27/27 - 4s - loss: 1.3366e-04 - accuracy: 1.0000 - val_loss: 2.0365 - val_accuracy: 0.6042
+Epoch 00011: early stopping
+Acc of current model: 61.1%
+Train for 27 steps, validate for 3 steps
+Epoch 1/500
+27/27 - 9s - loss: 1.1443 - accuracy: 0.5778 - val_loss: 1.6500 - val_accuracy: 0.4167
+Epoch 2/500
+27/27 - 4s - loss: 0.2111 - accuracy: 0.9151 - val_loss: 3.5279 - val_accuracy: 0.1667
+Epoch 3/500
+27/27 - 4s - loss: 0.1950 - accuracy: 0.9222 - val_loss: 1.9680 - val_accuracy: 0.3333
+Epoch 4/500
+27/27 - 13s - loss: 0.0428 - accuracy: 0.9858 - val_loss: 1.1879 - val_accuracy: 0.6250
+Epoch 5/500
+27/27 - 13s - loss: 0.0204 - accuracy: 0.9929 - val_loss: 0.7740 - val_accuracy: 0.7500
+Epoch 6/500
+27/27 - 4s - loss: 0.0087 - accuracy: 1.0000 - val_loss: 1.7785 - val_accuracy: 0.5208
+Epoch 7/500
+27/27 - 4s - loss: 0.0018 - accuracy: 1.0000 - val_loss: 2.0276 - val_accuracy: 0.5208
+Epoch 8/500
+27/27 - 4s - loss: 5.5971e-04 - accuracy: 1.0000 - val_loss: 1.8599 - val_accuracy: 0.5625
+Epoch 9/500
+27/27 - 4s - loss: 3.6609e-04 - accuracy: 1.0000 - val_loss: 1.9723 - val_accuracy: 0.5625
+Epoch 10/500
+27/27 - 4s - loss: 2.5648e-04 - accuracy: 1.0000 - val_loss: 2.0226 - val_accuracy: 0.5833
+Epoch 00010: early stopping
+Acc of current model: 61.1%
+Train for 27 steps, validate for 3 steps
+Epoch 1/500
+27/27 - 9s - loss: 1.1567 - accuracy: 0.6156 - val_loss: 1.0900 - val_accuracy: 0.5000
+Epoch 2/500
+27/27 - 4s - loss: 0.2158 - accuracy: 0.9434 - val_loss: 1.8961 - val_accuracy: 0.4583
+Epoch 3/500
+27/27 - 4s - loss: 0.0636 - accuracy: 0.9788 - val_loss: 2.0002 - val_accuracy: 0.5625
+Epoch 4/500
+27/27 - 4s - loss: 0.0304 - accuracy: 0.9929 - val_loss: 2.0680 - val_accuracy: 0.5625
+Epoch 5/500
+27/27 - 4s - loss: 0.0075 - accuracy: 1.0000 - val_loss: 2.2860 - val_accuracy: 0.6250
+Epoch 6/500
+27/27 - 4s - loss: 9.0526e-04 - accuracy: 1.0000 - val_loss: 2.2829 - val_accuracy: 0.6042
+Epoch 7/500
+27/27 - 4s - loss: 4.4595e-04 - accuracy: 1.0000 - val_loss: 2.2820 - val_accuracy: 0.6250
+Epoch 8/500
+27/27 - 4s - loss: 2.8402e-04 - accuracy: 1.0000 - val_loss: 2.2305 - val_accuracy: 0.6250
+Epoch 9/500
+27/27 - 4s - loss: 1.8724e-04 - accuracy: 1.0000 - val_loss: 2.1915 - val_accuracy: 0.6250
+Epoch 10/500
+27/27 - 4s - loss: 1.3916e-04 - accuracy: 1.0000 - val_loss: 2.3734 - val_accuracy: 0.6250
+Epoch 00010: early stopping
+Acc of current model: 59.3%
+Train for 27 steps, validate for 3 steps
+Epoch 1/500
+27/27 - 9s - loss: 1.6936 - accuracy: 0.4222 - val_loss: 0.9478 - val_accuracy: 0.5625
+Epoch 2/500
+27/27 - 4s - loss: 0.4563 - accuracy: 0.8325 - val_loss: 1.6765 - val_accuracy: 0.5000
+Epoch 3/500
+27/27 - 4s - loss: 0.0952 - accuracy: 0.9717 - val_loss: 2.2130 - val_accuracy: 0.5000
+Epoch 4/500
+27/27 - 4s - loss: 0.0206 - accuracy: 0.9976 - val_loss: 1.7648 - val_accuracy: 0.6042
+Epoch 5/500
+27/27 - 4s - loss: 0.0027 - accuracy: 1.0000 - val_loss: 1.8222 - val_accuracy: 0.6042
+Epoch 00005: early stopping
+Acc of current model: 61.1%
+Train for 27 steps, validate for 3 steps
+Epoch 1/500
+27/27 - 10s - loss: 1.3630 - accuracy: 0.5590 - val_loss: 1.2190 - val_accuracy: 0.5208
+Epoch 2/500
+27/27 - 4s - loss: 0.3637 - accuracy: 0.8632 - val_loss: 2.3405 - val_accuracy: 0.4167
+Epoch 3/500
+27/27 - 4s - loss: 0.0756 - accuracy: 0.9835 - val_loss: 2.0802 - val_accuracy: 0.5417
+Epoch 4/500
+27/27 - 4s - loss: 0.0091 - accuracy: 1.0000 - val_loss: 2.1888 - val_accuracy: 0.5417
+Epoch 5/500
+27/27 - 4s - loss: 0.0021 - accuracy: 1.0000 - val_loss: 2.6862 - val_accuracy: 0.5208
+Epoch 00005: early stopping
+Acc of current model: 61.1%
+Train for 27 steps, validate for 3 steps
+Epoch 1/500
+27/27 - 10s - loss: 1.4166 - accuracy: 0.5731 - val_loss: 0.8335 - val_accuracy: 0.6458
+Epoch 2/500
+27/27 - 4s - loss: 0.3423 - accuracy: 0.8726 - val_loss: 1.7551 - val_accuracy: 0.5625
+Epoch 3/500
+27/27 - 4s - loss: 0.1039 - accuracy: 0.9693 - val_loss: 1.3984 - val_accuracy: 0.6250
+Epoch 4/500
+27/27 - 4s - loss: 0.0149 - accuracy: 1.0000 - val_loss: 2.0298 - val_accuracy: 0.5208
+Epoch 5/500
+27/27 - 4s - loss: 0.0027 - accuracy: 1.0000 - val_loss: 2.3602 - val_accuracy: 0.5417
+Epoch 6/500
+27/27 - 4s - loss: 9.3182e-04 - accuracy: 1.0000 - val_loss: 2.6837 - val_accuracy: 0.5417
+Epoch 00006: early stopping
+Acc of current model: 61.1%
+Train for 27 steps, validate for 3 steps
+Epoch 1/500
+27/27 - 9s - loss: 1.0740 - accuracy: 0.5802 - val_loss: 1.8296 - val_accuracy: 0.3542
+Epoch 2/500
+27/27 - 13s - loss: 0.2463 - accuracy: 0.9292 - val_loss: 1.0387 - val_accuracy: 0.6667
+Epoch 3/500
+27/27 - 4s - loss: 0.0597 - accuracy: 0.9858 - val_loss: 1.4460 - val_accuracy: 0.6042
+Epoch 4/500
+27/27 - 4s - loss: 0.0180 - accuracy: 0.9976 - val_loss: 2.4834 - val_accuracy: 0.4792
+Epoch 5/500
+27/27 - 4s - loss: 0.0035 - accuracy: 1.0000 - val_loss: 1.9455 - val_accuracy: 0.6042
+Epoch 6/500
+27/27 - 4s - loss: 9.3154e-04 - accuracy: 1.0000 - val_loss: 2.1504 - val_accuracy: 0.6250
+Epoch 7/500
+27/27 - 4s - loss: 3.6698e-04 - accuracy: 1.0000 - val_loss: 2.1908 - val_accuracy: 0.6250
+Epoch 00007: early stopping
+Acc of current model: 61.1%
+Train for 27 steps, validate for 3 steps
+Epoch 1/500
+27/27 - 9s - loss: 1.3878 - accuracy: 0.5307 - val_loss: 0.5582 - val_accuracy: 0.7083
+Epoch 2/500
+27/27 - 4s - loss: 0.3373 - accuracy: 0.8844 - val_loss: 1.0960 - val_accuracy: 0.5833
+Epoch 3/500
+27/27 - 4s - loss: 0.0839 - accuracy: 0.9811 - val_loss: 2.8496 - val_accuracy: 0.5000
+Epoch 4/500
+27/27 - 4s - loss: 0.0174 - accuracy: 0.9976 - val_loss: 2.1100 - val_accuracy: 0.5625
+Epoch 5/500
+27/27 - 4s - loss: 0.0019 - accuracy: 1.0000 - val_loss: 2.1802 - val_accuracy: 0.5417
+Epoch 6/500
+27/27 - 4s - loss: 6.9588e-04 - accuracy: 1.0000 - val_loss: 2.5736 - val_accuracy: 0.5417
+Epoch 00006: early stopping
+Acc of current model: 61.1%
+Highest acc of model in ensemble: 61.2%
+Mean ensemble accuracy: 61.1%
+tf.Tensor(
+[[ 0  0 14]
+ [ 0  0  7]
+ [ 0  0 33]], shape=(3, 3), dtype=int32)
+posterior mean: 2
+true label: 2
+
+class: 0; proba: 0.3%; var: 1.30% 
+class: 1; proba: 0.0%; var: 0.11% 
+class: 2; proba: 99.7%; var: 1.30% 
