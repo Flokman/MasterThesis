@@ -14,13 +14,14 @@ mpl.use('Agg')
 import matplotlib.pyplot as plt
 plt.style.use("ggplot")
 
-from tensorflow.keras.models import Model
+from tensorflow.keras.models import Model, load_model
 from tensorflow.keras.layers import Dense, BatchNormalization, Flatten
 from tensorflow.keras import optimizers
 from tensorflow.keras.applications.vgg16 import VGG16
 from tensorflow.keras.datasets import cifar10
 from tensorflow.keras.preprocessing.image import ImageDataGenerator
 from sklearn.metrics import accuracy_score
+from tensorflow.keras import backend as K
 
 WEIGHTS_PATH = ('https://github.com/fchollet/deep-learning-models/'
                 'releases/download/v0.1/'
@@ -35,25 +36,31 @@ DATASET_NAME = 'CIFAR10'
 
 BATCH_SIZE = 32
 NUM_CLASSES = 10
-EPOCHS = 150
-MCBN_PREDICTIONS = 250
-MINIBATCH_SIZE = 128
-MCBN_BATCH_SIZE = 64
+EPOCHS = 50
+MCBN_PREDICTIONS = 25
+MINIBATCH_SIZE = BATCH_SIZE
 TRAIN_TEST_SPLIT = 0.8 # Value between 0 and 1, e.g. 0.8 creates 80%/20% division train/test
 TRAIN_VAL_SPLIT = 0.9
 TO_SHUFFLE = True
 AUGMENTATION = False
-LABEL_NORMALIZER = True
-SAVE_AUGMENTATION_TO_HDF5 = True
+LABEL_NORMALIZER = False
+SAVE_AUGMENTATION_TO_HDF5 = False
 ADD_BATCH_NORMALIZATION = True
 ADD_BATCH_NORMALIZATION_INSIDE = True
-TRAIN_ALL_LAYERS = False
+TRAIN_ALL_LAYERS = True
 ONLY_AFTER_SPECIFIC_LAYER = True
 WEIGHTS_TO_USE = 'imagenet'
-LEARN_RATE = 0.0001
-ES_PATIENCE = 5
+LEARN_RATE = 0.001
+ES_PATIENCE = 15
 MIN_DELTA = 0.005
-EARLY_MONITOR = 'val_accuracy'
+EARLY_MONITOR = 'val_loss'
+MC_MONITOR = 'val_loss'
+
+adam = optimizers.Adam(lr=LEARN_RATE)
+sgd = optimizers.SGD(lr=LEARN_RATE, momentum=0.9)
+
+OPTIMZ = sgd
+
 RESULTFOLDER = 'CIFAR10'
 
 # Get dataset path
@@ -84,9 +91,7 @@ def prepare_data():
             ES_PATIENCE, TRAIN_VAL_SPLIT, MIN_DELTA, EARLY_MONITOR))
 
     x_train = np.asarray(x_train)
-    y_train = np.asarray(y_train)
     x_test = np.asarray(x_test)
-    y_test = np.asarray(y_test)
 
     print('x_train shape:', x_train.shape)
     print(x_train.shape[0], 'train samples')
@@ -101,7 +106,7 @@ def prepare_data():
 
 def get_batch_normalization(input_tensor):
     ''' Returns a trainable batch normalization layer '''
-    return BatchNormalization()(input_tensor, training=True)
+    return BatchNormalization()(input_tensor)
 
 
 def insert_intermediate_layer_in_keras(model, layer_id):
@@ -199,19 +204,185 @@ def create_minibatch(x, y):
     return(x_minibatch, y_minibatch)
 
 
+def reset_weights(model):
+    for layer in model.layers:
+        if re.search('batch_normalization_.*', layer.name):
+            print(layer.name)  
+            if isinstance(layer, tf.keras.Model): #if you're using a model as a layer
+                reset_weights(layer) #apply function recursively
+                continue
+
+            #where are the initializers?
+            if hasattr(layer, 'cell'):
+                init_container = layer.cell
+            else:
+                init_container = layer
+
+            for key, initializer in init_container.__dict__.items():
+                if "initializer" not in key: #is this item an initializer?
+                    continue #if no, skip it
+                    print("skip")
+
+                # find the corresponding variable, like the kernel or the bias
+                if key == 'recurrent_initializer': #special case check
+                    var = getattr(init_container, 'recurrent_kernel')
+                else:
+                    var = getattr(init_container, key.replace("_initializer", ""))
+
+                var.assign(initializer(var.shape, var.dtype))
+                # print("reinialized")
+                #use the initializer
+
+    return model
+
+
+def mcbn_predict(MCBN_model, x_train, y_train, x_test, y_test):
+    mcbn_predictions = []
+    
+    # with open('MCBN_model_config.json') as json_file:
+    #     json_config = json_file.read()
+    # MCBN_test_model = tf.keras.models.model_from_json(json_config)
+    org_model = MCBN_model
+
+    progress_bar = tf.keras.utils.Progbar(target=MCBN_PREDICTIONS, interval=5)
+    for i in range(0, MCBN_PREDICTIONS):
+        progress_bar.update(i)
+        datagen = ImageDataGenerator(rescale=1./255)
+
+        # Create new random minibatch from train data
+        x_minibatch, y_minibatch = create_minibatch(x_train, y_train)
+    
+        x_minibatch = np.asarray(x_minibatch)
+        # y_minibatch = np.asarray(y_minibatch)
+        # y_minibatch = tf.keras.utils.to_categorical(y_minibatch, NUM_CLASSES)
+
+        
+        minibatch_generator = datagen.flow(x_minibatch,
+                                    y_minibatch,
+                                    batch_size=MINIBATCH_SIZE)
+
+
+        # # # # Reload the model from the 2 files we saved
+        # # # MCBN_test_model.load_weights('MCBN_weights.h5')
+       
+        # # # MCBN_test_model = reset_weights(MCBN_test_model)
+
+        # # # # Set only batch normalization layers to trainable
+        # # # for layer in MCBN_test_model.layers:
+        # # #     if re.search('batch_normalization.*', layer.name):
+        # # #         layer.trainable = True
+        # # #     else:
+        # # #         layer.trainable = False
+        # # #     # print(layer.name, layer.trainable)
+
+        # # # MCBN_test_model.compile(
+        # # #     optimizer=OPTIMZ,
+        # # #     loss='categorical_crossentropy',
+        # # #     metrics=['accuracy'] )
+
+
+        MCBN_test_model = org_model
+        # Fit the BN layers with the new minibatch, leave all other weights the same
+        MCBN_test_model.fit(minibatch_generator,
+                            epochs=1,
+                            verbose=0)
+
+
+        test_generator = datagen.flow(x_test, batch_size=BATCH_SIZE, shuffle=False)
+        y_p = MCBN_test_model.predict(test_generator) #Predict for bn look at (sigma and mu only one to chance, not the others)
+        mcbn_predictions.append(y_p)
+
+        # y_predict = MCBN_test_model.predict(datagen.flow(x_test, batch_size=BATCH_SIZE)) #Predict for bn look at (sigma and mu only one to chance, not the others)
+        # mcbn_predictions.append(y_predict)
+
+        # accs = []
+        # for j, image in enumerate(x_test):
+        #     image = np.expand_dims(image, axis=0)
+        #     pred = MCBN_test_model.predict(datagen.flow(image))
+        #     hi_pred_ind = pred.argmax()
+        #     ground_tru = y_test[j].argmax()
+        #     if hi_pred_ind == ground_tru:
+        #         accs.append(1)
+        #     else:
+        #         accs.append(0)
+
+        # print("MCBN accuracy: {:.1%}".format(sum(accs)/len(accs)))
+
+        # accs_new = []
+        # for ind, pred in enumerate(mcbn_predictions):
+        #     hi_pred_ind = pred.argmax()
+        #     ground_tru = y_test[ind].argmax()
+        #     if hi_pred_ind == ground_tru:
+        #         accs_new.append(1)
+        #     else:
+        #         accs_new.append(0)
+
+        # print("MCBN accuracy new: {:.1%}".format(sum(accs_new)/len(accs_new)))
+
+
+        # y_predict = []
+        # for j, image in enumerate(x_test):
+        #     image = np.expand_dims(image, axis=0)
+        #     pred = MCBN_test_model.predict(datagen.flow(image))
+        #     y_predict.append(pred)
+        
+        # mcbn_predictions.append(y_predict)
+
+        # y_predict = []
+        # for j, image in enumerate(x_test):
+        #     image = np.expand_dims(image, axis=0)
+        #     pred = MCBN_test_model.predict(datagen.flow(image))
+        #     y_predict.append(pred)
+        
+        # mcbn_predictions.append(y_predict)
+
+        # score of the MCBN model
+        # accs = []
+        # for y_p in mcbn_predictions:
+        #     acc = accuracy_score(y_test.argmax(axis=1), y_p.argmax(axis=1))
+        #     accs.append(acc)
+        # print("MCBN accuracy: {:.1%}".format(sum(accs)/len(accs)))
+
+    return mcbn_predictions
+
+
 def main():
     ''' Main function '''
     # Load data
     x_train, y_train, x_test, y_test, test_img_idx = prepare_data()
 
-    # VGG16 since it does not include batch normalization of dropout by itself
-    MCBN_model = VGG16(weights=WEIGHTS_TO_USE, include_top=False,
-                       input_shape=(IMG_HEIGHT, IMG_WIDTH, IMG_DEPTH))
+    # # VGG16 since it does not include batch normalization of dropout by itself
+    # MCBN_model = VGG16(weights=WEIGHTS_TO_USE, include_top=False,
+    #                    input_shape=(IMG_HEIGHT, IMG_WIDTH, IMG_DEPTH))
 
-    if ADD_BATCH_NORMALIZATION:
-        MCBN_model = add_batch_normalization(MCBN_model)
+    # if ADD_BATCH_NORMALIZATION:
+    #     MCBN_model = add_batch_normalization(MCBN_model)
 
+    # else:
+    #     # Stacking a new simple convolutional network on top of vgg16
+    #     all_layers = [l for l in MCBN_model.layers]
+    #     x = all_layers[0].output
+    #     for i in range(1, len(all_layers)):
+    #         x = all_layers[i](x)
+
+    #     # Classification block
+    #     x = Flatten(name='flatten')(x)
+    #     x = Dense(4096, activation='relu', name='fc1')(x)
+    #     x = Dense(4096, activation='relu', name='fc2')(x)
+    #     x = Dense(NUM_CLASSES, activation='softmax', name='predictions')(x)
+
+    #     # Creating new model.
+    #     MCBN_model = Model(inputs=all_layers[0].input, outputs=x)
+
+
+    if WEIGHTS_TO_USE == None:
+        # VGG16 since it does not include batch normalization of dropout by itself
+        MCBN_model = VGG16(weights=WEIGHTS_TO_USE, include_top=True,
+                        input_shape=(IMG_HEIGHT, IMG_WIDTH, IMG_DEPTH), classes = NUM_CLASSES)
+    
     else:
+        MCBN_model = VGG16(weights=WEIGHTS_TO_USE, include_top=False,
+                        input_shape=(IMG_HEIGHT, IMG_WIDTH, IMG_DEPTH), layers=tf.keras.layers)
         # Stacking a new simple convolutional network on top of vgg16
         all_layers = [l for l in MCBN_model.layers]
         x = all_layers[0].output
@@ -219,29 +390,97 @@ def main():
             x = all_layers[i](x)
 
         # Classification block
+        # x = get_batch_normalization(x)
         x = Flatten(name='flatten')(x)
         x = Dense(4096, activation='relu', name='fc1')(x)
         x = Dense(4096, activation='relu', name='fc2')(x)
         x = Dense(NUM_CLASSES, activation='softmax', name='predictions')(x)
-
-        # Creating new model.
+        # Creating new model
         MCBN_model = Model(inputs=all_layers[0].input, outputs=x)
 
-    if TRAIN_ALL_LAYERS or ADD_BATCH_NORMALIZATION_INSIDE:
+        # MCBN_model = VGG16(weights=WEIGHTS_TO_USE, include_top=False,
+        #                 input_shape=(IMG_HEIGHT, IMG_WIDTH, IMG_DEPTH))
+        # # Stacking a new simple convolutional network on top of vgg16
+        # all_layers = [l for l in MCBN_model.layers]
+        # x = all_layers[0].output
+        # for i in range(1, len(all_layers)):
+        #     x = all_layers[i](x)
+
+        # # Classification block
+        # x = Flatten(name='flatten')(x)
+        # x = Dense(NUM_CLASSES, activation='softmax', name='predictions')(x)
+        # # Creating new model
+        MCBN_model = Model(inputs=all_layers[0].input, outputs=x)
+
+    # Creating dictionary that maps layer names to the layers
+    layer_dict = dict([(layer.name, layer) for layer in MCBN_model.layers])
+
+    for layer_name in layer_dict:
+        layer_dict = dict([(layer.name, layer) for layer in MCBN_model.layers])
+        if ONLY_AFTER_SPECIFIC_LAYER:
+            if re.search('.*_conv.*', layer_name):
+                layer_index = list(layer_dict).index(layer_name)
+
+                # Add a batch normalization (trainable) layer
+                MCBN_model = insert_intermediate_layer_in_keras(MCBN_model, layer_index + 1)
+
+            if re.search('fc.*', layer_name):
+                layer_index = list(layer_dict).index(layer_name)
+
+                # Add a batch normalization (trainable) layer
+                MCBN_model = insert_intermediate_layer_in_keras(MCBN_model, layer_index + 1)
+            
+            # if re.search('predictions', layer_name):
+            #     print(layer_name)
+            #     layer_index = list(layer_dict).index(layer_name)
+            #     print(layer_index)
+
+            #     # Add a batch normalization (trainable) layer
+            #     MCBN_model = insert_intermediate_layer_in_keras(MCBN_model, layer_index + 1)
+        else:
+            layer_index = list(layer_dict).index(layer_name)
+
+            # Add a batch normalization (trainable) layer
+            MCBN_model = insert_intermediate_layer_in_keras(MCBN_model, layer_index + 1)
+
+
+    if TRAIN_ALL_LAYERS:
         for layer in MCBN_model.layers:
             layer.trainable = True
-            print(layer, layer.trainable)
-    else:
+            # print(layer, layer.trainable)
+
+    elif ADD_BATCH_NORMALIZATION_INSIDE:
         for layer in MCBN_model.layers[:-6]:
+            if re.search('batch_normalization.*', layer.name):
+                layer.trainable = True
+            else:
+                layer.trainable = False
+        #     layer.trainable = False
+        # for layer in MCBN_model.layers:
+        #     if re.search('batch_normalization.*', layer.name):
+        #         layer.trainable = False
+        #     # print(layer.name, layer.trainable)
+
+    else:
+        for layer in MCBN_model.layers:
             layer.trainable = False
         for layer in MCBN_model.layers:
-            print(layer, layer.trainable)
+            if re.search('batch_normalization.*', layer.name):
+                layer.trainable = True
+            if re.search('predictions', layer.name):
+                layer.trainable = True
+
+        # for layer in MCBN_model.layers:
+        #     print(layer, layer.trainable)
+
+    for layer in MCBN_model.layers:
+        print(layer, layer.trainable)
 
     MCBN_model.summary()
 
-    adam = optimizers.Adam(lr=LEARN_RATE)
+
     MCBN_model.compile(
-        optimizer=adam,
+        optimizer=OPTIMZ,
         loss='categorical_crossentropy',
         metrics=['accuracy']
     )
@@ -252,13 +491,15 @@ def main():
     fig_dir = os.path.join(os.getcwd(), RESULTFOLDER + os.path.sep + datetime.datetime.now().strftime('%Y-%m-%d_%H-%M-%S'))
     os.makedirs(fig_dir)
     # Dir to store Tensorboard data
-    log_dir = os.path.join(fig_dir, "logs/fit/" + datetime.datetime.now().strftime("%Y%m%d-%H%M%S"))
+    log_dir = os.path.join(fig_dir, "logs" + os.path.sep + "fit" + os.path.sep + datetime.datetime.now().strftime("%Y%m%d-%H%M%S"))
     os.makedirs(log_dir)
 
     os.chdir(fig_dir)
     tensorboard_callback = tf.keras.callbacks.TensorBoard(log_dir=log_dir)
     early_stopping = tf.keras.callbacks.EarlyStopping(monitor=EARLY_MONITOR, min_delta = MIN_DELTA,
                                                     mode='auto', verbose=1, patience=ES_PATIENCE)
+
+    mc = tf.keras.callbacks.ModelCheckpoint('best_model.h5', monitor=MC_MONITOR, mode='auto', save_best_only=True)
 
     datagen = ImageDataGenerator(rescale=1./255)
     train_generator = datagen.flow(x_train[0:int(TRAIN_VAL_SPLIT*len(x_train))],
@@ -274,7 +515,11 @@ def main():
                    epochs=EPOCHS,
                    verbose=2,
                    validation_data=val_generator,
-                   callbacks=[tensorboard_callback, early_stopping])
+                   callbacks=[tensorboard_callback, early_stopping, mc])
+    
+
+    MCBN_model = load_model('best_model.h5')
+    os.remove('best_model.h5')
 
     # Save JSON config to disk
     json_config = MCBN_model.to_json()
@@ -283,7 +528,18 @@ def main():
     # Save weights to disk
     MCBN_model.save_weights('MCBN_weights.h5')
 
-    # Set onoly batch normalization layers to trainable
+    # test_loss, test_score = MCBN_model.evaluate(x_test, y_test)
+    # print("Test Loss:", test_loss)
+    # print("Test F1 Score:", test_score)
+
+    # eval_gen = datagen.flow(x_test,
+    #                             y_test,
+    #                             batch_size = BATCH_SIZE)
+
+    # first_eval = MCBN_model.evaluate(eval_gen)
+    # print(first_eval)
+
+    # Set only batch normalization layers to trainable
     for layer in MCBN_model.layers:
         if re.search('batch_normalization.*', layer.name):
             layer.trainable = True
@@ -291,39 +547,13 @@ def main():
             layer.trainable = False
         print(layer.name, layer.trainable)
 
-    adam = optimizers.Adam(lr=LEARN_RATE)
-    MCBN_model.compile(
-        optimizer=adam,
-        loss='categorical_crossentropy',
-        metrics=['accuracy']
-    )
+    mcbn_predictions = mcbn_predict(MCBN_model, x_train, y_train, x_test, y_test)
+    # print("MCBN accuracy: {:.1%}".format(sum(mcbn_evaluation)/len(mcbn_evaluation)))
 
-    mcbn_predictions = []
-    progress_bar = tf.keras.utils.Progbar(target=MCBN_PREDICTIONS, interval=5)
-    
-    
-    org_model = MCBN_model
-    for i in range(MCBN_PREDICTIONS):
-        progress_bar.update(i)
-        # Create new random minibatch from train data
-        x_minibatch, y_minibatch = create_minibatch(x_train, y_train)
-        x_minibatch = np.asarray(x_minibatch)
-        y_minibatch = np.asarray(y_minibatch)
-
-        datagen = ImageDataGenerator(rescale=1./255)
-        minibatch_generator = datagen.flow(x_minibatch,
-                                    y_minibatch,
-                                    batch_size = MINIBATCH_SIZE)
-
-
-        # Fit the BN layers with the new minibatch, leave all other weights the same
-        MCBN_model = org_model
-        MCBN_model.fit(minibatch_generator,
-                            epochs=1,
-                            verbose=0)
-
-        y_p = MCBN_model.predict(x_test, batch_size=len(x_test)) #Predict for bn look at (sigma and mu only one to chance, not the others)
-        mcbn_predictions.append(y_p)
+    # mean = sum(mcbn_evaluation) / len(mcbn_evaluation)
+    # variance = sum([((x - mean) ** 2) for x in mcbn_evaluation]) / len(mcbn_evaluation)
+    # res = variance ** 0.5
+    # print("variance and strdev :", variance, res)
 
     # score of the MCBN model
     accs = []
@@ -337,12 +567,16 @@ def main():
     print("MCBN-ensemble accuracy: {:.1%}".format(ensemble_acc))
 
     dir_path_head_tail = os.path.split(os.path.dirname(os.getcwd()))
-    new_path = dir_path_head_tail[0] + os.path.sep + RESULTFOLDER + os.path.sep + datetime.datetime.now().strftime('%Y-%m-%d_%H-%M') + '_' + WEIGHTS_TO_USE + '_' + str(BATCH_SIZE) + 'B' + '_{:.1%}A'.format(ensemble_acc)
+    if WEIGHTS_TO_USE != None:
+        new_path = dir_path_head_tail[0] + os.path.sep + RESULTFOLDER + os.path.sep + datetime.datetime.now().strftime('%Y-%m-%d_%H-%M') + '_' + WEIGHTS_TO_USE + '_' + str(BATCH_SIZE) + 'B' + '_{:.1%}A'.format(ensemble_acc)
+    else:
+        new_path = dir_path_head_tail[0] + os.path.sep + RESULTFOLDER + os.path.sep + datetime.datetime.now().strftime('%Y-%m-%d_%H-%M') + '_' + 'None' + '_' + str(BATCH_SIZE) + 'B' + '_{:.1%}A'.format(ensemble_acc)
     os.rename(fig_dir, new_path)
 
     confusion = tf.math.confusion_matrix(labels=y_test.argmax(axis=1), predictions=mcbn_ensemble_pred,
                                     num_classes=NUM_CLASSES)
     print(confusion)
+
 
     plt.hist(accs)
     plt.axvline(x=ensemble_acc, color="b")

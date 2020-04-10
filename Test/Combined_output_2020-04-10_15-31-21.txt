@@ -1,0 +1,67 @@
+
+START MCDO
+/data/s2934833/MasterThesis/MCDO/CIFAR10/CIFAR_ImageNet_retrain_32B_95E_86A
+MCDO combined accuracy: 85.9%
+tf.Tensor(
+[[881  14  22  13  12   0   4   8  34  12]
+ [  6 946   1   5   1   0   4   0   9  28]
+ [ 25   2 833  33  54  13  26  10   2   2]
+ [  6  10  44 736  46  91  42  17   2   6]
+ [  4   1  37  33 872   7  19  20   5   2]
+ [  3   2  29 151  39 730  16  28   0   2]
+ [  2   5  21  30  18   7 910   2   2   3]
+ [  9   4  11  21  33  23   4 887   4   4]
+ [ 24  11   7   8   6   0   1   0 939   4]
+ [ 17  80   4   7   1   3   5   7  24 852]], shape=(10, 10), dtype=int32)
+
+Uncertainty on original test dataset when correctly predicted = 1.05%
+Uncertainty on original test dataset when wrongly predicted = 7.15%
+Mean uncertainty on predicted class of new data = 0.16%
+
+START MCBN
+/data/s2934833/MasterThesis/MCBN/CIFAR10/2020-04-10_14-30_imagenet_32B_82.3%A
+
+START Ensemble
+Dataset_name: CIFAR10, N_folders: 1, total mebers: 40
+Ensemble combined accuracy: 86.4%
+tf.Tensor(
+[[903   8  12   9   9   3   5   9  29  13]
+ [  9 935   3   5   0   1   2   1   7  37]
+ [ 22   3 818  39  60  19  19  15   2   3]
+ [  6   7  29 714  39 121  37  25   8  14]
+ [  7   1  24  33 866  21  20  20   4   4]
+ [  6   2  17 119  26 782  19  26   0   3]
+ [  5   5  19  33  16  13 901   1   4   3]
+ [  5   2  18  23  31  25   3 887   3   3]
+ [ 27   6   5   5   3   1   1   2 937  13]
+ [ 20  46   6   6   0   1   4   5  16 896]], shape=(10, 10), dtype=int32)
+
+Uncertainty on original test dataset when correctly predicted = 2.23%
+Uncertainty on original test dataset when wrongly predicted = 11.17%
+Mean uncertainty on predicted class of new data = 1.08%
+
+START VarianceOutput
+/data/s2934833/MasterThesis/VarianceOutput/CIFAR10/CIF_ImageNet_32B_95E_68A
+Accuracy on original test dataset: 85.2%
+tf.Tensor(
+[[867  10  24  20   9   2   9   6  37  16]
+ [  8 939   0   5   3   4   3   0   9  29]
+ [ 27   2 802  27  43  38  39  15   4   3]
+ [  3   4  43 691  27 136  56  18   9  13]
+ [  8   1  41  40 806  30  30  40   3   1]
+ [  1   1  20 110  16 799  18  30   2   3]
+ [  2   4  19  26  10  11 923   1   3   1]
+ [  2   1  18  36  15  48   5 868   5   2]
+ [ 27  12   8   5   4   1   3   1 929  10]
+ [ 16  46   5   9   0   5   5   4  14 896]], shape=(10, 10), dtype=int32)
+Correct: 8520, wrong: 1480, accuracy: 85.2%
+
+Uncertainty on original test dataset when correctly predicted = 1.25%
+Uncertainty on original test dataset when wrongly predicted = 78.12%
+Mean uncertainty on predicted class of new data = 27.20%
+Mean uncertainty on not predicted classes of new data = 2.89%
+
+#################################
+Function main called 1 times. 
+Execution time max: 253.064, average: 253.064
+#################################

@@ -14,7 +14,7 @@ mpl.use('Agg')
 import matplotlib.pyplot as plt
 plt.style.use("ggplot")
 
-from tensorflow.keras.models import Model
+from tensorflow.keras.models import Model, load_model
 from tensorflow.keras.layers import Dense, BatchNormalization, Flatten
 from tensorflow.keras import optimizers
 from tensorflow.keras.applications.vgg16 import VGG16
@@ -32,12 +32,11 @@ WEIGHTS_PATH_NO_TOP = ('https://github.com/fchollet/deep-learning-models/'
 IMG_HEIGHT, IMG_WIDTH, IMG_DEPTH = 256, 256, 3
 DATASET_NAME = '/Messidor2_PNG_AUG_' + str(IMG_HEIGHT) + '.hdf5'
 
-BATCH_SIZE = 32
+BATCH_SIZE = 128
 NUM_CLASSES = 5
 EPOCHS = 150
-MCBN_PREDICTIONS = 250
+MCBN_PREDICTIONS = 25
 MINIBATCH_SIZE = 128
-MCBN_BATCH_SIZE = 64
 TRAIN_TEST_SPLIT = 0.8 # Value between 0 and 1, e.g. 0.8 creates 80%/20% division train/test
 TRAIN_VAL_SPLIT = 0.9
 TO_SHUFFLE = True
@@ -50,10 +49,17 @@ TRAIN_ALL_LAYERS = False
 ONLY_AFTER_SPECIFIC_LAYER = True
 WEIGHTS_TO_USE = 'imagenet'
 LEARN_RATE = 0.0001
-ES_PATIENCE = 5
+ES_PATIENCE = 10
 MIN_DELTA = 0.005
 EARLY_MONITOR = 'val_accuracy'
+MC_MONITOR = 'val_loss'
 RESULTFOLDER = 'MES'
+
+adam = optimizers.Adam(lr=LEARN_RATE)
+sgd = optimizers.SGD(lr=0.001, momentum=0.9)
+
+OPTIMZ = sgd
+
 
 # Get dataset path
 DIR_PATH_HEAD_TAIL = os.path.split(os.path.dirname(os.path.realpath(__file__)))
@@ -321,6 +327,37 @@ def create_minibatch(x, y):
     return(x_minibatch, y_minibatch)
 
 
+def mcbn_predict(MCBN_test_model, x_train, y_train, x_test):
+    mcbn_predictions = []
+    progress_bar = tf.keras.utils.Progbar(target=MCBN_PREDICTIONS, interval=5)
+    
+    
+    org_model = MCBN_test_model
+    for i in range(MCBN_PREDICTIONS):
+        progress_bar.update(i)
+        # Create new random minibatch from train data
+        x_minibatch, y_minibatch = create_minibatch(x_train, y_train)
+        x_minibatch = np.asarray(x_minibatch)
+        # y_minibatch = np.asarray(y_minibatch)
+
+        datagen = ImageDataGenerator(rescale=1./255)
+        minibatch_generator = datagen.flow(x_minibatch,
+                                    y_minibatch,
+                                    batch_size = MINIBATCH_SIZE)
+
+
+        # Fit the BN layers with the new minibatch, leave all other weights the same
+        MCBN_model = org_model
+        MCBN_model.fit(minibatch_generator,
+                            epochs=1,
+                            verbose=0)
+
+        y_p = MCBN_model.predict(datagen.flow(x_test, batch_size=len(x_test))) #Predict for bn look at (sigma and mu only one to chance, not the others)
+        mcbn_predictions.append(y_p)
+
+    return mcbn_predictions
+
+
 def main():
     ''' Main function '''
     # Load data
@@ -349,21 +386,43 @@ def main():
         # Creating new model.
         MCBN_model = Model(inputs=all_layers[0].input, outputs=x)
 
-    if TRAIN_ALL_LAYERS or ADD_BATCH_NORMALIZATION_INSIDE:
+    if TRAIN_ALL_LAYERS:
         for layer in MCBN_model.layers:
             layer.trainable = True
-            print(layer, layer.trainable)
-    else:
+            # print(layer, layer.trainable)
+
+    elif ADD_BATCH_NORMALIZATION_INSIDE:
         for layer in MCBN_model.layers[:-6]:
+            if re.search('batch_normalization.*', layer.name):
+                layer.trainable = True
+            else:
+                layer.trainable = False
+            # layer.trainable = False
+        # for layer in MCBN_model.layers:
+        #     if re.search('batch_normalization.*', layer.name):
+        #         layer.trainable = False
+            # print(layer.name, layer.trainable)
+
+    else:
+        for layer in MCBN_model.layers:
             layer.trainable = False
         for layer in MCBN_model.layers:
-            print(layer, layer.trainable)
+            if re.search('batch_normalization.*', layer.name):
+                layer.trainable = True
+            if re.search('predictions', layer.name):
+                layer.trainable = True
+
+        # for layer in MCBN_model.layers:
+        #     print(layer, layer.trainable)
+
+    for layer in MCBN_model.layers:
+        print(layer, layer.trainable)
 
     MCBN_model.summary()
 
-    adam = optimizers.Adam(lr=LEARN_RATE)
+
     MCBN_model.compile(
-        optimizer=adam,
+        optimizer=OPTIMZ,
         loss='categorical_crossentropy',
         metrics=['accuracy']
     )
@@ -382,6 +441,9 @@ def main():
     early_stopping = tf.keras.callbacks.EarlyStopping(monitor=EARLY_MONITOR, min_delta = MIN_DELTA,
                                                     mode='auto', verbose=1, patience=ES_PATIENCE)
 
+    mc = tf.keras.callbacks.ModelCheckpoint('best_model.h5', monitor=MC_MONITOR, mode='auto', save_best_only=True)
+
+
     datagen = ImageDataGenerator(rescale=1./255)
     train_generator = datagen.flow(x_train[0:int(TRAIN_VAL_SPLIT*len(x_train))],
                                    y_train[0:int(TRAIN_VAL_SPLIT*len(y_train))],
@@ -396,7 +458,11 @@ def main():
                    epochs=EPOCHS,
                    verbose=2,
                    validation_data=val_generator,
-                   callbacks=[tensorboard_callback, early_stopping])
+                   callbacks=[tensorboard_callback, early_stopping, mc])
+
+
+    MCBN_model = load_model('best_model.h5')
+    os.remove('best_model.h5')
 
     # Save JSON config to disk
     json_config = MCBN_model.to_json()
@@ -413,39 +479,50 @@ def main():
             layer.trainable = False
         print(layer.name, layer.trainable)
 
-    adam = optimizers.Adam(lr=LEARN_RATE)
-    MCBN_model.compile(
-        optimizer=adam,
-        loss='categorical_crossentropy',
-        metrics=['accuracy']
-    )
 
-    mcbn_predictions = []
-    progress_bar = tf.keras.utils.Progbar(target=MCBN_PREDICTIONS, interval=5)
+    eval_gen = datagen.flow(x_test,
+                                y_test,
+                                batch_size = len(y_test))
+
+
+    first_eval =MCBN_model.evaluate(eval_gen)
+    print(first_eval)
+
+
+    # Set only batch normalization layers to trainable
+    for layer in MCBN_model.layers:
+        if re.search('batch_normalization.*', layer.name):
+            layer.trainable = False
+        else:
+            layer.trainable = False
+        print(layer.name, layer.trainable)
+
+
+    mcbn_predictions = mcbn_predict(MCBN_model, x_train, y_train, x_test)
     
     
-    org_model = MCBN_model
-    for i in range(MCBN_PREDICTIONS):
-        progress_bar.update(i)
-        # Create new random minibatch from train data
-        x_minibatch, y_minibatch = create_minibatch(x_train, y_train)
-        x_minibatch = np.asarray(x_minibatch)
-        y_minibatch = np.asarray(y_minibatch)
+    # org_model = MCBN_model
+    # for i in range(MCBN_PREDICTIONS):
+    #     progress_bar.update(i)
+    #     # Create new random minibatch from train data
+    #     x_minibatch, y_minibatch = create_minibatch(x_train, y_train)
+    #     x_minibatch = np.asarray(x_minibatch)
+    #     y_minibatch = np.asarray(y_minibatch)
 
-        datagen = ImageDataGenerator(rescale=1./255)
-        minibatch_generator = datagen.flow(x_minibatch,
-                                    y_minibatch,
-                                    batch_size = MINIBATCH_SIZE)
+    #     datagen = ImageDataGenerator(rescale=1./255)
+    #     minibatch_generator = datagen.flow(x_minibatch,
+    #                                 y_minibatch,
+    #                                 batch_size = MINIBATCH_SIZE)
 
 
-        # Fit the BN layers with the new minibatch, leave all other weights the same
-        MCBN_model = org_model
-        MCBN_model.fit(minibatch_generator,
-                            epochs=1,
-                            verbose=0)
+    #     # Fit the BN layers with the new minibatch, leave all other weights the same
+    #     MCBN_model = org_model
+    #     MCBN_model.fit(minibatch_generator,
+    #                         epochs=1,
+    #                         verbose=0)
 
-        y_p = MCBN_model.predict(x_test, batch_size=len(x_test)) #Predict for bn look at (sigma and mu only one to chance, not the others)
-        mcbn_predictions.append(y_p)
+    #     y_p = MCBN_model.predict(x_test, batch_size=len(x_test)) #Predict for bn look at (sigma and mu only one to chance, not the others)
+    #     mcbn_predictions.append(y_p)
 
     # score of the MCBN model
     accs = []

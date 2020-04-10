@@ -24,6 +24,8 @@ from tensorflow.keras.preprocessing.image import ImageDataGenerator
 from tensorflow.keras import backend as K
 from sklearn.metrics import accuracy_score
 
+from multiprocessing import Process, Queue
+
 from tensorflow.keras import Input, layers, models, utils, backend
 import matplotlib as mpl
 mpl.use('Agg')
@@ -69,7 +71,7 @@ def clear_prof_data():
 
 
 # Hyperparameters
-DATANAME = 'POLAR'
+DATANAME = 'CIFAR10'
 METHODENAMES = ['MCDO', 'MCBN', 'Ensemble', 'VarianceOutput']
 
 TRAIN_TEST_SPLIT = 0.8 # Value between 0 and 1, e.g. 0.8 creates 80%/20% division train/test
@@ -402,7 +404,7 @@ def test_on_new_func(new_images_predictions, x_pred, more_info = False):
 
 
 @profile
-def MCDO(METHODENAME):
+def MCDO(q, METHODENAME):
 
     MCDO_PREDICTIONS = 250
 
@@ -420,6 +422,7 @@ def MCDO(METHODENAME):
         MODEL_TO_USE = os.path.sep + METHODENAME
         MODEL_VERSION = os.path.sep + 'CIFAR_ImageNet_retrain_32B_95E_86A'
         MODEL_NAME = 'MCDO_model.h5'
+        DATA_PATH = None
 
     if DATANAME == 'POLAR':
         MCDO_BATCH_SIZE = 16
@@ -432,10 +435,12 @@ def MCDO(METHODENAME):
 
     def mcdo_predict(pre_trained_model, x_pred):
         mcdo_predictions = []
+        datagen = ImageDataGenerator(rescale=1./255)
+        pred_generator = datagen.flow(x_pred, batch_size=MCDO_BATCH_SIZE, shuffle=False)
         # progress_bar = tf.keras.utils.Progbar(target=MCDO_PREDICTIONS, interval=5)
         for i in range(MCDO_PREDICTIONS):
             # progress_bar.update(i)
-            y_p = pre_trained_model.predict(x_pred, batch_size=MCDO_BATCH_SIZE)
+            y_p = pre_trained_model.predict(pred_generator)
             mcdo_predictions.append(y_p)
         return mcdo_predictions
 
@@ -488,7 +493,7 @@ def MCDO(METHODENAME):
 
 
 @profile
-def MCBN(METHODENAME):
+def MCBN(q, METHODENAME):
     MCBN_PREDICTIONS = 250
     LEARN_RATE = 1
 
@@ -504,8 +509,9 @@ def MCBN(METHODENAME):
     if DATANAME == 'CIFAR10':
         MINIBATCH_SIZE = 128
         MODEL_TO_USE = os.path.sep + METHODENAME
-        MODEL_VERSION = os.path.sep + 'CIFAR_ImageNet_Retrain_32B_57E_87A'
+        MODEL_VERSION = os.path.sep + '2020-04-10_14-30_imagenet_32B_82.3%A'
         MODEL_NAME = 'MCBN_model.h5'
+        DATA_PATH = None
 
     if DATANAME == 'POLAR':
         MINIBATCH_SIZE = 16
@@ -534,6 +540,8 @@ def MCBN(METHODENAME):
 
     def mcbn_predict(pre_trained_model, x_train, y_train, x_pred):
         mcbn_predictions = []
+        datagen = ImageDataGenerator(rescale=1./255)
+        pred_generator = datagen.flow(x_pred, batch_size=MINIBATCH_SIZE, shuffle=False)
         # progress_bar = tf.keras.utils.Progbar(target=MCBN_PREDICTIONS, interval=5)
 
         org_model = pre_trained_model
@@ -541,10 +549,7 @@ def MCBN(METHODENAME):
             # progress_bar.update(i)
             # Create new random minibatch from train data
             x_minibatch, y_minibatch = create_minibatch(x_train, y_train)
-            x_minibatch = np.asarray(x_minibatch)
-            y_minibatch = np.asarray(y_minibatch)
-
-            datagen = ImageDataGenerator(rescale=1./255)
+            
             minibatch_generator = datagen.flow(x_minibatch,
                                         y_minibatch,
                                         batch_size = MINIBATCH_SIZE)
@@ -555,7 +560,7 @@ def MCBN(METHODENAME):
                                 epochs=1,
                                 verbose=0)
 
-            y_p = MCBN_model.predict(x_pred, batch_size=len(x_pred)) #Predict for bn look at (sigma and mu only one to chance, not the others)
+            y_p = MCBN_model.predict(pred_generator) #Predict for bn look at (sigma and mu only one to chance, not the others)
             mcbn_predictions.append(y_p)
         
         return mcbn_predictions
@@ -600,8 +605,12 @@ def MCBN(METHODENAME):
             # print(layer.name, layer.trainable)
 
         adam = optimizers.Adam(lr=LEARN_RATE)
+        sgd = optimizers.SGD(lr=LEARN_RATE, momentum=0.9)
+
+        OPTIMZ = sgd
+        
         pre_trained_model.compile(
-            optimizer=adam,
+            optimizer=OPTIMZ,
             loss='categorical_crossentropy',
             metrics=['accuracy']
         )
@@ -624,7 +633,7 @@ def MCBN(METHODENAME):
 
 
 @profile
-def Ensemble(METHODENAME):
+def Ensemble(q, METHODENAME):
     if DATANAME == 'MES':
         # Hyperparameters Messidor
         N_FOLDERS = 2
@@ -642,6 +651,7 @@ def Ensemble(METHODENAME):
         N_ENSEMBLE_MEMBERS = [40]
         # MODEL_VERSION = ['CIF_ImageNet_32B_20EN', 'CIF_ImageNet_32B_20EN_2']
         MODEL_VERSION = ['2020-03-19_16-19-18']
+        DATA_PATH = None
 
 
     if DATANAME == 'POLAR':
@@ -658,6 +668,8 @@ def Ensemble(METHODENAME):
 
     def ensemble_predict(x_pred):
         mc_predictions = []
+        datagen = ImageDataGenerator(rescale=1./255)
+        pred_generator = datagen.flow(x_pred, batch_size=64, shuffle=False)
         # progress_bar = tf.keras.utils.Progbar(target=sum(N_ENSEMBLE_MEMBERS), interval=5)
         for i in range(N_FOLDERS):
             old_dir = os.getcwd()
@@ -679,7 +691,7 @@ def Ensemble(METHODENAME):
                 os.chdir(old_dir)
 
                 # progress_bar.update(j)
-                y_p = pre_trained_model.predict(x_pred, batch_size=len(x_pred))
+                y_p = pre_trained_model.predict(pred_generator)
                 # print(y_p)
                 mc_predictions.append(y_p)
             K.clear_session()
@@ -727,7 +739,7 @@ def Ensemble(METHODENAME):
 
 
 @profile
-def VarianceOutput(METHODENAME):
+def VarianceOutput(q, METHODENAME):
     # Hyperparameters
     MODEL_TO_USE = os.path.sep + METHODENAME
 
@@ -743,6 +755,7 @@ def VarianceOutput(METHODENAME):
         MCDO_BATCH_SIZE = 128
         MODEL_VERSION = os.path.sep + 'CIF_ImageNet_32B_95E_68A'
         MODEL_NAME = 'variance_model.h5'
+        DATA_PATH = None
 
     if DATANAME == 'POLAR':
         MCDO_BATCH_SIZE = 16
@@ -817,7 +830,7 @@ def VarianceOutput(METHODENAME):
                                         num_classes=NUM_CLASSES)
         print(confusion)
 
-        print("Correct: {}, wrong: {}, accuracy: {}%".format(correct, wrong, 100- (wrong/correct)*100))
+        print("Correct: {}, wrong: {}, accuracy: {}%".format(correct, wrong, (correct/(correct+wrong))*100))
         print("")
         print("Uncertainty on original test dataset when correctly predicted = {:.2%}".format(mean(correct_var))) 
         print("Uncertainty on original test dataset when wrongly predicted = {:.2%}".format(mean(wrong_var)))    
@@ -881,19 +894,22 @@ def VarianceOutput(METHODENAME):
         pre_trained_model.load_weights('variance_weights.h5')
         # pre_trained_model.summary()
         os.chdir(old_dir)
+        datagen = ImageDataGenerator(rescale=1./255)
+        test_generator = datagen.flow(x_test, batch_size=64, shuffle=False)
+        pred_generator = datagen.flow(x_pred, batch_size=64, shuffle=False)
 
         if TEST_ON_OWN_DATASET or LABELS_AVAILABLE or TEST_ON_OWN_AND_NEW_DATASET:
-            variance_org_dataset = pre_trained_model.predict(x_test)
+            variance_org_dataset = pre_trained_model.predict(test_generator)
             variance_org_dataset = convert_to_var(variance_org_dataset, y_test)
             var_label(variance_org_dataset, y_test)
         
         if TEST_ON_OWN_AND_NEW_DATASET:
-            variance_new_images_predictions = pre_trained_model.predict(x_pred)
+            variance_new_images_predictions = pre_trained_model.predict(pred_generator)
             variance_new_images_predictions = convert_to_var(variance_new_images_predictions, y_test = None, label_avail=False)
             var_no_label(variance_new_images_predictions)
         
         else:
-            variance_new_images_predictions = pre_trained_model.predict(x_pred)
+            variance_new_images_predictions = pre_trained_model.predict(pred_generator)
             variance_new_images_predictions = convert_to_var(variance_new_images_predictions, y_test = None, label_avail=False)
             var_no_label(variance_new_images_predictions, more_info = True)
 
@@ -907,19 +923,35 @@ def main():
         if METHODENAME == 'MCDO':
             print('')
             print("START MCDO")
-            MCDO(METHODENAME)
+            # MCDO(METHODENAME)
+            q = Queue()
+            p = Process(target=MCDO, args=(q, METHODENAME))
+            p.start()
+            p.join() # this blocks until the process terminates
         if METHODENAME == 'MCBN':
             print('')
             print("START MCBN")
-            MCBN(METHODENAME)
+            # MCBN(METHODENAME)
+            q = Queue()
+            p = Process(target=MCBN, args=(q, METHODENAME))
+            p.start()
+            p.join() # this blocks until the process terminates
         if METHODENAME == 'Ensemble':
             print('')
             print("START Ensemble")
-            Ensemble(METHODENAME)
+            # Ensemble(METHODENAME)
+            q = Queue()
+            p = Process(target=Ensemble, args=(q, METHODENAME))
+            p.start()
+            p.join() # this blocks until the process terminates
         if METHODENAME == 'VarianceOutput':
             print('')
             print("START VarianceOutput")
-            VarianceOutput(METHODENAME)
+            q = Queue()
+            # VarianceOutput(METHODENAME)
+            p = Process(target=VarianceOutput, args=(q, METHODENAME))
+            p.start()
+            p.join() # this blocks until the process terminates
 
 if __name__ == "__main__":
     main()
@@ -935,3 +967,5 @@ if __name__ == "__main__":
 # Truckje: laatste laag VGG16 opblazen () als output verandert betekent dat data niet gebalanceerd is
 # Wanneer niet veranderd, dan overfitting
 # x = Dense(4096, activation='relu', name='fc1')(x) -> 4096*2 of meer
+# TODO graph uncertainty against predicted accuracy for (all) classes, hypothesis is that lower accuracy should give higher uncertainty
+# Or high distribution of accuracies shuold give higher uncertainty

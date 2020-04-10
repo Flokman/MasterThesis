@@ -12,7 +12,7 @@ mpl.use('Agg')
 import matplotlib.pyplot as plt
 plt.style.use("ggplot")
 
-from tensorflow.keras.models import Model
+from tensorflow.keras.models import Model, load_model
 from tensorflow.keras.layers import Dense, Dropout, Flatten
 from tensorflow.keras import optimizers
 from tensorflow.keras.applications.vgg16 import VGG16
@@ -51,6 +51,7 @@ ES_PATIENCE = 5
 DROPOUTRATES = [0.05, 0.1, 0.15, 0.2, 0.25, 0.3, 0.5, 0.5]
 MIN_DELTA = 0.005
 EARLY_MONITOR = 'val_accuracy'
+MC_MONITOR = 'val_loss'
 DATANAME = 'MES'
 
 # Get dataset path
@@ -355,6 +356,7 @@ def main():
     early_stopping = tf.keras.callbacks.EarlyStopping(monitor=EARLY_MONITOR, min_delta = MIN_DELTA,
                                                     mode='auto', verbose=1, patience=ES_PATIENCE)
 
+    mc = tf.keras.callbacks.ModelCheckpoint('best_model.h5', monitor=MC_MONITOR, mode='auto', save_best_only=True)
 
     datagen = ImageDataGenerator(rescale=1./255)
     train_generator = datagen.flow(x_train[0:int(TRAIN_VAL_SPLIT*len(x_train))],
@@ -369,7 +371,10 @@ def main():
                    epochs=EPOCHS,
                    verbose=2,
                    validation_data=val_generator,
-                   callbacks=[tensorboard_callback, early_stopping])
+                   callbacks=[tensorboard_callback, early_stopping, mc])
+
+    MCBN_model = load_model('best_model.h5')
+    os.remove('best_model.h5')
 
     # Save JSON config to disk
     json_config = MCDO_model.to_json()
