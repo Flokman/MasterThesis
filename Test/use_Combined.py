@@ -10,7 +10,6 @@ import csv
 import h5py
 import tensorflow as tf
 import numpy as np
-from statistics import mean
 
 # from tensorflow import keras
 from tensorflow.keras import optimizers
@@ -18,11 +17,14 @@ from tensorflow.keras.models import Model
 from tensorflow.keras.layers import Dense, BatchNormalization, Flatten, Lambda
 from tensorflow.keras.models import load_model
 from tensorflow.keras.applications.vgg16 import VGG16
-from tensorflow.keras.datasets import cifar10
+from tensorflow.keras.datasets import cifar10, mnist
 from tensorflow.keras.preprocessing.image import img_to_array, load_img
 from tensorflow.keras.preprocessing.image import ImageDataGenerator
 from tensorflow.keras import backend as K
 from sklearn.metrics import accuracy_score
+from statistics import mean
+
+from PIL import Image
 
 from multiprocessing import Process, Queue
 
@@ -72,7 +74,8 @@ def clear_prof_data():
 
 # Hyperparameters
 DATANAME = 'CIFAR10'
-METHODENAMES = ['MCDO', 'MCBN', 'Ensemble', 'VarianceOutput']
+NEW_DATA = 'MNIST' # or 'local' for local folder
+METHODNAMES = ['MCDO', 'MCBN', 'Ensemble', 'VarianceOutput']
 
 TRAIN_TEST_SPLIT = 0.8 # Value between 0 and 1, e.g. 0.8 creates 80%/20% division train/test
 
@@ -83,6 +86,7 @@ LABELS_AVAILABLE = False
 TO_SHUFFLE = False
 TEST_IMAGES_LOCATION = os.path.sep + 'test_images'
 TEST_IMAGES_LABELS_NAME = 'test_images_labels'
+HOME_DIR = os.getcwd()
 
 if (DATANAME == 'MES' or DATANAME == 'POLAR') and TEST_ON_OWN_AND_NEW_DATASET == True:
     TEST_ON_OWN_DATASET = True
@@ -165,18 +169,24 @@ def load_data(path, to_shuffle):
         return (x_train, y_train), (x_test, y_test), label_count
 
 
-def load_hdf5_dataset(DATA_PATH):
+def load_hdf5_dataset(DATA_PATH, new_data=False):
     ''' Load a dataset, split and put in right format'''
 
     # Split the data between train and test sets
-    if DATANAME == 'POLAR':
-        (x_train, y_train), (x_test, y_test), train_label_count, test_label_count = load_data(DATA_PATH, TO_SHUFFLE)
-    
-    if DATANAME == 'MES':
-        (x_train, y_train), (x_test, y_test), label_count = load_data(DATA_PATH, TO_SHUFFLE)
+    if not new_data:
+        if DATANAME == 'POLAR':
+            (x_train, y_train), (x_test, y_test), train_label_count, test_label_count = load_data(DATA_PATH, TO_SHUFFLE)
 
-    if DATANAME == 'CIFAR10':
-        (x_train, y_train), (x_test, y_test) = cifar10.load_data()
+        if DATANAME == 'MES':
+            (x_train, y_train), (x_test, y_test), label_count = load_data(DATA_PATH, TO_SHUFFLE)
+
+        if DATANAME == 'CIFAR10':
+            (x_train, y_train), (x_test, y_test) = cifar10.load_data()
+
+    else:
+        if NEW_DATA == 'MNIST':
+            (x_train, y_train), (x_test, y_test) = mnist.load_data()
+
     
     x_train = np.asarray(x_train)
     y_train = np.asarray(y_train)
@@ -195,91 +205,115 @@ def load_hdf5_dataset(DATA_PATH):
 
 
 def load_new_images():
-    ''' Load, convert and resize the test images into numpy arrays '''
-    images_path = os.getcwd() + TEST_IMAGES_LOCATION + os.path.sep + '*'
-    # print(images_path)
+    if NEW_DATA == 'local':
+        ''' Load, convert and resize the test images into numpy arrays '''
+        images_path = os.getcwd() + TEST_IMAGES_LOCATION + os.path.sep + '*'
+        # print(images_path)
 
-    # get all the image paths
-    addrs = glob.glob(images_path)
+        # get all the image paths
+        addrs = glob.glob(images_path)
 
-    for i, addr in enumerate(addrs):
-        if i % 1000 == 0 and i > 1:
-            print('Image data: {}/{}'.format(i, len(addrs)))
+        for i, addr in enumerate(addrs):
+            if i % 1000 == 0 and i > 1:
+                print('Image data: {}/{}'.format(i, len(addrs)))
 
-        if i == 0:
-            img = load_img(addr, target_size=(IMG_HEIGHT, IMG_WIDTH))
-            img_ar = img_to_array(img)
-            x_pred = img_ar.reshape((1,) + img_ar.shape)
+            if i == 0:
+                img = load_img(addr, target_size=(IMG_HEIGHT, IMG_WIDTH))
+                img_ar = img_to_array(img)
+                x_pred = img_ar.reshape((1,) + img_ar.shape)
 
-        else:
-            img = load_img(addr, target_size=(IMG_HEIGHT, IMG_WIDTH))
-            img_ar = img_to_array(img)
-            img_ar = img_ar.reshape((1,) + img_ar.shape)
-            x_pred = np.vstack((x_pred, img_ar))
+            else:
+                img = load_img(addr, target_size=(IMG_HEIGHT, IMG_WIDTH))
+                img_ar = img_to_array(img)
+                img_ar = img_ar.reshape((1,) + img_ar.shape)
+                x_pred = np.vstack((x_pred, img_ar))
 
-    x_pred = x_pred.astype('float32')
-    x_pred /= 255
-    # print('x_pred shape:', x_pred.shape)
-    # print(x_pred.shape[0], 'x_pred samples')
+        x_pred = x_pred.astype('float32')
+        x_pred = np.asarray(x_pred)
+        # print('x_pred shape:', x_pred.shape)
+        # print(x_pred.shape[0], 'x_pred samples')
 
-    if LABELS_AVAILABLE:
-        baseaddrs = []
-        for im in addrs:
-            if im.endswith('JPG'):
-                im = im[:-3]
-                im = im + 'jpg'
-            baseaddrs.append(str(os.path.basename(im)))
+        if LABELS_AVAILABLE:
+            baseaddrs = []
+            for im in addrs:
+                if im.endswith('JPG'):
+                    im = im[:-3]
+                    im = im + 'jpg'
+                baseaddrs.append(str(os.path.basename(im)))
 
-        labels = []
-        label_count = [0] * 5
-        with open(TEST_IMAGES_LOCATION + TEST_IMAGES_LABELS_NAME + '.csv') as f:
-            reader = csv.reader(f, delimiter=';')
-            next(reader) # skip header
-            for row in reader:
-                imaddrs = str(row[0])
-                idx = 0
-                suc = 2
-                first = 0
-                for im in baseaddrs:
-                    if im == imaddrs:
-                        if isinstance(row[1], str):
-                            if row[1] == '': #if no class then 0
-                                print(row[1])
-                                row[1] = 0
-                            row[1] = int(float(row[1]))
-                        labels.append(int(float(row[1])))
-                        label_count[int(float(row[1]))] += 1
-                        baseaddrs.pop(idx)
-                        suc = 0
-                    else:
-                        if first == 0:
-                            first = 1
-                        if suc == 0:
+            labels = []
+            label_count = [0] * 5
+            with open(TEST_IMAGES_LOCATION + TEST_IMAGES_LABELS_NAME + '.csv') as f:
+                reader = csv.reader(f, delimiter=';')
+                next(reader) # skip header
+                for row in reader:
+                    imaddrs = str(row[0])
+                    idx = 0
+                    suc = 2
+                    first = 0
+                    for im in baseaddrs:
+                        if im == imaddrs:
+                            if isinstance(row[1], str):
+                                if row[1] == '': #if no class then 0
+                                    print(row[1])
+                                    row[1] = 0
+                                row[1] = int(float(row[1]))
+                            labels.append(int(float(row[1])))
+                            label_count[int(float(row[1]))] += 1
+                            baseaddrs.pop(idx)
                             suc = 0
                         else:
-                            suc = 1
-                    idx += 1
-                if suc == 1:
-                    print("failed:", imaddrs)
+                            if first == 0:
+                                first = 1
+                            if suc == 0:
+                                suc = 0
+                            else:
+                                suc = 1
+                        idx += 1
+                    if suc == 1:
+                        print("failed:", imaddrs)
 
-        print("label_count:", label_count)
-        y_pred.shape = (len(labels), len(labels))
-        y_pred[:, 0] = np.arange(len(labels))
-        y_pred[0, :] = labels
-        combined = list(zip(x_pred, y_pred)) # use zip() to bind the images and labels together
-        (x_pred, y_pred) = zip(*combined)
-        # convert class vectors to binary class matrices
-        y_pred = tf.keras.utils.to_categorical(y_pred, NUM_CLASSES)
+            print("label_count:", label_count)
+            y_pred.shape = (len(labels), len(labels))
+            y_pred[:, 0] = np.arange(len(labels))
+            y_pred[0, :] = labels
+            combined = list(zip(x_pred, y_pred)) # use zip() to bind the images and labels together
+            (x_pred, y_pred) = zip(*combined)
+            # convert class vectors to binary class matrices
+            y_pred = tf.keras.utils.to_categorical(y_pred, NUM_CLASSES)
 
-        return(x_pred, y_pred)
-    else:
+            return(x_pred, y_pred)
+        else:
+            return x_pred
+
+    elif NEW_DATA == 'MNIST':
+        (x_train, y_train), (x_test, y_test) = load_hdf5_dataset(None, new_data=True)
+
+        for ind, img_ar in enumerate(x_test):
+            if ind == 0:
+                img = Image.fromarray(img_ar)
+                img = img.resize((32, 32))
+                img_ar = np.array(img)
+                img_ar = np.stack((img_ar, img_ar, img_ar), axis=2)
+                x_pred = img_ar.reshape((1,) + img_ar.shape)
+            else:    
+                img = Image.fromarray(img_ar)
+                img = img.resize((32, 32))
+                img_ar = np.array(img)
+                img_ar = np.stack((img_ar, img_ar, img_ar), axis=2)
+                img_ar = img_ar.reshape((1,) + img_ar.shape)
+                x_pred = np.vstack((x_pred, img_ar))
+        
+        x_pred = x_pred.astype('float32')
+        x_pred = np.asarray(x_pred)
+
         return x_pred
 
 
-def indepth_predictions(x_pred, y_pred, mc_predictions, METHODENAME):
+def indepth_predictions(x_pred, y_pred, mc_predictions, METHODNAME):
     ''' Creates more indepth predictions (print on command line and create figures in folder) '''
     # Dir to store created figures
-    fig_dir = os.path.join(os.getcwd(), METHODENAME + os.path.sep + DATANAME + os.path.sep + datetime.datetime.now().strftime('%Y-%m-%d_%H-%M-%S')) 
+    fig_dir = os.path.join(os.getcwd(), METHODNAME + os.path.sep + DATANAME + os.path.sep + datetime.datetime.now().strftime('%Y-%m-%d_%H-%M-%S')) 
     os.makedirs(fig_dir)
     log_dir = os.path.join(fig_dir, "logs/fit/" + datetime.datetime.now().strftime("%Y%m%d-%H%M%S")) # Dir to store Tensorboard data
     os.makedirs(log_dir)
@@ -347,7 +381,12 @@ def test_on_own_func(methodname, predictions, y_test):
     print(confusion)
 
     correct_var = []
+    correct_acc = []
     wrong_var = []
+    wrong_acc = []
+    all_accuracies = []
+    all_uncertainties = []
+
     for i in range(len(y_test)):
         p_0 = np.array([p[i] for p in predictions])
         # print("posterior mean: {}".format(p_0.mean(axis=0).argmax()))
@@ -358,42 +397,69 @@ def test_on_own_func(methodname, predictions, y_test):
         correct_pred = False 
         if correct_ind == predicted_ind:
             correct_pred = True
-        # for l, (prob, var) in enumerate(zip(p_0.mean(axis=0), p_0.std(axis=0))):
-        #     # print("class: {}; proba: {:.1%}; var: {:.2%} ".format(l, prob, var))
-        #     if correct_pred and l == correct_ind:
-        #         correct_var.append(var)
-        #     else:
-        #         wrong_var.append(var)
 
-        if correct_pred:
-            for l, (prob, var) in enumerate(zip(p_0.mean(axis=0), p_0.std(axis=0))):
-                # print("class: {}; proba: {:.1%}; var: {:.2%} ".format(l, prob, var))
-                if l == correct_ind:
-                    correct_var.append(var)
-        else:
-             for l, (prob, var) in enumerate(zip(p_0.mean(axis=0), p_0.std(axis=0))):
-                # print("class: {}; proba: {:.1%}; var: {:.2%} ".format(l, prob, var))
-                if l == predicted_ind:
-                    wrong_var.append(var)           
+        # if correct_pred:
+        for l, (prob, var) in enumerate(zip(p_0.mean(axis=0), p_0.std(axis=0))):
+            # print("class: {}; proba: {:.1%}; var: {:.2%} ".format(l, prob, var))
+            all_accuracies.append(prob)
+            all_uncertainties.append(var)
+
+            if l == correct_ind and correct_pred:
+                correct_var.append(var)
+                correct_acc.append(prob)
+            elif l == predicted_ind:
+                wrong_var.append(var)
+                wrong_acc.append(prob)      
+        # else:
+        #      for l, (prob, var) in enumerate(zip(p_0.mean(axis=0), p_0.std(axis=0))):
+        #         # print("class: {}; proba: {:.1%}; var: {:.2%} ".format(l, prob, var))
+        #         if l == predicted_ind:
+        #             wrong_var.append(var)
+        #             wrong_acc.append(prob)           
 
     print("")
-    print("Uncertainty on original test dataset when correctly predicted = {:.2%}".format(mean(correct_var))) 
-    print("Uncertainty on original test dataset when wrongly predicted = {:.2%}".format(mean(wrong_var)))    
+    print("Mean uncertainty on original test dataset when correctly predicted = {:.2%}".format(mean(correct_var)))
+    print("Mean uncertainty on original test dataset when wrongly predicted = {:.2%}".format(mean(wrong_var)))
+    print("Mean accuracy on original test dataset when correctly predicted = {:.2%}".format(mean(correct_acc)))
+    print("Mean accuracy on original test dataset when wrongly predicted = {:.2%}".format(mean(wrong_acc)))
+
+    scatterplot(all_accuracies, all_uncertainties, methodname, 'own_data')
 
 
-def test_on_new_func(new_images_predictions, x_pred, more_info = False):
-    total_new_var = []
+def test_on_new_func(new_images_predictions, x_pred, methodname, more_info=False):
+    new_var_pred = []
+    new_acc_pred = []
+    new_var_not_pred = []
+    new_acc_not_pred = []
+    all_accuracies = []
+    all_uncertainties = []
+
     for i in range(len(x_pred)):
         p_0 = np.array([p[i] for p in new_images_predictions])
+        predicted_ind = p_0.mean(axis=0).argmax()
         # print("posterior mean: {}".format(p_0.mean(axis=0).argmax()))
         
         # probability + variance
         for l, (prob, var) in enumerate(zip(p_0.mean(axis=0), p_0.std(axis=0))):
             # print("class: {}; proba: {:.1%}; var: {:.2%} ".format(l, prob, var))
-            total_new_var.append(var)
+            all_accuracies.append(prob)
+            all_uncertainties.append(var)
 
-    print("Mean uncertainty on predicted class of new data = {:.2%}".format(mean(total_new_var)))
-    
+            if l == predicted_ind:
+                new_var_pred.append(var)
+                new_acc_pred.append(prob)
+            else:
+                new_var_not_pred.append(var)
+                new_acc_not_pred.append(prob)
+
+    print("")
+    print("Mean uncertainty on highest predicted class of new data = {:.2%}".format(mean(new_var_pred)))
+    print("Mean uncertainty on not predicted classes of new data = {:.2%}".format(mean(new_var_not_pred)))
+    print("Mean accuracy on highest predicted class of new data = {:.2%}".format(mean(new_acc_pred)))
+    print("Mean accuracy on not predicted classes of new data = {:.2%}".format(mean(new_acc_not_pred)))
+
+    scatterplot(all_accuracies, all_uncertainties, methodname, 'new_data')
+
     if more_info:
         for i in range(len(x_pred)):
             p_0 = np.array([p[i] for p in new_images_predictions])
@@ -403,14 +469,27 @@ def test_on_new_func(new_images_predictions, x_pred, more_info = False):
                 print("class: {}; proba: {:.1%}; var: {:.2%} ".format(l, prob, var))
 
 
+def scatterplot(accuracies, uncertainties, methodname, own_or_new):
+    # os.chdir(HOME_DIR + os.path.sep + methodname)
+
+    plt.scatter(accuracies, uncertainties)
+    plt.xlabel('accuracy')
+    plt.ylabel('uncertainty')
+    plt.title('Scatterplot for {} on {}'.format(methodname, own_or_new))
+    plt.savefig('{}_scatter_{}.png'.format(methodname, own_or_new))
+    plt.clf()
+
+    # os.chdir(HOME_DIR)
+
+
 @profile
-def MCDO(q, METHODENAME):
+def MCDO(q, METHODNAME):
 
     MCDO_PREDICTIONS = 250
 
     if DATANAME == 'MES':
         MCDO_BATCH_SIZE = 128
-        MODEL_TO_USE = os.path.sep + METHODENAME
+        MODEL_TO_USE = os.path.sep + METHODNAME
         MODEL_VERSION = os.path.sep + 'MES_ImageNet_Retrain_32B_93E_52A'
         MODEL_NAME = 'MCDO_model.h5'
         DATASET_LOCATION = os.path.sep + 'Datasets'
@@ -419,14 +498,14 @@ def MCDO(q, METHODENAME):
 
     if DATANAME == 'CIFAR10':
         MCDO_BATCH_SIZE = 128
-        MODEL_TO_USE = os.path.sep + METHODENAME
+        MODEL_TO_USE = os.path.sep + METHODNAME
         MODEL_VERSION = os.path.sep + 'CIFAR_ImageNet_retrain_32B_95E_86A'
         MODEL_NAME = 'MCDO_model.h5'
         DATA_PATH = None
 
     if DATANAME == 'POLAR':
         MCDO_BATCH_SIZE = 16
-        MODEL_TO_USE = os.path.sep + METHODENAME
+        MODEL_TO_USE = os.path.sep + METHODNAME
         MODEL_VERSION = os.path.sep + '2020-03-22_10-56_imagenet_16B_61.1%A'
         MODEL_NAME = 'MCDO_model.h5'
         DATASET_HDF5 = '/Polar_PNG_' + str(IMG_HEIGHT) + '.hdf5'
@@ -462,7 +541,7 @@ def MCDO(q, METHODENAME):
             (x_train, y_train), (x_test, y_test) = load_hdf5_dataset(DATA_PATH)
             x_pred = load_new_images()
 
-        old_dir = os.getcwd()
+        os.chdir(HOME_DIR)
         os.chdir(ROOT_PATH + os.path.sep + ONE_HIGHER_PATH[1] + MODEL_TO_USE + os.path.sep + DATANAME + MODEL_VERSION + os.path.sep)
         print(os.getcwd())
 
@@ -474,32 +553,35 @@ def MCDO(q, METHODENAME):
 
         # pre_trained_model.summary()
 
-        os.chdir(old_dir)
+        fig_dir = os.path.join(HOME_DIR + os.path.sep + METHODNAME, datetime.datetime.now().strftime('%Y-%m-%d_%H-%M-%S'))
+        os.makedirs(fig_dir)
+        os.chdir(fig_dir)
 
         if TEST_ON_OWN_DATASET or LABELS_AVAILABLE or TEST_ON_OWN_AND_NEW_DATASET:
             mcdo_predictions = mcdo_predict(pre_trained_model, x_test)
-            test_on_own_func(METHODENAME, mcdo_predictions, y_test)
+            test_on_own_func(METHODNAME, mcdo_predictions, y_test)
         
         if TEST_ON_OWN_AND_NEW_DATASET:
             mcdo_new_images_predictions = mcdo_predict(pre_trained_model, x_pred)
-            test_on_new_func(mcdo_new_images_predictions, x_pred)
+            test_on_new_func(mcdo_new_images_predictions, x_pred, METHODNAME)
         
         else:
             mcdo_new_images_predictions = mcdo_predict(pre_trained_model, x_pred)
-            test_on_new_func(mcdo_new_images_predictions, x_pred, more_info = True)
+            test_on_new_func(mcdo_new_images_predictions, x_pred, METHODNAME, more_info = True)
 
+        os.chdir(HOME_DIR)
 
     method_main()
 
 
 @profile
-def MCBN(q, METHODENAME):
+def MCBN(q, METHODNAME):
     MCBN_PREDICTIONS = 250
     LEARN_RATE = 1
 
     if DATANAME == 'MES':
         MINIBATCH_SIZE = 128
-        MODEL_TO_USE = os.path.sep + METHODENAME
+        MODEL_TO_USE = os.path.sep + METHODNAME
         MODEL_VERSION = os.path.sep + 'ImageNet_retrain_32B_144E_88A'
         MODEL_NAME = 'MCBN_model.h5'
         DATASET_LOCATION = os.path.sep + 'Datasets'
@@ -508,14 +590,14 @@ def MCBN(q, METHODENAME):
 
     if DATANAME == 'CIFAR10':
         MINIBATCH_SIZE = 128
-        MODEL_TO_USE = os.path.sep + METHODENAME
+        MODEL_TO_USE = os.path.sep + METHODNAME
         MODEL_VERSION = os.path.sep + '2020-04-10_14-30_imagenet_32B_82.3%A'
         MODEL_NAME = 'MCBN_model.h5'
         DATA_PATH = None
 
     if DATANAME == 'POLAR':
         MINIBATCH_SIZE = 16
-        MODEL_TO_USE = os.path.sep + METHODENAME
+        MODEL_TO_USE = os.path.sep + METHODNAME
         MODEL_VERSION = os.path.sep + '2020-03-22_10-50_imagenet_8B_51.9%A'
         MODEL_NAME = 'MCBN_model.h5'
         DATASET_HDF5 = '/Polar_PNG_' + str(IMG_HEIGHT) + '.hdf5'
@@ -541,7 +623,7 @@ def MCBN(q, METHODENAME):
     def mcbn_predict(pre_trained_model, x_train, y_train, x_pred):
         mcbn_predictions = []
         datagen = ImageDataGenerator(rescale=1./255)
-        pred_generator = datagen.flow(x_pred, batch_size=MINIBATCH_SIZE, shuffle=False)
+        pred_generator = datagen.flow(x_pred, batch_size=64, shuffle=False)
         # progress_bar = tf.keras.utils.Progbar(target=MCBN_PREDICTIONS, interval=5)
 
         org_model = pre_trained_model
@@ -549,10 +631,11 @@ def MCBN(q, METHODENAME):
             # progress_bar.update(i)
             # Create new random minibatch from train data
             x_minibatch, y_minibatch = create_minibatch(x_train, y_train)
+            x_minibatch = np.asarray(x_minibatch)
             
             minibatch_generator = datagen.flow(x_minibatch,
                                         y_minibatch,
-                                        batch_size = MINIBATCH_SIZE)
+                                        batch_size=MINIBATCH_SIZE)
 
             # Fit the BN layers with the new minibatch, leave all other weights the same
             MCBN_model = org_model
@@ -584,7 +667,7 @@ def MCBN(q, METHODENAME):
             (x_train, y_train), (x_test, y_test) = load_hdf5_dataset(DATA_PATH)
             x_pred = load_new_images()
 
-        old_dir = os.getcwd()
+        os.chdir(HOME_DIR)
         os.chdir(ROOT_PATH + os.path.sep + ONE_HIGHER_PATH[1] + MODEL_TO_USE + os.path.sep + DATANAME + MODEL_VERSION + os.path.sep)
         print(os.getcwd())
 
@@ -594,7 +677,9 @@ def MCBN(q, METHODENAME):
         pre_trained_model = tf.keras.models.model_from_json(json_config)
         pre_trained_model.load_weights('MCBN_weights.h5')
 
-        os.chdir(old_dir)
+        fig_dir = os.path.join(HOME_DIR + os.path.sep + METHODNAME, datetime.datetime.now().strftime('%Y-%m-%d_%H-%M-%S'))
+        os.makedirs(fig_dir)
+        os.chdir(fig_dir)
 
         # Set onoly batch normalization layers to trainable
         for layer in pre_trained_model.layers:
@@ -618,22 +703,23 @@ def MCBN(q, METHODENAME):
    
         if TEST_ON_OWN_DATASET or LABELS_AVAILABLE or TEST_ON_OWN_AND_NEW_DATASET:
             mcbn_predictions = mcbn_predict(pre_trained_model, x_train, y_train, x_test)
-            test_on_own_func(METHODENAME, mcbn_predictions, y_test)
+            test_on_own_func(METHODNAME, mcbn_predictions, y_test)
         
         if TEST_ON_OWN_AND_NEW_DATASET:
             mcbn_new_images_predictions = mcbn_predict(pre_trained_model, x_train, y_train, x_pred)
-            test_on_new_func(mcbn_new_images_predictions, x_pred)
+            test_on_new_func(mcbn_new_images_predictions, x_pred, METHODNAME)
         
         else:
             mcbn_new_images_predictions = mcbn_predict(pre_trained_model, x_train, y_train, x_pred)
-            test_on_new_func(mcbn_new_images_predictions, x_pred, more_info = True)
+            test_on_new_func(mcbn_new_images_predictions, x_pred, METHODNAME, more_info = True)
 
+        os.chdir(HOME_DIR)
 
     method_main()
 
 
 @profile
-def Ensemble(q, METHODENAME):
+def Ensemble(q, METHODNAME):
     if DATANAME == 'MES':
         # Hyperparameters Messidor
         N_FOLDERS = 2
@@ -663,7 +749,7 @@ def Ensemble(q, METHODENAME):
         DATA_PATH = ROOT_PATH + '/Polar_dataset' + DATASET_HDF5
 
 
-    MODEL_TO_USE = os.path.sep + METHODENAME
+    MODEL_TO_USE = os.path.sep + METHODNAME
 
 
     def ensemble_predict(x_pred):
@@ -696,7 +782,7 @@ def Ensemble(q, METHODENAME):
                 mc_predictions.append(y_p)
             K.clear_session()
         
-        return mc_predictions 
+        return mc_predictions
 
 
     def method_main():
@@ -720,28 +806,33 @@ def Ensemble(q, METHODENAME):
             (x_train, y_train), (x_test, y_test) = load_hdf5_dataset(DATA_PATH)
             x_pred = load_new_images()
 
+        os.chdir(HOME_DIR)
+        fig_dir = os.path.join(HOME_DIR + os.path.sep + METHODNAME, datetime.datetime.now().strftime('%Y-%m-%d_%H-%M-%S'))
+        os.makedirs(fig_dir)
+        os.chdir(fig_dir)
 
         if TEST_ON_OWN_DATASET or LABELS_AVAILABLE or TEST_ON_OWN_AND_NEW_DATASET:
             ensemble_predictions = ensemble_predict(x_test)
-            test_on_own_func(METHODENAME, ensemble_predictions, y_test)
+            test_on_own_func(METHODNAME, ensemble_predictions, y_test)
         
         if TEST_ON_OWN_AND_NEW_DATASET:
             ensemble_new_images_predictions = ensemble_predict(x_pred)
-            test_on_new_func(ensemble_new_images_predictions, x_pred)
+            test_on_new_func(ensemble_new_images_predictions, x_pred, METHODNAME)
         
         else:
             ensemble_only_new_images_predictions = ensemble_predict(x_pred)
-            test_on_new_func(ensemble_new_images_predictions, x_pred, more_info = True)
+            test_on_new_func(ensemble_new_images_predictions, x_pred, METHODNAME, more_info = True)
 
+        os.chdir(HOME_DIR)
 
     method_main()
     # TODO: save testimage with in title predicted class, acc and prob
 
 
 @profile
-def VarianceOutput(q, METHODENAME):
+def VarianceOutput(q, METHODNAME):
     # Hyperparameters
-    MODEL_TO_USE = os.path.sep + METHODENAME
+    MODEL_TO_USE = os.path.sep + METHODNAME
 
     if DATANAME == 'MES':
         MCDO_BATCH_SIZE = 128
@@ -765,7 +856,7 @@ def VarianceOutput(q, METHODENAME):
         DATA_PATH = ROOT_PATH + '/Polar_dataset' + DATASET_HDF5
 
 
-    def convert_to_var(prediction, y_test, label_avail = True):
+    def convert_to_var(prediction, y_test, label_avail=True):
         #Convert var pred to uncertainty
         if label_avail:
             for ind, pred in enumerate(prediction):
@@ -804,7 +895,11 @@ def VarianceOutput(q, METHODENAME):
         wrong = 0
         correct = 0
         correct_var = []
+        correct_acc = []
         wrong_var = []
+        wrong_acc = []
+        all_accuracies = []
+        all_uncertainties = []
 
         for ind, pred in enumerate(org_data_prediction):
             true_label = true_labels[ind]
@@ -817,11 +912,17 @@ def VarianceOutput(q, METHODENAME):
             if classif_ind != true_label:
                 wrong += 1
                 wrong_var.append(var[classif_ind])
+                wrong_acc.append(classif[classif_ind])
                 # print("Pred: {}, true: {}".format(classif_ind, true_label))
                 # print("Var_pred: {}, var_true: {}".format(var_wrong, var_correct))
             if classif_ind == true_label:
                 correct += 1
                 correct_var.append(var[true_label])
+                correct_acc.append(classif[classif_ind])
+
+            for i in range(0, NUM_CLASSES):
+                all_accuracies.append(classif[i])
+                all_uncertainties.append(var[i])
 
         acc = accuracy_score(y_test.argmax(axis=1), org_data_prediction[:, :NUM_CLASSES].argmax(axis=1))
         print("Accuracy on original test dataset: {:.1%}".format(acc))
@@ -832,13 +933,21 @@ def VarianceOutput(q, METHODENAME):
 
         print("Correct: {}, wrong: {}, accuracy: {}%".format(correct, wrong, (correct/(correct+wrong))*100))
         print("")
-        print("Uncertainty on original test dataset when correctly predicted = {:.2%}".format(mean(correct_var))) 
-        print("Uncertainty on original test dataset when wrongly predicted = {:.2%}".format(mean(wrong_var)))    
+        print("Mean uncertainty on original test dataset when correctly predicted = {:.2%}".format(mean(correct_var))) 
+        print("Mean uncertainty on original test dataset when wrongly predicted = {:.2%}".format(mean(wrong_var)))    
+        print("Mean accuracy on original test dataset when correctly predicted = {:.2%}".format(mean(correct_acc)))
+        print("Mean accuracy on original test dataset when wrongly predicted = {:.2%}".format(mean(wrong_acc)))
+
+        scatterplot(all_accuracies, all_uncertainties, METHODNAME, 'own_data')
 
 
     def var_no_label(new_images_predictions, more_info = False):
         new_var_pred = []
+        new_acc_pred = []
         new_var_not_pred = []
+        new_acc_not_pred = []
+        all_accuracies = []
+        all_uncertainties = []
 
         for ind, pred in enumerate(new_images_predictions):
             classif = pred[:NUM_CLASSES]
@@ -846,14 +955,21 @@ def VarianceOutput(q, METHODENAME):
             var = pred[NUM_CLASSES:]
             var_pred = var[classif_ind]
             new_var_pred.append(var_pred)
+            new_acc_pred.append(classif[classif_ind])
             
             for i in range(0, NUM_CLASSES):
+                all_accuracies.append(classif[i])
+                all_uncertainties.append(var[i])
+
                 if classif_ind != i:
                     new_var_not_pred.append(var[i])
+                    new_acc_not_pred.append(classif[i])
 
-
-        print("Mean uncertainty on predicted class of new data = {:.2%}".format(mean(new_var_pred)))
+        print("")
+        print("Mean uncertainty on highest predicted class of new data = {:.2%}".format(mean(new_var_pred)))
         print("Mean uncertainty on not predicted classes of new data = {:.2%}".format(mean(new_var_not_pred)))
+        print("Mean accuracy on highest predicted class of new data = {:.2%}".format(mean(new_acc_pred)))
+        print("Mean accuracy on not highest predicted class of new data = {:.2%}".format(mean(new_acc_not_pred)))
 
         if more_info:
             for ind, pred in enumerate(new_images_predictions):
@@ -863,6 +979,8 @@ def VarianceOutput(q, METHODENAME):
                 if_true_error = pow((classif[classif_ind] - 1), 2)
                 var_pred = abs(if_true_error - var[classif_ind])
                 print("Predicted class: {}, Uncertainty of prediction: {:.2%}".format(classif_ind, var_pred))
+
+        scatterplot(all_accuracies, all_uncertainties, METHODNAME, 'new_data')
 
 
     def method_main():
@@ -883,7 +1001,7 @@ def VarianceOutput(q, METHODENAME):
             (x_train, y_train), (x_test, y_test) = load_hdf5_dataset(DATA_PATH)
             x_pred = load_new_images()
 
-        old_dir = os.getcwd()
+        os.chdir(HOME_DIR)
         os.chdir(ROOT_PATH + os.path.sep + ONE_HIGHER_PATH[1] + MODEL_TO_USE + os.path.sep + DATANAME + MODEL_VERSION + os.path.sep)
         print(os.getcwd())
 
@@ -893,7 +1011,12 @@ def VarianceOutput(q, METHODENAME):
         pre_trained_model = tf.keras.models.model_from_json(json_config)
         pre_trained_model.load_weights('variance_weights.h5')
         # pre_trained_model.summary()
-        os.chdir(old_dir)
+        os.chdir(HOME_DIR)
+
+        fig_dir = os.path.join(HOME_DIR + os.path.sep + METHODNAME, datetime.datetime.now().strftime('%Y-%m-%d_%H-%M-%S'))
+        os.makedirs(fig_dir)
+        os.chdir(fig_dir)
+
         datagen = ImageDataGenerator(rescale=1./255)
         test_generator = datagen.flow(x_test, batch_size=64, shuffle=False)
         pred_generator = datagen.flow(x_pred, batch_size=64, shuffle=False)
@@ -913,43 +1036,44 @@ def VarianceOutput(q, METHODENAME):
             variance_new_images_predictions = convert_to_var(variance_new_images_predictions, y_test = None, label_avail=False)
             var_no_label(variance_new_images_predictions, more_info = True)
 
+        os.chdir(HOME_DIR)
 
     method_main()
 
 
 @profile
 def main():
-    for method_ind, METHODENAME in enumerate(METHODENAMES):
-        if METHODENAME == 'MCDO':
+    for method_ind, METHODNAME in enumerate(METHODNAMES):
+        if METHODNAME == 'MCDO':
             print('')
             print("START MCDO")
-            # MCDO(METHODENAME)
+            # MCDO(METHODNAME)
             q = Queue()
-            p = Process(target=MCDO, args=(q, METHODENAME))
+            p = Process(target=MCDO, args=(q, METHODNAME))
             p.start()
             p.join() # this blocks until the process terminates
-        if METHODENAME == 'MCBN':
+        if METHODNAME == 'MCBN':
             print('')
             print("START MCBN")
-            # MCBN(METHODENAME)
+            # MCBN(METHODNAME)
             q = Queue()
-            p = Process(target=MCBN, args=(q, METHODENAME))
+            p = Process(target=MCBN, args=(q, METHODNAME))
             p.start()
             p.join() # this blocks until the process terminates
-        if METHODENAME == 'Ensemble':
+        if METHODNAME == 'Ensemble':
             print('')
             print("START Ensemble")
-            # Ensemble(METHODENAME)
+            # Ensemble(METHODNAME)
             q = Queue()
-            p = Process(target=Ensemble, args=(q, METHODENAME))
+            p = Process(target=Ensemble, args=(q, METHODNAME))
             p.start()
             p.join() # this blocks until the process terminates
-        if METHODENAME == 'VarianceOutput':
+        if METHODNAME == 'VarianceOutput':
             print('')
             print("START VarianceOutput")
             q = Queue()
-            # VarianceOutput(METHODENAME)
-            p = Process(target=VarianceOutput, args=(q, METHODENAME))
+            # VarianceOutput(METHODNAME)
+            p = Process(target=VarianceOutput, args=(q, METHODNAME))
             p.start()
             p.join() # this blocks until the process terminates
 
@@ -961,11 +1085,23 @@ if __name__ == "__main__":
     print("#################################")
 
 
-# TODO make testing on own dataset work
-# TODO test on bullshit, and some real ones for comparison
+
 # TODO for varianceoutput train variance on different portion of data (different then for first loss)
 # Truckje: laatste laag VGG16 opblazen () als output verandert betekent dat data niet gebalanceerd is
 # Wanneer niet veranderd, dan overfitting
 # x = Dense(4096, activation='relu', name='fc1')(x) -> 4096*2 of meer
-# TODO graph uncertainty against predicted accuracy for (all) classes, hypothesis is that lower accuracy should give higher uncertainty
-# Or high distribution of accuracies shuold give higher uncertainty
+# wanneer niet alles zelfde input resolutie, niet rescale (want kan je data verliezen en aspect ratio)
+# maar, random noise rond correcte crop tot goede size, netwerk leert random noise te negeren
+
+
+# TODO difference between higher uncertainty for wrong and just lower acc for wrong
+
+# Connect threshold for what uncertainty means to accuracy of model on test set
+#   (for example, given 85% accuracy on testset every classification with uncertainty above 5% is not to be trusted)
+
+# Variacne output: nice thing that it can also confirm that it is certain of low probs for classes it doesnt think are it
+
+
+
+
+

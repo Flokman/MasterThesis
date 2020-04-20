@@ -1,0 +1,108 @@
+
+Original (trained on) dataset: CIFAR10
+New dataset (to test on): MNIST
+
+
+Monte Carlo Dropout
+MCDO combined accuracy: 85.9%
+tf.Tensor(
+[[881  14  22  13  12   0   4   8  34  12]
+ [  6 947   1   4   1   0   4   0   9  28]
+ [ 24   2 834  34  53  13  26  10   2   2]
+ [  6  11  44 735  46  91  43  17   2   5]
+ [  5   1  37  32 872   7  19  20   5   2]
+ [  3   2  28 149  40 732  16  29   0   1]
+ [  2   5  22  30  19   7 908   2   2   3]
+ [  8   4  11  22  35  23   4 885   4   4]
+ [ 24  11   7   9   6   0   1   0 938   4]
+ [ 18  79   4   7   1   3   4   6  24 854]], shape=(10, 10), dtype=int32)
+
+Mean uncertainty on original test dataset when correctly predicted = 1.05%
+Mean uncertainty on original test dataset when wrongly predicted = 7.13%
+Mean accuracy on original test dataset when correctly predicted = 98.04%
+Mean accuracy on original test dataset when wrongly predicted = 84.06%
+
+Mean uncertainty on highest predicted class of new data = 4.70%
+Mean uncertainty on not predicted classes of new data = 0.69%
+Mean accuracy on highest predicted class of new data = 88.68%
+Mean accuracy on not predicted classes of new data = 1.26%
+
+
+
+Monte Carlo Batch Normalization
+MCBN combined accuracy: 82.6%
+tf.Tensor(
+[[867   8  12  17   7   2   0  14  42  31]
+ [  8 900   0   3   0   2   0   2  20  65]
+ [ 65   5 705  57  44  58  38  17   6   5]
+ [  8   7  18 659  21 211  25  22  11  18]
+ [ 16   3  30  51 749  62  24  50   8   7]
+ [  6   2   8  96  12 839   6  23   2   6]
+ [ 10   7  16  46  10  37 851   6  12   5]
+ [  6   4   7  20  22  73   4 852   1  11]
+ [ 39   9   2  13   1   2   1   4 915  14]
+ [ 13  40   4   3   0   6   2   4   8 920]], shape=(10, 10), dtype=int32)
+
+Mean uncertainty on original test dataset when correctly predicted = 6.06%
+Mean uncertainty on original test dataset when wrongly predicted = 15.71%
+Mean accuracy on original test dataset when correctly predicted = 91.84%
+Mean accuracy on original test dataset when wrongly predicted = 68.78%
+
+Mean uncertainty on highest predicted class of new data = 2.00%
+Mean uncertainty on not predicted classes of new data = 0.32%
+Mean accuracy on highest predicted class of new data = 77.92%
+Mean accuracy on not predicted classes of new data = 2.45%
+
+
+
+Ensemble
+Ensemble combined accuracy: 86.4%
+tf.Tensor(
+[[903   8  12   9   9   3   5   9  29  13]
+ [  9 935   3   5   0   1   2   1   7  37]
+ [ 22   3 818  39  60  19  19  15   2   3]
+ [  6   7  29 714  39 121  37  25   8  14]
+ [  7   1  24  33 866  21  20  20   4   4]
+ [  6   2  17 119  26 782  19  26   0   3]
+ [  5   5  19  33  16  13 901   1   4   3]
+ [  5   2  18  23  31  25   3 887   3   3]
+ [ 27   6   5   5   3   1   1   2 937  13]
+ [ 20  46   6   6   0   1   4   5  16 896]], shape=(10, 10), dtype=int32)
+
+Mean uncertainty on original test dataset when correctly predicted = 2.23%
+Mean uncertainty on original test dataset when wrongly predicted = 11.17%
+Mean accuracy on original test dataset when correctly predicted = 98.89%
+Mean accuracy on original test dataset when wrongly predicted = 91.15%
+
+Mean uncertainty on highest predicted class of new data = 9.72%
+Mean uncertainty on not predicted classes of new data = 1.45%
+Mean accuracy on highest predicted class of new data = 91.83%
+Mean accuracy on not predicted classes of new data = 0.91%
+
+
+
+
+VarianceOutput
+Accuracy on original test dataset: 85.2%
+tf.Tensor(
+[[867  10  24  20   9   2   9   6  37  16]
+ [  8 939   0   5   3   4   3   0   9  29]
+ [ 27   2 802  27  43  38  39  15   4   3]
+ [  3   4  43 691  27 136  56  18   9  13]
+ [  8   1  41  40 806  30  30  40   3   1]
+ [  1   1  20 110  16 799  18  30   2   3]
+ [  2   4  19  26  10  11 923   1   3   1]
+ [  2   1  18  36  15  48   5 868   5   2]
+ [ 27  12   8   5   4   1   3   1 929  10]
+ [ 16  46   5   9   0   5   5   4  14 896]], shape=(10, 10), dtype=int32)
+Correct: 8520, wrong: 1480, accuracy: 85.2%
+
+Mean uncertainty on original test dataset when correctly predicted = 1.25%
+Mean uncertainty on original test dataset when wrongly predicted = 78.12%
+Mean accuracy on original test dataset when correctly predicted = 98.36%
+Mean accuracy on original test dataset when wrongly predicted = 88.50%
+
+Mean uncertainty on highest predicted class of new data = 4.31%
+Mean uncertainty on not predicted classes of new data = 1.36%
+Mean accuracy on highest predicted class of new data = 89.50%
+Mean accuracy on not highest predicted class of new data = 1.17%
