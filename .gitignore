@@ -7,6 +7,7 @@ Test/test_images
 
 *.hdf5
 *.h5
+*.npy
 
 MobaXterm_Portable_v12.4/
 
