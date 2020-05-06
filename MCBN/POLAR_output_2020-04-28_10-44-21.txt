@@ -1,0 +1,206 @@
+Random seed for replication: 813
+Random seed for replication: 143
+dataset_name = /Polar_PNG_256.hdf5, batch_size = 16, num_classes = 3, epochs = 150,
+        MCBN_PREDICTIONS = 50, Mini_batch_size = 16, test_img_idx = 34,
+        train_test_split = 0.8, to_shuffle = True, augmentation = False,
+        label_normalizer = False, save_augmentation_to_hdf5 = False, learn rate = 0.0001,
+        add_bn_inside = True, train_all_layers = False, weights_to_use = imagenet,
+        es_patience = 5, train_val_split = 0.9, MIN_DELTA = 0.005, Early_monitor = val_loss
+x_train shape: (184, 256, 256, 3)
+184 train samples
+54 test samples
+<tensorflow.python.keras.engine.input_layer.InputLayer object at 0x7f7e3e8c0b38> False
+<tensorflow.python.keras.layers.convolutional.Conv2D object at 0x7f7e4f6524a8> False
+<tensorflow.python.keras.layers.normalization_v2.BatchNormalization object at 0x7f7e39701d68> True
+<tensorflow.python.keras.layers.convolutional.Conv2D object at 0x7f7e3daf6c50> False
+<tensorflow.python.keras.layers.normalization_v2.BatchNormalization object at 0x7f7e3967de10> True
+<tensorflow.python.keras.layers.pooling.MaxPooling2D object at 0x7f7e3daf6da0> False
+<tensorflow.python.keras.layers.convolutional.Conv2D object at 0x7f7e3daad6d8> False
+<tensorflow.python.keras.layers.normalization_v2.BatchNormalization object at 0x7f7e39701710> True
+<tensorflow.python.keras.layers.convolutional.Conv2D object at 0x7f7e39751a20> False
+<tensorflow.python.keras.layers.normalization_v2.BatchNormalization object at 0x7f7e34091f28> True
+<tensorflow.python.keras.layers.pooling.MaxPooling2D object at 0x7f7e39751d68> False
+<tensorflow.python.keras.layers.convolutional.Conv2D object at 0x7f7e3975e470> False
+<tensorflow.python.keras.layers.normalization_v2.BatchNormalization object at 0x7f7e287d95c0> True
+<tensorflow.python.keras.layers.convolutional.Conv2D object at 0x7f7e3976a7b8> False
+<tensorflow.python.keras.layers.normalization_v2.BatchNormalization object at 0x7f7e286c6710> True
+<tensorflow.python.keras.layers.convolutional.Conv2D object at 0x7f7e3976aa58> False
+<tensorflow.python.keras.layers.normalization_v2.BatchNormalization object at 0x7f7e285d3710> True
+<tensorflow.python.keras.layers.pooling.MaxPooling2D object at 0x7f7e39770e80> False
+<tensorflow.python.keras.layers.convolutional.Conv2D object at 0x7f7e397706d8> False
+<tensorflow.python.keras.layers.normalization_v2.BatchNormalization object at 0x7f7e28484518> True
+<tensorflow.python.keras.layers.convolutional.Conv2D object at 0x7f7e39777f60> False
+<tensorflow.python.keras.layers.normalization_v2.BatchNormalization object at 0x7f7e2839ba20> True
+<tensorflow.python.keras.layers.convolutional.Conv2D object at 0x7f7e39780e80> False
+<tensorflow.python.keras.layers.normalization_v2.BatchNormalization object at 0x7f7e28208f98> True
+<tensorflow.python.keras.layers.pooling.MaxPooling2D object at 0x7f7e39780e48> False
+<tensorflow.python.keras.layers.convolutional.Conv2D object at 0x7f7e3978a128> False
+<tensorflow.python.keras.layers.normalization_v2.BatchNormalization object at 0x7f7e280a04e0> True
+<tensorflow.python.keras.layers.convolutional.Conv2D object at 0x7f7e39713c18> False
+<tensorflow.python.keras.layers.normalization_v2.BatchNormalization object at 0x7f7e206972e8> True
+<tensorflow.python.keras.layers.convolutional.Conv2D object at 0x7f7e39713c88> False
+<tensorflow.python.keras.layers.normalization_v2.BatchNormalization object at 0x7f7e204e0f98> True
+<tensorflow.python.keras.layers.pooling.MaxPooling2D object at 0x7f7e3971cb70> False
+<tensorflow.python.keras.layers.core.Flatten object at 0x7f7e3972ecc0> True
+<tensorflow.python.keras.layers.core.Dense object at 0x7f7e3972ec50> True
+<tensorflow.python.keras.layers.normalization_v2.BatchNormalization object at 0x7f7e202d9668> True
+<tensorflow.python.keras.layers.core.Dense object at 0x7f7e396e96d8> True
+<tensorflow.python.keras.layers.normalization_v2.BatchNormalization object at 0x7f7da47d5710> True
+<tensorflow.python.keras.layers.core.Dense object at 0x7f7e396f06a0> True
+Model: "model_16"
+_________________________________________________________________
+Layer (type)                 Output Shape              Param #   
+=================================================================
+input_1 (InputLayer)         [(None, 256, 256, 3)]     0         
+_________________________________________________________________
+block1_conv1 (Conv2D)        (None, 256, 256, 64)      1792      
+_________________________________________________________________
+batch_normalization (BatchNo (None, 256, 256, 64)      256       
+_________________________________________________________________
+block1_conv2 (Conv2D)        (None, 256, 256, 64)      36928     
+_________________________________________________________________
+batch_normalization_1 (Batch (None, 256, 256, 64)      256       
+_________________________________________________________________
+block1_pool (MaxPooling2D)   (None, 128, 128, 64)      0         
+_________________________________________________________________
+block2_conv1 (Conv2D)        (None, 128, 128, 128)     73856     
+_________________________________________________________________
+batch_normalization_2 (Batch (None, 128, 128, 128)     512       
+_________________________________________________________________
+block2_conv2 (Conv2D)        (None, 128, 128, 128)     147584    
+_________________________________________________________________
+batch_normalization_3 (Batch (None, 128, 128, 128)     512       
+_________________________________________________________________
+block2_pool (MaxPooling2D)   (None, 64, 64, 128)       0         
+_________________________________________________________________
+block3_conv1 (Conv2D)        (None, 64, 64, 256)       295168    
+_________________________________________________________________
+batch_normalization_4 (Batch (None, 64, 64, 256)       1024      
+_________________________________________________________________
+block3_conv2 (Conv2D)        (None, 64, 64, 256)       590080    
+_________________________________________________________________
+batch_normalization_5 (Batch (None, 64, 64, 256)       1024      
+_________________________________________________________________
+block3_conv3 (Conv2D)        (None, 64, 64, 256)       590080    
+_________________________________________________________________
+batch_normalization_6 (Batch (None, 64, 64, 256)       1024      
+_________________________________________________________________
+block3_pool (MaxPooling2D)   (None, 32, 32, 256)       0         
+_________________________________________________________________
+block4_conv1 (Conv2D)        (None, 32, 32, 512)       1180160   
+_________________________________________________________________
+batch_normalization_7 (Batch (None, 32, 32, 512)       2048      
+_________________________________________________________________
+block4_conv2 (Conv2D)        (None, 32, 32, 512)       2359808   
+_________________________________________________________________
+batch_normalization_8 (Batch (None, 32, 32, 512)       2048      
+_________________________________________________________________
+block4_conv3 (Conv2D)        (None, 32, 32, 512)       2359808   
+_________________________________________________________________
+batch_normalization_9 (Batch (None, 32, 32, 512)       2048      
+_________________________________________________________________
+block4_pool (MaxPooling2D)   (None, 16, 16, 512)       0         
+_________________________________________________________________
+block5_conv1 (Conv2D)        (None, 16, 16, 512)       2359808   
+_________________________________________________________________
+batch_normalization_10 (Batc (None, 16, 16, 512)       2048      
+_________________________________________________________________
+block5_conv2 (Conv2D)        (None, 16, 16, 512)       2359808   
+_________________________________________________________________
+batch_normalization_11 (Batc (None, 16, 16, 512)       2048      
+_________________________________________________________________
+block5_conv3 (Conv2D)        (None, 16, 16, 512)       2359808   
+_________________________________________________________________
+batch_normalization_12 (Batc (None, 16, 16, 512)       2048      
+_________________________________________________________________
+block5_pool (MaxPooling2D)   (None, 8, 8, 512)         0         
+_________________________________________________________________
+flatten (Flatten)            (None, 32768)             0         
+_________________________________________________________________
+fc1 (Dense)                  (None, 4096)              134221824 
+_________________________________________________________________
+batch_normalization_13 (Batc (None, 4096)              16384     
+_________________________________________________________________
+fc2 (Dense)                  (None, 4096)              16781312  
+_________________________________________________________________
+batch_normalization_14 (Batc (None, 4096)              16384     
+_________________________________________________________________
+predictions (Dense)          (None, 3)                 12291     
+=================================================================
+Total params: 165,779,779
+Trainable params: 151,040,259
+Non-trainable params: 14,739,520
+_________________________________________________________________
+Start fitting monte carlo batch_normalization model
+Train for 11 steps, validate for 2 steps
+Epoch 1/150
+11/11 - 8s - loss: 1.5878 - accuracy: 0.3333 - val_loss: 1.3366 - val_accuracy: 0.2105
+Epoch 2/150
+11/11 - 3s - loss: 0.3346 - accuracy: 0.8667 - val_loss: 1.1471 - val_accuracy: 0.1579
+Epoch 3/150
+11/11 - 9s - loss: 0.2061 - accuracy: 0.9394 - val_loss: 1.0201 - val_accuracy: 0.4737
+Epoch 4/150
+11/11 - 10s - loss: 0.1199 - accuracy: 0.9636 - val_loss: 0.9408 - val_accuracy: 0.6842
+Epoch 5/150
+11/11 - 3s - loss: 0.0732 - accuracy: 1.0000 - val_loss: 0.8967 - val_accuracy: 0.6842
+Epoch 6/150
+11/11 - 3s - loss: 0.0548 - accuracy: 1.0000 - val_loss: 0.8933 - val_accuracy: 0.5789
+Epoch 7/150
+11/11 - 3s - loss: 0.0449 - accuracy: 1.0000 - val_loss: 0.9104 - val_accuracy: 0.4737
+Epoch 8/150
+11/11 - 3s - loss: 0.0400 - accuracy: 1.0000 - val_loss: 0.9405 - val_accuracy: 0.4737
+Epoch 9/150
+11/11 - 3s - loss: 0.0357 - accuracy: 1.0000 - val_loss: 0.9855 - val_accuracy: 0.4737
+Epoch 10/150
+11/11 - 3s - loss: 0.0318 - accuracy: 1.0000 - val_loss: 1.0357 - val_accuracy: 0.4211
+Epoch 00010: early stopping
+input_1 False
+block1_conv1 False
+batch_normalization True
+block1_conv2 False
+batch_normalization_1 True
+block1_pool False
+block2_conv1 False
+batch_normalization_2 True
+block2_conv2 False
+batch_normalization_3 True
+block2_pool False
+block3_conv1 False
+batch_normalization_4 True
+block3_conv2 False
+batch_normalization_5 True
+block3_conv3 False
+batch_normalization_6 True
+block3_pool False
+block4_conv1 False
+batch_normalization_7 True
+block4_conv2 False
+batch_normalization_8 True
+block4_conv3 False
+batch_normalization_9 True
+block4_pool False
+block5_conv1 False
+batch_normalization_10 True
+block5_conv2 False
+batch_normalization_11 True
+block5_conv3 False
+batch_normalization_12 True
+block5_pool False
+flatten False
+fc1 False
+batch_normalization_13 True
+fc2 False
+batch_normalization_14 True
+predictions False
+ 0/50 [..............................] - ETA: 0s 8/50 [===>..........................] - ETA: 28s18/50 [=========>....................] - ETA: 19s28/50 [===============>..............] - ETA: 12s38/50 [=====================>........] - ETA: 6s 48/50 [===========================>..] - ETA: 1sMCBN accuracy: 52.8%
+MCBN-ensemble accuracy: 51.9%
+tf.Tensor(
+[[ 0  0 14]
+ [ 0  0  7]
+ [ 0  5 28]], shape=(3, 3), dtype=int32)
+posterior mean: 1
+true label: 2
+
+class: 0; proba: 22.3%; var: 1.07% 
+class: 1; proba: 44.3%; var: 1.97% 
+class: 2; proba: 33.4%; var: 1.92% 

@@ -48,9 +48,9 @@ AUGMENTATION = False
 AUGMENT_TESTSET = False
 LABEL_NORMALIZER = True
 SAVE_AUGMENTATION_TO_HDF5 = False
-TRAIN_ALL_LAYERS = True
-WEIGHTS_TO_USE = None
-LEARN_RATE = 0.00001
+TRAIN_ALL_LAYERS = False
+WEIGHTS_TO_USE = 'imagenet'
+LEARN_RATE = 0.0001
 MIN_DELTA = 0.05
 EARLY_MONITOR = 'loss'
 DATANAME = 'POLAR'
@@ -250,13 +250,11 @@ def categorical_variance(y_true, y_pred, from_logits=False):
     cat_loss = K.categorical_crossentropy(y_true_cat, y_pred_cat, from_logits=from_logits)
 
     # TODO: test first abs of y_pred_cat
-    # TODO: abs later testing 
     # Is error only modelled after being right? Or also wrong?
-    # y_pred_cat_abs = K.abs(y_pred_cat)
-    y_true_var = K.square(y_pred_cat - y_true_cat)
-    y_true_var_abs = K.abs(y_true_var)
+    y_pred_cat_abs = K.abs(y_pred_cat)
+    y_true_var = K.square(y_pred_cat_abs - y_true_cat)
     y_pred_var = y_pred[:, NUM_CLASSES:]
-    var_loss = K.mean(K.square(y_pred_var - y_true_var_abs), axis=-1)
+    var_loss = K.mean(K.square(y_pred_var - y_true_var), axis=-1)
     total_loss = cat_loss + var_loss
 
     return total_loss
@@ -445,3 +443,6 @@ def main():
 
 if __name__ == "__main__":
     main()
+
+
+# TODO test met patches (tiles), dan bij test majority vote (reduced DOF en sneller trainen)
