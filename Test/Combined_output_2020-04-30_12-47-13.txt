@@ -1,0 +1,208 @@
+
+START MCDO
+/data/s2934833/MasterThesis/MCDO/CIFAR10/CIFAR_ImageNet_retrain_32B_95E_86A
+MCDO combined accuracy: 85.8%
+tf.Tensor(
+[[882  14  22  12  12   0   4   8  34  12]
+ [  6 945   1   5   1   0   4   0  10  28]
+ [ 25   2 833  33  54  13  26  10   2   2]
+ [  6  11  44 734  47  92  42  17   2   5]
+ [  5   1  37  32 872   7  19  20   5   2]
+ [  3   2  28 151  40 730  16  28   0   2]
+ [  2   5  22  30  18   7 909   2   2   3]
+ [  9   4  11  22  34  23   4 885   4   4]
+ [ 24  11   7   8   6   0   1   0 939   4]
+ [ 18  79   3   7   1   3   5   6  24 854]], shape=(10, 10), dtype=int32)
+Correct: 8583, wrong: 1417, accuracy: 85.83%
+
+Mean probability on true label of original test dataset when correctly predicted = 98.05%
+Mean uncertainty on true label of original test dataset when correctly predicted = 1.05%
+Mean probability on true label of original test dataset when wrongly predicted = 8.92%
+Mean uncertainty on true label of original test dataset when wrongly predicted = 4.76%
+
+Mean probability on highest predicted on original test dataset when wrong = 96.06%
+Mean uncertainty on highest predicted on original test dataset when wrong = 1.91%
+
+Mean probability on all not true label on original test dataset = 0.44%
+Mean uncertainty on all not true label on original test dataset = 0.26%
+
+Mean probability on highest predicted class of new data = 88.69%
+Mean uncertainty on highest predicted class of new data = 4.69%
+Mean probability on not predicted classes of new data = 1.26%
+Mean uncertainty on not predicted classes of new data = 0.69%
+MCDO combined accuracy: 7.3%
+tf.Tensor(
+[[103  75 504  65   1 176   3   1  52   0]
+ [255   0 876   0   0   1   1   1   1   0]
+ [396   9 602   0   0  20   1   3   1   0]
+ [197  14 777   6   0   4   4   1   7   0]
+ [898   1  71   1   0   4   1   6   0   0]
+ [150   4 699  16   0   1   8   6   8   0]
+ [167  29 670   2   1  19   6   9  55   0]
+ [359   0 667   2   0   0   0   0   0   0]
+ [308  23 236  18   1 287  35  56  10   0]
+ [ 81   2 868   0   0  52   1   0   5   0]], shape=(10, 10), dtype=int32)
+
+Mean uncertainty on new test dataset when correctly predicted = 5.50%
+Mean uncertainty on new test dataset when wrongly predicted = 4.63%
+Mean probability on new test dataset when correctly predicted = 87.93%
+Mean probability on new test dataset when wrongly predicted = 88.75%
+
+START MCBN
+/data/s2934833/MasterThesis/MCBN/CIFAR10/2020-04-10_14-30_imagenet_32B_82.3%A
+MCBN combined accuracy: 82.4%
+tf.Tensor(
+[[863   8  14  15   7   2   2  15  43  31]
+ [  8 899   0   2   0   2   1   1  15  72]
+ [ 58   6 717  63  38  59  31  15   6   7]
+ [  9   6  20 681  20 195  24  18  11  16]
+ [ 18   2  28  54 743  66  24  51   8   6]
+ [  6   3   8 107  13 826   6  22   2   7]
+ [  9   7  16  56  12  40 838   4  12   6]
+ [  8   2   9  27  20  74   6 842   1  11]
+ [ 38  15   3  16   1   1   0   3 905  18]
+ [ 14  37   1   4   1   5   1   3   8 926]], shape=(10, 10), dtype=int32)
+Correct: 8240, wrong: 1760, accuracy: 82.39999999999999%
+
+Mean probability on true label of original test dataset when correctly predicted = 91.86%
+Mean uncertainty on true label of original test dataset when correctly predicted = 6.13%
+Mean probability on true label of original test dataset when wrongly predicted = 15.69%
+Mean uncertainty on true label of original test dataset when wrongly predicted = 10.79%
+
+Mean probability on highest predicted on original test dataset when wrong = 87.77%
+Mean uncertainty on highest predicted on original test dataset when wrong = 7.78%
+
+Mean probability on all not true label on original test dataset = 1.36%
+Mean uncertainty on all not true label on original test dataset = 1.14%
+
+Mean probability on highest predicted class of new data = 77.92%
+Mean uncertainty on highest predicted class of new data = 2.32%
+Mean probability on not predicted classes of new data = 2.45%
+Mean uncertainty on not predicted classes of new data = 0.37%
+MCBN combined accuracy: 6.9%
+tf.Tensor(
+[[ 17  12 194 329   0  52   4   0 372   0]
+ [174   0 948   0   0   1   0   1  10   1]
+ [389  64 493  20   0  29   0   0  37   0]
+ [273  87 322 119   0  43   9   3 154   0]
+ [829   6 100   9   0   8   1  14  14   1]
+ [255 182 272  52   0   4  17   0 110   0]
+ [272 273 102  82   0   6   6   1 216   0]
+ [251   3 746   1   0   0   1   1  25   0]
+ [ 83  80 124  51   0 457 118   7  54   0]
+ [ 14   7 833  13   0  22   4   1 115   0]], shape=(10, 10), dtype=int32)
+
+Mean uncertainty on new test dataset when correctly predicted = 2.51%
+Mean uncertainty on new test dataset when wrongly predicted = 2.31%
+Mean probability on new test dataset when correctly predicted = 75.61%
+Mean probability on new test dataset when wrongly predicted = 78.09%
+
+START Ensemble
+Dataset_name: CIFAR10, N_folders: 1, total mebers: 40
+Ensemble combined accuracy: 86.4%
+tf.Tensor(
+[[903   8  12   9   9   3   5   9  29  13]
+ [  9 935   3   5   0   1   2   1   7  37]
+ [ 22   3 818  39  60  19  19  15   2   3]
+ [  6   7  29 714  39 121  37  25   8  14]
+ [  7   1  24  33 866  21  20  20   4   4]
+ [  6   2  17 119  26 782  19  26   0   3]
+ [  5   5  19  33  16  13 901   1   4   3]
+ [  5   2  18  23  31  25   3 887   3   3]
+ [ 27   6   5   5   3   1   1   2 937  13]
+ [ 20  46   6   6   0   1   4   5  16 896]], shape=(10, 10), dtype=int32)
+Correct: 8639, wrong: 1361, accuracy: 86.39%
+
+Mean probability on true label of original test dataset when correctly predicted = 98.89%
+Mean uncertainty on true label of original test dataset when correctly predicted = 2.23%
+Mean probability on true label of original test dataset when wrongly predicted = 5.07%
+Mean uncertainty on true label of original test dataset when wrongly predicted = 7.14%
+
+Mean probability on highest predicted on original test dataset when wrong = 97.84%
+Mean uncertainty on highest predicted on original test dataset when wrong = 3.45%
+
+Mean probability on all not true label on original test dataset = 0.24%
+Mean uncertainty on all not true label on original test dataset = 0.43%
+
+Mean probability on highest predicted class of new data = 91.83%
+Mean uncertainty on highest predicted class of new data = 9.72%
+Mean probability on not predicted classes of new data = 0.91%
+Mean uncertainty on not predicted classes of new data = 1.45%
+Ensemble combined accuracy: 6.1%
+tf.Tensor(
+[[ 107  320  245   58    0  120   26    1  103    0]
+ [  84    1 1031    6    0    6    1    4    2    0]
+ [ 468   32  446   11    0   63    1   11    0    0]
+ [ 488   49  362   53    0   20   19    7   11    1]
+ [ 880    4   43   27    0   10    2   16    0    0]
+ [ 159  140  440  132    0    1    9    3    7    1]
+ [ 220  606   77    4    0   27    0    8   16    0]
+ [ 443    0  565   11    0    7    0    2    0    0]
+ [ 443  137   30   15    0  299   19   26    4    1]
+ [ 133   16  669    1    0  177    2    0   11    0]], shape=(10, 10), dtype=int32)
+
+Mean uncertainty on new test dataset when correctly predicted = 9.44%
+Mean uncertainty on new test dataset when wrongly predicted = 9.74%
+Mean probability on new test dataset when correctly predicted = 89.64%
+Mean probability on new test dataset when wrongly predicted = 91.97%
+
+START VarianceOutput
+/data/s2934833/MasterThesis/VarianceOutput/CIFAR10/CIF_ImageNet_32B_95E_68A
+Accuracy on original test dataset: 85.2%
+tf.Tensor(
+[[867  10  24  20   9   2   9   6  37  16]
+ [  8 939   0   5   3   4   3   0   9  29]
+ [ 27   2 802  27  43  38  39  15   4   3]
+ [  3   4  43 691  27 136  56  18   9  13]
+ [  8   1  41  40 806  30  30  40   3   1]
+ [  1   1  20 110  16 799  18  30   2   3]
+ [  2   4  19  26  10  11 923   1   3   1]
+ [  2   1  18  36  15  48   5 868   5   2]
+ [ 27  12   8   5   4   1   3   1 929  10]
+ [ 16  46   5   9   0   5   5   4  14 896]], shape=(10, 10), dtype=int32)
+Correct: 8520, wrong: 1480, accuracy: 85.2%
+
+Mean probability on true label of original test dataset when correctly predicted = 98.36%
+Mean uncertainty on true label of original test dataset when correctly predicted = 1.25%
+Mean probability on true label of original test dataset when wrongly predicted = 6.07%
+Mean uncertainty on true label of original test dataset when wrongly predicted = 87.37%
+
+Mean probability on highest predicted on original test dataset when wrong = 88.50%
+Mean uncertainty on highest predicted on original test dataset when wrong = 78.12%
+
+Mean probability on all not true label on original test dataset = 1.70%
+Mean uncertainty on all not true label on original test dataset = 2.12%
+
+Mean uncertainty on highest predicted class of new data = 4.31%
+Mean uncertainty on not predicted classes of new data = 1.36%
+Mean probability on highest predicted class of new data = 89.50%
+Mean probability on not highest predicted class of new data = 1.17%
+Accuracy on original test dataset: 6.1%
+tf.Tensor(
+[[ 95  24  37 157   0 305  56   0 306   0]
+ [488   1 633   3   0   4   0   2   3   1]
+ [370  38 437   9   0 165   2   0  11   0]
+ [294  64 222   6   0 145 199   0  80   0]
+ [928   8  30   5   0  10   1   0   0   0]
+ [276  42 341  21   0  64 108   1  38   1]
+ [120 465 103   3   0 221   1   0  45   0]
+ [565   0 451   2   0   8   1   0   0   1]
+ [314  37   6   0   0 559  44   8   4   2]
+ [194  11 421   0   0 354   6   0  23   0]], shape=(10, 10), dtype=int32)
+Correct: 608, wrong: 9392, accuracy: 6.08%
+
+Mean probability on true label of original test dataset when correctly predicted = 86.84%
+Mean uncertainty on true label of original test dataset when correctly predicted = 5.70%
+Mean probability on true label of original test dataset when wrongly predicted = 0.99%
+Mean uncertainty on true label of original test dataset when wrongly predicted = 1.38%
+
+Mean probability on highest predicted on original test dataset when wrong = 89.68%
+Mean uncertainty on highest predicted on original test dataset when wrong = 4.22%
+
+Mean probability on all not true label on original test dataset = 10.42%
+Mean uncertainty on all not true label on original test dataset = 1.65%
+
+#################################
+Function main called 1 times. 
+Execution time max: 1147.812, average: 1147.812
+#################################

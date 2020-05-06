@@ -82,7 +82,7 @@ TRAIN_TEST_SPLIT = 0.8 # Value between 0 and 1, e.g. 0.8 creates 80%/20% divisio
 TEST_ON_OWN_AND_NEW_DATASET = True
 TEST_ON_OWN_DATASET = False
 TEST_ON_NEW_DATASET = False
-LABELS_AVAILABLE = False
+LABELS_AVAILABLE = True
 TO_SHUFFLE = False
 TEST_IMAGES_LOCATION = os.path.sep + 'test_images'
 TEST_IMAGES_LABELS_NAME = 'test_images_labels'
@@ -307,7 +307,12 @@ def load_new_images():
         x_pred = x_pred.astype('float32')
         x_pred = np.asarray(x_pred)
 
-        return x_pred
+        if LABELS_AVAILABLE:
+            # y_test = np.asarray(y_test)
+            # y_test = tf.keras.utils.to_categorical(y_test, NUM_CLASSES)
+            return x_pred, y_test
+        else:
+            return x_pred
 
 
 def indepth_predictions(x_pred, y_pred, mc_predictions, METHODNAME):
@@ -365,68 +370,116 @@ def indepth_predictions(x_pred, y_pred, mc_predictions, METHODNAME):
 
 
 def test_on_own_func(methodname, predictions, y_test):
-    # score of the model
-    # accs = []
-    # for y_p in predictions:
-    #     acc = accuracy_score(y_test.argmax(axis=1), y_p.argmax(axis=1))
-    #     accs.append(acc)
-    # print("{} accuracy: {:.1%}".format(methodname, sum(accs)/len(accs)))
-
-    pred = np.array(predictions).mean(axis=0).argmax(axis=1)
-    acc = accuracy_score(y_test.argmax(axis=1), pred)
+    mean_predictions_all = np.array(predictions).mean(axis=0).argmax(axis=1)
+    acc = accuracy_score(y_test.argmax(axis=1), mean_predictions_all)
     print("{} combined accuracy: {:.1%}".format(methodname, acc))
 
-    confusion = tf.math.confusion_matrix(labels=y_test.argmax(axis=1), predictions=pred,
+    confusion = tf.math.confusion_matrix(labels=y_test.argmax(axis=1), predictions=mean_predictions_all,
                                     num_classes=NUM_CLASSES)
     print(confusion)
 
-    correct_var = []
-    correct_acc = []
-    wrong_var = []
-    wrong_acc = []
-    all_accuracies = []
+
+    true_labels = [np.argmax(i) for i in y_test]
+    wrong = 0
+    correct = 0
+    # Only when correctly predict, info of true class
+    correct_unc = []
+    correct_prob = []
+    # Only when wrongly predicted, info of highest wrong pred
+    high_wrong_unc = []
+    high_wrong_prob = []
+    # Only when wrongly predicted, info of true class
+    true_wrong_unc = []
+    true_wrong_prob = []        
+    # Info of all incorrect classes
+    all_wrong_unc = []
+    all_wrong_prob = []
+    # Info of all not true label classes
+    not_true_label_unc = []
+    not_true_label_prob = []
+    # Info of all classes
+    all_probabilities = []
     all_uncertainties = []
 
-    for i in range(len(y_test)):
-        p_0 = np.array([p[i] for p in predictions])
-        # print("posterior mean: {}".format(p_0.mean(axis=0).argmax()))
+    for ind in range(len(y_test)):
+        all_predictions_single = np.array([p[ind] for p in predictions])
+        # print("posterior mean: {}".format(all_predictions_single.mean(axis=0).argmax()))
         
         # probability + variance
-        correct_ind = y_test[i].argmax()
-        predicted_ind = p_0.mean(axis=0).argmax() #TODO test if this is returning the argmax of all predicitons
-        correct_pred = False 
-        if correct_ind == predicted_ind:
-            correct_pred = True
+        true_label = true_labels[ind]
+        highest_pred_ind = all_predictions_single.mean(axis=0).argmax()
+        # correct_pred = False 
+        # if true_label == highest_pred_ind:
+        #     correct_pred = True
 
-        # if correct_pred:
-        for l, (prob, var) in enumerate(zip(p_0.mean(axis=0), p_0.std(axis=0))):
-            # print("class: {}; proba: {:.1%}; var: {:.2%} ".format(l, prob, var))
-            all_accuracies.append(prob)
+        # # if correct_pred:
+        # for l, (prob, var) in enumerate(zip(all_predictions_single.mean(axis=0), all_predictions_single.std(axis=0))):
+        #     # print("class: {}; proba: {:.1%}; var: {:.2%} ".format(l, prob, var))
+        #     all_accuracies.append(prob)
+        #     all_uncertainties.append(var)
+
+        #     if l == correct_ind and correct_pred:
+        #         correct_var.append(var)
+        #         correct_acc.append(prob)
+        #     elif l == highest_pred_ind:
+        #         wrong_var.append(var)
+        #         wrong_acc.append(prob)      
+
+
+        for l, (prob, var) in enumerate(zip(all_predictions_single.mean(axis=0), all_predictions_single.std(axis=0))):
+            all_probabilities.append(prob)
             all_uncertainties.append(var)
 
-            if l == correct_ind and correct_pred:
-                correct_var.append(var)
-                correct_acc.append(prob)
-            elif l == predicted_ind:
-                wrong_var.append(var)
-                wrong_acc.append(prob)      
-        # else:
-        #      for l, (prob, var) in enumerate(zip(p_0.mean(axis=0), p_0.std(axis=0))):
-        #         # print("class: {}; proba: {:.1%}; var: {:.2%} ".format(l, prob, var))
-        #         if l == predicted_ind:
-        #             wrong_var.append(var)
-        #             wrong_acc.append(prob)           
+            if l == true_label:
+                if highest_pred_ind == true_label:
+                    correct += 1
+                    correct_unc.append(var)
+                    correct_prob.append(prob)
+
+                else:
+                    wrong += 1
+                    true_wrong_unc.append(var)
+                    true_wrong_prob.append(prob)
+
+                    all_wrong_unc.append(var)
+                    all_wrong_prob.append(prob)
+            
+            if l == highest_pred_ind:
+                high_wrong_unc.append(var)
+                high_wrong_prob.append(prob)
+
+            else:
+                all_wrong_unc.append(var)
+                all_wrong_prob.append(prob)
+
+                not_true_label_unc.append(var)
+                not_true_label_prob.append(prob)  
+
+
+
+    print("Correct: {}, wrong: {}, accuracy: {}%".format(correct, wrong, (correct/(correct+wrong))*100))
+    print("")
+    print("Mean probability on true label of original test dataset when correctly predicted = {:.2%}".format(mean(correct_prob)))
+    print("Mean uncertainty on true label of original test dataset when correctly predicted = {:.2%}".format(mean(correct_unc)))
+    print("Mean probability on true label of original test dataset when wrongly predicted = {:.2%}".format(mean(true_wrong_prob))) 
+    print("Mean uncertainty on true label of original test dataset when wrongly predicted = {:.2%}".format(mean(true_wrong_unc)))    
 
     print("")
-    print("Mean uncertainty on original test dataset when correctly predicted = {:.2%}".format(mean(correct_var)))
-    print("Mean uncertainty on original test dataset when wrongly predicted = {:.2%}".format(mean(wrong_var)))
-    print("Mean accuracy on original test dataset when correctly predicted = {:.2%}".format(mean(correct_acc)))
-    print("Mean accuracy on original test dataset when wrongly predicted = {:.2%}".format(mean(wrong_acc)))
+    print("Mean probability on highest predicted on original test dataset when wrong = {:.2%}".format(mean(high_wrong_prob))) 
+    print("Mean uncertainty on highest predicted on original test dataset when wrong = {:.2%}".format(mean(high_wrong_unc)))
 
-    scatterplot(all_accuracies, all_uncertainties, methodname, 'own_data')
+    print("")
+    print("Mean probability on all not true label on original test dataset = {:.2%}".format(mean(not_true_label_prob))) 
+    print("Mean uncertainty on all not true label on original test dataset = {:.2%}".format(mean(not_true_label_unc)))
+
+    scatterplot(all_probabilities, all_uncertainties, methodname, 'own_all')
+
+    # Two scatterplots, one for the wrong predictions, one for the rigth predictions
+    scatterplot(correct_prob, correct_unc, methodname, 'own_label_correct')
+    scatterplot(all_wrong_prob, all_wrong_unc, methodname, 'own_label_wrong')
 
 
-def test_on_new_func(new_images_predictions, x_pred, methodname, more_info=False):
+def test_on_new_func(new_images_predictions, x_pred, methodname, y_pred = None, more_info=False):
     new_var_pred = []
     new_acc_pred = []
     new_var_not_pred = []
@@ -453,12 +506,69 @@ def test_on_new_func(new_images_predictions, x_pred, methodname, more_info=False
                 new_acc_not_pred.append(prob)
 
     print("")
+    print("Mean probability on highest predicted class of new data = {:.2%}".format(mean(new_acc_pred)))
     print("Mean uncertainty on highest predicted class of new data = {:.2%}".format(mean(new_var_pred)))
+    print("Mean probability on not predicted classes of new data = {:.2%}".format(mean(new_acc_not_pred)))
     print("Mean uncertainty on not predicted classes of new data = {:.2%}".format(mean(new_var_not_pred)))
-    print("Mean accuracy on highest predicted class of new data = {:.2%}".format(mean(new_acc_pred)))
-    print("Mean accuracy on not predicted classes of new data = {:.2%}".format(mean(new_acc_not_pred)))
+    
+    scatterplot(all_accuracies, all_uncertainties, methodname, 'new_all')
 
-    scatterplot(all_accuracies, all_uncertainties, methodname, 'new_data')
+    if LABELS_AVAILABLE:
+        pred = np.array(new_images_predictions).mean(axis=0).argmax(axis=1)
+        acc = accuracy_score(y_pred.argmax(axis=1), pred)
+        print("{} combined accuracy: {:.1%}".format(methodname, acc))
+
+        confusion = tf.math.confusion_matrix(labels=y_pred.argmax(axis=1), predictions=pred,
+                                        num_classes=NUM_CLASSES)
+        print(confusion)
+
+        correct_var = []
+        correct_acc = []
+        wrong_var = []
+        wrong_acc = []
+        all_accuracies = []
+        all_uncertainties = []
+
+        for i in range(len(y_pred)):
+            p_0 = np.array([p[i] for p in new_images_predictions])
+            # print("posterior mean: {}".format(p_0.mean(axis=0).argmax()))
+            
+            # probability + variance
+            correct_ind = y_pred[i].argmax()
+            predicted_ind = p_0.mean(axis=0).argmax()
+            correct_pred = False 
+            if correct_ind == predicted_ind:
+                correct_pred = True
+
+            # if correct_pred:
+            for l, (prob, var) in enumerate(zip(p_0.mean(axis=0), p_0.std(axis=0))):
+                # print("class: {}; proba: {:.1%}; var: {:.2%} ".format(l, prob, var))
+                all_accuracies.append(prob)
+                all_uncertainties.append(var)
+
+                if l == correct_ind and correct_pred:
+                    correct_var.append(var)
+                    correct_acc.append(prob)
+                elif l == predicted_ind:
+                    wrong_var.append(var)
+                    wrong_acc.append(prob)      
+            # else:
+            #      for l, (prob, var) in enumerate(zip(p_0.mean(axis=0), p_0.std(axis=0))):
+            #         # print("class: {}; proba: {:.1%}; var: {:.2%} ".format(l, prob, var))
+            #         if l == predicted_ind:
+            #             wrong_var.append(var)
+            #             wrong_acc.append(prob)           
+
+        print("")
+        print("Mean uncertainty on new test dataset when correctly predicted = {:.2%}".format(mean(correct_var)))
+        print("Mean uncertainty on new test dataset when wrongly predicted = {:.2%}".format(mean(wrong_var)))
+        print("Mean probability on new test dataset when correctly predicted = {:.2%}".format(mean(correct_acc)))
+        print("Mean probability on new test dataset when wrongly predicted = {:.2%}".format(mean(wrong_acc)))
+
+        # Two scatterplots, one for the wrong predictions, one for the rigth predictions
+        scatterplot(correct_acc, correct_var, methodname, 'new_label_correct')
+        scatterplot(wrong_acc, wrong_var, methodname, 'new_label_wrong')
+
 
     if more_info:
         for i in range(len(x_pred)):
@@ -473,13 +583,17 @@ def scatterplot(accuracies, uncertainties, methodname, own_or_new):
     # os.chdir(HOME_DIR + os.path.sep + methodname)
 
     plt.scatter(accuracies, uncertainties)
-    plt.xlabel('accuracy')
+    plt.xlabel('probability')
     plt.ylabel('uncertainty')
     plt.title('Scatterplot for {} on {}'.format(methodname, own_or_new))
     plt.savefig('{}_scatter_{}.png'.format(methodname, own_or_new))
     plt.clf()
 
     # os.chdir(HOME_DIR)
+
+
+def save_array(filename, nparray):
+    np.save(filename, nparray)
 
 
 @profile
@@ -559,11 +673,22 @@ def MCDO(q, METHODNAME):
 
         if TEST_ON_OWN_DATASET or LABELS_AVAILABLE or TEST_ON_OWN_AND_NEW_DATASET:
             mcdo_predictions = mcdo_predict(pre_trained_model, x_test)
+            old_dir = os.getcwd()
+            os.chdir(HOME_DIR)
+            save_array('MCDO_' + DATANAME, mcdo_predictions)
+            os.chdir(old_dir)
             test_on_own_func(METHODNAME, mcdo_predictions, y_test)
         
         if TEST_ON_OWN_AND_NEW_DATASET:
             mcdo_new_images_predictions = mcdo_predict(pre_trained_model, x_pred)
-            test_on_new_func(mcdo_new_images_predictions, x_pred, METHODNAME)
+            old_dir = os.getcwd()
+            os.chdir(HOME_DIR)
+            save_array('MCDO_' + NEW_DATA, mcdo_new_images_predictions)
+            os.chdir(old_dir)
+            if LABELS_AVAILABLE:
+                test_on_new_func(mcdo_new_images_predictions, x_pred, METHODNAME, y_pred = y_pred)
+            else:
+                test_on_new_func(mcdo_new_images_predictions, x_pred, METHODNAME)
         
         else:
             mcdo_new_images_predictions = mcdo_predict(pre_trained_model, x_pred)
@@ -703,11 +828,22 @@ def MCBN(q, METHODNAME):
    
         if TEST_ON_OWN_DATASET or LABELS_AVAILABLE or TEST_ON_OWN_AND_NEW_DATASET:
             mcbn_predictions = mcbn_predict(pre_trained_model, x_train, y_train, x_test)
+            old_dir = os.getcwd()
+            os.chdir(HOME_DIR)
+            save_array('MCBN_' + DATANAME, mcbn_predictions)
+            os.chdir(old_dir)
             test_on_own_func(METHODNAME, mcbn_predictions, y_test)
         
         if TEST_ON_OWN_AND_NEW_DATASET:
             mcbn_new_images_predictions = mcbn_predict(pre_trained_model, x_train, y_train, x_pred)
-            test_on_new_func(mcbn_new_images_predictions, x_pred, METHODNAME)
+            old_dir = os.getcwd()
+            os.chdir(HOME_DIR)
+            save_array('MCBN_' + NEW_DATA, mcbn_new_images_predictions)
+            os.chdir(old_dir)
+            if LABELS_AVAILABLE:
+                test_on_new_func(mcbn_new_images_predictions, x_pred, METHODNAME, y_pred = y_pred)
+            else:
+                test_on_new_func(mcbn_new_images_predictions, x_pred, METHODNAME)
         
         else:
             mcbn_new_images_predictions = mcbn_predict(pre_trained_model, x_train, y_train, x_pred)
@@ -813,11 +949,22 @@ def Ensemble(q, METHODNAME):
 
         if TEST_ON_OWN_DATASET or LABELS_AVAILABLE or TEST_ON_OWN_AND_NEW_DATASET:
             ensemble_predictions = ensemble_predict(x_test)
+            old_dir = os.getcwd()
+            os.chdir(HOME_DIR)
+            save_array('Ensemble_' + DATANAME, ensemble_predictions)
+            os.chdir(old_dir)
             test_on_own_func(METHODNAME, ensemble_predictions, y_test)
         
         if TEST_ON_OWN_AND_NEW_DATASET:
             ensemble_new_images_predictions = ensemble_predict(x_pred)
-            test_on_new_func(ensemble_new_images_predictions, x_pred, METHODNAME)
+            old_dir = os.getcwd()
+            os.chdir(HOME_DIR)
+            save_array('Ensemble' + NEW_DATA, ensemble_new_images_predictions)
+            os.chdir(old_dir)
+            if LABELS_AVAILABLE:
+                test_on_new_func(ensemble_new_images_predictions, x_pred, METHODNAME, y_pred = y_pred)
+            else:
+                test_on_new_func(ensemble_new_images_predictions, x_pred, METHODNAME)
         
         else:
             ensemble_only_new_images_predictions = ensemble_predict(x_pred)
@@ -889,40 +1036,64 @@ def VarianceOutput(q, METHODNAME):
         return prediction
 
 
-    def var_label(org_data_prediction, y_test):
+    def var_label(org_data_prediction, y_test, scatter = True):
         # score on the test images (if label avaialable)
         true_labels = [np.argmax(i) for i in y_test]
         wrong = 0
         correct = 0
-        correct_var = []
-        correct_acc = []
-        wrong_var = []
-        wrong_acc = []
-        all_accuracies = []
+        # Only when correctly predict, info of true class
+        correct_unc = []
+        correct_prob = []
+        # Only when wrongly predicted, info of highest wrong pred
+        high_wrong_unc = []
+        high_wrong_prob = []
+        # Only when wrongly predicted, info of true class
+        true_wrong_unc = []
+        true_wrong_prob = []        
+        # Info of all incorrect classes
+        all_wrong_unc = []
+        all_wrong_prob = []
+        # Info of all not true label classes
+        not_true_label_unc = []
+        not_true_label_prob = []
+        # Info of all classes
+        all_probabilities = []
         all_uncertainties = []
 
         for ind, pred in enumerate(org_data_prediction):
             true_label = true_labels[ind]
-            classif = pred[:NUM_CLASSES]
-            classif_ind = np.argmax(classif)
-            var = pred[NUM_CLASSES:]
-            var_wrong = var[classif_ind]
-            var_correct = var[true_label]
-
-            if classif_ind != true_label:
-                wrong += 1
-                wrong_var.append(var[classif_ind])
-                wrong_acc.append(classif[classif_ind])
-                # print("Pred: {}, true: {}".format(classif_ind, true_label))
-                # print("Var_pred: {}, var_true: {}".format(var_wrong, var_correct))
-            if classif_ind == true_label:
-                correct += 1
-                correct_var.append(var[true_label])
-                correct_acc.append(classif[classif_ind])
+            predictions = pred[:NUM_CLASSES]
+            highest_pred_ind = np.argmax(predictions)
+            uncertainties = pred[NUM_CLASSES:]
 
             for i in range(0, NUM_CLASSES):
-                all_accuracies.append(classif[i])
-                all_uncertainties.append(var[i])
+                all_probabilities.append(predictions[i])
+                all_uncertainties.append(uncertainties[i])
+
+                if i == true_label:
+                    if highest_pred_ind == true_label:
+                        correct += 1
+                        correct_unc.append(uncertainties[i])
+                        correct_prob.append(predictions[i])
+
+                    else:
+                        wrong += 1
+                        true_wrong_unc.append(uncertainties[i])
+                        true_wrong_prob.append(predictions[i])
+
+                        high_wrong_unc.append(uncertainties[highest_pred_ind])
+                        high_wrong_prob.append(predictions[highest_pred_ind])
+
+                        all_wrong_unc.append(uncertainties[i])
+                        all_wrong_prob.append(predictions[i])                    
+
+                else:
+                    all_wrong_unc.append(uncertainties[i])
+                    all_wrong_prob.append(predictions[i])
+
+                    not_true_label_unc.append(uncertainties[i])
+                    not_true_label_prob.append(predictions[i])                    
+                    
 
         acc = accuracy_score(y_test.argmax(axis=1), org_data_prediction[:, :NUM_CLASSES].argmax(axis=1))
         print("Accuracy on original test dataset: {:.1%}".format(acc))
@@ -933,12 +1104,30 @@ def VarianceOutput(q, METHODNAME):
 
         print("Correct: {}, wrong: {}, accuracy: {}%".format(correct, wrong, (correct/(correct+wrong))*100))
         print("")
-        print("Mean uncertainty on original test dataset when correctly predicted = {:.2%}".format(mean(correct_var))) 
-        print("Mean uncertainty on original test dataset when wrongly predicted = {:.2%}".format(mean(wrong_var)))    
-        print("Mean accuracy on original test dataset when correctly predicted = {:.2%}".format(mean(correct_acc)))
-        print("Mean accuracy on original test dataset when wrongly predicted = {:.2%}".format(mean(wrong_acc)))
+        print("Mean probability on true label of original test dataset when correctly predicted = {:.2%}".format(mean(correct_prob)))
+        print("Mean uncertainty on true label of original test dataset when correctly predicted = {:.2%}".format(mean(correct_unc)))
+        print("Mean probability on true label of original test dataset when wrongly predicted = {:.2%}".format(mean(true_wrong_prob))) 
+        print("Mean uncertainty on true label of original test dataset when wrongly predicted = {:.2%}".format(mean(true_wrong_unc)))    
 
-        scatterplot(all_accuracies, all_uncertainties, METHODNAME, 'own_data')
+        print("")
+        print("Mean probability on highest predicted on original test dataset when wrong = {:.2%}".format(mean(high_wrong_prob))) 
+        print("Mean uncertainty on highest predicted on original test dataset when wrong = {:.2%}".format(mean(high_wrong_unc)))
+
+        print("")
+        print("Mean probability on all not true label on original test dataset = {:.2%}".format(mean(not_true_label_prob))) 
+        print("Mean uncertainty on all not true label on original test dataset = {:.2%}".format(mean(not_true_label_unc)))
+
+        if scatter:
+            scatterplot(all_probabilities, all_uncertainties, METHODNAME, 'own_all')
+
+            # Two scatterplots, one for the wrong predictions, one for the right predictions
+            scatterplot(correct_prob, correct_unc, METHODNAME, 'own_label_correct')
+            scatterplot(all_wrong_prob, all_wrong_unc, METHODNAME, 'own_label_wrong')
+
+        else:
+            # Two scatterplots, one for the wrong predictions, one for the right predictions
+            scatterplot(correct_prob, correct_unc, METHODNAME, 'new_label_correct')
+            scatterplot(all_wrong_prob, all_wrong_unc, METHODNAME, 'new_label_wrong')            
 
 
     def var_no_label(new_images_predictions, more_info = False):
@@ -968,8 +1157,8 @@ def VarianceOutput(q, METHODNAME):
         print("")
         print("Mean uncertainty on highest predicted class of new data = {:.2%}".format(mean(new_var_pred)))
         print("Mean uncertainty on not predicted classes of new data = {:.2%}".format(mean(new_var_not_pred)))
-        print("Mean accuracy on highest predicted class of new data = {:.2%}".format(mean(new_acc_pred)))
-        print("Mean accuracy on not highest predicted class of new data = {:.2%}".format(mean(new_acc_not_pred)))
+        print("Mean probability on highest predicted class of new data = {:.2%}".format(mean(new_acc_pred)))
+        print("Mean probability on not highest predicted class of new data = {:.2%}".format(mean(new_acc_not_pred)))
 
         if more_info:
             for ind, pred in enumerate(new_images_predictions):
@@ -1024,12 +1213,22 @@ def VarianceOutput(q, METHODNAME):
         if TEST_ON_OWN_DATASET or LABELS_AVAILABLE or TEST_ON_OWN_AND_NEW_DATASET:
             variance_org_dataset = pre_trained_model.predict(test_generator)
             variance_org_dataset = convert_to_var(variance_org_dataset, y_test)
+            old_dir = os.getcwd()
+            os.chdir(HOME_DIR)
+            save_array('Variance_' + DATANAME, variance_org_dataset)
+            os.chdir(old_dir)
             var_label(variance_org_dataset, y_test)
         
         if TEST_ON_OWN_AND_NEW_DATASET:
             variance_new_images_predictions = pre_trained_model.predict(pred_generator)
             variance_new_images_predictions = convert_to_var(variance_new_images_predictions, y_test = None, label_avail=False)
+            old_dir = os.getcwd()
+            os.chdir(HOME_DIR)
+            save_array('Variance_' + NEW_DATA, variance_new_images_predictions)
+            os.chdir(old_dir)
             var_no_label(variance_new_images_predictions)
+            if LABELS_AVAILABLE:
+                var_label(variance_new_images_predictions, y_pred, scatter=False)
         
         else:
             variance_new_images_predictions = pre_trained_model.predict(pred_generator)
@@ -1101,6 +1300,7 @@ if __name__ == "__main__":
 
 # Variacne output: nice thing that it can also confirm that it is certain of low probs for classes it doesnt think are it
 
+# Check how many wrong predictions we can filter out 
 
 
 
