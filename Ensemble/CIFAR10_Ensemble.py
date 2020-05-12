@@ -12,7 +12,7 @@ mpl.use('Agg')
 import matplotlib.pyplot as plt
 plt.style.use("ggplot")
 
-from tensorflow.keras.models import Model
+from tensorflow.keras.models import Model, load_model
 from tensorflow.keras.layers import Dense, Flatten
 from tensorflow.keras import optimizers
 from tensorflow.keras.applications.vgg16 import VGG16
@@ -40,17 +40,20 @@ AMOUNT_OF_PREDICTIONS = 50
 TEST_BATCH_SIZE = 250
 TRAIN_TEST_SPLIT = 0.8 # Value between 0 and 1, e.g. 0.8 creates 80%/20% division train/test
 TRAIN_VAL_SPLIT = 0.9
-TO_SHUFFLE = True
-AUGMENTATION = False
-LABEL_NORMALIZER = True
 SAVE_AUGMENTATION_TO_HDF5 = True
+
+TO_SHUFFLE = False
+AUGMENTATION = False
+LABEL_NORMALIZER = False
 TRAIN_ALL_LAYERS = True
+
 WEIGHTS_TO_USE = 'imagenet'
 LEARN_RATE = 0.00001
 ES_PATIENCE = 20
 RANDOMSEED = None
 MIN_DELTA = 0.005
 EARLY_MONITOR = 'val_accuracy'
+MC_MONITOR = 'val_loss'
 RESULTFOLDER = 'CIFAR10'
 
 # Get dataset path
@@ -116,6 +119,8 @@ def prepare_data():
 
 
 def fit_model(x_train, y_train, ensemble_model, log_dir, i):
+    ensemble_model.load_weights('initial_weights.h5')
+
     datagen = ImageDataGenerator(rescale=1./255)
     train_generator = datagen.flow(x_train[0:int(TRAIN_VAL_SPLIT*len(x_train))],
                                    y_train[0:int(TRAIN_VAL_SPLIT*len(y_train))],
@@ -125,6 +130,7 @@ def fit_model(x_train, y_train, ensemble_model, log_dir, i):
                                  y_train[int(TRAIN_VAL_SPLIT*len(y_train)):],
                                  batch_size=BATCH_SIZE)
 
+    mc = tf.keras.callbacks.ModelCheckpoint('best_model.h5', monitor=MC_MONITOR, mode='auto', save_best_only=True)
     tensorboard_callback = tf.keras.callbacks.TensorBoard(log_dir=log_dir)
     early_stopping = tf.keras.callbacks.EarlyStopping(monitor=EARLY_MONITOR, min_delta = MIN_DELTA,
                                                     mode='auto', verbose=1, patience=ES_PATIENCE)
@@ -132,13 +138,12 @@ def fit_model(x_train, y_train, ensemble_model, log_dir, i):
 
     ensemble_model.fit(train_generator,
                        epochs=EPOCHS,
-                       verbose=0,
+                       verbose=2,
                        validation_data=val_generator,
-                       callbacks=[tensorboard_callback, early_stopping])
+                       callbacks=[tensorboard_callback, early_stopping, mc])
 
-    # # save model and architecture to single file
-    # ensemble_model.save("ensemble_model_{}.h5".format(i))
-    # print("Saved ensemble_model to disk")
+    ensemble_model = load_model('best_model.h5')
+    os.remove('best_model.h5')
 
     # Save JSON config to disk
     json_config = ensemble_model.to_json()
@@ -208,58 +213,63 @@ def main():
 
     os.chdir(fig_dir)
 
+    # Save initial weights
+    ensemble_model.save_weights('initial_weights.h5')
+
     ensemble = [fit_model(x_train, y_train, ensemble_model, log_dir, i) for i in range(N_ENSEMBLE_MEMBERS)]
 
-    ensemble_predictions = [model.predict(x_test, batch_size=TEST_BATCH_SIZE) for model in ensemble]
-    # ensemble_predictions = array(ensemble_predictions)
+    os.remove('initial_weights.h5')
 
-    # score of the MCDO model
-    accs = []
-    for y_p in ensemble_predictions:
-        acc = accuracy_score(y_test.argmax(axis=1), y_p.argmax(axis=1))
-        accs.append(acc)
-    print("Highest acc of model in ensemble: {:.1%}".format(sum(accs)/len(accs)))
+    # ensemble_predictions = [model.predict(x_test, batch_size=TEST_BATCH_SIZE) for model in ensemble]
+    # # ensemble_predictions = array(ensemble_predictions)
 
-    ensemble_pred = np.array(ensemble_predictions).mean(axis=0).argmax(axis=1)
-    ensemble_acc = accuracy_score(y_test.argmax(axis=1), ensemble_pred)
-    print("Mean ensemble accuracy: {:.1%}".format(ensemble_acc))
+    # # score of the MCDO model
+    # accs = []
+    # for y_p in ensemble_predictions:
+    #     acc = accuracy_score(y_test.argmax(axis=1), y_p.argmax(axis=1))
+    #     accs.append(acc)
+    # print("Highest acc of model in ensemble: {:.1%}".format(sum(accs)/len(accs)))
 
-    dir_path_head_tail = os.path.split(os.path.dirname(os.getcwd()))
-    new_path = dir_path_head_tail[0] + os.path.sep + RESULTFOLDER + os.path.sep + datetime.datetime.now().strftime('%Y-%m-%d_%H-%M') + '_' + WEIGHTS_TO_USE + '_' + str(BATCH_SIZE) + 'B' + '_{:.1%}A'.format(ensemble_acc)
-    os.rename(fig_dir, new_path)
+    # ensemble_pred = np.array(ensemble_predictions).mean(axis=0).argmax(axis=1)
+    # ensemble_acc = accuracy_score(y_test.argmax(axis=1), ensemble_pred)
+    # print("Mean ensemble accuracy: {:.1%}".format(ensemble_acc))
 
-    confusion = tf.math.confusion_matrix(labels=y_test.argmax(axis=1), predictions=ensemble_pred,
-                                    num_classes=NUM_CLASSES)
-    print(confusion)
+    # dir_path_head_tail = os.path.split(os.path.dirname(os.getcwd()))
+    # new_path = dir_path_head_tail[0] + os.path.sep + RESULTFOLDER + os.path.sep + datetime.datetime.now().strftime('%Y-%m-%d_%H-%M') + '_' + WEIGHTS_TO_USE + '_' + str(BATCH_SIZE) + 'B' + '_{:.1%}A'.format(ensemble_acc)
+    # os.rename(fig_dir, new_path)
 
-    plt.hist(accs)
-    plt.axvline(x=ensemble_acc, color="b")
-    plt.savefig('ensemble_acc.png')
-    plt.clf()
+    # confusion = tf.math.confusion_matrix(labels=y_test.argmax(axis=1), predictions=ensemble_pred,
+    #                                 num_classes=NUM_CLASSES)
+    # print(confusion)
 
-    plt.imsave('test_image_' + str(test_img_idx) + '.png', x_test[test_img_idx])
+    # plt.hist(accs)
+    # plt.axvline(x=ensemble_acc, color="b")
+    # plt.savefig('ensemble_acc.png')
+    # plt.clf()
 
-    p_0 = np.array([p[test_img_idx] for p in ensemble_predictions])
-    print("posterior mean: {}".format(p_0.mean(axis=0).argmax()))
-    print("true label: {}".format(y_test[test_img_idx].argmax()))
-    print()
-    # probability + variance
-    for i, (prob, var) in enumerate(zip(p_0.mean(axis=0), p_0.std(axis=0))):
-        print("class: {}; proba: {:.1%}; var: {:.2%} ".format(i, prob, var))
+    # plt.imsave('test_image_' + str(test_img_idx) + '.png', x_test[test_img_idx])
 
-    x_axis, y_axis = list(range(len(p_0.mean(axis=0)))), p_0.mean(axis=0)
-    plt.plot(x_axis, y_axis)
-    plt.savefig('prob_var_' + str(test_img_idx) + '.png')
-    plt.clf()
+    # p_0 = np.array([p[test_img_idx] for p in ensemble_predictions])
+    # print("posterior mean: {}".format(p_0.mean(axis=0).argmax()))
+    # print("true label: {}".format(y_test[test_img_idx].argmax()))
+    # print()
+    # # probability + variance
+    # for i, (prob, var) in enumerate(zip(p_0.mean(axis=0), p_0.std(axis=0))):
+    #     print("class: {}; proba: {:.1%}; var: {:.2%} ".format(i, prob, var))
 
-    fig = plt.subplots(NUM_CLASSES, 1, figsize=(12, 6))[0]
+    # x_axis, y_axis = list(range(len(p_0.mean(axis=0)))), p_0.mean(axis=0)
+    # plt.plot(x_axis, y_axis)
+    # plt.savefig('prob_var_' + str(test_img_idx) + '.png')
+    # plt.clf()
 
-    for i, ax in enumerate(fig.get_axes()):
-        ax.hist(p_0[:, i], bins=100, range=(0, 1))
-        ax.set_title(f"class {i}")
-        ax.label_outer()
+    # fig = plt.subplots(NUM_CLASSES, 1, figsize=(12, 6))[0]
 
-    fig.savefig('sub_plots' + str(test_img_idx) + '.png', dpi=fig.dpi)
+    # for i, ax in enumerate(fig.get_axes()):
+    #     ax.hist(p_0[:, i], bins=100, range=(0, 1))
+    #     ax.set_title(f"class {i}")
+    #     ax.label_outer()
+
+    # fig.savefig('sub_plots' + str(test_img_idx) + '.png', dpi=fig.dpi)
 
 
 if __name__ == "__main__":

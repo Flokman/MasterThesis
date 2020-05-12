@@ -16,7 +16,7 @@ mpl.use('Agg')
 import matplotlib.pyplot as plt
 plt.style.use("ggplot")
 
-from tensorflow.keras.models import Model
+from tensorflow.keras.models import Model, load_model
 from tensorflow.keras.layers import Input, Dense, BatchNormalization, Flatten, concatenate
 from tensorflow.keras import optimizers
 from tensorflow.keras.applications.vgg16 import VGG16
@@ -26,6 +26,8 @@ from sklearn.metrics import accuracy_score
 
 from tensorflow.keras import Input, layers, models, utils
 from tensorflow.keras import backend as K
+
+from uncertainty_output import Uncertainty_output
 
 # from customLoss import CategoricalVariance
 
@@ -40,12 +42,14 @@ WEIGHTS_PATH_NO_TOP = ('https://github.com/fchollet/deep-learning-models/'
 IMG_HEIGHT, IMG_WIDTH, IMG_DEPTH = 32, 32, 3
 DATASET_NAME = os.path.sep + 'CIFAR10'
 
-BATCH_SIZE = 32
+BATCH_SIZE = 64
 NUM_CLASSES = 10
-EPOCHS_1 = 120
-ES_PATIENCE_1 = 30
-EPOCHS_2 = 300
-ES_PATIENCE_2 = 50
+EPOCHS_1 = 150
+ES_PATIENCE_1 = 20
+EPOCHS_2 = 30
+ES_PATIENCE_2 = 5
+EPOCHS_3 = 5
+ES_PATIENCE_3 = 5
 
 TEST_BATCH_SIZE = 250
 TRAIN_TEST_SPLIT = 0.8 # Value between 0 and 1, e.g. 0.8 creates 80%/20% division train/test
@@ -99,49 +103,18 @@ def prepare_data():
     return(x_train, y_train, x_test, y_test, test_img_idx)
 
 
-def categorical_cross(y_true, y_pred, from_logits=False):
-    y_pred = K.constant(y_pred) if not tf.is_tensor(y_pred) else y_pred
-    y_true = K.cast(y_true, y_pred.dtype)
-
-    y_true_cat = y_true[:, :NUM_CLASSES]
-    y_pred_cat = y_pred[:, :NUM_CLASSES]
-    # cat_loss = K.mean(K.square(y_pred_cat - y_true_cat), axis=-1)
-    cat_loss = K.categorical_crossentropy(y_true_cat, y_pred_cat, from_logits=from_logits)
-    
-    return cat_loss
-
-
-def categorical_variance(y_true, y_pred, from_logits=False):
-    y_pred = K.constant(y_pred) if not tf.is_tensor(y_pred) else y_pred
-    y_true = K.cast(y_true, y_pred.dtype)
-
-    y_true_cat = y_true[:, :NUM_CLASSES]
-    y_pred_cat = y_pred[:, :NUM_CLASSES]
-    # cat_loss = K.mean(K.square(y_pred_cat - y_true_cat), axis=-1)
-    cat_loss = K.categorical_crossentropy(y_true_cat, y_pred_cat, from_logits=from_logits)
-
-    # TODO: test first abs of y_pred_cat
-    # Is error only modelled after being right? Or also wrong?
-    y_pred_cat_abs = K.abs(y_pred_cat)
-    y_true_var = K.square(y_pred_cat_abs - y_true_cat)
-    y_pred_var = y_pred[:, NUM_CLASSES:]
-    var_loss = K.mean(K.square(y_pred_var - y_true_var), axis=-1)
-    total_loss = cat_loss + var_loss
-
-    return total_loss
-
 def main():
     ''' Main function '''
     # Load data
     x_train, y_train, x_test, y_test, test_img_idx = prepare_data()
 
     # VGG16 since it does not include batch normalization of dropout by itself
-    variance_model = VGG16(weights=WEIGHTS_TO_USE, include_top=False,
+    Error_model = VGG16(weights=WEIGHTS_TO_USE, include_top=False,
                        input_shape=(IMG_HEIGHT, IMG_WIDTH, IMG_DEPTH),
                        classes=NUM_CLASSES)
 
     # Stacking a new simple convolutional network on top of vgg16
-    all_layers = [l for l in variance_model.layers]
+    all_layers = [l for l in Error_model.layers]
     x = all_layers[0].output
     for i in range(1, len(all_layers)):
         x = all_layers[i](x)
@@ -151,21 +124,21 @@ def main():
     x = Dense(4096, activation='relu', name='fc1')(x)
     last_layer = Dense(4096, activation='relu', name='fc2')(x)
     classification = Dense(NUM_CLASSES, activation='softmax')(last_layer)
-    variance = Dense(NUM_CLASSES, activation='linear')(last_layer)
+    Error = Dense(NUM_CLASSES, activation='softmax')(last_layer)
 
-    out = concatenate([classification, variance])
+    out = concatenate([classification, Error])
 
     # Creating new model
-    variance_model = Model(inputs=all_layers[0].input, outputs=out)
+    Error_model = Model(inputs=all_layers[0].input, outputs=out)
 
-    variance_model.summary()
+    Error_model.summary()
 
     adam = optimizers.Adam(lr=LEARN_RATE)
     # sgd = optimizers.SGD(lr=LEARN_RATE)
 
-    variance_model.compile(
+    Error_model.compile(
         optimizer=adam,
-        loss=categorical_cross,
+        loss=Uncertainty_output(NUM_CLASSES).error,
         metrics=['acc']
     )
 
@@ -180,8 +153,9 @@ def main():
 
     os.chdir(fig_dir)
 
+    mc_1 = tf.keras.callbacks.ModelCheckpoint('best_model.h5', monitor='loss', mode='min', save_best_only=True)
     tensorboard_callback = tf.keras.callbacks.TensorBoard(log_dir=log_dir)
-    early_stopping_1 = tf.keras.callbacks.EarlyStopping(monitor='val_loss',
+    early_stopping_1 = tf.keras.callbacks.EarlyStopping(monitor='loss',
                                                       mode='auto', verbose=1, patience=ES_PATIENCE_1)
 
 
@@ -196,101 +170,74 @@ def main():
 
 
 
-    variance_model.fit(train_generator,
+    Error_model.fit(train_generator,
                 epochs=EPOCHS_1,
                 verbose=2,
                 validation_data=val_generator,
-                callbacks=[tensorboard_callback, early_stopping_1])
+                callbacks=[tensorboard_callback, early_stopping_1, mc_1])
 
-    variance_model.compile(
+    Error_model = load_model('best_model.h5', compile = False)
+    os.remove('best_model.h5')
+
+    Error_model.compile(
         optimizer=adam,
-        loss=categorical_variance,
+        loss=Uncertainty_output(NUM_CLASSES).categorical_cross,
         metrics=['acc']
     )
 
+    mc_2 = tf.keras.callbacks.ModelCheckpoint('best_model.h5', monitor='val_loss', mode='min', save_best_only=True)
     early_stopping_2 = tf.keras.callbacks.EarlyStopping(monitor='val_loss',
                                                       mode='auto', verbose=1, patience=ES_PATIENCE_2)
 
-    variance_model.fit(train_generator,
+    Error_model.fit(train_generator,
                        epochs=EPOCHS_2,
                        verbose=2,
                        validation_data=val_generator,
-                       callbacks=[tensorboard_callback, early_stopping_2])
+                       callbacks=[tensorboard_callback, early_stopping_2, mc_2])
+
+    Error_model = load_model('best_model.h5', compile = False)
+    os.remove('best_model.h5')
+
+    Error_model.compile(
+        optimizer=adam,
+        loss=Uncertainty_output(NUM_CLASSES).categorical_error,
+        metrics=['acc']
+    )
+
+    mc_3 = tf.keras.callbacks.ModelCheckpoint('best_model.h5', monitor='loss', mode='min', save_best_only=True) 
+    early_stopping_3 = tf.keras.callbacks.EarlyStopping(monitor='loss',
+                                                      mode='auto', verbose=1, patience=ES_PATIENCE_2)
+
+    Error_model.fit(train_generator,
+                       epochs=EPOCHS_2,
+                       verbose=2,
+                       validation_data=val_generator,
+                       callbacks=[tensorboard_callback, early_stopping_2, mc_3])
+
+    Error_model = load_model('best_model.h5', compile = False)
+    os.remove('best_model.h5')
 
     # Save JSON config to disk
-    json_config = variance_model.to_json()
-    with open('variance_model_config.json', 'w') as json_file:
+    json_config = Error_model.to_json()
+    with open('Error_model_config.json', 'w') as json_file:
         json_file.write(json_config)
     # Save weights to disk
-    variance_model.save_weights('variance_weights.h5')
+    Error_model.save_weights('Error_weights.h5')
 
-    variance_predictions = variance_model.predict(x_test)
-    true_labels = [np.argmax(i) for i in y_test]
-    wrong = 0
-    correct = 0
-    supercorrect = 0
-    notsupercorrect = 0
-    match = 0
-    notmatch = 0
-    varcorrect = 0
-    varwrong = 0
-    mean_var = []
-
-    #Convert var pred to uncertainty
-    for ind, pred in enumerate(variance_predictions):
-        true_label = true_labels[ind]
-        classif = pred[:NUM_CLASSES]
-        classif_ind = np.argmax(classif)
-        var = np.abs(pred[NUM_CLASSES:])
-
-        for i in range(0, NUM_CLASSES):
-            raw_var = var[i]
-            if_true_error = pow((classif[i] - y_test[ind][i]), 2)
-            var[i] = abs(if_true_error - raw_var)
-        variance_predictions[ind][NUM_CLASSES:] = var
-
-    for ind, pred in enumerate(variance_predictions):
-        true_label = true_labels[ind]
-        classif = pred[:NUM_CLASSES]
-        classif_ind = np.argmax(classif)
-        var = pred[NUM_CLASSES:]
-        mean_var.append(np.mean(var))
-
-        # for i in range(0, NUM_CLASSES):
-        #     raw_var = var[i]
-        #     if_true_error = pow((classif[i] - y_test[ind][i]), 2)
-        #     var[i] = abs(if_true_error - raw_var)
-
-        var_pred = var[classif_ind]
-        var_correct = var[true_label]
-        var_low = np.argmin(var)
-
-        if classif_ind != true_label:
-            wrong += 1
-            # print("Pred: {}, true: {}".format(classif_ind, true_label))
-            # print("Var_pred: {}, var_true: {}".format(var_wrong, var_correct))
-        if classif_ind == true_label:
-            correct += 1
-        if classif_ind == true_label and classif_ind == var_low:
-            supercorrect += 1
-        if classif_ind != true_label and classif_ind != var_low:
-            notsupercorrect += 1
-        if classif_ind == var_low:
-            match += 1
-        if classif_ind != var_low:
-            notmatch += 1
-        if var_low == true_label:
-            varcorrect +=1
-        if var_low != true_label:
-            varwrong  += 1
-        
+    Error_predictions = Error_model.predict(x_test)
+    Error_predictions = Uncertainty_output(NUM_CLASSES).convert_output_to_uncertainty(Error_predictions)
     
-    total = len(variance_predictions)
-    print("Correct: {}, wrong: {}, accuracy: {}%".format(correct, wrong, (correct/(total))*100))
-    print("Varcorrect: {}, varwrong: {}, accuracy: {}%".format(varcorrect, varwrong, (varcorrect/(total))*100))
-    print("Supercorrect: {}, superwrong: {}, accuracy: {}%".format(supercorrect, notsupercorrect, (supercorrect/(total))*100))
-    print("match: {}, notmatch: {}, accuracy: {}%".format(match, notmatch, (match/(total))*100))
-    print("Mean_var: {:.2%}, var_acc = {:.2%}".format(np.mean(mean_var), 1.0-(np.mean(mean_var))))
+    Uncertainty_output(NUM_CLASSES).results_if_label(Error_predictions, y_test, scatter=True, name='CIFAR10')
+
+
+    single_acc = accuracy_score(y_test.argmax(axis=1), Error_predictions[:, :NUM_CLASSES].argmax(axis=1))
+    print(single_acc)
+    dir_path_head_tail = os.path.split(os.path.dirname(os.getcwd()))
+    if WEIGHTS_TO_USE != None:
+        new_path = dir_path_head_tail[0] + os.path.sep + 'CIFAR10' + os.path.sep + datetime.datetime.now().strftime('%Y-%m-%d_%H-%M') + '_' + WEIGHTS_TO_USE + '_' + str(BATCH_SIZE) + 'B' + '_{:.1%}A'.format(single_acc)
+    else:
+        new_path = dir_path_head_tail[0] + os.path.sep + 'CIFAR10' + os.path.sep + datetime.datetime.now().strftime('%Y-%m-%d_%H-%M') + '_' + str(BATCH_SIZE) + 'B' + '_{:.1%}A'.format(single_acc)
+    os.rename(fig_dir, new_path)
 
 
 if __name__ == "__main__":

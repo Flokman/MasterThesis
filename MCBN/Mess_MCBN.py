@@ -30,33 +30,36 @@ WEIGHTS_PATH_NO_TOP = ('https://github.com/fchollet/deep-learning-models/'
 
 # Input image dimensions
 IMG_HEIGHT, IMG_WIDTH, IMG_DEPTH = 256, 256, 3
-DATASET_NAME = '/Messidor2_PNG_AUG_' + str(IMG_HEIGHT) + '.hdf5'
+DATASET_NAME = '/Messidor2_PNG_' + str(IMG_HEIGHT) + '.hdf5'
 
-BATCH_SIZE = 128
+BATCH_SIZE = 64
 NUM_CLASSES = 5
-EPOCHS = 150
-MCBN_PREDICTIONS = 25
+EPOCHS = 500
+MCBN_PREDICTIONS = 256
 MINIBATCH_SIZE = 128
 TRAIN_TEST_SPLIT = 0.8 # Value between 0 and 1, e.g. 0.8 creates 80%/20% division train/test
 TRAIN_VAL_SPLIT = 0.9
-TO_SHUFFLE = True
-AUGMENTATION = False
-LABEL_NORMALIZER = True
-SAVE_AUGMENTATION_TO_HDF5 = True
+
+SAVE_AUGMENTATION_TO_HDF5 = False
 ADD_BATCH_NORMALIZATION = True
 ADD_BATCH_NORMALIZATION_INSIDE = True
-TRAIN_ALL_LAYERS = False
+
+TO_SHUFFLE = False
+AUGMENTATION = False
+LABEL_NORMALIZER = False
+TRAIN_ALL_LAYERS = True
+
 ONLY_AFTER_SPECIFIC_LAYER = True
 WEIGHTS_TO_USE = 'imagenet'
-LEARN_RATE = 0.0001
-ES_PATIENCE = 10
+LEARN_RATE = 0.001
+ES_PATIENCE = 50
 MIN_DELTA = 0.005
 EARLY_MONITOR = 'val_accuracy'
 MC_MONITOR = 'val_loss'
 RESULTFOLDER = 'MES'
 
 adam = optimizers.Adam(lr=LEARN_RATE)
-sgd = optimizers.SGD(lr=0.001, momentum=0.9)
+sgd = optimizers.SGD(lr=0.00001, momentum=0.9)
 
 OPTIMZ = sgd
 
@@ -460,6 +463,7 @@ def main():
                    validation_data=val_generator,
                    callbacks=[tensorboard_callback, early_stopping, mc])
 
+    print("Done fitting")
 
     MCBN_model = load_model('best_model.h5')
     os.remove('best_model.h5')

@@ -1,0 +1,396 @@
+
+The following have been reloaded with a version change:
+  1) FFTW/3.3.8-gompic-2019b => FFTW/3.3.8-gompi-2019b
+  2) OpenMPI/3.1.4-gcccuda-2019b => OpenMPI/3.1.4-GCC-8.3.0
+  3) ScaLAPACK/2.0.2-gompic-2019b => ScaLAPACK/2.0.2-gompi-2019b
+  4) SciPy-bundle/2019.10-fosscuda-2019b-Python-3.7.4 => SciPy-bundle/2019.10-foss-2019b-Python-3.7.4
+
+--------------------------------------------------------------------------
+A process has executed an operation involving a call to the
+"fork()" system call to create a child process.  Open MPI is currently
+operating in a condition that could result in memory corruption or
+other system errors; your job may hang, crash, or produce silent
+data corruption.  The use of fork() (or system() or other calls that
+create child processes) is strongly discouraged.
+
+The process that invoked fork was:
+
+  Local host:          [[6457,1],0] (PID 17784)
+
+If you are *absolutely sure* that your application will successfully
+and correctly survive a call to fork(), you may disable this warning
+by setting the mpi_warn_on_fork MCA parameter to 0.
+--------------------------------------------------------------------------
+2020-05-10 19:50:17.093755: I tensorflow/stream_executor/platform/default/dso_loader.cc:44] Successfully opened dynamic library libcudart.so.10.1
+2020-05-10 19:50:23.878532: I tensorflow/stream_executor/platform/default/dso_loader.cc:44] Successfully opened dynamic library libcuda.so.1
+2020-05-10 19:50:23.905143: I tensorflow/core/common_runtime/gpu/gpu_device.cc:1555] Found device 0 with properties: 
+pciBusID: 0000:03:00.0 name: Tesla K40m computeCapability: 3.5
+coreClock: 0.745GHz coreCount: 15 deviceMemorySize: 11.17GiB deviceMemoryBandwidth: 268.58GiB/s
+2020-05-10 19:50:23.905204: I tensorflow/stream_executor/platform/default/dso_loader.cc:44] Successfully opened dynamic library libcudart.so.10.1
+2020-05-10 19:50:23.908588: I tensorflow/stream_executor/platform/default/dso_loader.cc:44] Successfully opened dynamic library libcublas.so.10
+2020-05-10 19:50:23.911440: I tensorflow/stream_executor/platform/default/dso_loader.cc:44] Successfully opened dynamic library libcufft.so.10
+2020-05-10 19:50:23.912175: I tensorflow/stream_executor/platform/default/dso_loader.cc:44] Successfully opened dynamic library libcurand.so.10
+2020-05-10 19:50:23.915049: I tensorflow/stream_executor/platform/default/dso_loader.cc:44] Successfully opened dynamic library libcusolver.so.10
+2020-05-10 19:50:23.916875: I tensorflow/stream_executor/platform/default/dso_loader.cc:44] Successfully opened dynamic library libcusparse.so.10
+2020-05-10 19:50:23.922105: I tensorflow/stream_executor/platform/default/dso_loader.cc:44] Successfully opened dynamic library libcudnn.so.7
+2020-05-10 19:50:23.924389: I tensorflow/core/common_runtime/gpu/gpu_device.cc:1697] Adding visible gpu devices: 0
+2020-05-10 19:50:23.928366: I tensorflow/core/common_runtime/gpu/gpu_device.cc:1555] Found device 0 with properties: 
+pciBusID: 0000:03:00.0 name: Tesla K40m computeCapability: 3.5
+coreClock: 0.745GHz coreCount: 15 deviceMemorySize: 11.17GiB deviceMemoryBandwidth: 268.58GiB/s
+2020-05-10 19:50:23.928414: I tensorflow/stream_executor/platform/default/dso_loader.cc:44] Successfully opened dynamic library libcudart.so.10.1
+2020-05-10 19:50:23.928453: I tensorflow/stream_executor/platform/default/dso_loader.cc:44] Successfully opened dynamic library libcublas.so.10
+2020-05-10 19:50:23.928492: I tensorflow/stream_executor/platform/default/dso_loader.cc:44] Successfully opened dynamic library libcufft.so.10
+2020-05-10 19:50:23.928530: I tensorflow/stream_executor/platform/default/dso_loader.cc:44] Successfully opened dynamic library libcurand.so.10
+2020-05-10 19:50:23.928568: I tensorflow/stream_executor/platform/default/dso_loader.cc:44] Successfully opened dynamic library libcusolver.so.10
+2020-05-10 19:50:23.928606: I tensorflow/stream_executor/platform/default/dso_loader.cc:44] Successfully opened dynamic library libcusparse.so.10
+2020-05-10 19:50:23.928644: I tensorflow/stream_executor/platform/default/dso_loader.cc:44] Successfully opened dynamic library libcudnn.so.7
+2020-05-10 19:50:23.930970: I tensorflow/core/common_runtime/gpu/gpu_device.cc:1697] Adding visible gpu devices: 0
+2020-05-10 19:50:23.931023: I tensorflow/stream_executor/platform/default/dso_loader.cc:44] Successfully opened dynamic library libcudart.so.10.1
+2020-05-10 19:50:24.366234: I tensorflow/core/common_runtime/gpu/gpu_device.cc:1096] Device interconnect StreamExecutor with strength 1 edge matrix:
+2020-05-10 19:50:24.366338: I tensorflow/core/common_runtime/gpu/gpu_device.cc:1102]      0 
+2020-05-10 19:50:24.366358: I tensorflow/core/common_runtime/gpu/gpu_device.cc:1115] 0:   N 
+2020-05-10 19:50:24.369484: I tensorflow/core/common_runtime/gpu/gpu_device.cc:1241] Created TensorFlow device (/job:localhost/replica:0/task:0/device:GPU:0 with 10741 MB memory) -> physical GPU (device: 0, name: Tesla K40m, pci bus id: 0000:03:00.0, compute capability: 3.5)
+2020-05-10 19:50:24.369871: I tensorflow/core/common_runtime/process_util.cc:147] Creating new thread pool with default inter op setting: 12. Tune using inter_op_parallelism_threads for best performance.
+WARNING:tensorflow:sample_weight modes were coerced from
+  ...
+    to  
+  ['...']
+WARNING:tensorflow:sample_weight modes were coerced from
+  ...
+    to  
+  ['...']
+2020-05-10 19:50:27.416479: I tensorflow/stream_executor/platform/default/dso_loader.cc:44] Successfully opened dynamic library libcublas.so.10
+2020-05-10 19:50:27.637446: I tensorflow/stream_executor/platform/default/dso_loader.cc:44] Successfully opened dynamic library libcudnn.so.7
+2020-05-10 19:50:44.714413: I tensorflow/core/profiler/lib/profiler_session.cc:225] Profiler session started.
+2020-05-10 19:50:44.714581: I tensorflow/core/profiler/internal/gpu/cupti_tracer.cc:1259] Profiler found 1 GPUs
+2020-05-10 19:50:44.717643: I tensorflow/stream_executor/platform/default/dso_loader.cc:44] Successfully opened dynamic library libcupti.so.10.1
+2020-05-10 19:50:44.818288: E tensorflow/core/profiler/internal/gpu/cupti_tracer.cc:1307] function cupti_interface_->Subscribe( &subscriber_, (CUpti_CallbackFunc)ApiCallback, this)failed with error CUPTI_ERROR_INSUFFICIENT_PRIVILEGES
+2020-05-10 19:50:44.819441: E tensorflow/core/profiler/internal/gpu/cupti_tracer.cc:1346] function cupti_interface_->ActivityRegisterCallbacks( AllocCuptiActivityBuffer, FreeCuptiActivityBuffer)failed with error CUPTI_ERROR_INSUFFICIENT_PRIVILEGES
+2020-05-10 19:50:46.915454: E tensorflow/core/profiler/internal/gpu/cupti_tracer.cc:1329] function cupti_interface_->EnableCallback( 0 , subscriber_, CUPTI_CB_DOMAIN_DRIVER_API, cbid)failed with error CUPTI_ERROR_INVALID_PARAMETER
+2020-05-10 19:50:46.915607: I tensorflow/core/profiler/internal/gpu/device_tracer.cc:88]  GpuTracer has collected 0 callback api events and 0 activity events.
+dataset_name = /Messidor2_PNG_256.hdf5, batch_size = 64, num_classes = 5, epochs_1 = 20,
+        epochts_2 = 150, test_img_idx = 263,
+        train_test_split = 0.8, to_shuffle = False, augmentation = False, label_count = [1021, 270, 347, 75, 35],
+        label_normalizer = False, save_augmentation_to_hdf5 = False, learn rate = 1e-05,
+        train_all_layers = False, weights_to_use = imagenet,
+        es_patience_1 = 10, es_patience_2 = 10, train_val_split = 0.9
+x_train shape: (1398, 256, 256, 3)
+1398 train samples
+350 test samples
+Model: "model"
+__________________________________________________________________________________________________
+Layer (type)                    Output Shape         Param #     Connected to                     
+==================================================================================================
+input_1 (InputLayer)            [(None, 256, 256, 3) 0                                            
+__________________________________________________________________________________________________
+block1_conv1 (Conv2D)           (None, 256, 256, 64) 1792        input_1[0][0]                    
+__________________________________________________________________________________________________
+block1_conv2 (Conv2D)           (None, 256, 256, 64) 36928       block1_conv1[1][0]               
+__________________________________________________________________________________________________
+block1_pool (MaxPooling2D)      (None, 128, 128, 64) 0           block1_conv2[1][0]               
+__________________________________________________________________________________________________
+block2_conv1 (Conv2D)           (None, 128, 128, 128 73856       block1_pool[1][0]                
+__________________________________________________________________________________________________
+block2_conv2 (Conv2D)           (None, 128, 128, 128 147584      block2_conv1[1][0]               
+__________________________________________________________________________________________________
+block2_pool (MaxPooling2D)      (None, 64, 64, 128)  0           block2_conv2[1][0]               
+__________________________________________________________________________________________________
+block3_conv1 (Conv2D)           (None, 64, 64, 256)  295168      block2_pool[1][0]                
+__________________________________________________________________________________________________
+block3_conv2 (Conv2D)           (None, 64, 64, 256)  590080      block3_conv1[1][0]               
+__________________________________________________________________________________________________
+block3_conv3 (Conv2D)           (None, 64, 64, 256)  590080      block3_conv2[1][0]               
+__________________________________________________________________________________________________
+block3_pool (MaxPooling2D)      (None, 32, 32, 256)  0           block3_conv3[1][0]               
+__________________________________________________________________________________________________
+block4_conv1 (Conv2D)           (None, 32, 32, 512)  1180160     block3_pool[1][0]                
+__________________________________________________________________________________________________
+block4_conv2 (Conv2D)           (None, 32, 32, 512)  2359808     block4_conv1[1][0]               
+__________________________________________________________________________________________________
+block4_conv3 (Conv2D)           (None, 32, 32, 512)  2359808     block4_conv2[1][0]               
+__________________________________________________________________________________________________
+block4_pool (MaxPooling2D)      (None, 16, 16, 512)  0           block4_conv3[1][0]               
+__________________________________________________________________________________________________
+block5_conv1 (Conv2D)           (None, 16, 16, 512)  2359808     block4_pool[1][0]                
+__________________________________________________________________________________________________
+block5_conv2 (Conv2D)           (None, 16, 16, 512)  2359808     block5_conv1[1][0]               
+__________________________________________________________________________________________________
+block5_conv3 (Conv2D)           (None, 16, 16, 512)  2359808     block5_conv2[1][0]               
+__________________________________________________________________________________________________
+block5_pool (MaxPooling2D)      (None, 8, 8, 512)    0           block5_conv3[1][0]               
+__________________________________________________________________________________________________
+flatten (Flatten)               (None, 32768)        0           block5_pool[1][0]                
+__________________________________________________________________________________________________
+fc1 (Dense)                     (None, 4096)         134221824   flatten[0][0]                    
+__________________________________________________________________________________________________
+fc2 (Dense)                     (None, 4096)         16781312    fc1[0][0]                        
+__________________________________________________________________________________________________
+dense (Dense)                   (None, 5)            20485       fc2[0][0]                        
+__________________________________________________________________________________________________
+dense_1 (Dense)                 (None, 5)            20485       fc2[0][0]                        
+__________________________________________________________________________________________________
+concatenate (Concatenate)       (None, 10)           0           dense[0][0]                      
+                                                                 dense_1[0][0]                    
+==================================================================================================
+Total params: 165,758,794
+Trainable params: 165,758,794
+Non-trainable params: 0
+__________________________________________________________________________________________________
+Start fitting
+Train for 20 steps, validate for 3 steps
+Epoch 1/20
+20/20 - 75s - loss: 1.1875 - acc: 0.5223 - val_loss: 1.1555 - val_acc: 0.6143
+Epoch 2/20
+20/20 - 46s - loss: 1.1067 - acc: 0.5159 - val_loss: 0.9846 - val_acc: 0.5786
+Epoch 3/20
+20/20 - 46s - loss: 1.0658 - acc: 0.4499 - val_loss: 0.9509 - val_acc: 0.3643
+Epoch 4/20
+20/20 - 46s - loss: 1.0527 - acc: 0.4603 - val_loss: 0.9307 - val_acc: 0.4571
+Epoch 5/20
+20/20 - 43s - loss: 1.0322 - acc: 0.4865 - val_loss: 1.0075 - val_acc: 0.3929
+Epoch 6/20
+20/20 - 47s - loss: 0.9858 - acc: 0.4793 - val_loss: 0.9197 - val_acc: 0.3571
+Epoch 7/20
+20/20 - 43s - loss: 0.9384 - acc: 0.4746 - val_loss: 1.0584 - val_acc: 0.5214
+Epoch 8/20
+20/20 - 43s - loss: 0.9352 - acc: 0.4674 - val_loss: 1.0056 - val_acc: 0.3714
+Epoch 9/20
+20/20 - 43s - loss: 0.8318 - acc: 0.4491 - val_loss: 0.9552 - val_acc: 0.3214
+Epoch 10/20
+20/20 - 43s - loss: 0.7814 - acc: 0.4889 - val_loss: 1.0413 - val_acc: 0.3429
+Epoch 11/20
+20/20 - 43s - loss: 0.7901 - acc: 0.5231 - val_loss: 1.0023 - val_acc: 0.5000
+Epoch 12/20
+20/20 - 43s - loss: 0.6934 - acc: 0.5079 - val_loss: 1.0662 - val_acc: 0.3500
+Epoch 13/20
+20/20 - 43s - loss: 0.5890 - acc: 0.5612 - val_loss: 0.9966 - val_acc: 0.3571
+Epoch 14/20
+20/20 - 43s - loss: 0.4711 - acc: 0.5835 - val_loss: 0.9376 - val_acc: 0.4286
+Epoch 15/20
+20/20 - 43s - loss: 0.3949 - acc: 0.5533 - val_loss: 1.1643 - val_acc: 0.2000
+Epoch 16/20
+20/20 - 43s - loss: 0.3681 - acc: 0.5000 - val_loss: 1.3247 - val_acc: 0.3000
+WARNING:tensorflow:sample_weight modes were coerced from
+  ...
+    to  
+  ['...']
+WARNING:tensorflow:sample_weight modes were coerced from
+  ...
+    to  
+  ['...']
+2020-05-10 20:02:39.642521: W tensorflow/core/common_runtime/bfc_allocator.cc:243] Allocator (GPU_0_bfc) ran out of memory trying to allocate 2.25GiB with freed_by_count=0. The caller indicates that this is not a failure, but may mean that there could be performance gains if more memory were available.
+2020-05-10 20:02:39.642926: W tensorflow/core/common_runtime/bfc_allocator.cc:243] Allocator (GPU_0_bfc) ran out of memory trying to allocate 2.25GiB with freed_by_count=0. The caller indicates that this is not a failure, but may mean that there could be performance gains if more memory were available.
+2020-05-10 20:02:41.293661: I tensorflow/core/profiler/lib/profiler_session.cc:225] Profiler session started.
+2020-05-10 20:02:41.293775: E tensorflow/core/profiler/internal/gpu/cupti_tracer.cc:1307] function cupti_interface_->Subscribe( &subscriber_, (CUpti_CallbackFunc)ApiCallback, this)failed with error CUPTI_ERROR_NOT_INITIALIZED
+2020-05-10 20:02:41.293821: E tensorflow/core/profiler/internal/gpu/cupti_tracer.cc:1346] function cupti_interface_->ActivityRegisterCallbacks( AllocCuptiActivityBuffer, FreeCuptiActivityBuffer)failed with error CUPTI_ERROR_NOT_INITIALIZED
+2020-05-10 20:02:41.800096: W tensorflow/core/common_runtime/bfc_allocator.cc:243] Allocator (GPU_0_bfc) ran out of memory trying to allocate 3.38GiB with freed_by_count=0. The caller indicates that this is not a failure, but may mean that there could be performance gains if more memory were available.
+2020-05-10 20:02:42.821839: E tensorflow/core/profiler/internal/gpu/cupti_tracer.cc:1329] function cupti_interface_->EnableCallback( 0 , subscriber_, CUPTI_CB_DOMAIN_DRIVER_API, cbid)failed with error CUPTI_ERROR_INVALID_PARAMETER
+2020-05-10 20:02:42.821889: I tensorflow/core/profiler/internal/gpu/device_tracer.cc:88]  GpuTracer has collected 0 callback api events and 0 activity events.
+2020-05-10 20:02:43.504957: W tensorflow/core/common_runtime/bfc_allocator.cc:243] Allocator (GPU_0_bfc) ran out of memory trying to allocate 2.25GiB with freed_by_count=0. The caller indicates that this is not a failure, but may mean that there could be performance gains if more memory were available.
+2020-05-10 20:02:43.505342: W tensorflow/core/common_runtime/bfc_allocator.cc:243] Allocator (GPU_0_bfc) ran out of memory trying to allocate 2.25GiB with freed_by_count=0. The caller indicates that this is not a failure, but may mean that there could be performance gains if more memory were available.
+2020-05-10 20:02:45.835863: W tensorflow/core/common_runtime/bfc_allocator.cc:243] Allocator (GPU_0_bfc) ran out of memory trying to allocate 2.25GiB with freed_by_count=0. The caller indicates that this is not a failure, but may mean that there could be performance gains if more memory were available.
+2020-05-10 20:02:45.836113: W tensorflow/core/common_runtime/bfc_allocator.cc:243] Allocator (GPU_0_bfc) ran out of memory trying to allocate 2.25GiB with freed_by_count=0. The caller indicates that this is not a failure, but may mean that there could be performance gains if more memory were available.
+2020-05-10 20:02:48.167960: W tensorflow/core/common_runtime/bfc_allocator.cc:243] Allocator (GPU_0_bfc) ran out of memory trying to allocate 2.25GiB with freed_by_count=0. The caller indicates that this is not a failure, but may mean that there could be performance gains if more memory were available.
+2020-05-10 20:02:48.168257: W tensorflow/core/common_runtime/bfc_allocator.cc:243] Allocator (GPU_0_bfc) ran out of memory trying to allocate 2.25GiB with freed_by_count=0. The caller indicates that this is not a failure, but may mean that there could be performance gains if more memory were available.
+2020-05-10 20:02:50.499600: W tensorflow/core/common_runtime/bfc_allocator.cc:243] Allocator (GPU_0_bfc) ran out of memory trying to allocate 2.25GiB with freed_by_count=0. The caller indicates that this is not a failure, but may mean that there could be performance gains if more memory were available.
+Epoch 00016: early stopping
+Train for 20 steps, validate for 3 steps
+Epoch 1/150
+20/20 - 54s - loss: 1.1325 - acc: 0.5095 - val_loss: 1.0643 - val_acc: 0.6143
+Epoch 2/150
+20/20 - 53s - loss: 1.0433 - acc: 0.5859 - val_loss: 1.0103 - val_acc: 0.5643
+Epoch 3/150
+20/20 - 53s - loss: 0.9447 - acc: 0.6391 - val_loss: 0.9487 - val_acc: 0.6214
+Epoch 4/150
+20/20 - 53s - loss: 0.8371 - acc: 0.6812 - val_loss: 0.9725 - val_acc: 0.6071
+Epoch 5/150
+20/20 - 55s - loss: 0.7402 - acc: 0.7297 - val_loss: 0.9959 - val_acc: 0.5571
+Epoch 6/150
+20/20 - 53s - loss: 0.6114 - acc: 0.7782 - val_loss: 1.1038 - val_acc: 0.5286
+Epoch 7/150
+20/20 - 53s - loss: 0.5300 - acc: 0.8259 - val_loss: 1.1174 - val_acc: 0.5571
+Epoch 8/150
+20/20 - 53s - loss: 0.4343 - acc: 0.8466 - val_loss: 1.2523 - val_acc: 0.5643
+Epoch 9/150
+20/20 - 53s - loss: 0.3958 - acc: 0.8760 - val_loss: 1.1089 - val_acc: 0.5500
+Epoch 10/150
+20/20 - 53s - loss: 0.3351 - acc: 0.8959 - val_loss: 1.2747 - val_acc: 0.6143
+Epoch 11/150
+20/20 - 53s - loss: 0.3159 - acc: 0.9022 - val_loss: 1.1426 - val_acc: 0.6000
+Epoch 12/150
+20/20 - 53s - loss: 0.2244 - acc: 0.9356 - val_loss: 1.1782 - val_acc: 0.6143
+Epoch 13/150
+20/20 - 53s - loss: 0.1746 - acc: 0.9467 - val_loss: 1.4704 - val_acc: 0.5714
+Epoch 14/150
+20/20 - 47s - loss: 0.1758 - acc: 0.9475 - val_loss: 1.4340 - val_acc: 0.5714
+Epoch 15/150
+20/20 - 53s - loss: 0.1583 - acc: 0.9539 - val_loss: 1.3301 - val_acc: 0.6214
+Epoch 16/150
+20/20 - 53s - loss: 0.1101 - acc: 0.9682 - val_loss: 1.4017 - val_acc: 0.6143
+Epoch 17/150
+20/20 - 53s - loss: 0.0999 - acc: 0.9698 - val_loss: 1.5244 - val_acc: 0.6357
+Epoch 18/150
+20/20 - 47s - loss: 0.1148 - acc: 0.9642 - val_loss: 1.4120 - val_acc: 0.6286
+Epoch 19/150
+20/20 - 47s - loss: 0.1048 - acc: 0.9722 - val_loss: 1.6473 - val_acc: 0.6071
+Epoch 20/150
+20/20 - 47s - loss: 0.1128 - acc: 0.9642 - val_loss: 1.5423 - val_acc: 0.6357
+Epoch 21/150
+20/20 - 53s - loss: 0.0916 - acc: 0.9682 - val_loss: 1.5457 - val_acc: 0.6429
+Epoch 22/150
+20/20 - 47s - loss: 0.1043 - acc: 0.9642 - val_loss: 1.7345 - val_acc: 0.6000
+Epoch 23/150
+20/20 - 47s - loss: 0.1000 - acc: 0.9698 - val_loss: 1.5918 - val_acc: 0.6214
+Epoch 24/150
+20/20 - 53s - loss: 0.0799 - acc: 0.9698 - val_loss: 1.5897 - val_acc: 0.5286
+Epoch 25/150
+20/20 - 47s - loss: 0.0989 - acc: 0.9698 - val_loss: 1.6525 - val_acc: 0.5857
+Epoch 26/150
+20/20 - 53s - loss: 0.0793 - acc: 0.9658 - val_loss: 1.4359 - val_acc: 0.5857
+Epoch 27/150
+20/20 - 53s - loss: 0.0738 - acc: 0.9738 - val_loss: 1.5306 - val_acc: 0.6071
+Epoch 28/150
+20/20 - 47s - loss: 0.0842 - acc: 0.9658 - val_loss: 1.6885 - val_acc: 0.6143
+Epoch 29/150
+20/20 - 47s - loss: 0.0854 - acc: 0.9714 - val_loss: 1.6834 - val_acc: 0.6214
+Epoch 30/150
+20/20 - 53s - loss: 0.0729 - acc: 0.9674 - val_loss: 2.0066 - val_acc: 0.6071
+Epoch 31/150
+20/20 - 47s - loss: 0.0947 - acc: 0.9650 - val_loss: 1.5090 - val_acc: 0.5714
+Epoch 32/150
+20/20 - 47s - loss: 0.0897 - acc: 0.9650 - val_loss: 1.6972 - val_acc: 0.6286
+Epoch 33/150
+20/20 - 53s - loss: 0.0716 - acc: 0.9706 - val_loss: 1.8171 - val_acc: 0.6429
+Epoch 34/150
+20/20 - 47s - loss: 0.0725 - acc: 0.9690 - val_loss: 1.5357 - val_acc: 0.6286
+Epoch 35/150
+20/20 - 53s - loss: 0.0728 - acc: 0.9706 - val_loss: 1.5241 - val_acc: 0.6000
+Epoch 36/150
+20/20 - 53s - loss: 0.0702 - acc: 0.9626 - val_loss: 1.5469 - val_acc: 0.6071
+Epoch 37/150
+20/20 - 53s - loss: 0.0650 - acc: 0.9658 - val_loss: 1.7775 - val_acc: 0.6286
+Epoch 38/150
+20/20 - 47s - loss: 0.0686 - acc: 0.9706 - val_loss: 1.5138 - val_acc: 0.6000
+Epoch 39/150
+20/20 - 47s - loss: 0.0697 - acc: 0.9714 - val_loss: 1.6272 - val_acc: 0.5857
+Epoch 40/150
+20/20 - 47s - loss: 0.0769 - acc: 0.9690 - val_loss: 1.6918 - val_acc: 0.6000
+Epoch 41/150
+20/20 - 53s - loss: 0.0629 - acc: 0.9666 - val_loss: 1.5517 - val_acc: 0.5571
+Epoch 42/150
+20/20 - 47s - loss: 0.0784 - acc: 0.9650 - val_loss: 1.8785 - val_acc: 0.6429
+Epoch 43/150
+20/20 - 47s - loss: 0.0853 - acc: 0.9674 - val_loss: 1.4635 - val_acc: 0.5857
+Epoch 44/150
+20/20 - 47s - loss: 0.0758 - acc: 0.9642 - val_loss: 1.5915 - val_acc: 0.6143
+Epoch 45/150
+20/20 - 53s - loss: 0.0622 - acc: 0.9698 - val_loss: 1.7373 - val_acc: 0.6000
+Epoch 46/150
+20/20 - 53s - loss: 0.0579 - acc: 0.9698 - val_loss: 1.6077 - val_acc: 0.6000
+Epoch 47/150
+20/20 - 47s - loss: 0.0647 - acc: 0.9682 - val_loss: 2.1463 - val_acc: 0.6357
+Epoch 48/150
+20/20 - 47s - loss: 0.0699 - acc: 0.9730 - val_loss: 1.6287 - val_acc: 0.6000
+Epoch 49/150
+20/20 - 47s - loss: 0.0629 - acc: 0.9674 - val_loss: 1.7981 - val_acc: 0.6214
+Epoch 50/150
+20/20 - 47s - loss: 0.0650 - acc: 0.9682 - val_loss: 1.5783 - val_acc: 0.5929
+Epoch 51/150
+20/20 - 47s - loss: 0.0634 - acc: 0.9674 - val_loss: 1.6521 - val_acc: 0.5786
+Epoch 52/150
+20/20 - 47s - loss: 0.0654 - acc: 0.9642 - val_loss: 1.6360 - val_acc: 0.6143
+Epoch 53/150
+20/20 - 53s - loss: 0.0577 - acc: 0.9682 - val_loss: 1.6685 - val_acc: 0.5929
+Epoch 54/150
+20/20 - 47s - loss: 0.0585 - acc: 0.9690 - val_loss: 1.7901 - val_acc: 0.6500
+Epoch 55/150
+20/20 - 47s - loss: 0.0608 - acc: 0.9698 - val_loss: 2.1442 - val_acc: 0.6429
+Epoch 56/150
+20/20 - 47s - loss: 0.0605 - acc: 0.9642 - val_loss: 1.5413 - val_acc: 0.6071
+Epoch 57/150
+20/20 - 47s - loss: 0.0581 - acc: 0.9634 - val_loss: 1.6409 - val_acc: 0.5929
+Epoch 58/150
+20/20 - 53s - loss: 0.0536 - acc: 0.9698 - val_loss: 1.6354 - val_acc: 0.6357
+Epoch 59/150
+20/20 - 53s - loss: 0.0510 - acc: 0.9634 - val_loss: 1.6514 - val_acc: 0.6286
+Epoch 60/150
+20/20 - 47s - loss: 0.0544 - acc: 0.9682 - val_loss: 1.6817 - val_acc: 0.6500
+Epoch 61/150
+20/20 - 47s - loss: 0.0590 - acc: 0.9674 - val_loss: 1.5732 - val_acc: 0.5429
+Epoch 62/150
+20/20 - 47s - loss: 0.0642 - acc: 0.9666 - val_loss: 1.7460 - val_acc: 0.6000
+Epoch 63/150
+20/20 - 47s - loss: 0.0610 - acc: 0.9698 - val_loss: 1.5416 - val_acc: 0.6214
+Epoch 64/150
+20/20 - 47s - loss: 0.0518 - acc: 0.9682 - val_loss: 1.7325 - val_acc: 0.5857
+Epoch 65/150
+20/20 - 47s - loss: 0.0547 - acc: 0.9666 - val_loss: 1.6361 - val_acc: 0.6143
+Epoch 66/150
+20/20 - 47s - loss: 0.0538 - acc: 0.9706 - val_loss: 1.7317 - val_acc: 0.5643
+Epoch 67/150
+20/20 - 47s - loss: 0.0586 - acc: 0.9682 - val_loss: 1.6232 - val_acc: 0.5929
+Epoch 68/150
+20/20 - 47s - loss: 0.0552 - acc: 0.9666 - val_loss: 1.8154 - val_acc: 0.6214
+Epoch 69/150
+20/20 - 47s - loss: 0.0550 - acc: 0.9666 - val_loss: 1.6466 - val_acc: 0.6214
+Epoch 00069: early stopping
+Accuracy on original test dataset: 59.7%
+tf.Tensor(
+[[205   1   2   0   0]
+ [ 50   0   0   1   0]
+ [ 62   2   4   0   0]
+ [ 13   0   3   0   0]
+ [  4   0   1   2   0]], shape=(5, 5), dtype=int32)
+Correct: 209, wrong: 141, accuracy: 59.71428571428572%
+
+Mean probability on true label of original test dataset when correctly predicted = 100.00%
+Mean uncertainty on true label of original test dataset when correctly predicted = 1267.79%
+Mean probability on true label of original test dataset when wrongly predicted = 0.00%
+Mean uncertainty on true label of original test dataset when wrongly predicted = 955.84%
+
+Mean probability on highest predicted on original test dataset when wrong = 99.91%
+Mean uncertainty on highest predicted on original test dataset when wrong = 1463.61%
+
+Mean probability on all not true label on original test dataset = 10.07%
+Mean uncertainty on all not true label on original test dataset = 986.22%
+creating scatterplot
+0.5971428571428572
+
+
+###############################################################################
+Peregrine Cluster
+Job 11355037 for user 's2934833'
+Finished at: Sun May 10 21:00:16 CEST 2020
+
+Job details:
+============
+
+Name                : MESVAR
+User                : s2934833
+Partition           : gpu
+Nodes               : pg-gpu03
+Cores               : 12
+State               : COMPLETED
+Submit              : 2020-05-10T19:50:12
+Start               : 2020-05-10T19:50:12
+End                 : 2020-05-10T21:00:16
+Reserved walltime   : 08:00:00
+Used walltime       : 01:10:04
+Used CPU time       : 00:53:07 (efficiency:  6.32%)
+% User (Computation): 73.93%
+% System (I/O)      : 26.07%
+Mem reserved        : 32000M/node
+Max Mem used        : 6.50G (pg-gpu03)
+Max Disk Write      : 153.60K (pg-gpu03)
+Max Disk Read       : 5.82M (pg-gpu03)
+Average GPU usage   : 95.6% (pg-gpu03)
+
+
+Acknowledgements:
+=================
+
+Please see this page for information about acknowledging Peregrine in your publications:
+
+https://wiki.hpc.rug.nl/peregrine/additional_information/scientific_output
+
+################################################################################

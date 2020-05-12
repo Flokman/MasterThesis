@@ -1,0 +1,432 @@
+
+The following have been reloaded with a version change:
+  1) FFTW/3.3.8-gompic-2019b => FFTW/3.3.8-gompi-2019b
+  2) OpenMPI/3.1.4-gcccuda-2019b => OpenMPI/3.1.4-GCC-8.3.0
+  3) ScaLAPACK/2.0.2-gompic-2019b => ScaLAPACK/2.0.2-gompi-2019b
+  4) SciPy-bundle/2019.10-fosscuda-2019b-Python-3.7.4 => SciPy-bundle/2019.10-foss-2019b-Python-3.7.4
+
+
+The following have been reloaded with a version change:
+  1) SciPy-bundle/2019.10-foss-2019b-Python-3.7.4 => SciPy-bundle/2019.10-fosscuda-2019b-Python-3.7.4
+
+2020-05-06 12:06:26.024423: I tensorflow/stream_executor/platform/default/dso_loader.cc:44] Successfully opened dynamic library libcudart.so.10.1
+
+START MCDO
+2020-05-06 12:07:03.492159: I tensorflow/stream_executor/platform/default/dso_loader.cc:44] Successfully opened dynamic library libcuda.so.1
+2020-05-06 12:07:03.512807: I tensorflow/stream_executor/cuda/cuda_gpu_executor.cc:981] successful NUMA node read from SysFS had negative value (-1), but there must be at least one NUMA node, so returning NUMA node zero
+2020-05-06 12:07:03.513399: I tensorflow/core/common_runtime/gpu/gpu_device.cc:1555] Found device 0 with properties: 
+pciBusID: 0000:02:00.0 name: GRID V100D-32Q computeCapability: 7.0
+coreClock: 1.38GHz coreCount: 80 deviceMemorySize: 31.88GiB deviceMemoryBandwidth: 836.37GiB/s
+2020-05-06 12:07:03.513512: I tensorflow/stream_executor/platform/default/dso_loader.cc:44] Successfully opened dynamic library libcudart.so.10.1
+2020-05-06 12:07:03.519786: I tensorflow/stream_executor/platform/default/dso_loader.cc:44] Successfully opened dynamic library libcublas.so.10
+2020-05-06 12:07:03.523285: I tensorflow/stream_executor/platform/default/dso_loader.cc:44] Successfully opened dynamic library libcufft.so.10
+2020-05-06 12:07:03.524763: I tensorflow/stream_executor/platform/default/dso_loader.cc:44] Successfully opened dynamic library libcurand.so.10
+2020-05-06 12:07:03.528153: I tensorflow/stream_executor/platform/default/dso_loader.cc:44] Successfully opened dynamic library libcusolver.so.10
+2020-05-06 12:07:03.530063: I tensorflow/stream_executor/platform/default/dso_loader.cc:44] Successfully opened dynamic library libcusparse.so.10
+2020-05-06 12:07:03.535286: I tensorflow/stream_executor/platform/default/dso_loader.cc:44] Successfully opened dynamic library libcudnn.so.7
+2020-05-06 12:07:03.535521: I tensorflow/stream_executor/cuda/cuda_gpu_executor.cc:981] successful NUMA node read from SysFS had negative value (-1), but there must be at least one NUMA node, so returning NUMA node zero
+2020-05-06 12:07:03.536166: I tensorflow/stream_executor/cuda/cuda_gpu_executor.cc:981] successful NUMA node read from SysFS had negative value (-1), but there must be at least one NUMA node, so returning NUMA node zero
+2020-05-06 12:07:03.536605: I tensorflow/core/common_runtime/gpu/gpu_device.cc:1697] Adding visible gpu devices: 0
+2020-05-06 12:07:03.540505: I tensorflow/stream_executor/cuda/cuda_gpu_executor.cc:981] successful NUMA node read from SysFS had negative value (-1), but there must be at least one NUMA node, so returning NUMA node zero
+2020-05-06 12:07:03.541027: I tensorflow/core/common_runtime/gpu/gpu_device.cc:1555] Found device 0 with properties: 
+pciBusID: 0000:02:00.0 name: GRID V100D-32Q computeCapability: 7.0
+coreClock: 1.38GHz coreCount: 80 deviceMemorySize: 31.88GiB deviceMemoryBandwidth: 836.37GiB/s
+2020-05-06 12:07:03.541117: I tensorflow/stream_executor/platform/default/dso_loader.cc:44] Successfully opened dynamic library libcudart.so.10.1
+2020-05-06 12:07:03.541207: I tensorflow/stream_executor/platform/default/dso_loader.cc:44] Successfully opened dynamic library libcublas.so.10
+2020-05-06 12:07:03.541274: I tensorflow/stream_executor/platform/default/dso_loader.cc:44] Successfully opened dynamic library libcufft.so.10
+2020-05-06 12:07:03.541336: I tensorflow/stream_executor/platform/default/dso_loader.cc:44] Successfully opened dynamic library libcurand.so.10
+2020-05-06 12:07:03.541397: I tensorflow/stream_executor/platform/default/dso_loader.cc:44] Successfully opened dynamic library libcusolver.so.10
+2020-05-06 12:07:03.541459: I tensorflow/stream_executor/platform/default/dso_loader.cc:44] Successfully opened dynamic library libcusparse.so.10
+2020-05-06 12:07:03.541538: I tensorflow/stream_executor/platform/default/dso_loader.cc:44] Successfully opened dynamic library libcudnn.so.7
+2020-05-06 12:07:03.541668: I tensorflow/stream_executor/cuda/cuda_gpu_executor.cc:981] successful NUMA node read from SysFS had negative value (-1), but there must be at least one NUMA node, so returning NUMA node zero
+2020-05-06 12:07:03.542185: I tensorflow/stream_executor/cuda/cuda_gpu_executor.cc:981] successful NUMA node read from SysFS had negative value (-1), but there must be at least one NUMA node, so returning NUMA node zero
+2020-05-06 12:07:03.542602: I tensorflow/core/common_runtime/gpu/gpu_device.cc:1697] Adding visible gpu devices: 0
+2020-05-06 12:07:03.542697: I tensorflow/stream_executor/platform/default/dso_loader.cc:44] Successfully opened dynamic library libcudart.so.10.1
+2020-05-06 12:07:04.202351: I tensorflow/core/common_runtime/gpu/gpu_device.cc:1096] Device interconnect StreamExecutor with strength 1 edge matrix:
+2020-05-06 12:07:04.202488: I tensorflow/core/common_runtime/gpu/gpu_device.cc:1102]      0 
+2020-05-06 12:07:04.202546: I tensorflow/core/common_runtime/gpu/gpu_device.cc:1115] 0:   N 
+2020-05-06 12:07:04.202892: I tensorflow/stream_executor/cuda/cuda_gpu_executor.cc:981] successful NUMA node read from SysFS had negative value (-1), but there must be at least one NUMA node, so returning NUMA node zero
+2020-05-06 12:07:04.203609: I tensorflow/stream_executor/cuda/cuda_gpu_executor.cc:981] successful NUMA node read from SysFS had negative value (-1), but there must be at least one NUMA node, so returning NUMA node zero
+2020-05-06 12:07:04.204216: I tensorflow/stream_executor/cuda/cuda_gpu_executor.cc:981] successful NUMA node read from SysFS had negative value (-1), but there must be at least one NUMA node, so returning NUMA node zero
+2020-05-06 12:07:04.204727: I tensorflow/core/common_runtime/gpu/gpu_device.cc:1241] Created TensorFlow device (/job:localhost/replica:0/task:0/device:GPU:0 with 28652 MB memory) -> physical GPU (device: 0, name: GRID V100D-32Q, pci bus id: 0000:02:00.0, compute capability: 7.0)
+2020-05-06 12:07:04.205127: I tensorflow/core/common_runtime/process_util.cc:147] Creating new thread pool with default inter op setting: 12. Tune using inter_op_parallelism_threads for best performance.
+MCDO combined accuracy: 85.8%
+tf.Tensor(
+[[882  14  22  12  12   0   4   8  34  12]
+ [  6 945   1   5   1   0   4   0  10  28]
+ [ 25   2 833  33  54  13  26  10   2   2]
+ [  6  11  44 734  47  92  42  17   2   5]
+ [  5   1  37  32 872   7  19  20   5   2]
+ [  3   2  28 151  40 730  16  28   0   2]
+ [  2   5  22  30  18   7 909   2   2   3]
+ [  9   4  11  22  34  23   4 885   4   4]
+ [ 24  11   7   8   6   0   1   0 939   4]
+ [ 18  79   3   7   1   3   5   6  24 854]], shape=(10, 10), dtype=int32)
+Correct: 8583, wrong: 1417, accuracy: 85.83%
+
+Mean probability on true label of CIFAR10 test dataset when correctly predicted = 98.05%
+Mean uncertainty on true label of CIFAR10 test dataset when correctly predicted = 1.05%
+Mean probability on true label of CIFAR10 test dataset when wrongly predicted = 8.92%
+Mean uncertainty on true label of CIFAR10 test dataset when wrongly predicted = 4.76%
+
+Mean probability on highest predicted on CIFAR10 test dataset when wrong = 96.06%
+Mean uncertainty on highest predicted on CIFAR10 test dataset when wrong = 1.91%
+
+Mean probability on all not true label on CIFAR10 test dataset = 0.44%
+Mean uncertainty on all not true label on CIFAR10 test dataset = 0.26%
+creating scatterplot
+
+Mean probability on highest predicted class of MNIST data = 88.69%
+Mean uncertainty on highest predicted class of MNIST data = 4.69%
+Mean probability on not predicted classes of MNIST data = 1.26%
+Mean uncertainty on not predicted classes of MNIST data = 0.69%
+MCDO combined accuracy: 7.3%
+tf.Tensor(
+[[103  75 504  65   1 176   3   1  52   0]
+ [255   0 876   0   0   1   1   1   1   0]
+ [396   9 602   0   0  20   1   3   1   0]
+ [197  14 777   6   0   4   4   1   7   0]
+ [898   1  71   1   0   4   1   6   0   0]
+ [150   4 699  16   0   1   8   6   8   0]
+ [167  29 670   2   1  19   6   9  55   0]
+ [359   0 667   2   0   0   0   0   0   0]
+ [308  23 236  18   1 287  35  56  10   0]
+ [ 81   2 868   0   0  52   1   0   5   0]], shape=(10, 10), dtype=int32)
+Correct: 728, wrong: 9272, accuracy: 7.28%
+
+Mean probability on true label of MNIST test dataset when correctly predicted = 87.93%
+Mean uncertainty on true label of MNIST test dataset when correctly predicted = 5.50%
+Mean probability on true label of MNIST test dataset when wrongly predicted = 1.17%
+Mean uncertainty on true label of MNIST test dataset when wrongly predicted = 0.64%
+
+Mean probability on highest predicted on MNIST test dataset when wrong = 88.69%
+Mean uncertainty on highest predicted on MNIST test dataset when wrong = 4.69%
+
+Mean probability on all not true label on MNIST test dataset = 1.26%
+Mean uncertainty on all not true label on MNIST test dataset = 0.69%
+creating scatterplot
+
+START MCBN
+2020-05-06 12:07:50.416821: I tensorflow/stream_executor/platform/default/dso_loader.cc:44] Successfully opened dynamic library libcuda.so.1
+2020-05-06 12:07:50.424868: I tensorflow/stream_executor/cuda/cuda_gpu_executor.cc:981] successful NUMA node read from SysFS had negative value (-1), but there must be at least one NUMA node, so returning NUMA node zero
+2020-05-06 12:07:50.425400: I tensorflow/core/common_runtime/gpu/gpu_device.cc:1555] Found device 0 with properties: 
+pciBusID: 0000:02:00.0 name: GRID V100D-32Q computeCapability: 7.0
+coreClock: 1.38GHz coreCount: 80 deviceMemorySize: 31.88GiB deviceMemoryBandwidth: 836.37GiB/s
+2020-05-06 12:07:50.425507: I tensorflow/stream_executor/platform/default/dso_loader.cc:44] Successfully opened dynamic library libcudart.so.10.1
+2020-05-06 12:07:50.429978: I tensorflow/stream_executor/platform/default/dso_loader.cc:44] Successfully opened dynamic library libcublas.so.10
+2020-05-06 12:07:50.432803: I tensorflow/stream_executor/platform/default/dso_loader.cc:44] Successfully opened dynamic library libcufft.so.10
+2020-05-06 12:07:50.433687: I tensorflow/stream_executor/platform/default/dso_loader.cc:44] Successfully opened dynamic library libcurand.so.10
+2020-05-06 12:07:50.436406: I tensorflow/stream_executor/platform/default/dso_loader.cc:44] Successfully opened dynamic library libcusolver.so.10
+2020-05-06 12:07:50.437763: I tensorflow/stream_executor/platform/default/dso_loader.cc:44] Successfully opened dynamic library libcusparse.so.10
+2020-05-06 12:07:50.442617: I tensorflow/stream_executor/platform/default/dso_loader.cc:44] Successfully opened dynamic library libcudnn.so.7
+2020-05-06 12:07:50.442836: I tensorflow/stream_executor/cuda/cuda_gpu_executor.cc:981] successful NUMA node read from SysFS had negative value (-1), but there must be at least one NUMA node, so returning NUMA node zero
+2020-05-06 12:07:50.443472: I tensorflow/stream_executor/cuda/cuda_gpu_executor.cc:981] successful NUMA node read from SysFS had negative value (-1), but there must be at least one NUMA node, so returning NUMA node zero
+2020-05-06 12:07:50.443901: I tensorflow/core/common_runtime/gpu/gpu_device.cc:1697] Adding visible gpu devices: 0
+2020-05-06 12:07:50.447909: I tensorflow/stream_executor/cuda/cuda_gpu_executor.cc:981] successful NUMA node read from SysFS had negative value (-1), but there must be at least one NUMA node, so returning NUMA node zero
+2020-05-06 12:07:50.448406: I tensorflow/core/common_runtime/gpu/gpu_device.cc:1555] Found device 0 with properties: 
+pciBusID: 0000:02:00.0 name: GRID V100D-32Q computeCapability: 7.0
+coreClock: 1.38GHz coreCount: 80 deviceMemorySize: 31.88GiB deviceMemoryBandwidth: 836.37GiB/s
+2020-05-06 12:07:50.448499: I tensorflow/stream_executor/platform/default/dso_loader.cc:44] Successfully opened dynamic library libcudart.so.10.1
+2020-05-06 12:07:50.448578: I tensorflow/stream_executor/platform/default/dso_loader.cc:44] Successfully opened dynamic library libcublas.so.10
+2020-05-06 12:07:50.448642: I tensorflow/stream_executor/platform/default/dso_loader.cc:44] Successfully opened dynamic library libcufft.so.10
+2020-05-06 12:07:50.448722: I tensorflow/stream_executor/platform/default/dso_loader.cc:44] Successfully opened dynamic library libcurand.so.10
+2020-05-06 12:07:50.448785: I tensorflow/stream_executor/platform/default/dso_loader.cc:44] Successfully opened dynamic library libcusolver.so.10
+2020-05-06 12:07:50.448847: I tensorflow/stream_executor/platform/default/dso_loader.cc:44] Successfully opened dynamic library libcusparse.so.10
+2020-05-06 12:07:50.448909: I tensorflow/stream_executor/platform/default/dso_loader.cc:44] Successfully opened dynamic library libcudnn.so.7
+2020-05-06 12:07:50.449040: I tensorflow/stream_executor/cuda/cuda_gpu_executor.cc:981] successful NUMA node read from SysFS had negative value (-1), but there must be at least one NUMA node, so returning NUMA node zero
+2020-05-06 12:07:50.449540: I tensorflow/stream_executor/cuda/cuda_gpu_executor.cc:981] successful NUMA node read from SysFS had negative value (-1), but there must be at least one NUMA node, so returning NUMA node zero
+2020-05-06 12:07:50.450030: I tensorflow/core/common_runtime/gpu/gpu_device.cc:1697] Adding visible gpu devices: 0
+2020-05-06 12:07:50.450124: I tensorflow/stream_executor/platform/default/dso_loader.cc:44] Successfully opened dynamic library libcudart.so.10.1
+2020-05-06 12:07:51.112915: I tensorflow/core/common_runtime/gpu/gpu_device.cc:1096] Device interconnect StreamExecutor with strength 1 edge matrix:
+2020-05-06 12:07:51.113050: I tensorflow/core/common_runtime/gpu/gpu_device.cc:1102]      0 
+2020-05-06 12:07:51.113107: I tensorflow/core/common_runtime/gpu/gpu_device.cc:1115] 0:   N 
+2020-05-06 12:07:51.113438: I tensorflow/stream_executor/cuda/cuda_gpu_executor.cc:981] successful NUMA node read from SysFS had negative value (-1), but there must be at least one NUMA node, so returning NUMA node zero
+2020-05-06 12:07:51.114054: I tensorflow/stream_executor/cuda/cuda_gpu_executor.cc:981] successful NUMA node read from SysFS had negative value (-1), but there must be at least one NUMA node, so returning NUMA node zero
+2020-05-06 12:07:51.114648: I tensorflow/stream_executor/cuda/cuda_gpu_executor.cc:981] successful NUMA node read from SysFS had negative value (-1), but there must be at least one NUMA node, so returning NUMA node zero
+2020-05-06 12:07:51.115109: I tensorflow/core/common_runtime/gpu/gpu_device.cc:1241] Created TensorFlow device (/job:localhost/replica:0/task:0/device:GPU:0 with 28652 MB memory) -> physical GPU (device: 0, name: GRID V100D-32Q, pci bus id: 0000:02:00.0, compute capability: 7.0)
+2020-05-06 12:07:51.115625: I tensorflow/core/common_runtime/process_util.cc:147] Creating new thread pool with default inter op setting: 12. Tune using inter_op_parallelism_threads for best performance.
+MCBN combined accuracy: 82.4%
+tf.Tensor(
+[[863   8  14  15   7   2   2  15  43  31]
+ [  8 899   0   2   0   2   1   1  15  72]
+ [ 58   6 717  63  38  59  31  15   6   7]
+ [  9   6  20 681  20 195  24  18  11  16]
+ [ 18   2  28  54 743  66  24  51   8   6]
+ [  6   3   8 107  13 826   6  22   2   7]
+ [  9   7  16  56  12  40 838   4  12   6]
+ [  8   2   9  27  20  74   6 842   1  11]
+ [ 38  15   3  16   1   1   0   3 905  18]
+ [ 14  37   1   4   1   5   1   3   8 926]], shape=(10, 10), dtype=int32)
+Correct: 8240, wrong: 1760, accuracy: 82.39999999999999%
+
+Mean probability on true label of CIFAR10 test dataset when correctly predicted = 91.86%
+Mean uncertainty on true label of CIFAR10 test dataset when correctly predicted = 6.13%
+Mean probability on true label of CIFAR10 test dataset when wrongly predicted = 15.69%
+Mean uncertainty on true label of CIFAR10 test dataset when wrongly predicted = 10.79%
+
+Mean probability on highest predicted on CIFAR10 test dataset when wrong = 87.77%
+Mean uncertainty on highest predicted on CIFAR10 test dataset when wrong = 7.78%
+
+Mean probability on all not true label on CIFAR10 test dataset = 1.36%
+Mean uncertainty on all not true label on CIFAR10 test dataset = 1.14%
+creating scatterplot
+
+Mean probability on highest predicted class of MNIST data = 77.92%
+Mean uncertainty on highest predicted class of MNIST data = 2.32%
+Mean probability on not predicted classes of MNIST data = 2.45%
+Mean uncertainty on not predicted classes of MNIST data = 0.37%
+MCBN combined accuracy: 6.9%
+tf.Tensor(
+[[ 17  12 194 329   0  52   4   0 372   0]
+ [174   0 948   0   0   1   0   1  10   1]
+ [389  64 493  20   0  29   0   0  37   0]
+ [273  87 322 119   0  43   9   3 154   0]
+ [829   6 100   9   0   8   1  14  14   1]
+ [255 182 272  52   0   4  17   0 110   0]
+ [272 273 102  82   0   6   6   1 216   0]
+ [251   3 746   1   0   0   1   1  25   0]
+ [ 83  80 124  51   0 457 118   7  54   0]
+ [ 14   7 833  13   0  22   4   1 115   0]], shape=(10, 10), dtype=int32)
+Correct: 694, wrong: 9306, accuracy: 6.94%
+
+Mean probability on true label of MNIST test dataset when correctly predicted = 75.61%
+Mean uncertainty on true label of MNIST test dataset when correctly predicted = 2.51%
+Mean probability on true label of MNIST test dataset when wrongly predicted = 2.32%
+Mean uncertainty on true label of MNIST test dataset when wrongly predicted = 0.32%
+
+Mean probability on highest predicted on MNIST test dataset when wrong = 77.92%
+Mean uncertainty on highest predicted on MNIST test dataset when wrong = 2.32%
+
+Mean probability on all not true label on MNIST test dataset = 2.45%
+Mean uncertainty on all not true label on MNIST test dataset = 0.37%
+creating scatterplot
+
+START Ensemble
+2020-05-06 12:08:36.676009: I tensorflow/stream_executor/platform/default/dso_loader.cc:44] Successfully opened dynamic library libcuda.so.1
+2020-05-06 12:08:36.685017: I tensorflow/stream_executor/cuda/cuda_gpu_executor.cc:981] successful NUMA node read from SysFS had negative value (-1), but there must be at least one NUMA node, so returning NUMA node zero
+2020-05-06 12:08:36.685631: I tensorflow/core/common_runtime/gpu/gpu_device.cc:1555] Found device 0 with properties: 
+pciBusID: 0000:02:00.0 name: GRID V100D-32Q computeCapability: 7.0
+coreClock: 1.38GHz coreCount: 80 deviceMemorySize: 31.88GiB deviceMemoryBandwidth: 836.37GiB/s
+2020-05-06 12:08:36.685744: I tensorflow/stream_executor/platform/default/dso_loader.cc:44] Successfully opened dynamic library libcudart.so.10.1
+2020-05-06 12:08:36.691641: I tensorflow/stream_executor/platform/default/dso_loader.cc:44] Successfully opened dynamic library libcublas.so.10
+2020-05-06 12:08:36.694977: I tensorflow/stream_executor/platform/default/dso_loader.cc:44] Successfully opened dynamic library libcufft.so.10
+2020-05-06 12:08:36.696672: I tensorflow/stream_executor/platform/default/dso_loader.cc:44] Successfully opened dynamic library libcurand.so.10
+2020-05-06 12:08:36.700053: I tensorflow/stream_executor/platform/default/dso_loader.cc:44] Successfully opened dynamic library libcusolver.so.10
+2020-05-06 12:08:36.702039: I tensorflow/stream_executor/platform/default/dso_loader.cc:44] Successfully opened dynamic library libcusparse.so.10
+2020-05-06 12:08:36.707142: I tensorflow/stream_executor/platform/default/dso_loader.cc:44] Successfully opened dynamic library libcudnn.so.7
+2020-05-06 12:08:36.707381: I tensorflow/stream_executor/cuda/cuda_gpu_executor.cc:981] successful NUMA node read from SysFS had negative value (-1), but there must be at least one NUMA node, so returning NUMA node zero
+2020-05-06 12:08:36.708003: I tensorflow/stream_executor/cuda/cuda_gpu_executor.cc:981] successful NUMA node read from SysFS had negative value (-1), but there must be at least one NUMA node, so returning NUMA node zero
+2020-05-06 12:08:36.708450: I tensorflow/core/common_runtime/gpu/gpu_device.cc:1697] Adding visible gpu devices: 0
+2020-05-06 12:08:36.712134: I tensorflow/stream_executor/cuda/cuda_gpu_executor.cc:981] successful NUMA node read from SysFS had negative value (-1), but there must be at least one NUMA node, so returning NUMA node zero
+2020-05-06 12:08:36.712624: I tensorflow/core/common_runtime/gpu/gpu_device.cc:1555] Found device 0 with properties: 
+pciBusID: 0000:02:00.0 name: GRID V100D-32Q computeCapability: 7.0
+coreClock: 1.38GHz coreCount: 80 deviceMemorySize: 31.88GiB deviceMemoryBandwidth: 836.37GiB/s
+2020-05-06 12:08:36.712729: I tensorflow/stream_executor/platform/default/dso_loader.cc:44] Successfully opened dynamic library libcudart.so.10.1
+2020-05-06 12:08:36.712835: I tensorflow/stream_executor/platform/default/dso_loader.cc:44] Successfully opened dynamic library libcublas.so.10
+2020-05-06 12:08:36.712907: I tensorflow/stream_executor/platform/default/dso_loader.cc:44] Successfully opened dynamic library libcufft.so.10
+2020-05-06 12:08:36.712970: I tensorflow/stream_executor/platform/default/dso_loader.cc:44] Successfully opened dynamic library libcurand.so.10
+2020-05-06 12:08:36.713032: I tensorflow/stream_executor/platform/default/dso_loader.cc:44] Successfully opened dynamic library libcusolver.so.10
+2020-05-06 12:08:36.713094: I tensorflow/stream_executor/platform/default/dso_loader.cc:44] Successfully opened dynamic library libcusparse.so.10
+2020-05-06 12:08:36.713156: I tensorflow/stream_executor/platform/default/dso_loader.cc:44] Successfully opened dynamic library libcudnn.so.7
+2020-05-06 12:08:36.713299: I tensorflow/stream_executor/cuda/cuda_gpu_executor.cc:981] successful NUMA node read from SysFS had negative value (-1), but there must be at least one NUMA node, so returning NUMA node zero
+2020-05-06 12:08:36.713817: I tensorflow/stream_executor/cuda/cuda_gpu_executor.cc:981] successful NUMA node read from SysFS had negative value (-1), but there must be at least one NUMA node, so returning NUMA node zero
+2020-05-06 12:08:36.714263: I tensorflow/core/common_runtime/gpu/gpu_device.cc:1697] Adding visible gpu devices: 0
+2020-05-06 12:08:36.714358: I tensorflow/stream_executor/platform/default/dso_loader.cc:44] Successfully opened dynamic library libcudart.so.10.1
+2020-05-06 12:08:37.375521: I tensorflow/core/common_runtime/gpu/gpu_device.cc:1096] Device interconnect StreamExecutor with strength 1 edge matrix:
+2020-05-06 12:08:37.375658: I tensorflow/core/common_runtime/gpu/gpu_device.cc:1102]      0 
+2020-05-06 12:08:37.375716: I tensorflow/core/common_runtime/gpu/gpu_device.cc:1115] 0:   N 
+2020-05-06 12:08:37.376049: I tensorflow/stream_executor/cuda/cuda_gpu_executor.cc:981] successful NUMA node read from SysFS had negative value (-1), but there must be at least one NUMA node, so returning NUMA node zero
+2020-05-06 12:08:37.376744: I tensorflow/stream_executor/cuda/cuda_gpu_executor.cc:981] successful NUMA node read from SysFS had negative value (-1), but there must be at least one NUMA node, so returning NUMA node zero
+2020-05-06 12:08:37.377358: I tensorflow/stream_executor/cuda/cuda_gpu_executor.cc:981] successful NUMA node read from SysFS had negative value (-1), but there must be at least one NUMA node, so returning NUMA node zero
+2020-05-06 12:08:37.377848: I tensorflow/core/common_runtime/gpu/gpu_device.cc:1241] Created TensorFlow device (/job:localhost/replica:0/task:0/device:GPU:0 with 28652 MB memory) -> physical GPU (device: 0, name: GRID V100D-32Q, pci bus id: 0000:02:00.0, compute capability: 7.0)
+2020-05-06 12:08:37.378287: I tensorflow/core/common_runtime/process_util.cc:147] Creating new thread pool with default inter op setting: 12. Tune using inter_op_parallelism_threads for best performance.
+Dataset_name: CIFAR10, N_folders: 1, total mebers: 40
+Ensemble combined accuracy: 86.4%
+tf.Tensor(
+[[903   8  12   9   9   3   5   9  29  13]
+ [  9 935   3   5   0   1   2   1   7  37]
+ [ 22   3 818  39  60  19  19  15   2   3]
+ [  6   7  29 714  39 121  37  25   8  14]
+ [  7   1  24  33 866  21  20  20   4   4]
+ [  6   2  17 119  26 782  19  26   0   3]
+ [  5   5  19  33  16  13 901   1   4   3]
+ [  5   2  18  23  31  25   3 887   3   3]
+ [ 27   6   5   5   3   1   1   2 937  13]
+ [ 20  46   6   6   0   1   4   5  16 896]], shape=(10, 10), dtype=int32)
+Correct: 8639, wrong: 1361, accuracy: 86.39%
+
+Mean probability on true label of CIFAR10 test dataset when correctly predicted = 98.89%
+Mean uncertainty on true label of CIFAR10 test dataset when correctly predicted = 2.23%
+Mean probability on true label of CIFAR10 test dataset when wrongly predicted = 5.07%
+Mean uncertainty on true label of CIFAR10 test dataset when wrongly predicted = 7.14%
+
+Mean probability on highest predicted on CIFAR10 test dataset when wrong = 97.84%
+Mean uncertainty on highest predicted on CIFAR10 test dataset when wrong = 3.45%
+
+Mean probability on all not true label on CIFAR10 test dataset = 0.24%
+Mean uncertainty on all not true label on CIFAR10 test dataset = 0.43%
+creating scatterplot
+
+Mean probability on highest predicted class of MNIST data = 91.83%
+Mean uncertainty on highest predicted class of MNIST data = 9.72%
+Mean probability on not predicted classes of MNIST data = 0.91%
+Mean uncertainty on not predicted classes of MNIST data = 1.45%
+Ensemble combined accuracy: 6.1%
+tf.Tensor(
+[[ 107  320  245   58    0  120   26    1  103    0]
+ [  84    1 1031    6    0    6    1    4    2    0]
+ [ 468   32  446   11    0   63    1   11    0    0]
+ [ 488   49  362   53    0   20   19    7   11    1]
+ [ 880    4   43   27    0   10    2   16    0    0]
+ [ 159  140  440  132    0    1    9    3    7    1]
+ [ 220  606   77    4    0   27    0    8   16    0]
+ [ 443    0  565   11    0    7    0    2    0    0]
+ [ 443  137   30   15    0  299   19   26    4    1]
+ [ 133   16  669    1    0  177    2    0   11    0]], shape=(10, 10), dtype=int32)
+Correct: 614, wrong: 9386, accuracy: 6.140000000000001%
+
+Mean probability on true label of MNIST test dataset when correctly predicted = 89.64%
+Mean uncertainty on true label of MNIST test dataset when correctly predicted = 9.44%
+Mean probability on true label of MNIST test dataset when wrongly predicted = 0.81%
+Mean uncertainty on true label of MNIST test dataset when wrongly predicted = 0.94%
+
+Mean probability on highest predicted on MNIST test dataset when wrong = 91.83%
+Mean uncertainty on highest predicted on MNIST test dataset when wrong = 9.72%
+
+Mean probability on all not true label on MNIST test dataset = 0.91%
+Mean uncertainty on all not true label on MNIST test dataset = 1.45%
+creating scatterplot
+
+START VarianceOutput
+2020-05-06 12:09:16.108786: I tensorflow/stream_executor/platform/default/dso_loader.cc:44] Successfully opened dynamic library libcuda.so.1
+2020-05-06 12:09:16.119440: I tensorflow/stream_executor/cuda/cuda_gpu_executor.cc:981] successful NUMA node read from SysFS had negative value (-1), but there must be at least one NUMA node, so returning NUMA node zero
+2020-05-06 12:09:16.120825: I tensorflow/core/common_runtime/gpu/gpu_device.cc:1555] Found device 0 with properties: 
+pciBusID: 0000:02:00.0 name: GRID V100D-32Q computeCapability: 7.0
+coreClock: 1.38GHz coreCount: 80 deviceMemorySize: 31.88GiB deviceMemoryBandwidth: 836.37GiB/s
+2020-05-06 12:09:16.120948: I tensorflow/stream_executor/platform/default/dso_loader.cc:44] Successfully opened dynamic library libcudart.so.10.1
+2020-05-06 12:09:16.125522: I tensorflow/stream_executor/platform/default/dso_loader.cc:44] Successfully opened dynamic library libcublas.so.10
+2020-05-06 12:09:16.128332: I tensorflow/stream_executor/platform/default/dso_loader.cc:44] Successfully opened dynamic library libcufft.so.10
+2020-05-06 12:09:16.129455: I tensorflow/stream_executor/platform/default/dso_loader.cc:44] Successfully opened dynamic library libcurand.so.10
+2020-05-06 12:09:16.132309: I tensorflow/stream_executor/platform/default/dso_loader.cc:44] Successfully opened dynamic library libcusolver.so.10
+2020-05-06 12:09:16.133700: I tensorflow/stream_executor/platform/default/dso_loader.cc:44] Successfully opened dynamic library libcusparse.so.10
+2020-05-06 12:09:16.138702: I tensorflow/stream_executor/platform/default/dso_loader.cc:44] Successfully opened dynamic library libcudnn.so.7
+2020-05-06 12:09:16.138941: I tensorflow/stream_executor/cuda/cuda_gpu_executor.cc:981] successful NUMA node read from SysFS had negative value (-1), but there must be at least one NUMA node, so returning NUMA node zero
+2020-05-06 12:09:16.139565: I tensorflow/stream_executor/cuda/cuda_gpu_executor.cc:981] successful NUMA node read from SysFS had negative value (-1), but there must be at least one NUMA node, so returning NUMA node zero
+2020-05-06 12:09:16.140675: I tensorflow/core/common_runtime/gpu/gpu_device.cc:1697] Adding visible gpu devices: 0
+2020-05-06 12:09:16.144813: I tensorflow/stream_executor/cuda/cuda_gpu_executor.cc:981] successful NUMA node read from SysFS had negative value (-1), but there must be at least one NUMA node, so returning NUMA node zero
+2020-05-06 12:09:16.145320: I tensorflow/core/common_runtime/gpu/gpu_device.cc:1555] Found device 0 with properties: 
+pciBusID: 0000:02:00.0 name: GRID V100D-32Q computeCapability: 7.0
+coreClock: 1.38GHz coreCount: 80 deviceMemorySize: 31.88GiB deviceMemoryBandwidth: 836.37GiB/s
+2020-05-06 12:09:16.145415: I tensorflow/stream_executor/platform/default/dso_loader.cc:44] Successfully opened dynamic library libcudart.so.10.1
+2020-05-06 12:09:16.145496: I tensorflow/stream_executor/platform/default/dso_loader.cc:44] Successfully opened dynamic library libcublas.so.10
+2020-05-06 12:09:16.145561: I tensorflow/stream_executor/platform/default/dso_loader.cc:44] Successfully opened dynamic library libcufft.so.10
+2020-05-06 12:09:16.145623: I tensorflow/stream_executor/platform/default/dso_loader.cc:44] Successfully opened dynamic library libcurand.so.10
+2020-05-06 12:09:16.145685: I tensorflow/stream_executor/platform/default/dso_loader.cc:44] Successfully opened dynamic library libcusolver.so.10
+2020-05-06 12:09:16.145747: I tensorflow/stream_executor/platform/default/dso_loader.cc:44] Successfully opened dynamic library libcusparse.so.10
+2020-05-06 12:09:16.145809: I tensorflow/stream_executor/platform/default/dso_loader.cc:44] Successfully opened dynamic library libcudnn.so.7
+2020-05-06 12:09:16.145941: I tensorflow/stream_executor/cuda/cuda_gpu_executor.cc:981] successful NUMA node read from SysFS had negative value (-1), but there must be at least one NUMA node, so returning NUMA node zero
+2020-05-06 12:09:16.146465: I tensorflow/stream_executor/cuda/cuda_gpu_executor.cc:981] successful NUMA node read from SysFS had negative value (-1), but there must be at least one NUMA node, so returning NUMA node zero
+2020-05-06 12:09:16.146896: I tensorflow/core/common_runtime/gpu/gpu_device.cc:1697] Adding visible gpu devices: 0
+2020-05-06 12:09:16.146992: I tensorflow/stream_executor/platform/default/dso_loader.cc:44] Successfully opened dynamic library libcudart.so.10.1
+2020-05-06 12:09:16.820653: I tensorflow/core/common_runtime/gpu/gpu_device.cc:1096] Device interconnect StreamExecutor with strength 1 edge matrix:
+2020-05-06 12:09:16.820791: I tensorflow/core/common_runtime/gpu/gpu_device.cc:1102]      0 
+2020-05-06 12:09:16.820849: I tensorflow/core/common_runtime/gpu/gpu_device.cc:1115] 0:   N 
+2020-05-06 12:09:16.821212: I tensorflow/stream_executor/cuda/cuda_gpu_executor.cc:981] successful NUMA node read from SysFS had negative value (-1), but there must be at least one NUMA node, so returning NUMA node zero
+2020-05-06 12:09:16.822031: I tensorflow/stream_executor/cuda/cuda_gpu_executor.cc:981] successful NUMA node read from SysFS had negative value (-1), but there must be at least one NUMA node, so returning NUMA node zero
+2020-05-06 12:09:16.822743: I tensorflow/stream_executor/cuda/cuda_gpu_executor.cc:981] successful NUMA node read from SysFS had negative value (-1), but there must be at least one NUMA node, so returning NUMA node zero
+2020-05-06 12:09:16.823307: I tensorflow/core/common_runtime/gpu/gpu_device.cc:1241] Created TensorFlow device (/job:localhost/replica:0/task:0/device:GPU:0 with 28652 MB memory) -> physical GPU (device: 0, name: GRID V100D-32Q, pci bus id: 0000:02:00.0, compute capability: 7.0)
+2020-05-06 12:09:16.823754: I tensorflow/core/common_runtime/process_util.cc:147] Creating new thread pool with default inter op setting: 12. Tune using inter_op_parallelism_threads for best performance.
+Accuracy on original test dataset: 85.2%
+tf.Tensor(
+[[867  10  24  20   9   2   9   6  37  16]
+ [  8 939   0   5   3   4   3   0   9  29]
+ [ 27   2 802  27  43  38  39  15   4   3]
+ [  3   4  43 691  27 136  56  18   9  13]
+ [  8   1  41  40 806  30  30  40   3   1]
+ [  1   1  20 110  16 799  18  30   2   3]
+ [  2   4  19  26  10  11 923   1   3   1]
+ [  2   1  18  36  15  48   5 868   5   2]
+ [ 27  12   8   5   4   1   3   1 929  10]
+ [ 16  46   5   9   0   5   5   4  14 896]], shape=(10, 10), dtype=int32)
+Correct: 8520, wrong: 1480, accuracy: 85.2%
+
+Mean probability on true label of original test dataset when correctly predicted = 98.36%
+Mean uncertainty on true label of original test dataset when correctly predicted = 1.25%
+Mean probability on true label of original test dataset when wrongly predicted = 6.07%
+Mean uncertainty on true label of original test dataset when wrongly predicted = 2.33%
+
+Mean probability on highest predicted on original test dataset when wrong = 88.50%
+Mean uncertainty on highest predicted on original test dataset when wrong = 4.41%
+
+Mean probability on all not true label on original test dataset = 1.70%
+Mean uncertainty on all not true label on original test dataset = 0.91%
+creating scatterplot
+Accuracy on original test dataset: 6.1%
+tf.Tensor(
+[[ 95  24  37 157   0 305  56   0 306   0]
+ [488   1 633   3   0   4   0   2   3   1]
+ [370  38 437   9   0 165   2   0  11   0]
+ [294  64 222   6   0 145 199   0  80   0]
+ [928   8  30   5   0  10   1   0   0   0]
+ [276  42 341  21   0  64 108   1  38   1]
+ [120 465 103   3   0 221   1   0  45   0]
+ [565   0 451   2   0   8   1   0   0   1]
+ [314  37   6   0   0 559  44   8   4   2]
+ [194  11 421   0   0 354   6   0  23   0]], shape=(10, 10), dtype=int32)
+Correct: 608, wrong: 9392, accuracy: 6.08%
+
+Mean probability on true label of original test dataset when correctly predicted = 86.84%
+Mean uncertainty on true label of original test dataset when correctly predicted = 5.70%
+Mean probability on true label of original test dataset when wrongly predicted = 0.99%
+Mean uncertainty on true label of original test dataset when wrongly predicted = 1.38%
+
+Mean probability on highest predicted on original test dataset when wrong = 89.68%
+Mean uncertainty on highest predicted on original test dataset when wrong = 4.22%
+
+Mean probability on all not true label on original test dataset = 10.42%
+Mean uncertainty on all not true label on original test dataset = 1.65%
+creating scatterplot
+
+#################################
+Function main called 1 times. 
+Execution time max: 166.298, average: 166.298
+#################################
+
+
+###############################################################################
+Peregrine Cluster
+Job 11290603 for user 's2934833'
+Finished at: Wed May  6 12:09:19 CEST 2020
+
+Job details:
+============
+
+Name                : CombArrays
+User                : s2934833
+Partition           : gpu
+Nodes               : pg-gpu12
+Cores               : 12
+State               : COMPLETED
+Submit              : 2020-05-06T12:06:03
+Start               : 2020-05-06T12:06:19
+End                 : 2020-05-06T12:09:19
+Reserved walltime   : 00:30:00
+Used walltime       : 00:03:00
+Used CPU time       : 00:02:52 (efficiency:  7.97%)
+% User (Computation): 96.79%
+% System (I/O)      :  3.21%
+Mem reserved        : 8000M/node
+Max Mem used        : 527.54M (pg-gpu12)
+Max Disk Write      : 194.56K (pg-gpu12)
+Max Disk Read       : 7.15M (pg-gpu12)
+Average GPU usage   : 0.0% (pg-gpu12)
+
+
+Acknowledgements:
+=================
+
+Please see this page for information about acknowledging Peregrine in your publications:
+
+https://wiki.hpc.rug.nl/peregrine/additional_information/scientific_output
+
+################################################################################

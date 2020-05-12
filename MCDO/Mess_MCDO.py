@@ -19,36 +19,32 @@ from tensorflow.keras.applications.vgg16 import VGG16
 from tensorflow.keras.preprocessing.image import ImageDataGenerator
 from sklearn.metrics import accuracy_score
 
-WEIGHTS_PATH = ('https://github.com/fchollet/deep-learning-models/'
-                'releases/download/v0.1/'
-                'vgg16_weights_tf_dim_ordering_tf_kernels.h5')
-WEIGHTS_PATH_NO_TOP = ('https://github.com/fchollet/deep-learning-models/'
-                       'releases/download/v0.1/'
-                       'vgg16_weights_tf_dim_ordering_tf_kernels_notop.h5')
 
 # Input image dimensions
 IMG_HEIGHT, IMG_WIDTH, IMG_DEPTH = 256, 256, 3
-DATASET_NAME = '/Messidor2_PNG_AUG_' + str(IMG_HEIGHT) + '.hdf5'
+DATASET_NAME = '/Messidor2_PNG_' + str(IMG_HEIGHT) + '.hdf5'
 
-BATCH_SIZE = 32
+BATCH_SIZE = 64
 NUM_CLASSES = 5
 EPOCHS = 500
-AMOUNT_OF_PREDICTIONS = 50
+AMOUNT_OF_PREDICTIONS = 256
 MCDO_BATCH_SIZE = 250
 TRAIN_TEST_SPLIT = 0.8 # Value between 0 and 1, e.g. 0.8 creates 80%/20% division train/test
 TRAIN_VAL_SPLIT = 0.9
-TO_SHUFFLE = True
-AUGMENTATION = False
-LABEL_NORMALIZER = True
-SAVE_AUGMENTATION_TO_HDF5 = True
+SAVE_AUGMENTATION_TO_HDF5 = False
 ADD_DROPOUT = True
 MCDO = True
+
+TO_SHUFFLE = False
+AUGMENTATION = False
+LABEL_NORMALIZER = False
 TRAIN_ALL_LAYERS = True
+
 DROPOUT_INSIDE = True
 WEIGHTS_TO_USE = 'imagenet'
 LEARN_RATE = 0.00001
-ES_PATIENCE = 5
-DROPOUTRATES = [0.05, 0.1, 0.15, 0.2, 0.25, 0.3, 0.5, 0.5]
+ES_PATIENCE = 50
+DROPOUTRATES = [0.05, 0.1, 0.15, 0.2, 0.2, 0.2, 0.25, 0.25]
 MIN_DELTA = 0.005
 EARLY_MONITOR = 'val_accuracy'
 MC_MONITOR = 'val_loss'
@@ -162,10 +158,12 @@ def load_data(path, to_shuffle):
     for lab in y_load:
         label_count[lab] += 1
 
+    print("loaded data")
     if to_shuffle:
         (x_load, y_load) = shuffle_data(x_load, y_load)
 
     if AUGMENTATION:
+        print("starting augmentation")
         (x_load, y_load) = data_augmentation(x_load, y_load, label_count)
         print("augmentation done")
         label_count = [0] * NUM_CLASSES
@@ -285,9 +283,9 @@ def add_dropout(mcdo_model):
         # Classification block
         x = Flatten(name='flatten')(x)
         x = Dense(4096, activation='relu', name='fc1')(x)
-        x = get_dropout(x, 0.5)
+        x = get_dropout(x, 0.3)
         x = Dense(4096, activation='relu', name='fc2')(x)
-        x = get_dropout(x, 0.5)
+        x = get_dropout(x, 0.35)
         x = Dense(NUM_CLASSES, activation='softmax', name='predictions')(x)
 
     # Creating new model
@@ -297,6 +295,7 @@ def add_dropout(mcdo_model):
 
 def main():
     ''' Main function '''
+    print("main")
     # Load data
     x_train, y_train, x_test, y_test, test_img_idx = prepare_data()
 

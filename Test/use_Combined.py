@@ -34,7 +34,7 @@ mpl.use('Agg')
 import matplotlib.pyplot as plt
 plt.style.use("ggplot")
 
-
+from uncertainty_output import Uncertainty_output
 
 import time
 from functools import wraps
@@ -73,16 +73,17 @@ def clear_prof_data():
 
 
 # Hyperparameters
-DATANAME = 'CIFAR10'
+DATANAME = 'MES'
 NEW_DATA = 'MNIST' # or 'local' for local folder
 METHODNAMES = ['MCDO', 'MCBN', 'Ensemble', 'VarianceOutput']
+# METHODNAMES = ['VarianceOutput']
 
 TRAIN_TEST_SPLIT = 0.8 # Value between 0 and 1, e.g. 0.8 creates 80%/20% division train/test
 
-TEST_ON_OWN_AND_NEW_DATASET = True
-TEST_ON_OWN_DATASET = False
+TEST_ON_OWN_AND_NEW_DATASET = False
+TEST_ON_OWN_DATASET = True
 TEST_ON_NEW_DATASET = False
-LABELS_AVAILABLE = True
+LABELS_AVAILABLE = False
 TO_SHUFFLE = False
 TEST_IMAGES_LOCATION = os.path.sep + 'test_images'
 TEST_IMAGES_LABELS_NAME = 'test_images_labels'
@@ -408,23 +409,6 @@ def test_on_own_func(methodname, predictions, y_test):
         # probability + variance
         true_label = true_labels[ind]
         highest_pred_ind = all_predictions_single.mean(axis=0).argmax()
-        # correct_pred = False 
-        # if true_label == highest_pred_ind:
-        #     correct_pred = True
-
-        # # if correct_pred:
-        # for l, (prob, var) in enumerate(zip(all_predictions_single.mean(axis=0), all_predictions_single.std(axis=0))):
-        #     # print("class: {}; proba: {:.1%}; var: {:.2%} ".format(l, prob, var))
-        #     all_accuracies.append(prob)
-        #     all_uncertainties.append(var)
-
-        #     if l == correct_ind and correct_pred:
-        #         correct_var.append(var)
-        #         correct_acc.append(prob)
-        #     elif l == highest_pred_ind:
-        #         wrong_var.append(var)
-        #         wrong_acc.append(prob)      
-
 
         for l, (prob, var) in enumerate(zip(all_predictions_single.mean(axis=0), all_predictions_single.std(axis=0))):
             all_probabilities.append(prob)
@@ -459,24 +443,20 @@ def test_on_own_func(methodname, predictions, y_test):
 
     print("Correct: {}, wrong: {}, accuracy: {}%".format(correct, wrong, (correct/(correct+wrong))*100))
     print("")
-    print("Mean probability on true label of original test dataset when correctly predicted = {:.2%}".format(mean(correct_prob)))
-    print("Mean uncertainty on true label of original test dataset when correctly predicted = {:.2%}".format(mean(correct_unc)))
-    print("Mean probability on true label of original test dataset when wrongly predicted = {:.2%}".format(mean(true_wrong_prob))) 
-    print("Mean uncertainty on true label of original test dataset when wrongly predicted = {:.2%}".format(mean(true_wrong_unc)))    
+    print("Mean probability on true label of {} test dataset when correctly predicted = {:.2%}".format(DATANAME, mean(correct_prob)))
+    print("Mean uncertainty on true label of {} test dataset when correctly predicted = {:.2%}".format(DATANAME, mean(correct_unc)))
+    print("Mean probability on true label of {} test dataset when wrongly predicted = {:.2%}".format(DATANAME, mean(true_wrong_prob))) 
+    print("Mean uncertainty on true label of {} test dataset when wrongly predicted = {:.2%}".format(DATANAME, mean(true_wrong_unc)))    
 
     print("")
-    print("Mean probability on highest predicted on original test dataset when wrong = {:.2%}".format(mean(high_wrong_prob))) 
-    print("Mean uncertainty on highest predicted on original test dataset when wrong = {:.2%}".format(mean(high_wrong_unc)))
+    print("Mean probability on highest predicted on {} test dataset when wrong = {:.2%}".format(DATANAME, mean(high_wrong_prob))) 
+    print("Mean uncertainty on highest predicted on {} test dataset when wrong = {:.2%}".format(DATANAME, mean(high_wrong_unc)))
 
     print("")
-    print("Mean probability on all not true label on original test dataset = {:.2%}".format(mean(not_true_label_prob))) 
-    print("Mean uncertainty on all not true label on original test dataset = {:.2%}".format(mean(not_true_label_unc)))
+    print("Mean probability on all not true label on {} test dataset = {:.2%}".format(DATANAME, mean(not_true_label_prob))) 
+    print("Mean uncertainty on all not true label on {} test dataset = {:.2%}".format(DATANAME, mean(not_true_label_unc)))
 
-    scatterplot(all_probabilities, all_uncertainties, methodname, 'own_all')
-
-    # Two scatterplots, one for the wrong predictions, one for the rigth predictions
-    scatterplot(correct_prob, correct_unc, methodname, 'own_label_correct')
-    scatterplot(all_wrong_prob, all_wrong_unc, methodname, 'own_label_wrong')
+    Uncertainty_output(NUM_CLASSES).scatterplot(correct_prob, correct_unc, high_wrong_prob, high_wrong_unc, methodname, DATANAME)
 
 
 def test_on_new_func(new_images_predictions, x_pred, methodname, y_pred = None, more_info=False):
@@ -506,10 +486,10 @@ def test_on_new_func(new_images_predictions, x_pred, methodname, y_pred = None, 
                 new_acc_not_pred.append(prob)
 
     print("")
-    print("Mean probability on highest predicted class of new data = {:.2%}".format(mean(new_acc_pred)))
-    print("Mean uncertainty on highest predicted class of new data = {:.2%}".format(mean(new_var_pred)))
-    print("Mean probability on not predicted classes of new data = {:.2%}".format(mean(new_acc_not_pred)))
-    print("Mean uncertainty on not predicted classes of new data = {:.2%}".format(mean(new_var_not_pred)))
+    print("Mean probability on highest predicted class of {} data = {:.2%}".format(NEW_DATA, mean(new_acc_pred)))
+    print("Mean uncertainty on highest predicted class of {} data = {:.2%}".format(NEW_DATA, mean(new_var_pred)))
+    print("Mean probability on not predicted classes of {} data = {:.2%}".format(NEW_DATA, mean(new_acc_not_pred)))
+    print("Mean uncertainty on not predicted classes of {} data = {:.2%}".format(NEW_DATA, mean(new_var_not_pred)))
     
     scatterplot(all_accuracies, all_uncertainties, methodname, 'new_all')
 
@@ -522,52 +502,84 @@ def test_on_new_func(new_images_predictions, x_pred, methodname, y_pred = None, 
                                         num_classes=NUM_CLASSES)
         print(confusion)
 
-        correct_var = []
-        correct_acc = []
-        wrong_var = []
-        wrong_acc = []
-        all_accuracies = []
+        true_labels = [np.argmax(i) for i in y_pred]
+        wrong = 0
+        correct = 0
+        # Only when correctly predict, info of true class
+        correct_unc = []
+        correct_prob = []
+        # Only when wrongly predicted, info of highest wrong pred
+        high_wrong_unc = []
+        high_wrong_prob = []
+        # Only when wrongly predicted, info of true class
+        true_wrong_unc = []
+        true_wrong_prob = []        
+        # Info of all incorrect classes
+        all_wrong_unc = []
+        all_wrong_prob = []
+        # Info of all not true label classes
+        not_true_label_unc = []
+        not_true_label_prob = []
+        # Info of all classes
+        all_probabilities = []
         all_uncertainties = []
 
-        for i in range(len(y_pred)):
-            p_0 = np.array([p[i] for p in new_images_predictions])
-            # print("posterior mean: {}".format(p_0.mean(axis=0).argmax()))
+        for ind in range(len(y_pred)):
+            all_predictions_single = np.array([p[ind] for p in new_images_predictions])
+            # print("posterior mean: {}".format(all_predictions_single.mean(axis=0).argmax()))
             
             # probability + variance
-            correct_ind = y_pred[i].argmax()
-            predicted_ind = p_0.mean(axis=0).argmax()
-            correct_pred = False 
-            if correct_ind == predicted_ind:
-                correct_pred = True
+            true_label = true_labels[ind]
+            highest_pred_ind = all_predictions_single.mean(axis=0).argmax()
 
-            # if correct_pred:
-            for l, (prob, var) in enumerate(zip(p_0.mean(axis=0), p_0.std(axis=0))):
-                # print("class: {}; proba: {:.1%}; var: {:.2%} ".format(l, prob, var))
-                all_accuracies.append(prob)
+            for l, (prob, var) in enumerate(zip(all_predictions_single.mean(axis=0), all_predictions_single.std(axis=0))):
+                all_probabilities.append(prob)
                 all_uncertainties.append(var)
 
-                if l == correct_ind and correct_pred:
-                    correct_var.append(var)
-                    correct_acc.append(prob)
-                elif l == predicted_ind:
-                    wrong_var.append(var)
-                    wrong_acc.append(prob)      
-            # else:
-            #      for l, (prob, var) in enumerate(zip(p_0.mean(axis=0), p_0.std(axis=0))):
-            #         # print("class: {}; proba: {:.1%}; var: {:.2%} ".format(l, prob, var))
-            #         if l == predicted_ind:
-            #             wrong_var.append(var)
-            #             wrong_acc.append(prob)           
+                if l == true_label:
+                    if highest_pred_ind == true_label:
+                        correct += 1
+                        correct_unc.append(var)
+                        correct_prob.append(prob)
+
+                    else:
+                        wrong += 1
+                        true_wrong_unc.append(var)
+                        true_wrong_prob.append(prob)
+
+                        all_wrong_unc.append(var)
+                        all_wrong_prob.append(prob)
+                
+                if l == highest_pred_ind:
+                    high_wrong_unc.append(var)
+                    high_wrong_prob.append(prob)
+
+                else:
+                    all_wrong_unc.append(var)
+                    all_wrong_prob.append(prob)
+
+                    not_true_label_unc.append(var)
+                    not_true_label_prob.append(prob)  
+
+
+
+        print("Correct: {}, wrong: {}, accuracy: {}%".format(correct, wrong, (correct/(correct+wrong))*100))
+        print("")
+        print("Mean probability on true label of {} test dataset when correctly predicted = {:.2%}".format(NEW_DATA, mean(correct_prob)))
+        print("Mean uncertainty on true label of {} test dataset when correctly predicted = {:.2%}".format(NEW_DATA, mean(correct_unc)))
+        print("Mean probability on true label of {} test dataset when wrongly predicted = {:.2%}".format(NEW_DATA, mean(true_wrong_prob))) 
+        print("Mean uncertainty on true label of {} test dataset when wrongly predicted = {:.2%}".format(NEW_DATA, mean(true_wrong_unc)))    
 
         print("")
-        print("Mean uncertainty on new test dataset when correctly predicted = {:.2%}".format(mean(correct_var)))
-        print("Mean uncertainty on new test dataset when wrongly predicted = {:.2%}".format(mean(wrong_var)))
-        print("Mean probability on new test dataset when correctly predicted = {:.2%}".format(mean(correct_acc)))
-        print("Mean probability on new test dataset when wrongly predicted = {:.2%}".format(mean(wrong_acc)))
+        print("Mean probability on highest predicted on {} test dataset when wrong = {:.2%}".format(NEW_DATA, mean(high_wrong_prob))) 
+        print("Mean uncertainty on highest predicted on {} test dataset when wrong = {:.2%}".format(NEW_DATA, mean(high_wrong_unc)))
 
-        # Two scatterplots, one for the wrong predictions, one for the rigth predictions
-        scatterplot(correct_acc, correct_var, methodname, 'new_label_correct')
-        scatterplot(wrong_acc, wrong_var, methodname, 'new_label_wrong')
+        print("")
+        print("Mean probability on all not true label on {} test dataset = {:.2%}".format(NEW_DATA, mean(not_true_label_prob))) 
+        print("Mean uncertainty on all not true label on {} test dataset = {:.2%}".format(NEW_DATA, mean(not_true_label_unc)))
+
+
+        Uncertainty_output(NUM_CLASSES).scatterplot(correct_prob, correct_unc, high_wrong_prob, high_wrong_unc, methodname, NEW_DATA)
 
 
     if more_info:
@@ -604,16 +616,16 @@ def MCDO(q, METHODNAME):
     if DATANAME == 'MES':
         MCDO_BATCH_SIZE = 128
         MODEL_TO_USE = os.path.sep + METHODNAME
-        MODEL_VERSION = os.path.sep + 'MES_ImageNet_Retrain_32B_93E_52A'
+        MODEL_VERSION = os.path.sep + '2020-05-11_12-31_imagenet_64B_60.3%A'
         MODEL_NAME = 'MCDO_model.h5'
         DATASET_LOCATION = os.path.sep + 'Datasets'
-        DATASET_HDF5 = os.path.sep + 'Messidor2_PNG_AUG_' + str(IMG_HEIGHT) + '.hdf5'
+        DATASET_HDF5 = os.path.sep + 'Messidor2_PNG_' + str(IMG_HEIGHT) + '.hdf5'
         DATA_PATH = DATA_ROOT_PATH + DATASET_LOCATION + DATASET_HDF5
 
     if DATANAME == 'CIFAR10':
         MCDO_BATCH_SIZE = 128
         MODEL_TO_USE = os.path.sep + METHODNAME
-        MODEL_VERSION = os.path.sep + 'CIFAR_ImageNet_retrain_32B_95E_86A'
+        MODEL_VERSION = os.path.sep + '2020-05-11_12-09_imagenet_32B_71.9%A'
         MODEL_NAME = 'MCDO_model.h5'
         DATA_PATH = None
 
@@ -675,7 +687,7 @@ def MCDO(q, METHODNAME):
             mcdo_predictions = mcdo_predict(pre_trained_model, x_test)
             old_dir = os.getcwd()
             os.chdir(HOME_DIR)
-            save_array('MCDO_' + DATANAME, mcdo_predictions)
+            save_array(DATANAME + '_MCDO_' + DATANAME, mcdo_predictions)
             os.chdir(old_dir)
             test_on_own_func(METHODNAME, mcdo_predictions, y_test)
         
@@ -683,7 +695,7 @@ def MCDO(q, METHODNAME):
             mcdo_new_images_predictions = mcdo_predict(pre_trained_model, x_pred)
             old_dir = os.getcwd()
             os.chdir(HOME_DIR)
-            save_array('MCDO_' + NEW_DATA, mcdo_new_images_predictions)
+            save_array(DATANAME + '_MCDO_' + NEW_DATA, mcdo_new_images_predictions)
             os.chdir(old_dir)
             if LABELS_AVAILABLE:
                 test_on_new_func(mcdo_new_images_predictions, x_pred, METHODNAME, y_pred = y_pred)
@@ -707,16 +719,16 @@ def MCBN(q, METHODNAME):
     if DATANAME == 'MES':
         MINIBATCH_SIZE = 128
         MODEL_TO_USE = os.path.sep + METHODNAME
-        MODEL_VERSION = os.path.sep + 'ImageNet_retrain_32B_144E_88A'
+        MODEL_VERSION = os.path.sep + '2020-05-11_14-13_imagenet_64B_59.4%A'
         MODEL_NAME = 'MCBN_model.h5'
         DATASET_LOCATION = os.path.sep + 'Datasets'
-        DATASET_HDF5 = os.path.sep + 'Messidor2_PNG_AUG_' + str(IMG_HEIGHT) + '.hdf5'
+        DATASET_HDF5 = os.path.sep + 'Messidor2_PNG_' + str(IMG_HEIGHT) + '.hdf5'
         DATA_PATH = DATA_ROOT_PATH + DATASET_LOCATION + DATASET_HDF5
 
     if DATANAME == 'CIFAR10':
         MINIBATCH_SIZE = 128
         MODEL_TO_USE = os.path.sep + METHODNAME
-        MODEL_VERSION = os.path.sep + '2020-04-10_14-30_imagenet_32B_82.3%A'
+        MODEL_VERSION = os.path.sep + '2020-05-11_12-09_imagenet_32B_82.2%A'
         MODEL_NAME = 'MCBN_model.h5'
         DATA_PATH = None
 
@@ -830,7 +842,7 @@ def MCBN(q, METHODNAME):
             mcbn_predictions = mcbn_predict(pre_trained_model, x_train, y_train, x_test)
             old_dir = os.getcwd()
             os.chdir(HOME_DIR)
-            save_array('MCBN_' + DATANAME, mcbn_predictions)
+            save_array(DATANAME + '_MCBN_' + DATANAME, mcbn_predictions)
             os.chdir(old_dir)
             test_on_own_func(METHODNAME, mcbn_predictions, y_test)
         
@@ -838,7 +850,7 @@ def MCBN(q, METHODNAME):
             mcbn_new_images_predictions = mcbn_predict(pre_trained_model, x_train, y_train, x_pred)
             old_dir = os.getcwd()
             os.chdir(HOME_DIR)
-            save_array('MCBN_' + NEW_DATA, mcbn_new_images_predictions)
+            save_array(DATANAME + '_MCBN_' + NEW_DATA, mcbn_new_images_predictions)
             os.chdir(old_dir)
             if LABELS_AVAILABLE:
                 test_on_new_func(mcbn_new_images_predictions, x_pred, METHODNAME, y_pred = y_pred)
@@ -858,11 +870,11 @@ def MCBN(q, METHODNAME):
 def Ensemble(q, METHODNAME):
     if DATANAME == 'MES':
         # Hyperparameters Messidor
-        N_FOLDERS = 2
-        N_ENSEMBLE_MEMBERS = [43, 27]
-        MODEL_VERSION = ['/MES_32B_43EN', '/MES_ImageNet_32B_27EN']
+        N_FOLDERS = 1
+        N_ENSEMBLE_MEMBERS = [40]
+        MODEL_VERSION = ['2020-05-11_12-19-17']
         DATASET_LOCATION = os.path.sep + 'Datasets'
-        DATASET_HDF5 = os.path.sep + 'Messidor2_PNG_AUG_' + str(IMG_HEIGHT) + '.hdf5'
+        DATASET_HDF5 = os.path.sep + 'Messidor2_PNG_' + str(IMG_HEIGHT) + '.hdf5'
         DATA_PATH = DATA_ROOT_PATH + DATASET_LOCATION + DATASET_HDF5
 
 
@@ -872,7 +884,7 @@ def Ensemble(q, METHODNAME):
         # N_ENSEMBLE_MEMBERS = [20, 20]
         N_ENSEMBLE_MEMBERS = [40]
         # MODEL_VERSION = ['CIF_ImageNet_32B_20EN', 'CIF_ImageNet_32B_20EN_2']
-        MODEL_VERSION = ['2020-03-19_16-19-18']
+        MODEL_VERSION = ['2020-05-11_12-01-39']
         DATA_PATH = None
 
 
@@ -951,7 +963,7 @@ def Ensemble(q, METHODNAME):
             ensemble_predictions = ensemble_predict(x_test)
             old_dir = os.getcwd()
             os.chdir(HOME_DIR)
-            save_array('Ensemble_' + DATANAME, ensemble_predictions)
+            save_array(DATANAME + '_Ensemble_' + DATANAME, ensemble_predictions)
             os.chdir(old_dir)
             test_on_own_func(METHODNAME, ensemble_predictions, y_test)
         
@@ -959,7 +971,7 @@ def Ensemble(q, METHODNAME):
             ensemble_new_images_predictions = ensemble_predict(x_pred)
             old_dir = os.getcwd()
             os.chdir(HOME_DIR)
-            save_array('Ensemble' + NEW_DATA, ensemble_new_images_predictions)
+            save_array(DATANAME + '_Ensemble_' + NEW_DATA, ensemble_new_images_predictions)
             os.chdir(old_dir)
             if LABELS_AVAILABLE:
                 test_on_new_func(ensemble_new_images_predictions, x_pred, METHODNAME, y_pred = y_pred)
@@ -983,16 +995,16 @@ def VarianceOutput(q, METHODNAME):
 
     if DATANAME == 'MES':
         MCDO_BATCH_SIZE = 128
-        MODEL_VERSION = os.path.sep + 'MES_ImageNet_Retrain_32B_90E_52A'
-        MODEL_NAME = 'variance_model.h5'
+        MODEL_VERSION = os.path.sep + '2020-05-11_14-08_imagenet_64B_58.0%A'
+        MODEL_NAME = 'Error_model.h5'
         DATASET_LOCATION = os.path.sep + 'Datasets'
         DATASET_HDF5 = os.path.sep + 'Messidor2_PNG_AUG_' + str(IMG_HEIGHT) + '.hdf5'
         DATA_PATH = DATA_ROOT_PATH + DATASET_LOCATION + DATASET_HDF5
 
     if DATANAME == 'CIFAR10':
         MCDO_BATCH_SIZE = 128
-        MODEL_VERSION = os.path.sep + 'CIF_ImageNet_32B_95E_68A'
-        MODEL_NAME = 'variance_model.h5'
+        MODEL_VERSION = os.path.sep + '2020-05-11_13-33_imagenet_64B_71.5%A'
+        MODEL_NAME = 'Error_model.h5'
         DATA_PATH = None
 
     if DATANAME == 'POLAR':
@@ -1003,36 +1015,24 @@ def VarianceOutput(q, METHODNAME):
         DATA_PATH = ROOT_PATH + '/Polar_dataset' + DATASET_HDF5
 
 
-    def convert_to_var(prediction, y_test, label_avail=True):
+    def convert_to_var(prediction):
         #Convert var pred to uncertainty
-        if label_avail:
-            for ind, pred in enumerate(prediction):
-                classif = pred[:NUM_CLASSES]
-                var = np.abs(pred[NUM_CLASSES:])
+        for ind, pred in enumerate(prediction):
+            predictions = pred[:NUM_CLASSES]
+            highest_pred_ind = np.argmax(predictions)
+            uncertainties = np.abs(pred[NUM_CLASSES:])
 
-                for i in range(0, NUM_CLASSES):
-                    pred_error = var[i]
-                    true_error = pow((classif[i] - y_test[ind][i]), 2)
-                    var[i] = abs(true_error - pred_error)
-                prediction[ind][NUM_CLASSES:] = var
-
-        else:
-            for ind, pred in enumerate(prediction):
-                classif = pred[:NUM_CLASSES]
-                classif_ind = np.argmax(classif)
-                var = np.abs(pred[NUM_CLASSES:])
-
-                for i in range(0, NUM_CLASSES):
-                    pred_var = var[i]
-                    if i == classif_ind:
-                        # Highest predicted class, so error as if true
-                        true_error = pow((classif[i] - 1), 2)
-                    else:
-                        # Not highest predicted class, so error as if false
-                        true_error = pow((classif[i]), 2)
-                    var[i] = abs(true_error - pred_var)
-                prediction[ind][NUM_CLASSES:] = var            
-
+            for i in range(0, NUM_CLASSES):
+                pred_var = uncertainties[i]
+                if i == highest_pred_ind:
+                    # Highest predicted class, so error as if true
+                    true_error = pow((predictions[i] - 1), 2)
+                else:
+                    # Not highest predicted class, so error as if false
+                    true_error = pow((predictions[i]), 2)
+                uncertainties[i] = abs(true_error - pred_var)
+            prediction[ind][NUM_CLASSES:] = uncertainties   
+         
         return prediction
 
 
@@ -1195,10 +1195,10 @@ def VarianceOutput(q, METHODNAME):
         print(os.getcwd())
 
         # Reload the model from the 2 files we saved
-        with open('variance_model_config.json') as json_file:
+        with open('Error_model_config.json') as json_file:
             json_config = json_file.read()
         pre_trained_model = tf.keras.models.model_from_json(json_config)
-        pre_trained_model.load_weights('variance_weights.h5')
+        pre_trained_model.load_weights('Error_weights.h5')
         # pre_trained_model.summary()
         os.chdir(HOME_DIR)
 
@@ -1208,32 +1208,32 @@ def VarianceOutput(q, METHODNAME):
 
         datagen = ImageDataGenerator(rescale=1./255)
         test_generator = datagen.flow(x_test, batch_size=64, shuffle=False)
-        pred_generator = datagen.flow(x_pred, batch_size=64, shuffle=False)
+        if TEST_ON_OWN_AND_NEW_DATASET:
+            pred_generator = datagen.flow(x_pred, batch_size=64, shuffle=False)
 
         if TEST_ON_OWN_DATASET or LABELS_AVAILABLE or TEST_ON_OWN_AND_NEW_DATASET:
             variance_org_dataset = pre_trained_model.predict(test_generator)
-            variance_org_dataset = convert_to_var(variance_org_dataset, y_test)
+            variance_org_dataset = convert_to_var(variance_org_dataset)
             old_dir = os.getcwd()
             os.chdir(HOME_DIR)
-            save_array('Variance_' + DATANAME, variance_org_dataset)
+            save_array(DATANAME + '_Error_' + DATANAME, variance_org_dataset)
             os.chdir(old_dir)
-            var_label(variance_org_dataset, y_test)
+            Uncertainty_output(NUM_CLASSES).results_if_label(variance_org_dataset, y_test, scatter=True, name = DATANAME)
         
         if TEST_ON_OWN_AND_NEW_DATASET:
             variance_new_images_predictions = pre_trained_model.predict(pred_generator)
-            variance_new_images_predictions = convert_to_var(variance_new_images_predictions, y_test = None, label_avail=False)
+            variance_new_images_predictions = convert_to_var(variance_new_images_predictions)
             old_dir = os.getcwd()
             os.chdir(HOME_DIR)
-            save_array('Variance_' + NEW_DATA, variance_new_images_predictions)
+            save_array(DATANAME + '_Error_' + NEW_DATA, variance_new_images_predictions)
             os.chdir(old_dir)
-            var_no_label(variance_new_images_predictions)
             if LABELS_AVAILABLE:
-                var_label(variance_new_images_predictions, y_pred, scatter=False)
+                Uncertainty_output(NUM_CLASSES).results_if_label(variance_new_images_predictions, y_pred, scatter=True, name = NEW_DATA)
         
         else:
             variance_new_images_predictions = pre_trained_model.predict(pred_generator)
-            variance_new_images_predictions = convert_to_var(variance_new_images_predictions, y_test = None, label_avail=False)
-            var_no_label(variance_new_images_predictions, more_info = True)
+            variance_new_images_predictions = convert_to_var(variance_new_images_predictions)
+            Uncertainty_output(NUM_CLASSES).results_if_no_label(variance_new_images_predictions, more_info = True)
 
         os.chdir(HOME_DIR)
 

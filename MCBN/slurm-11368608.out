@@ -1,0 +1,1509 @@
+
+The following have been reloaded with a version change:
+  1) FFTW/3.3.8-gompic-2019b => FFTW/3.3.8-gompi-2019b
+  2) OpenMPI/3.1.4-gcccuda-2019b => OpenMPI/3.1.4-GCC-8.3.0
+  3) ScaLAPACK/2.0.2-gompic-2019b => ScaLAPACK/2.0.2-gompi-2019b
+  4) SciPy-bundle/2019.10-fosscuda-2019b-Python-3.7.4 => SciPy-bundle/2019.10-foss-2019b-Python-3.7.4
+
+2020-05-11 12:18:46.491311: I tensorflow/stream_executor/platform/default/dso_loader.cc:44] Successfully opened dynamic library libcudart.so.10.1
+2020-05-11 12:18:57.621632: I tensorflow/stream_executor/platform/default/dso_loader.cc:44] Successfully opened dynamic library libcuda.so.1
+2020-05-11 12:18:57.629566: I tensorflow/stream_executor/cuda/cuda_gpu_executor.cc:981] successful NUMA node read from SysFS had negative value (-1), but there must be at least one NUMA node, so returning NUMA node zero
+2020-05-11 12:18:57.630145: I tensorflow/core/common_runtime/gpu/gpu_device.cc:1555] Found device 0 with properties: 
+pciBusID: 0000:02:00.0 name: GRID V100D-32Q computeCapability: 7.0
+coreClock: 1.38GHz coreCount: 80 deviceMemorySize: 31.88GiB deviceMemoryBandwidth: 836.37GiB/s
+2020-05-11 12:18:57.630246: I tensorflow/stream_executor/platform/default/dso_loader.cc:44] Successfully opened dynamic library libcudart.so.10.1
+2020-05-11 12:18:57.636273: I tensorflow/stream_executor/platform/default/dso_loader.cc:44] Successfully opened dynamic library libcublas.so.10
+2020-05-11 12:18:57.640699: I tensorflow/stream_executor/platform/default/dso_loader.cc:44] Successfully opened dynamic library libcufft.so.10
+2020-05-11 12:18:57.642631: I tensorflow/stream_executor/platform/default/dso_loader.cc:44] Successfully opened dynamic library libcurand.so.10
+2020-05-11 12:18:57.647061: I tensorflow/stream_executor/platform/default/dso_loader.cc:44] Successfully opened dynamic library libcusolver.so.10
+2020-05-11 12:18:57.649833: I tensorflow/stream_executor/platform/default/dso_loader.cc:44] Successfully opened dynamic library libcusparse.so.10
+2020-05-11 12:18:57.656881: I tensorflow/stream_executor/platform/default/dso_loader.cc:44] Successfully opened dynamic library libcudnn.so.7
+2020-05-11 12:18:57.657146: I tensorflow/stream_executor/cuda/cuda_gpu_executor.cc:981] successful NUMA node read from SysFS had negative value (-1), but there must be at least one NUMA node, so returning NUMA node zero
+2020-05-11 12:18:57.657830: I tensorflow/stream_executor/cuda/cuda_gpu_executor.cc:981] successful NUMA node read from SysFS had negative value (-1), but there must be at least one NUMA node, so returning NUMA node zero
+2020-05-11 12:18:57.658298: I tensorflow/core/common_runtime/gpu/gpu_device.cc:1697] Adding visible gpu devices: 0
+2020-05-11 12:18:57.661480: I tensorflow/stream_executor/cuda/cuda_gpu_executor.cc:981] successful NUMA node read from SysFS had negative value (-1), but there must be at least one NUMA node, so returning NUMA node zero
+2020-05-11 12:18:57.662003: I tensorflow/core/common_runtime/gpu/gpu_device.cc:1555] Found device 0 with properties: 
+pciBusID: 0000:02:00.0 name: GRID V100D-32Q computeCapability: 7.0
+coreClock: 1.38GHz coreCount: 80 deviceMemorySize: 31.88GiB deviceMemoryBandwidth: 836.37GiB/s
+2020-05-11 12:18:57.662093: I tensorflow/stream_executor/platform/default/dso_loader.cc:44] Successfully opened dynamic library libcudart.so.10.1
+2020-05-11 12:18:57.662169: I tensorflow/stream_executor/platform/default/dso_loader.cc:44] Successfully opened dynamic library libcublas.so.10
+2020-05-11 12:18:57.662232: I tensorflow/stream_executor/platform/default/dso_loader.cc:44] Successfully opened dynamic library libcufft.so.10
+2020-05-11 12:18:57.662293: I tensorflow/stream_executor/platform/default/dso_loader.cc:44] Successfully opened dynamic library libcurand.so.10
+2020-05-11 12:18:57.662355: I tensorflow/stream_executor/platform/default/dso_loader.cc:44] Successfully opened dynamic library libcusolver.so.10
+2020-05-11 12:18:57.662416: I tensorflow/stream_executor/platform/default/dso_loader.cc:44] Successfully opened dynamic library libcusparse.so.10
+2020-05-11 12:18:57.662478: I tensorflow/stream_executor/platform/default/dso_loader.cc:44] Successfully opened dynamic library libcudnn.so.7
+2020-05-11 12:18:57.662639: I tensorflow/stream_executor/cuda/cuda_gpu_executor.cc:981] successful NUMA node read from SysFS had negative value (-1), but there must be at least one NUMA node, so returning NUMA node zero
+2020-05-11 12:18:57.663178: I tensorflow/stream_executor/cuda/cuda_gpu_executor.cc:981] successful NUMA node read from SysFS had negative value (-1), but there must be at least one NUMA node, so returning NUMA node zero
+2020-05-11 12:18:57.663632: I tensorflow/core/common_runtime/gpu/gpu_device.cc:1697] Adding visible gpu devices: 0
+2020-05-11 12:18:57.663728: I tensorflow/stream_executor/platform/default/dso_loader.cc:44] Successfully opened dynamic library libcudart.so.10.1
+2020-05-11 12:18:58.414377: I tensorflow/core/common_runtime/gpu/gpu_device.cc:1096] Device interconnect StreamExecutor with strength 1 edge matrix:
+2020-05-11 12:18:58.414553: I tensorflow/core/common_runtime/gpu/gpu_device.cc:1102]      0 
+2020-05-11 12:18:58.414610: I tensorflow/core/common_runtime/gpu/gpu_device.cc:1115] 0:   N 
+2020-05-11 12:18:58.415043: I tensorflow/stream_executor/cuda/cuda_gpu_executor.cc:981] successful NUMA node read from SysFS had negative value (-1), but there must be at least one NUMA node, so returning NUMA node zero
+2020-05-11 12:18:58.415872: I tensorflow/stream_executor/cuda/cuda_gpu_executor.cc:981] successful NUMA node read from SysFS had negative value (-1), but there must be at least one NUMA node, so returning NUMA node zero
+2020-05-11 12:18:58.416483: I tensorflow/stream_executor/cuda/cuda_gpu_executor.cc:981] successful NUMA node read from SysFS had negative value (-1), but there must be at least one NUMA node, so returning NUMA node zero
+2020-05-11 12:18:58.416974: I tensorflow/core/common_runtime/gpu/gpu_device.cc:1241] Created TensorFlow device (/job:localhost/replica:0/task:0/device:GPU:0 with 28652 MB memory) -> physical GPU (device: 0, name: GRID V100D-32Q, pci bus id: 0000:02:00.0, compute capability: 7.0)
+2020-05-11 12:18:58.417801: I tensorflow/core/common_runtime/process_util.cc:147] Creating new thread pool with default inter op setting: 12. Tune using inter_op_parallelism_threads for best performance.
+WARNING:tensorflow:sample_weight modes were coerced from
+  ...
+    to  
+  ['...']
+WARNING:tensorflow:sample_weight modes were coerced from
+  ...
+    to  
+  ['...']
+2020-05-11 12:19:11.030089: I tensorflow/stream_executor/platform/default/dso_loader.cc:44] Successfully opened dynamic library libcublas.so.10
+2020-05-11 12:19:11.365709: I tensorflow/stream_executor/platform/default/dso_loader.cc:44] Successfully opened dynamic library libcudnn.so.7
+2020-05-11 12:19:17.589654: I tensorflow/core/profiler/lib/profiler_session.cc:225] Profiler session started.
+2020-05-11 12:19:17.589875: I tensorflow/core/profiler/internal/gpu/cupti_tracer.cc:1259] Profiler found 1 GPUs
+2020-05-11 12:19:17.594068: I tensorflow/stream_executor/platform/default/dso_loader.cc:44] Successfully opened dynamic library libcupti.so.10.1
+2020-05-11 12:19:17.694956: E tensorflow/core/profiler/internal/gpu/cupti_tracer.cc:1307] function cupti_interface_->Subscribe( &subscriber_, (CUpti_CallbackFunc)ApiCallback, this)failed with error CUPTI_ERROR_VIRTUALIZED_DEVICE_NOT_SUPPORTED
+2020-05-11 12:19:17.695748: E tensorflow/core/profiler/internal/gpu/cupti_tracer.cc:1346] function cupti_interface_->ActivityRegisterCallbacks( AllocCuptiActivityBuffer, FreeCuptiActivityBuffer)failed with error CUPTI_ERROR_VIRTUALIZED_DEVICE_NOT_SUPPORTED
+2020-05-11 12:19:18.129698: E tensorflow/core/profiler/internal/gpu/cupti_tracer.cc:1329] function cupti_interface_->EnableCallback( 0 , subscriber_, CUPTI_CB_DOMAIN_DRIVER_API, cbid)failed with error CUPTI_ERROR_INVALID_PARAMETER
+2020-05-11 12:19:18.129917: I tensorflow/core/profiler/internal/gpu/device_tracer.cc:88]  GpuTracer has collected 0 callback api events and 0 activity events.
+dataset_name = /Messidor2_PNG_256.hdf5, batch_size = 64, num_classes = 5, epochs = 500,
+        MCBN_PREDICTIONS = 256, Mini_batch_size = 128, test_img_idx = 197,
+        train_test_split = 0.8, to_shuffle = False, augmentation = False, label_count = [1021, 270, 347, 75, 35],
+        label_normalizer = False, save_augmentation_to_hdf5 = False, learn rate = 0.001,
+        add_bn_inside = True, train_all_layers = True, weights_to_use = imagenet,
+        es_patience = 50, train_val_split = 0.9, MIN_DELTA = 0.005, Early_monitor = val_accuracy
+x_train shape: (1398, 256, 256, 3)
+1398 train samples
+350 test samples
+block1_conv1
+1
+block1_conv2
+3
+block2_conv1
+6
+block2_conv2
+8
+block3_conv1
+11
+block3_conv2
+13
+block3_conv3
+15
+block4_conv1
+18
+block4_conv2
+20
+block4_conv3
+22
+block5_conv1
+25
+block5_conv2
+27
+block5_conv3
+29
+<tensorflow.python.keras.engine.input_layer.InputLayer object at 0x7f892041c1d0> True
+<tensorflow.python.keras.layers.convolutional.Conv2D object at 0x7f891f11bc10> True
+<tensorflow.python.keras.layers.normalization_v2.BatchNormalization object at 0x7f891c384f50> True
+<tensorflow.python.keras.layers.convolutional.Conv2D object at 0x7f89211fecd0> True
+<tensorflow.python.keras.layers.normalization_v2.BatchNormalization object at 0x7f891c2d7e10> True
+<tensorflow.python.keras.layers.pooling.MaxPooling2D object at 0x7f891f13a810> True
+<tensorflow.python.keras.layers.convolutional.Conv2D object at 0x7f891f14ba90> True
+<tensorflow.python.keras.layers.normalization_v2.BatchNormalization object at 0x7f891c1ce490> True
+<tensorflow.python.keras.layers.convolutional.Conv2D object at 0x7f891c408dd0> True
+<tensorflow.python.keras.layers.normalization_v2.BatchNormalization object at 0x7f891c066e90> True
+<tensorflow.python.keras.layers.pooling.MaxPooling2D object at 0x7f891c410b10> True
+<tensorflow.python.keras.layers.convolutional.Conv2D object at 0x7f891c418f90> True
+<tensorflow.python.keras.layers.normalization_v2.BatchNormalization object at 0x7f890aae2a90> True
+<tensorflow.python.keras.layers.convolutional.Conv2D object at 0x7f891c3a5c10> True
+<tensorflow.python.keras.layers.normalization_v2.BatchNormalization object at 0x7f88a86b1f50> True
+<tensorflow.python.keras.layers.convolutional.Conv2D object at 0x7f891c3afc90> True
+<tensorflow.python.keras.layers.normalization_v2.BatchNormalization object at 0x7f88a84dc250> True
+<tensorflow.python.keras.layers.pooling.MaxPooling2D object at 0x7f891c3b3950> True
+<tensorflow.python.keras.layers.convolutional.Conv2D object at 0x7f891c3c0090> True
+<tensorflow.python.keras.layers.normalization_v2.BatchNormalization object at 0x7f890aae8f10> True
+<tensorflow.python.keras.layers.convolutional.Conv2D object at 0x7f891c3d0b10> True
+<tensorflow.python.keras.layers.normalization_v2.BatchNormalization object at 0x7f887069a490> True
+<tensorflow.python.keras.layers.convolutional.Conv2D object at 0x7f891c3d09d0> True
+<tensorflow.python.keras.layers.normalization_v2.BatchNormalization object at 0x7f8870585650> True
+<tensorflow.python.keras.layers.pooling.MaxPooling2D object at 0x7f891c3dce90> True
+<tensorflow.python.keras.layers.convolutional.Conv2D object at 0x7f891c362f90> True
+<tensorflow.python.keras.layers.normalization_v2.BatchNormalization object at 0x7f887003cb10> True
+<tensorflow.python.keras.layers.convolutional.Conv2D object at 0x7f891c36dc10> True
+<tensorflow.python.keras.layers.normalization_v2.BatchNormalization object at 0x7f88a833e850> True
+<tensorflow.python.keras.layers.convolutional.Conv2D object at 0x7f891c376b50> True
+<tensorflow.python.keras.layers.normalization_v2.BatchNormalization object at 0x7f8833ed8f50> True
+<tensorflow.python.keras.layers.pooling.MaxPooling2D object at 0x7f891c383b50> True
+<tensorflow.python.keras.layers.core.Flatten object at 0x7f8833ae69d0> True
+<tensorflow.python.keras.layers.core.Dense object at 0x7f8833d7cdd0> True
+<tensorflow.python.keras.layers.normalization_v2.BatchNormalization object at 0x7f8833a10dd0> True
+<tensorflow.python.keras.layers.core.Dense object at 0x7f8833a1cf90> True
+<tensorflow.python.keras.layers.normalization_v2.BatchNormalization object at 0x7f8833a21090> True
+<tensorflow.python.keras.layers.core.Dense object at 0x7f88339facd0> True
+Model: "model_13"
+_________________________________________________________________
+Layer (type)                 Output Shape              Param #   
+=================================================================
+input_1 (InputLayer)         [(None, 256, 256, 3)]     0         
+_________________________________________________________________
+block1_conv1 (Conv2D)        (None, 256, 256, 64)      1792      
+_________________________________________________________________
+batch_normalization (BatchNo (None, 256, 256, 64)      256       
+_________________________________________________________________
+block1_conv2 (Conv2D)        (None, 256, 256, 64)      36928     
+_________________________________________________________________
+batch_normalization_1 (Batch (None, 256, 256, 64)      256       
+_________________________________________________________________
+block1_pool (MaxPooling2D)   (None, 128, 128, 64)      0         
+_________________________________________________________________
+block2_conv1 (Conv2D)        (None, 128, 128, 128)     73856     
+_________________________________________________________________
+batch_normalization_2 (Batch (None, 128, 128, 128)     512       
+_________________________________________________________________
+block2_conv2 (Conv2D)        (None, 128, 128, 128)     147584    
+_________________________________________________________________
+batch_normalization_3 (Batch (None, 128, 128, 128)     512       
+_________________________________________________________________
+block2_pool (MaxPooling2D)   (None, 64, 64, 128)       0         
+_________________________________________________________________
+block3_conv1 (Conv2D)        (None, 64, 64, 256)       295168    
+_________________________________________________________________
+batch_normalization_4 (Batch (None, 64, 64, 256)       1024      
+_________________________________________________________________
+block3_conv2 (Conv2D)        (None, 64, 64, 256)       590080    
+_________________________________________________________________
+batch_normalization_5 (Batch (None, 64, 64, 256)       1024      
+_________________________________________________________________
+block3_conv3 (Conv2D)        (None, 64, 64, 256)       590080    
+_________________________________________________________________
+batch_normalization_6 (Batch (None, 64, 64, 256)       1024      
+_________________________________________________________________
+block3_pool (MaxPooling2D)   (None, 32, 32, 256)       0         
+_________________________________________________________________
+block4_conv1 (Conv2D)        (None, 32, 32, 512)       1180160   
+_________________________________________________________________
+batch_normalization_7 (Batch (None, 32, 32, 512)       2048      
+_________________________________________________________________
+block4_conv2 (Conv2D)        (None, 32, 32, 512)       2359808   
+_________________________________________________________________
+batch_normalization_8 (Batch (None, 32, 32, 512)       2048      
+_________________________________________________________________
+block4_conv3 (Conv2D)        (None, 32, 32, 512)       2359808   
+_________________________________________________________________
+batch_normalization_9 (Batch (None, 32, 32, 512)       2048      
+_________________________________________________________________
+block4_pool (MaxPooling2D)   (None, 16, 16, 512)       0         
+_________________________________________________________________
+block5_conv1 (Conv2D)        (None, 16, 16, 512)       2359808   
+_________________________________________________________________
+batch_normalization_10 (Batc (None, 16, 16, 512)       2048      
+_________________________________________________________________
+block5_conv2 (Conv2D)        (None, 16, 16, 512)       2359808   
+_________________________________________________________________
+batch_normalization_11 (Batc (None, 16, 16, 512)       2048      
+_________________________________________________________________
+block5_conv3 (Conv2D)        (None, 16, 16, 512)       2359808   
+_________________________________________________________________
+batch_normalization_12 (Batc (None, 16, 16, 512)       2048      
+_________________________________________________________________
+block5_pool (MaxPooling2D)   (None, 8, 8, 512)         0         
+_________________________________________________________________
+flatten (Flatten)            (None, 32768)             0         
+_________________________________________________________________
+fc1 (Dense)                  (None, 4096)              134221824 
+_________________________________________________________________
+batch_normalization_13 (Batc (None, 4096)              16384     
+_________________________________________________________________
+fc2 (Dense)                  (None, 4096)              16781312  
+_________________________________________________________________
+batch_normalization_14 (Batc (None, 4096)              16384     
+_________________________________________________________________
+predictions (Dense)          (None, 5)                 20485     
+=================================================================
+Total params: 165,787,973
+Trainable params: 165,763,141
+Non-trainable params: 24,832
+_________________________________________________________________
+Start fitting monte carlo batch_normalization model
+Train for 20 steps, validate for 3 steps
+Epoch 1/500
+20/20 - 27s - loss: 2.0808 - accuracy: 0.2464 - val_loss: 1.9642 - val_accuracy: 0.2500
+Epoch 2/500
+20/20 - 9s - loss: 1.6341 - accuracy: 0.4046 - val_loss: 2.0748 - val_accuracy: 0.2357
+Epoch 3/500
+20/20 - 9s - loss: 1.3496 - accuracy: 0.5016 - val_loss: 2.0968 - val_accuracy: 0.2571
+Epoch 4/500
+20/20 - 9s - loss: 1.1451 - accuracy: 0.6129 - val_loss: 2.0268 - val_accuracy: 0.2429
+Epoch 5/500
+20/20 - 9s - loss: 0.9962 - accuracy: 0.7043 - val_loss: 2.1168 - val_accuracy: 0.2143
+Epoch 6/500
+20/20 - 9s - loss: 0.8729 - accuracy: 0.7655 - val_loss: 2.1556 - val_accuracy: 0.2643
+Epoch 7/500
+20/20 - 9s - loss: 0.7772 - accuracy: 0.8235 - val_loss: 2.1341 - val_accuracy: 0.2643
+Epoch 8/500
+20/20 - 9s - loss: 0.7008 - accuracy: 0.8577 - val_loss: 2.1957 - val_accuracy: 0.2071
+Epoch 9/500
+20/20 - 9s - loss: 0.6395 - accuracy: 0.8847 - val_loss: 2.2680 - val_accuracy: 0.1643
+Epoch 10/500
+20/20 - 9s - loss: 0.5846 - accuracy: 0.9094 - val_loss: 2.2674 - val_accuracy: 0.1643
+Epoch 11/500
+20/20 - 9s - loss: 0.5393 - accuracy: 0.9300 - val_loss: 2.3753 - val_accuracy: 0.1857
+Epoch 12/500
+20/20 - 9s - loss: 0.4992 - accuracy: 0.9467 - val_loss: 2.1546 - val_accuracy: 0.2000
+Epoch 13/500
+20/20 - 9s - loss: 0.4634 - accuracy: 0.9571 - val_loss: 2.0445 - val_accuracy: 0.2214
+Epoch 14/500
+20/20 - 9s - loss: 0.4324 - accuracy: 0.9650 - val_loss: 2.0151 - val_accuracy: 0.2571
+Epoch 15/500
+20/20 - 9s - loss: 0.4061 - accuracy: 0.9722 - val_loss: 2.0023 - val_accuracy: 0.2286
+Epoch 16/500
+20/20 - 9s - loss: 0.3806 - accuracy: 0.9777 - val_loss: 1.9712 - val_accuracy: 0.2571
+Epoch 17/500
+20/20 - 13s - loss: 0.3588 - accuracy: 0.9809 - val_loss: 1.9350 - val_accuracy: 0.3000
+Epoch 18/500
+20/20 - 9s - loss: 0.3388 - accuracy: 0.9833 - val_loss: 1.9579 - val_accuracy: 0.2786
+Epoch 19/500
+20/20 - 9s - loss: 0.3225 - accuracy: 0.9865 - val_loss: 1.9777 - val_accuracy: 0.2143
+Epoch 20/500
+20/20 - 9s - loss: 0.3053 - accuracy: 0.9897 - val_loss: 1.9409 - val_accuracy: 0.2286
+Epoch 21/500
+20/20 - 13s - loss: 0.2902 - accuracy: 0.9913 - val_loss: 1.8832 - val_accuracy: 0.2357
+Epoch 22/500
+20/20 - 9s - loss: 0.2771 - accuracy: 0.9913 - val_loss: 1.8930 - val_accuracy: 0.2571
+Epoch 23/500
+20/20 - 13s - loss: 0.2628 - accuracy: 0.9936 - val_loss: 1.8712 - val_accuracy: 0.2786
+Epoch 24/500
+20/20 - 12s - loss: 0.2522 - accuracy: 0.9936 - val_loss: 1.8427 - val_accuracy: 0.2929
+Epoch 25/500
+20/20 - 13s - loss: 0.2413 - accuracy: 0.9944 - val_loss: 1.7897 - val_accuracy: 0.3071
+Epoch 26/500
+20/20 - 9s - loss: 0.2316 - accuracy: 0.9960 - val_loss: 1.7906 - val_accuracy: 0.3214
+Epoch 27/500
+20/20 - 13s - loss: 0.2221 - accuracy: 0.9960 - val_loss: 1.7584 - val_accuracy: 0.3500
+Epoch 28/500
+20/20 - 13s - loss: 0.2140 - accuracy: 0.9960 - val_loss: 1.7335 - val_accuracy: 0.3786
+Epoch 29/500
+20/20 - 13s - loss: 0.2063 - accuracy: 0.9960 - val_loss: 1.7072 - val_accuracy: 0.4214
+Epoch 30/500
+20/20 - 9s - loss: 0.1994 - accuracy: 0.9968 - val_loss: 1.7145 - val_accuracy: 0.4214
+Epoch 31/500
+20/20 - 13s - loss: 0.1920 - accuracy: 0.9984 - val_loss: 1.6955 - val_accuracy: 0.4571
+Epoch 32/500
+20/20 - 13s - loss: 0.1852 - accuracy: 1.0000 - val_loss: 1.6701 - val_accuracy: 0.4786
+Epoch 33/500
+20/20 - 13s - loss: 0.1794 - accuracy: 1.0000 - val_loss: 1.6472 - val_accuracy: 0.4643
+Epoch 34/500
+20/20 - 13s - loss: 0.1739 - accuracy: 1.0000 - val_loss: 1.6312 - val_accuracy: 0.4857
+Epoch 35/500
+20/20 - 14s - loss: 0.1686 - accuracy: 1.0000 - val_loss: 1.6132 - val_accuracy: 0.4929
+Epoch 36/500
+20/20 - 13s - loss: 0.1635 - accuracy: 1.0000 - val_loss: 1.5862 - val_accuracy: 0.5214
+Epoch 37/500
+20/20 - 13s - loss: 0.1589 - accuracy: 1.0000 - val_loss: 1.5777 - val_accuracy: 0.5214
+Epoch 38/500
+20/20 - 13s - loss: 0.1538 - accuracy: 1.0000 - val_loss: 1.5762 - val_accuracy: 0.5214
+Epoch 39/500
+20/20 - 13s - loss: 0.1499 - accuracy: 1.0000 - val_loss: 1.5752 - val_accuracy: 0.5143
+Epoch 40/500
+20/20 - 9s - loss: 0.1456 - accuracy: 1.0000 - val_loss: 1.5800 - val_accuracy: 0.5286
+Epoch 41/500
+20/20 - 9s - loss: 0.1421 - accuracy: 1.0000 - val_loss: 1.5797 - val_accuracy: 0.5286
+Epoch 42/500
+20/20 - 9s - loss: 0.1383 - accuracy: 1.0000 - val_loss: 1.5862 - val_accuracy: 0.5214
+Epoch 43/500
+20/20 - 9s - loss: 0.1347 - accuracy: 1.0000 - val_loss: 1.5863 - val_accuracy: 0.5143
+Epoch 44/500
+20/20 - 9s - loss: 0.1315 - accuracy: 1.0000 - val_loss: 1.5959 - val_accuracy: 0.5071
+Epoch 45/500
+20/20 - 9s - loss: 0.1283 - accuracy: 1.0000 - val_loss: 1.5984 - val_accuracy: 0.5143
+Epoch 46/500
+20/20 - 9s - loss: 0.1253 - accuracy: 1.0000 - val_loss: 1.5992 - val_accuracy: 0.5143
+Epoch 47/500
+20/20 - 9s - loss: 0.1225 - accuracy: 1.0000 - val_loss: 1.6013 - val_accuracy: 0.5143
+Epoch 48/500
+20/20 - 9s - loss: 0.1196 - accuracy: 1.0000 - val_loss: 1.6041 - val_accuracy: 0.5143
+Epoch 49/500
+20/20 - 9s - loss: 0.1169 - accuracy: 1.0000 - val_loss: 1.6080 - val_accuracy: 0.5214
+Epoch 50/500
+20/20 - 9s - loss: 0.1145 - accuracy: 1.0000 - val_loss: 1.6117 - val_accuracy: 0.5143
+Epoch 51/500
+20/20 - 9s - loss: 0.1122 - accuracy: 1.0000 - val_loss: 1.6124 - val_accuracy: 0.5286
+Epoch 52/500
+20/20 - 9s - loss: 0.1097 - accuracy: 1.0000 - val_loss: 1.6139 - val_accuracy: 0.5214
+Epoch 53/500
+20/20 - 9s - loss: 0.1075 - accuracy: 1.0000 - val_loss: 1.6172 - val_accuracy: 0.5214
+Epoch 54/500
+20/20 - 9s - loss: 0.1053 - accuracy: 1.0000 - val_loss: 1.6156 - val_accuracy: 0.5214
+Epoch 55/500
+20/20 - 9s - loss: 0.1032 - accuracy: 1.0000 - val_loss: 1.6178 - val_accuracy: 0.5214
+Epoch 56/500
+20/20 - 9s - loss: 0.1014 - accuracy: 1.0000 - val_loss: 1.6183 - val_accuracy: 0.5214
+Epoch 57/500
+20/20 - 9s - loss: 0.0994 - accuracy: 1.0000 - val_loss: 1.6189 - val_accuracy: 0.5214
+Epoch 58/500
+20/20 - 9s - loss: 0.0976 - accuracy: 1.0000 - val_loss: 1.6239 - val_accuracy: 0.5143
+Epoch 59/500
+20/20 - 9s - loss: 0.0957 - accuracy: 1.0000 - val_loss: 1.6212 - val_accuracy: 0.5214
+Epoch 60/500
+20/20 - 9s - loss: 0.0940 - accuracy: 1.0000 - val_loss: 1.6224 - val_accuracy: 0.5214
+Epoch 61/500
+20/20 - 9s - loss: 0.0923 - accuracy: 1.0000 - val_loss: 1.6225 - val_accuracy: 0.5286
+Epoch 62/500
+20/20 - 9s - loss: 0.0908 - accuracy: 1.0000 - val_loss: 1.6247 - val_accuracy: 0.5214
+Epoch 63/500
+20/20 - 9s - loss: 0.0893 - accuracy: 1.0000 - val_loss: 1.6267 - val_accuracy: 0.5214
+Epoch 64/500
+20/20 - 9s - loss: 0.0877 - accuracy: 1.0000 - val_loss: 1.6314 - val_accuracy: 0.5214
+Epoch 65/500
+20/20 - 9s - loss: 0.0863 - accuracy: 1.0000 - val_loss: 1.6279 - val_accuracy: 0.5214
+Epoch 66/500
+20/20 - 9s - loss: 0.0848 - accuracy: 1.0000 - val_loss: 1.6292 - val_accuracy: 0.5214
+Epoch 67/500
+20/20 - 9s - loss: 0.0835 - accuracy: 1.0000 - val_loss: 1.6310 - val_accuracy: 0.5286
+Epoch 68/500
+20/20 - 9s - loss: 0.0823 - accuracy: 1.0000 - val_loss: 1.6312 - val_accuracy: 0.5143
+Epoch 69/500
+20/20 - 9s - loss: 0.0809 - accuracy: 1.0000 - val_loss: 1.6349 - val_accuracy: 0.5214
+Epoch 70/500
+20/20 - 9s - loss: 0.0796 - accuracy: 1.0000 - val_loss: 1.6317 - val_accuracy: 0.5214
+Epoch 71/500
+20/20 - 9s - loss: 0.0785 - accuracy: 1.0000 - val_loss: 1.6339 - val_accuracy: 0.5214
+Epoch 72/500
+20/20 - 9s - loss: 0.0773 - accuracy: 1.0000 - val_loss: 1.6357 - val_accuracy: 0.5214
+Epoch 73/500
+20/20 - 9s - loss: 0.0762 - accuracy: 1.0000 - val_loss: 1.6353 - val_accuracy: 0.5214
+Epoch 74/500
+20/20 - 9s - loss: 0.0751 - accuracy: 1.0000 - val_loss: 1.6362 - val_accuracy: 0.5286
+Epoch 75/500
+20/20 - 9s - loss: 0.0740 - accuracy: 1.0000 - val_loss: 1.6396 - val_accuracy: 0.5214
+Epoch 76/500
+20/20 - 9s - loss: 0.0729 - accuracy: 1.0000 - val_loss: 1.6374 - val_accuracy: 0.5214
+Epoch 77/500
+20/20 - 9s - loss: 0.0719 - accuracy: 1.0000 - val_loss: 1.6400 - val_accuracy: 0.5214
+Epoch 78/500
+20/20 - 9s - loss: 0.0709 - accuracy: 1.0000 - val_loss: 1.6413 - val_accuracy: 0.5214
+Epoch 79/500
+20/20 - 9s - loss: 0.0700 - accuracy: 1.0000 - val_loss: 1.6381 - val_accuracy: 0.5214
+Epoch 80/500
+20/20 - 9s - loss: 0.0690 - accuracy: 1.0000 - val_loss: 1.6402 - val_accuracy: 0.5286
+Epoch 81/500
+20/20 - 9s - loss: 0.0681 - accuracy: 1.0000 - val_loss: 1.6439 - val_accuracy: 0.5286
+Epoch 82/500
+20/20 - 9s - loss: 0.0672 - accuracy: 1.0000 - val_loss: 1.6400 - val_accuracy: 0.5357
+Epoch 83/500
+20/20 - 9s - loss: 0.0664 - accuracy: 1.0000 - val_loss: 1.6446 - val_accuracy: 0.5357
+Epoch 84/500
+20/20 - 9s - loss: 0.0655 - accuracy: 1.0000 - val_loss: 1.6449 - val_accuracy: 0.5286
+Epoch 85/500
+20/20 - 9s - loss: 0.0648 - accuracy: 1.0000 - val_loss: 1.6439 - val_accuracy: 0.5357
+Epoch 86/500
+20/20 - 9s - loss: 0.0640 - accuracy: 1.0000 - val_loss: 1.6455 - val_accuracy: 0.5286
+Epoch 87/500
+20/20 - 9s - loss: 0.0632 - accuracy: 1.0000 - val_loss: 1.6473 - val_accuracy: 0.5286
+Epoch 88/500
+20/20 - 9s - loss: 0.0624 - accuracy: 1.0000 - val_loss: 1.6473 - val_accuracy: 0.5357
+Epoch 89/500
+20/20 - 9s - loss: 0.0616 - accuracy: 1.0000 - val_loss: 1.6470 - val_accuracy: 0.5357
+Epoch 90/500
+20/20 - 9s - loss: 0.0609 - accuracy: 1.0000 - val_loss: 1.6487 - val_accuracy: 0.5357
+Epoch 91/500
+20/20 - 9s - loss: 0.0602 - accuracy: 1.0000 - val_loss: 1.6490 - val_accuracy: 0.5357
+Epoch 92/500
+20/20 - 9s - loss: 0.0595 - accuracy: 1.0000 - val_loss: 1.6491 - val_accuracy: 0.5357
+Epoch 93/500
+20/20 - 9s - loss: 0.0588 - accuracy: 1.0000 - val_loss: 1.6500 - val_accuracy: 0.5357
+Epoch 94/500
+20/20 - 9s - loss: 0.0581 - accuracy: 1.0000 - val_loss: 1.6493 - val_accuracy: 0.5357
+Epoch 95/500
+20/20 - 9s - loss: 0.0575 - accuracy: 1.0000 - val_loss: 1.6512 - val_accuracy: 0.5357
+Epoch 96/500
+20/20 - 9s - loss: 0.0569 - accuracy: 1.0000 - val_loss: 1.6513 - val_accuracy: 0.5357
+Epoch 97/500
+20/20 - 9s - loss: 0.0563 - accuracy: 1.0000 - val_loss: 1.6530 - val_accuracy: 0.5357
+Epoch 98/500
+20/20 - 9s - loss: 0.0556 - accuracy: 1.0000 - val_loss: 1.6540 - val_accuracy: 0.5357
+Epoch 99/500
+20/20 - 9s - loss: 0.0551 - accuracy: 1.0000 - val_loss: 1.6532 - val_accuracy: 0.5357
+Epoch 100/500
+20/20 - 9s - loss: 0.0545 - accuracy: 1.0000 - val_loss: 1.6550 - val_accuracy: 0.5357
+Epoch 101/500
+20/20 - 9s - loss: 0.0539 - accuracy: 1.0000 - val_loss: 1.6547 - val_accuracy: 0.5357
+Epoch 102/500
+20/20 - 9s - loss: 0.0533 - accuracy: 1.0000 - val_loss: 1.6544 - val_accuracy: 0.5357
+Epoch 103/500
+20/20 - 9s - loss: 0.0528 - accuracy: 1.0000 - val_loss: 1.6561 - val_accuracy: 0.5357
+Epoch 104/500
+20/20 - 9s - loss: 0.0523 - accuracy: 1.0000 - val_loss: 1.6572 - val_accuracy: 0.5357
+Epoch 105/500
+20/20 - 9s - loss: 0.0517 - accuracy: 1.0000 - val_loss: 1.6577 - val_accuracy: 0.5357
+Epoch 106/500
+20/20 - 9s - loss: 0.0512 - accuracy: 1.0000 - val_loss: 1.6601 - val_accuracy: 0.5357
+Epoch 107/500
+20/20 - 9s - loss: 0.0507 - accuracy: 1.0000 - val_loss: 1.6601 - val_accuracy: 0.5357
+Epoch 108/500
+20/20 - 9s - loss: 0.0502 - accuracy: 1.0000 - val_loss: 1.6606 - val_accuracy: 0.5357
+Epoch 109/500
+20/20 - 9s - loss: 0.0497 - accuracy: 1.0000 - val_loss: 1.6609 - val_accuracy: 0.5357
+Epoch 110/500
+20/20 - 9s - loss: 0.0492 - accuracy: 1.0000 - val_loss: 1.6614 - val_accuracy: 0.5357
+Epoch 111/500
+20/20 - 9s - loss: 0.0487 - accuracy: 1.0000 - val_loss: 1.6618 - val_accuracy: 0.5357
+Epoch 112/500
+20/20 - 9s - loss: 0.0483 - accuracy: 1.0000 - val_loss: 1.6619 - val_accuracy: 0.5357
+Epoch 113/500
+20/20 - 9s - loss: 0.0478 - accuracy: 1.0000 - val_loss: 1.6621 - val_accuracy: 0.5357
+Epoch 114/500
+20/20 - 9s - loss: 0.0474 - accuracy: 1.0000 - val_loss: 1.6621 - val_accuracy: 0.5357
+Epoch 115/500
+20/20 - 9s - loss: 0.0469 - accuracy: 1.0000 - val_loss: 1.6661 - val_accuracy: 0.5357
+Epoch 116/500
+20/20 - 9s - loss: 0.0465 - accuracy: 1.0000 - val_loss: 1.6650 - val_accuracy: 0.5357
+Epoch 117/500
+20/20 - 9s - loss: 0.0461 - accuracy: 1.0000 - val_loss: 1.6635 - val_accuracy: 0.5357
+Epoch 118/500
+20/20 - 9s - loss: 0.0457 - accuracy: 1.0000 - val_loss: 1.6661 - val_accuracy: 0.5357
+Epoch 119/500
+20/20 - 9s - loss: 0.0453 - accuracy: 1.0000 - val_loss: 1.6659 - val_accuracy: 0.5357
+Epoch 120/500
+20/20 - 9s - loss: 0.0449 - accuracy: 1.0000 - val_loss: 1.6670 - val_accuracy: 0.5429
+Epoch 121/500
+20/20 - 9s - loss: 0.0445 - accuracy: 1.0000 - val_loss: 1.6657 - val_accuracy: 0.5357
+Epoch 122/500
+20/20 - 9s - loss: 0.0441 - accuracy: 1.0000 - val_loss: 1.6667 - val_accuracy: 0.5429
+Epoch 123/500
+20/20 - 9s - loss: 0.0437 - accuracy: 1.0000 - val_loss: 1.6686 - val_accuracy: 0.5429
+Epoch 124/500
+20/20 - 9s - loss: 0.0434 - accuracy: 1.0000 - val_loss: 1.6673 - val_accuracy: 0.5429
+Epoch 125/500
+20/20 - 9s - loss: 0.0430 - accuracy: 1.0000 - val_loss: 1.6692 - val_accuracy: 0.5429
+Epoch 126/500
+20/20 - 9s - loss: 0.0426 - accuracy: 1.0000 - val_loss: 1.6693 - val_accuracy: 0.5429
+Epoch 127/500
+20/20 - 9s - loss: 0.0422 - accuracy: 1.0000 - val_loss: 1.6705 - val_accuracy: 0.5429
+Epoch 128/500
+20/20 - 9s - loss: 0.0419 - accuracy: 1.0000 - val_loss: 1.6707 - val_accuracy: 0.5429
+Epoch 129/500
+20/20 - 9s - loss: 0.0416 - accuracy: 1.0000 - val_loss: 1.6725 - val_accuracy: 0.5429
+Epoch 130/500
+20/20 - 9s - loss: 0.0412 - accuracy: 1.0000 - val_loss: 1.6730 - val_accuracy: 0.5429
+Epoch 131/500
+20/20 - 9s - loss: 0.0409 - accuracy: 1.0000 - val_loss: 1.6712 - val_accuracy: 0.5429
+Epoch 132/500
+20/20 - 9s - loss: 0.0405 - accuracy: 1.0000 - val_loss: 1.6718 - val_accuracy: 0.5429
+Epoch 133/500
+20/20 - 9s - loss: 0.0402 - accuracy: 1.0000 - val_loss: 1.6755 - val_accuracy: 0.5429
+Epoch 134/500
+20/20 - 9s - loss: 0.0399 - accuracy: 1.0000 - val_loss: 1.6742 - val_accuracy: 0.5429
+Epoch 135/500
+20/20 - 9s - loss: 0.0396 - accuracy: 1.0000 - val_loss: 1.6734 - val_accuracy: 0.5429
+Epoch 136/500
+20/20 - 9s - loss: 0.0393 - accuracy: 1.0000 - val_loss: 1.6748 - val_accuracy: 0.5429
+Epoch 137/500
+20/20 - 9s - loss: 0.0390 - accuracy: 1.0000 - val_loss: 1.6749 - val_accuracy: 0.5429
+Epoch 138/500
+20/20 - 9s - loss: 0.0387 - accuracy: 1.0000 - val_loss: 1.6770 - val_accuracy: 0.5429
+Epoch 139/500
+20/20 - 9s - loss: 0.0384 - accuracy: 1.0000 - val_loss: 1.6794 - val_accuracy: 0.5429
+Epoch 140/500
+20/20 - 9s - loss: 0.0381 - accuracy: 1.0000 - val_loss: 1.6765 - val_accuracy: 0.5429
+Epoch 141/500
+20/20 - 9s - loss: 0.0378 - accuracy: 1.0000 - val_loss: 1.6756 - val_accuracy: 0.5429
+Epoch 142/500
+20/20 - 9s - loss: 0.0376 - accuracy: 1.0000 - val_loss: 1.6783 - val_accuracy: 0.5429
+Epoch 143/500
+20/20 - 9s - loss: 0.0373 - accuracy: 1.0000 - val_loss: 1.6792 - val_accuracy: 0.5429
+Epoch 144/500
+20/20 - 9s - loss: 0.0370 - accuracy: 1.0000 - val_loss: 1.6790 - val_accuracy: 0.5429
+Epoch 145/500
+20/20 - 9s - loss: 0.0367 - accuracy: 1.0000 - val_loss: 1.6789 - val_accuracy: 0.5500
+Epoch 146/500
+20/20 - 9s - loss: 0.0364 - accuracy: 1.0000 - val_loss: 1.6797 - val_accuracy: 0.5500
+Epoch 147/500
+20/20 - 9s - loss: 0.0362 - accuracy: 1.0000 - val_loss: 1.6796 - val_accuracy: 0.5500
+Epoch 148/500
+20/20 - 9s - loss: 0.0359 - accuracy: 1.0000 - val_loss: 1.6799 - val_accuracy: 0.5500
+Epoch 149/500
+20/20 - 9s - loss: 0.0357 - accuracy: 1.0000 - val_loss: 1.6817 - val_accuracy: 0.5500
+Epoch 150/500
+20/20 - 9s - loss: 0.0354 - accuracy: 1.0000 - val_loss: 1.6822 - val_accuracy: 0.5500
+Epoch 151/500
+20/20 - 9s - loss: 0.0352 - accuracy: 1.0000 - val_loss: 1.6810 - val_accuracy: 0.5500
+Epoch 152/500
+20/20 - 9s - loss: 0.0349 - accuracy: 1.0000 - val_loss: 1.6819 - val_accuracy: 0.5500
+Epoch 153/500
+20/20 - 9s - loss: 0.0347 - accuracy: 1.0000 - val_loss: 1.6839 - val_accuracy: 0.5500
+Epoch 154/500
+20/20 - 9s - loss: 0.0344 - accuracy: 1.0000 - val_loss: 1.6847 - val_accuracy: 0.5500
+Epoch 155/500
+20/20 - 9s - loss: 0.0342 - accuracy: 1.0000 - val_loss: 1.6840 - val_accuracy: 0.5500
+Epoch 156/500
+20/20 - 9s - loss: 0.0340 - accuracy: 1.0000 - val_loss: 1.6842 - val_accuracy: 0.5500
+Epoch 157/500
+20/20 - 9s - loss: 0.0338 - accuracy: 1.0000 - val_loss: 1.6860 - val_accuracy: 0.5500
+Epoch 158/500
+20/20 - 9s - loss: 0.0335 - accuracy: 1.0000 - val_loss: 1.6852 - val_accuracy: 0.5500
+Epoch 159/500
+20/20 - 9s - loss: 0.0333 - accuracy: 1.0000 - val_loss: 1.6856 - val_accuracy: 0.5500
+Epoch 160/500
+20/20 - 9s - loss: 0.0331 - accuracy: 1.0000 - val_loss: 1.6861 - val_accuracy: 0.5500
+Epoch 161/500
+20/20 - 9s - loss: 0.0329 - accuracy: 1.0000 - val_loss: 1.6861 - val_accuracy: 0.5500
+Epoch 162/500
+20/20 - 9s - loss: 0.0327 - accuracy: 1.0000 - val_loss: 1.6863 - val_accuracy: 0.5500
+Epoch 163/500
+20/20 - 9s - loss: 0.0324 - accuracy: 1.0000 - val_loss: 1.6856 - val_accuracy: 0.5500
+Epoch 164/500
+20/20 - 9s - loss: 0.0322 - accuracy: 1.0000 - val_loss: 1.6872 - val_accuracy: 0.5500
+Epoch 165/500
+20/20 - 9s - loss: 0.0320 - accuracy: 1.0000 - val_loss: 1.6885 - val_accuracy: 0.5500
+Epoch 166/500
+20/20 - 9s - loss: 0.0318 - accuracy: 1.0000 - val_loss: 1.6890 - val_accuracy: 0.5500
+Epoch 167/500
+20/20 - 9s - loss: 0.0316 - accuracy: 1.0000 - val_loss: 1.6887 - val_accuracy: 0.5500
+Epoch 168/500
+20/20 - 9s - loss: 0.0314 - accuracy: 1.0000 - val_loss: 1.6884 - val_accuracy: 0.5500
+Epoch 169/500
+20/20 - 9s - loss: 0.0312 - accuracy: 1.0000 - val_loss: 1.6883 - val_accuracy: 0.5500
+Epoch 170/500
+20/20 - 9s - loss: 0.0310 - accuracy: 1.0000 - val_loss: 1.6892 - val_accuracy: 0.5500
+Epoch 171/500
+20/20 - 9s - loss: 0.0309 - accuracy: 1.0000 - val_loss: 1.6919 - val_accuracy: 0.5500
+Epoch 172/500
+20/20 - 9s - loss: 0.0307 - accuracy: 1.0000 - val_loss: 1.6906 - val_accuracy: 0.5500
+Epoch 173/500
+20/20 - 9s - loss: 0.0305 - accuracy: 1.0000 - val_loss: 1.6909 - val_accuracy: 0.5500
+Epoch 174/500
+20/20 - 9s - loss: 0.0303 - accuracy: 1.0000 - val_loss: 1.6926 - val_accuracy: 0.5500
+Epoch 175/500
+20/20 - 9s - loss: 0.0301 - accuracy: 1.0000 - val_loss: 1.6919 - val_accuracy: 0.5500
+Epoch 176/500
+20/20 - 9s - loss: 0.0299 - accuracy: 1.0000 - val_loss: 1.6923 - val_accuracy: 0.5500
+Epoch 177/500
+20/20 - 9s - loss: 0.0297 - accuracy: 1.0000 - val_loss: 1.6930 - val_accuracy: 0.5500
+Epoch 178/500
+20/20 - 9s - loss: 0.0296 - accuracy: 1.0000 - val_loss: 1.6931 - val_accuracy: 0.5500
+Epoch 179/500
+20/20 - 9s - loss: 0.0294 - accuracy: 1.0000 - val_loss: 1.6942 - val_accuracy: 0.5500
+Epoch 180/500
+20/20 - 9s - loss: 0.0292 - accuracy: 1.0000 - val_loss: 1.6947 - val_accuracy: 0.5500
+Epoch 181/500
+20/20 - 9s - loss: 0.0291 - accuracy: 1.0000 - val_loss: 1.6964 - val_accuracy: 0.5500
+Epoch 182/500
+20/20 - 9s - loss: 0.0289 - accuracy: 1.0000 - val_loss: 1.6959 - val_accuracy: 0.5500
+Epoch 183/500
+20/20 - 9s - loss: 0.0287 - accuracy: 1.0000 - val_loss: 1.6959 - val_accuracy: 0.5571
+Epoch 184/500
+20/20 - 9s - loss: 0.0285 - accuracy: 1.0000 - val_loss: 1.6959 - val_accuracy: 0.5571
+Epoch 185/500
+20/20 - 9s - loss: 0.0284 - accuracy: 1.0000 - val_loss: 1.6974 - val_accuracy: 0.5571
+Epoch 186/500
+20/20 - 9s - loss: 0.0282 - accuracy: 1.0000 - val_loss: 1.6966 - val_accuracy: 0.5500
+Epoch 187/500
+20/20 - 9s - loss: 0.0281 - accuracy: 1.0000 - val_loss: 1.6983 - val_accuracy: 0.5571
+Epoch 188/500
+20/20 - 9s - loss: 0.0279 - accuracy: 1.0000 - val_loss: 1.6976 - val_accuracy: 0.5571
+Epoch 189/500
+20/20 - 9s - loss: 0.0277 - accuracy: 1.0000 - val_loss: 1.6983 - val_accuracy: 0.5571
+Epoch 190/500
+20/20 - 9s - loss: 0.0276 - accuracy: 1.0000 - val_loss: 1.6992 - val_accuracy: 0.5571
+Epoch 191/500
+20/20 - 9s - loss: 0.0274 - accuracy: 1.0000 - val_loss: 1.6982 - val_accuracy: 0.5571
+Epoch 192/500
+20/20 - 9s - loss: 0.0273 - accuracy: 1.0000 - val_loss: 1.6987 - val_accuracy: 0.5500
+Epoch 193/500
+20/20 - 9s - loss: 0.0272 - accuracy: 1.0000 - val_loss: 1.7010 - val_accuracy: 0.5571
+Epoch 194/500
+20/20 - 9s - loss: 0.0270 - accuracy: 1.0000 - val_loss: 1.6997 - val_accuracy: 0.5571
+Epoch 195/500
+20/20 - 9s - loss: 0.0269 - accuracy: 1.0000 - val_loss: 1.7006 - val_accuracy: 0.5571
+Epoch 196/500
+20/20 - 9s - loss: 0.0267 - accuracy: 1.0000 - val_loss: 1.7017 - val_accuracy: 0.5571
+Epoch 197/500
+20/20 - 9s - loss: 0.0266 - accuracy: 1.0000 - val_loss: 1.7026 - val_accuracy: 0.5571
+Epoch 198/500
+20/20 - 9s - loss: 0.0264 - accuracy: 1.0000 - val_loss: 1.7020 - val_accuracy: 0.5571
+Epoch 199/500
+20/20 - 9s - loss: 0.0263 - accuracy: 1.0000 - val_loss: 1.7030 - val_accuracy: 0.5571
+Epoch 200/500
+20/20 - 9s - loss: 0.0262 - accuracy: 1.0000 - val_loss: 1.7033 - val_accuracy: 0.5571
+Epoch 201/500
+20/20 - 9s - loss: 0.0260 - accuracy: 1.0000 - val_loss: 1.7040 - val_accuracy: 0.5571
+Epoch 202/500
+20/20 - 9s - loss: 0.0259 - accuracy: 1.0000 - val_loss: 1.7036 - val_accuracy: 0.5571
+Epoch 203/500
+20/20 - 9s - loss: 0.0257 - accuracy: 1.0000 - val_loss: 1.7048 - val_accuracy: 0.5571
+Epoch 204/500
+20/20 - 9s - loss: 0.0256 - accuracy: 1.0000 - val_loss: 1.7053 - val_accuracy: 0.5571
+Epoch 205/500
+20/20 - 9s - loss: 0.0255 - accuracy: 1.0000 - val_loss: 1.7049 - val_accuracy: 0.5571
+Epoch 206/500
+20/20 - 9s - loss: 0.0253 - accuracy: 1.0000 - val_loss: 1.7049 - val_accuracy: 0.5643
+Epoch 207/500
+20/20 - 9s - loss: 0.0252 - accuracy: 1.0000 - val_loss: 1.7046 - val_accuracy: 0.5643
+Epoch 208/500
+20/20 - 9s - loss: 0.0251 - accuracy: 1.0000 - val_loss: 1.7065 - val_accuracy: 0.5571
+Epoch 209/500
+20/20 - 9s - loss: 0.0250 - accuracy: 1.0000 - val_loss: 1.7074 - val_accuracy: 0.5571
+Epoch 210/500
+20/20 - 9s - loss: 0.0248 - accuracy: 1.0000 - val_loss: 1.7069 - val_accuracy: 0.5643
+Epoch 211/500
+20/20 - 9s - loss: 0.0247 - accuracy: 1.0000 - val_loss: 1.7066 - val_accuracy: 0.5643
+Epoch 212/500
+20/20 - 9s - loss: 0.0246 - accuracy: 1.0000 - val_loss: 1.7080 - val_accuracy: 0.5643
+Epoch 213/500
+20/20 - 9s - loss: 0.0245 - accuracy: 1.0000 - val_loss: 1.7077 - val_accuracy: 0.5571
+Epoch 214/500
+20/20 - 9s - loss: 0.0244 - accuracy: 1.0000 - val_loss: 1.7082 - val_accuracy: 0.5643
+Epoch 215/500
+20/20 - 9s - loss: 0.0242 - accuracy: 1.0000 - val_loss: 1.7089 - val_accuracy: 0.5643
+Epoch 216/500
+20/20 - 9s - loss: 0.0241 - accuracy: 1.0000 - val_loss: 1.7095 - val_accuracy: 0.5643
+Epoch 217/500
+20/20 - 9s - loss: 0.0240 - accuracy: 1.0000 - val_loss: 1.7105 - val_accuracy: 0.5643
+Epoch 218/500
+20/20 - 9s - loss: 0.0239 - accuracy: 1.0000 - val_loss: 1.7102 - val_accuracy: 0.5643
+Epoch 219/500
+20/20 - 9s - loss: 0.0238 - accuracy: 1.0000 - val_loss: 1.7097 - val_accuracy: 0.5643
+Epoch 220/500
+20/20 - 9s - loss: 0.0237 - accuracy: 1.0000 - val_loss: 1.7108 - val_accuracy: 0.5643
+Epoch 221/500
+20/20 - 9s - loss: 0.0235 - accuracy: 1.0000 - val_loss: 1.7101 - val_accuracy: 0.5643
+Epoch 222/500
+20/20 - 9s - loss: 0.0234 - accuracy: 1.0000 - val_loss: 1.7113 - val_accuracy: 0.5643
+Epoch 223/500
+20/20 - 9s - loss: 0.0233 - accuracy: 1.0000 - val_loss: 1.7113 - val_accuracy: 0.5643
+Epoch 224/500
+20/20 - 9s - loss: 0.0232 - accuracy: 1.0000 - val_loss: 1.7131 - val_accuracy: 0.5643
+Epoch 225/500
+20/20 - 9s - loss: 0.0231 - accuracy: 1.0000 - val_loss: 1.7141 - val_accuracy: 0.5643
+Epoch 226/500
+20/20 - 9s - loss: 0.0230 - accuracy: 1.0000 - val_loss: 1.7118 - val_accuracy: 0.5643
+Epoch 227/500
+20/20 - 9s - loss: 0.0229 - accuracy: 1.0000 - val_loss: 1.7143 - val_accuracy: 0.5643
+Epoch 228/500
+20/20 - 9s - loss: 0.0228 - accuracy: 1.0000 - val_loss: 1.7148 - val_accuracy: 0.5643
+Epoch 229/500
+20/20 - 9s - loss: 0.0227 - accuracy: 1.0000 - val_loss: 1.7148 - val_accuracy: 0.5643
+Epoch 230/500
+20/20 - 9s - loss: 0.0226 - accuracy: 1.0000 - val_loss: 1.7141 - val_accuracy: 0.5643
+Epoch 231/500
+20/20 - 9s - loss: 0.0225 - accuracy: 1.0000 - val_loss: 1.7147 - val_accuracy: 0.5643
+Epoch 232/500
+20/20 - 9s - loss: 0.0224 - accuracy: 1.0000 - val_loss: 1.7147 - val_accuracy: 0.5643
+Epoch 233/500
+20/20 - 9s - loss: 0.0223 - accuracy: 1.0000 - val_loss: 1.7168 - val_accuracy: 0.5643
+Epoch 234/500
+20/20 - 9s - loss: 0.0222 - accuracy: 1.0000 - val_loss: 1.7152 - val_accuracy: 0.5643
+Epoch 235/500
+20/20 - 9s - loss: 0.0221 - accuracy: 1.0000 - val_loss: 1.7161 - val_accuracy: 0.5643
+Epoch 236/500
+20/20 - 9s - loss: 0.0220 - accuracy: 1.0000 - val_loss: 1.7166 - val_accuracy: 0.5643
+Epoch 237/500
+20/20 - 9s - loss: 0.0219 - accuracy: 1.0000 - val_loss: 1.7183 - val_accuracy: 0.5643
+Epoch 238/500
+20/20 - 9s - loss: 0.0218 - accuracy: 1.0000 - val_loss: 1.7187 - val_accuracy: 0.5643
+Epoch 239/500
+20/20 - 9s - loss: 0.0217 - accuracy: 1.0000 - val_loss: 1.7176 - val_accuracy: 0.5643
+Epoch 240/500
+20/20 - 9s - loss: 0.0216 - accuracy: 1.0000 - val_loss: 1.7186 - val_accuracy: 0.5643
+Epoch 241/500
+20/20 - 9s - loss: 0.0215 - accuracy: 1.0000 - val_loss: 1.7198 - val_accuracy: 0.5643
+Epoch 242/500
+20/20 - 9s - loss: 0.0214 - accuracy: 1.0000 - val_loss: 1.7183 - val_accuracy: 0.5643
+Epoch 243/500
+20/20 - 9s - loss: 0.0213 - accuracy: 1.0000 - val_loss: 1.7197 - val_accuracy: 0.5643
+Epoch 244/500
+20/20 - 9s - loss: 0.0212 - accuracy: 1.0000 - val_loss: 1.7205 - val_accuracy: 0.5643
+Epoch 245/500
+20/20 - 9s - loss: 0.0211 - accuracy: 1.0000 - val_loss: 1.7208 - val_accuracy: 0.5643
+Epoch 246/500
+20/20 - 9s - loss: 0.0210 - accuracy: 1.0000 - val_loss: 1.7202 - val_accuracy: 0.5643
+Epoch 247/500
+20/20 - 9s - loss: 0.0210 - accuracy: 1.0000 - val_loss: 1.7212 - val_accuracy: 0.5643
+Epoch 248/500
+20/20 - 9s - loss: 0.0209 - accuracy: 1.0000 - val_loss: 1.7208 - val_accuracy: 0.5643
+Epoch 249/500
+20/20 - 9s - loss: 0.0208 - accuracy: 1.0000 - val_loss: 1.7216 - val_accuracy: 0.5643
+Epoch 250/500
+20/20 - 9s - loss: 0.0207 - accuracy: 1.0000 - val_loss: 1.7214 - val_accuracy: 0.5643
+Epoch 251/500
+20/20 - 9s - loss: 0.0206 - accuracy: 1.0000 - val_loss: 1.7230 - val_accuracy: 0.5643
+Epoch 252/500
+20/20 - 9s - loss: 0.0205 - accuracy: 1.0000 - val_loss: 1.7232 - val_accuracy: 0.5643
+Epoch 253/500
+20/20 - 9s - loss: 0.0204 - accuracy: 1.0000 - val_loss: 1.7237 - val_accuracy: 0.5643
+Epoch 254/500
+20/20 - 9s - loss: 0.0203 - accuracy: 1.0000 - val_loss: 1.7239 - val_accuracy: 0.5643
+Epoch 255/500
+20/20 - 9s - loss: 0.0203 - accuracy: 1.0000 - val_loss: 1.7235 - val_accuracy: 0.5643
+Epoch 256/500
+20/20 - 9s - loss: 0.0202 - accuracy: 1.0000 - val_loss: 1.7243 - val_accuracy: 0.5643
+WARNING:tensorflow:sample_weight modes were coerced from
+  ...
+    to  
+  ['...']
+2020-05-11 12:58:53.208720: W tensorflow/core/kernels/gpu_utils.cc:48] Failed to allocate memory for convolution redzone checking; skipping this check. This is benign and only means that we won't check cudnn for out-of-bounds reads and writes. This message will only be printed once.
+Epoch 00256: early stopping
+Done fitting
+input_1 False
+block1_conv1 False
+batch_normalization True
+block1_conv2 False
+batch_normalization_1 True
+block1_pool False
+block2_conv1 False
+batch_normalization_2 True
+block2_conv2 False
+batch_normalization_3 True
+block2_pool False
+block3_conv1 False
+batch_normalization_4 True
+block3_conv2 False
+batch_normalization_5 True
+block3_conv3 False
+batch_normalization_6 True
+block3_pool False
+block4_conv1 False
+batch_normalization_7 True
+block4_conv2 False
+batch_normalization_8 True
+block4_conv3 False
+batch_normalization_9 True
+block4_pool False
+block5_conv1 False
+batch_normalization_10 True
+block5_conv2 False
+batch_normalization_11 True
+block5_conv3 False
+batch_normalization_12 True
+block5_pool False
+flatten False
+fc1 False
+batch_normalization_13 True
+fc2 False
+batch_normalization_14 True
+predictions False
+1/1 [==============================] - 8s 8s/step - loss: 1.5009 - accuracy: 0.5143
+[1.5009348392486572, 0.51428574]
+input_1 False
+block1_conv1 False
+batch_normalization False
+block1_conv2 False
+batch_normalization_1 False
+block1_pool False
+block2_conv1 False
+batch_normalization_2 False
+block2_conv2 False
+batch_normalization_3 False
+block2_pool False
+block3_conv1 False
+batch_normalization_4 False
+block3_conv2 False
+batch_normalization_5 False
+block3_conv3 False
+batch_normalization_6 False
+block3_pool False
+block4_conv1 False
+batch_normalization_7 False
+block4_conv2 False
+batch_normalization_8 False
+block4_conv3 False
+batch_normalization_9 False
+block4_pool False
+block5_conv1 False
+batch_normalization_10 False
+block5_conv2 False
+batch_normalization_11 False
+block5_conv3 False
+batch_normalization_12 False
+block5_pool False
+flatten False
+fc1 False
+batch_normalization_13 False
+fc2 False
+batch_normalization_14 False
+predictions False
+  0/256 [..............................] - ETA: 0sWARNING:tensorflow:sample_weight modes were coerced from
+  ...
+    to  
+  ['...']
+  1/256 [..............................] - ETA: 50:19WARNING:tensorflow:sample_weight modes were coerced from
+  ...
+    to  
+  ['...']
+WARNING:tensorflow:sample_weight modes were coerced from
+  ...
+    to  
+  ['...']
+WARNING:tensorflow:sample_weight modes were coerced from
+  ...
+    to  
+  ['...']
+  4/256 [..............................] - ETA: 19:10WARNING:tensorflow:sample_weight modes were coerced from
+  ...
+    to  
+  ['...']
+WARNING:tensorflow:sample_weight modes were coerced from
+  ...
+    to  
+  ['...']
+WARNING:tensorflow:sample_weight modes were coerced from
+  ...
+    to  
+  ['...']
+  7/256 [..............................] - ETA: 14:38WARNING:tensorflow:sample_weight modes were coerced from
+  ...
+    to  
+  ['...']
+WARNING:tensorflow:sample_weight modes were coerced from
+  ...
+    to  
+  ['...']
+WARNING:tensorflow:sample_weight modes were coerced from
+  ...
+    to  
+  ['...']
+ 10/256 [>.............................] - ETA: 12:45WARNING:tensorflow:sample_weight modes were coerced from
+  ...
+    to  
+  ['...']
+WARNING:tensorflow:sample_weight modes were coerced from
+  ...
+    to  
+  ['...']
+WARNING:tensorflow:sample_weight modes were coerced from
+  ...
+    to  
+  ['...']
+ 13/256 [>.............................] - ETA: 11:42WARNING:tensorflow:sample_weight modes were coerced from
+  ...
+    to  
+  ['...']
+WARNING:tensorflow:sample_weight modes were coerced from
+  ...
+    to  
+  ['...']
+WARNING:tensorflow:sample_weight modes were coerced from
+  ...
+    to  
+  ['...']
+ 16/256 [>.............................] - ETA: 11:00WARNING:tensorflow:sample_weight modes were coerced from
+  ...
+    to  
+  ['...']
+WARNING:tensorflow:sample_weight modes were coerced from
+  ...
+    to  
+  ['...']
+WARNING:tensorflow:sample_weight modes were coerced from
+  ...
+    to  
+  ['...']
+ 19/256 [=>............................] - ETA: 10:29WARNING:tensorflow:sample_weight modes were coerced from
+  ...
+    to  
+  ['...']
+WARNING:tensorflow:sample_weight modes were coerced from
+  ...
+    to  
+  ['...']
+WARNING:tensorflow:sample_weight modes were coerced from
+  ...
+    to  
+  ['...']
+ 22/256 [=>............................] - ETA: 10:05WARNING:tensorflow:sample_weight modes were coerced from
+  ...
+    to  
+  ['...']
+WARNING:tensorflow:sample_weight modes were coerced from
+  ...
+    to  
+  ['...']
+WARNING:tensorflow:sample_weight modes were coerced from
+  ...
+    to  
+  ['...']
+ 25/256 [=>............................] - ETA: 9:45 WARNING:tensorflow:sample_weight modes were coerced from
+  ...
+    to  
+  ['...']
+WARNING:tensorflow:sample_weight modes were coerced from
+  ...
+    to  
+  ['...']
+WARNING:tensorflow:sample_weight modes were coerced from
+  ...
+    to  
+  ['...']
+ 28/256 [==>...........................] - ETA: 9:28WARNING:tensorflow:sample_weight modes were coerced from
+  ...
+    to  
+  ['...']
+WARNING:tensorflow:sample_weight modes were coerced from
+  ...
+    to  
+  ['...']
+WARNING:tensorflow:sample_weight modes were coerced from
+  ...
+    to  
+  ['...']
+ 31/256 [==>...........................] - ETA: 9:13WARNING:tensorflow:sample_weight modes were coerced from
+  ...
+    to  
+  ['...']
+WARNING:tensorflow:sample_weight modes were coerced from
+  ...
+    to  
+  ['...']
+WARNING:tensorflow:sample_weight modes were coerced from
+  ...
+    to  
+  ['...']
+ 34/256 [==>...........................] - ETA: 9:00WARNING:tensorflow:sample_weight modes were coerced from
+  ...
+    to  
+  ['...']
+WARNING:tensorflow:sample_weight modes were coerced from
+  ...
+    to  
+  ['...']
+WARNING:tensorflow:sample_weight modes were coerced from
+  ...
+    to  
+  ['...']
+ 37/256 [===>..........................] - ETA: 8:48WARNING:tensorflow:sample_weight modes were coerced from
+  ...
+    to  
+  ['...']
+WARNING:tensorflow:sample_weight modes were coerced from
+  ...
+    to  
+  ['...']
+WARNING:tensorflow:sample_weight modes were coerced from
+  ...
+    to  
+  ['...']
+ 40/256 [===>..........................] - ETA: 8:38WARNING:tensorflow:sample_weight modes were coerced from
+  ...
+    to  
+  ['...']
+WARNING:tensorflow:sample_weight modes were coerced from
+  ...
+    to  
+  ['...']
+WARNING:tensorflow:sample_weight modes were coerced from
+  ...
+    to  
+  ['...']
+ 43/256 [====>.........................] - ETA: 8:27WARNING:tensorflow:sample_weight modes were coerced from
+  ...
+    to  
+  ['...']
+WARNING:tensorflow:sample_weight modes were coerced from
+  ...
+    to  
+  ['...']
+WARNING:tensorflow:sample_weight modes were coerced from
+  ...
+    to  
+  ['...']
+ 46/256 [====>.........................] - ETA: 8:17WARNING:tensorflow:sample_weight modes were coerced from
+  ...
+    to  
+  ['...']
+WARNING:tensorflow:sample_weight modes were coerced from
+  ...
+    to  
+  ['...']
+WARNING:tensorflow:sample_weight modes were coerced from
+  ...
+    to  
+  ['...']
+ 49/256 [====>.........................] - ETA: 8:07WARNING:tensorflow:sample_weight modes were coerced from
+  ...
+    to  
+  ['...']
+WARNING:tensorflow:sample_weight modes were coerced from
+  ...
+    to  
+  ['...']
+WARNING:tensorflow:sample_weight modes were coerced from
+  ...
+    to  
+  ['...']
+ 52/256 [=====>........................] - ETA: 7:58WARNING:tensorflow:sample_weight modes were coerced from
+  ...
+    to  
+  ['...']
+WARNING:tensorflow:sample_weight modes were coerced from
+  ...
+    to  
+  ['...']
+WARNING:tensorflow:sample_weight modes were coerced from
+  ...
+    to  
+  ['...']
+ 55/256 [=====>........................] - ETA: 7:49WARNING:tensorflow:sample_weight modes were coerced from
+  ...
+    to  
+  ['...']
+WARNING:tensorflow:sample_weight modes were coerced from
+  ...
+    to  
+  ['...']
+WARNING:tensorflow:sample_weight modes were coerced from
+  ...
+    to  
+  ['...']
+ 58/256 [=====>........................] - ETA: 7:40WARNING:tensorflow:sample_weight modes were coerced from
+  ...
+    to  
+  ['...']
+WARNING:tensorflow:sample_weight modes were coerced from
+  ...
+    to  
+  ['...']
+WARNING:tensorflow:sample_weight modes were coerced from
+  ...
+    to  
+  ['...']
+ 61/256 [======>.......................] - ETA: 7:31WARNING:tensorflow:sample_weight modes were coerced from
+  ...
+    to  
+  ['...']
+WARNING:tensorflow:sample_weight modes were coerced from
+  ...
+    to  
+  ['...']
+WARNING:tensorflow:sample_weight modes were coerced from
+  ...
+    to  
+  ['...']
+ 64/256 [======>.......................] - ETA: 7:23WARNING:tensorflow:sample_weight modes were coerced from
+  ...
+    to  
+  ['...']
+WARNING:tensorflow:sample_weight modes were coerced from
+  ...
+    to  
+  ['...']
+WARNING:tensorflow:sample_weight modes were coerced from
+  ...
+    to  
+  ['...']
+ 67/256 [======>.......................] - ETA: 7:15WARNING:tensorflow:sample_weight modes were coerced from
+  ...
+    to  
+  ['...']
+WARNING:tensorflow:sample_weight modes were coerced from
+  ...
+    to  
+  ['...']
+WARNING:tensorflow:sample_weight modes were coerced from
+  ...
+    to  
+  ['...']
+ 70/256 [=======>......................] - ETA: 7:07WARNING:tensorflow:sample_weight modes were coerced from
+  ...
+    to  
+  ['...']
+WARNING:tensorflow:sample_weight modes were coerced from
+  ...
+    to  
+  ['...']
+WARNING:tensorflow:sample_weight modes were coerced from
+  ...
+    to  
+  ['...']
+ 73/256 [=======>......................] - ETA: 6:59WARNING:tensorflow:sample_weight modes were coerced from
+  ...
+    to  
+  ['...']
+WARNING:tensorflow:sample_weight modes were coerced from
+  ...
+    to  
+  ['...']
+WARNING:tensorflow:sample_weight modes were coerced from
+  ...
+    to  
+  ['...']
+ 76/256 [=======>......................] - ETA: 6:51WARNING:tensorflow:sample_weight modes were coerced from
+  ...
+    to  
+  ['...']
+WARNING:tensorflow:sample_weight modes were coerced from
+  ...
+    to  
+  ['...']
+WARNING:tensorflow:sample_weight modes were coerced from
+  ...
+    to  
+  ['...']
+ 79/256 [========>.....................] - ETA: 6:43WARNING:tensorflow:sample_weight modes were coerced from
+  ...
+    to  
+  ['...']
+WARNING:tensorflow:sample_weight modes were coerced from
+  ...
+    to  
+  ['...']
+WARNING:tensorflow:sample_weight modes were coerced from
+  ...
+    to  
+  ['...']
+ 82/256 [========>.....................] - ETA: 6:35WARNING:tensorflow:sample_weight modes were coerced from
+  ...
+    to  
+  ['...']
+WARNING:tensorflow:sample_weight modes were coerced from
+  ...
+    to  
+  ['...']
+WARNING:tensorflow:sample_weight modes were coerced from
+  ...
+    to  
+  ['...']
+ 85/256 [========>.....................] - ETA: 6:28WARNING:tensorflow:sample_weight modes were coerced from
+  ...
+    to  
+  ['...']
+WARNING:tensorflow:sample_weight modes were coerced from
+  ...
+    to  
+  ['...']
+WARNING:tensorflow:sample_weight modes were coerced from
+  ...
+    to  
+  ['...']
+ 88/256 [=========>....................] - ETA: 6:20WARNING:tensorflow:sample_weight modes were coerced from
+  ...
+    to  
+  ['...']
+WARNING:tensorflow:sample_weight modes were coerced from
+  ...
+    to  
+  ['...']
+WARNING:tensorflow:sample_weight modes were coerced from
+  ...
+    to  
+  ['...']
+ 91/256 [=========>....................] - ETA: 6:13WARNING:tensorflow:sample_weight modes were coerced from
+  ...
+    to  
+  ['...']
+WARNING:tensorflow:sample_weight modes were coerced from
+  ...
+    to  
+  ['...']
+WARNING:tensorflow:sample_weight modes were coerced from
+  ...
+    to  
+  ['...']
+ 94/256 [==========>...................] - ETA: 6:06WARNING:tensorflow:sample_weight modes were coerced from
+  ...
+    to  
+  ['...']
+WARNING:tensorflow:sample_weight modes were coerced from
+  ...
+    to  
+  ['...']
+WARNING:tensorflow:sample_weight modes were coerced from
+  ...
+    to  
+  ['...']
+ 97/256 [==========>...................] - ETA: 5:58WARNING:tensorflow:sample_weight modes were coerced from
+  ...
+    to  
+  ['...']
+WARNING:tensorflow:sample_weight modes were coerced from
+  ...
+    to  
+  ['...']
+WARNING:tensorflow:sample_weight modes were coerced from
+  ...
+    to  
+  ['...']
+100/256 [==========>...................] - ETA: 5:51WARNING:tensorflow:sample_weight modes were coerced from
+  ...
+    to  
+  ['...']
+WARNING:tensorflow:sample_weight modes were coerced from
+  ...
+    to  
+  ['...']
+WARNING:tensorflow:sample_weight modes were coerced from
+  ...
+    to  
+  ['...']
+103/256 [===========>..................] - ETA: 5:44WARNING:tensorflow:sample_weight modes were coerced from
+  ...
+    to  
+  ['...']
+WARNING:tensorflow:sample_weight modes were coerced from
+  ...
+    to  
+  ['...']
+WARNING:tensorflow:sample_weight modes were coerced from
+  ...
+    to  
+  ['...']
+106/256 [===========>..................] - ETA: 5:37WARNING:tensorflow:sample_weight modes were coerced from
+  ...
+    to  
+  ['...']
+WARNING:tensorflow:sample_weight modes were coerced from
+  ...
+    to  
+  ['...']
+WARNING:tensorflow:sample_weight modes were coerced from
+  ...
+    to  
+  ['...']
+109/256 [===========>..................] - ETA: 5:30WARNING:tensorflow:sample_weight modes were coerced from
+  ...
+    to  
+  ['...']
+WARNING:tensorflow:sample_weight modes were coerced from
+  ...
+    to  
+  ['...']
+WARNING:tensorflow:sample_weight modes were coerced from
+  ...
+    to  
+  ['...']
+112/256 [============>.................] - ETA: 5:23WARNING:tensorflow:sample_weight modes were coerced from
+  ...
+    to  
+  ['...']
+WARNING:tensorflow:sample_weight modes were coerced from
+  ...
+    to  
+  ['...']
+WARNING:tensorflow:sample_weight modes were coerced from
+  ...
+    to  
+  ['...']
+115/256 [============>.................] - ETA: 5:16WARNING:tensorflow:sample_weight modes were coerced from
+  ...
+    to  
+  ['...']
+WARNING:tensorflow:sample_weight modes were coerced from
+  ...
+    to  
+  ['...']
+WARNING:tensorflow:sample_weight modes were coerced from
+  ...
+    to  
+  ['...']
+118/256 [============>.................] - ETA: 5:09WARNING:tensorflow:sample_weight modes were coerced from
+  ...
+    to  
+  ['...']
+WARNING:tensorflow:sample_weight modes were coerced from
+  ...
+    to  
+  ['...']
+WARNING:tensorflow:sample_weight modes were coerced from
+  ...
+    to  
+  ['...']
+121/256 [=============>................] - ETA: 5:02WARNING:tensorflow:sample_weight modes were coerced from
+  ...
+    to  
+  ['...']
+WARNING:tensorflow:sample_weight modes were coerced from
+  ...
+    to  
+  ['...']
+WARNING:tensorflow:sample_weight modes were coerced from
+  ...
+    to  
+  ['...']
+124/256 [=============>................] - ETA: 4:55WARNING:tensorflow:sample_weight modes were coerced from
+  ...
+    to  
+  ['...']
+WARNING:tensorflow:sample_weight modes were coerced from
+  ...
+    to  
+  ['...']
+WARNING:tensorflow:sample_weight modes were coerced from
+  ...
+    to  
+  ['...']
+127/256 [=============>................] - ETA: 4:48WARNING:tensorflow:sample_weight modes were coerced from
+  ...
+    to  
+  ['...']
+WARNING:tensorflow:sample_weight modes were coerced from
+  ...
+    to  
+  ['...']
+WARNING:tensorflow:sample_weight modes were coerced from
+  ...
+    to  
+  ['...']
+130/256 [==============>...............] - ETA: 4:41WARNING:tensorflow:sample_weight modes were coerced from
+  ...
+    to  
+  ['...']
+WARNING:tensorflow:sample_weight modes were coerced from
+  ...
+    to  
+  ['...']
+WARNING:tensorflow:sample_weight modes were coerced from
+  ...
+    to  
+  ['...']
+133/256 [==============>...............] - ETA: 4:34WARNING:tensorflow:sample_weight modes were coerced from
+  ...
+    to  
+  ['...']
+WARNING:tensorflow:sample_weight modes were coerced from
+  ...
+    to  
+  ['...']
+WARNING:tensorflow:sample_weight modes were coerced from
+  ...
+    to  
+  ['...']
+136/256 [==============>...............] - ETA: 4:27WARNING:tensorflow:sample_weight modes were coerced from
+  ...
+    to  
+  ['...']
+WARNING:tensorflow:sample_weight modes were coerced from
+  ...
+    to  
+  ['...']
+WARNING:tensorflow:sample_weight modes were coerced from
+  ...
+    to  
+  ['...']
+139/256 [===============>..............] - ETA: 4:21WARNING:tensorflow:sample_weight modes were coerced from
+  ...
+    to  
+  ['...']
+WARNING:tensorflow:sample_weight modes were coerced from
+  ...
+    to  
+  ['...']
+141/256 [===============>..............] - ETA: 4:17WARNING:tensorflow:sample_weight modes were coerced from
+  ...
+    to  
+  ['...']
+WARNING:tensorflow:sample_weight modes were coerced from
+  ...
+    to  
+  ['...']
+143/256 [===============>..............] - ETA: 4:13WARNING:tensorflow:sample_weight modes were coerced from
+  ...
+    to  
+  ['...']
+WARNING:tensorflow:sample_weight modes were coerced from
+  ...
+    to  
+  ['...']
+145/256 [===============>..............] - ETA: 4:09WARNING:tensorflow:sample_weight modes were coerced from
+  ...
+    to  
+  ['...']
+WARNING:tensorflow:sample_weight modes were coerced from
+  ...
+    to  
+  ['...']
+147/256 [================>.............] - ETA: 4:05WARNING:tensorflow:sample_weight modes were coerced from
+  ...
+    to  
+  ['...']
+WARNING:tensorflow:sample_weight modes were coerced from
+  ...
+    to  
+  ['...']
+149/256 [================>.............] - ETA: 4:01WARNING:tensorflow:sample_weight modes were coerced from
+  ...
+    to  
+  ['...']
+WARNING:tensorflow:sample_weight modes were coerced from
+  ...
+    to  
+  ['...']
+151/256 [================>.............] - ETA: 3:57WARNING:tensorflow:sample_weight modes were coerced from
+  ...
+    to  
+  ['...']
+WARNING:tensorflow:sample_weight modes were coerced from
+  ...
+    to  
+  ['...']
+153/256 [================>.............] - ETA: 3:53WARNING:tensorflow:sample_weight modes were coerced from
+  ...
+    to  
+  ['...']
+WARNING:tensorflow:sample_weight modes were coerced from
+  ...
+    to  
+  ['...']
+155/256 [=================>............] - ETA: 3:49WARNING:tensorflow:sample_weight modes were coerced from
+  ...
+    to  
+  ['...']
+WARNING:tensorflow:sample_weight modes were coerced from
+  ...
+    to  
+  ['...']
+157/256 [=================>............] - ETA: 3:45WARNING:tensorflow:sample_weight modes were coerced from
+  ...
+    to  
+  ['...']
+WARNING:tensorflow:sample_weight modes were coerced from
+  ...
+    to  
+  ['...']
+159/256 [=================>............] - ETA: 3:41WARNING:tensorflow:sample_weight modes were coerced from
+  ...
+    to  
+  ['...']
+WARNING:tensorflow:sample_weight modes were coerced from
+  ...
+    to  
+  ['...']
+161/256 [=================>............] - ETA: 3:37WARNING:tensorflow:sample_weight modes were coerced from
+  ...
+    to  
+  ['...']
+[pg-gpu09:01512] PMIX ERROR: UNPACK-PAST-END in file src/client/pmix_client.c at line 100
+/var/spool/slurmd/job11368608/slurm_script: line 14:  1512 Killed                  python Mess_MCBN.py
+slurmstepd: error: Detected 3 oom-kill event(s) in step 11368608.batch cgroup. Some of your processes may have been killed by the cgroup out-of-memory handler.
+
+
+###############################################################################
+Peregrine Cluster
+Job 11368608 for user 's2934833'
+Finished at: Mon May 11 13:05:11 CEST 2020
+
+Job details:
+============
+
+Name                : MESBN
+User                : s2934833
+Partition           : gpu
+Nodes               : pg-gpu09
+Cores               : 12
+State               : OUT_OF_MEMORY
+Submit              : 2020-05-11T12:18:38
+Start               : 2020-05-11T12:18:39
+End                 : 2020-05-11T13:05:11
+Reserved walltime   : 02:00:00
+Used walltime       : 00:46:32
+Used CPU time       : 00:37:42 (efficiency:  6.75%)
+% User (Computation): 66.65%
+% System (I/O)      : 33.35%
+Mem reserved        : 62.50G/node
+Max Mem used        : 62.01G (pg-gpu09)
+Max Disk Write      : 153.60K (pg-gpu09)
+Max Disk Read       : 5.83M (pg-gpu09)
+Average GPU usage   : 86.9% (pg-gpu09)
+
+
+Acknowledgements:
+=================
+
+Please see this page for information about acknowledging Peregrine in your publications:
+
+https://wiki.hpc.rug.nl/peregrine/additional_information/scientific_output
+
+################################################################################

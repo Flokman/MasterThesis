@@ -42,6 +42,24 @@ class Uncertainty_output:
 
         return total_loss
 
+    def error(self, y_true, y_pred, from_logits=False):
+        # Determine the loss by calculating the categorical crossentropy on only the first num_classes outputs
+        # and the mean squared error on the error outputs
+        y_pred = K.constant(y_pred) if not tf.is_tensor(y_pred) else y_pred
+        y_true = K.cast(y_true, y_pred.dtype)
+
+        y_true_cat = y_true[:, :self.num_classes]
+        y_pred_cat = y_pred[:, :self.num_classes]
+        # cat_loss = K.categorical_crossentropy(y_true_cat, y_pred_cat, from_logits=from_logits)
+
+        y_pred_cat_abs = K.abs(y_pred_cat)
+        y_true_error = K.square(y_pred_cat_abs - y_true_cat)
+        y_pred_error = y_pred[:, self.num_classes:]
+        error_loss = K.mean(K.square(y_pred_error - y_true_error), axis=-1)
+        # total_loss = cat_loss + error_loss
+
+        return error_loss
+
     
     def create_uncertainty_model(self, model):
         # Replace last layer of network by uncertainty layer
@@ -72,38 +90,28 @@ class Uncertainty_output:
         return out
 
 
-    def convert_output_to_uncertainty(self, prediction, y_test, label_avail=True):
+    def convert_output_to_uncertainty(self, prediction):
         #Convert error prediction to uncertainty
-        if label_avail:
-            for ind, pred in enumerate(prediction):
-                predictions = pred[:self.num_classes]
-                uncertainties = np.abs(pred[self.num_classes:])
+        for ind, pred in enumerate(prediction):
+            predictions = pred[:self.num_classes]
+            highest_pred_ind = np.argmax(predictions)
+            uncertainties = np.abs(pred[self.num_classes:])
 
-                for class_ind, (prob, pred_error) in enumerate(zip(predictions, uncertainties)):
-                    true_error = pow((prob - y_test[ind][class_ind]), 2)
-                    uncertainties[class_ind] = abs(true_error - pred_error)
-                prediction[ind][self.num_classes:] = uncertainties
-
-        else:
-            for ind, pred in enumerate(prediction):
-                predictions = pred[:self.num_classes]
-                classif_ind = np.argmax(predictions)
-                uncertainties = np.abs(pred[self.num_classes:])
-
-                for class_ind, (prob, pred_error) in enumerate(zip(predictions, uncertainties)):
-                    if class_ind == classif_ind:
-                        # Highest predicted class, so error as if true
-                        true_error = pow((prob - 1), 2)
-                    else:
-                        # Not highest predicted class, so error as if false
-                        true_error = pow((prob), 2)
-                    uncertainties[class_ind] = abs(true_error - pred_error)
-                prediction[ind][self.num_classes:] = uncertainties            
-
+            for i in range(0, self.num_classes):
+                pred_var = uncertainties[i]
+                if i == highest_pred_ind:
+                    # Highest predicted class, so error as if true
+                    true_error = pow((predictions[i] - 1), 2)
+                else:
+                    # Not highest predicted class, so error as if false
+                    true_error = pow((predictions[i]), 2)
+                uncertainties[i] = abs(true_error - pred_var)
+            prediction[ind][self.num_classes:] = uncertainties   
+         
         return prediction
 
 
-    def results_if_label(self, org_data_prediction, y_test, scatter = False):
+    def results_if_label(self, org_data_prediction, y_test, scatter = False, name = ''):
         # score on the test images (if label avaialable)
         true_labels = [np.argmax(i) for i in y_test]
         wrong = 0
@@ -185,7 +193,7 @@ class Uncertainty_output:
         print("Mean uncertainty on all not true label on original test dataset = {:.2%}".format(mean(not_true_label_unc)))
         
         if scatter:
-            self.scatterplot(correct_prob, correct_unc, high_wrong_prob, high_wrong_unc, 'POLAR', 'Squeeze')
+            self.scatterplot(correct_prob, correct_unc, high_wrong_prob, high_wrong_unc, 'ErrorOutput', name)
 
 
     def scatterplot(self, correct_prob, correct_unc, high_wrong_prob, high_wrong_unc, methodname, own_or_new):
@@ -196,8 +204,9 @@ class Uncertainty_output:
         print("creating scatterplot")
         plt.clf()
         plt.style.use("ggplot")
-        plt.scatter(correct_prob, correct_unc, c='g', label='Correctly predicted')
+        plt.xlim(0,1)
         plt.scatter(high_wrong_prob, high_wrong_unc, c='r', label='Wrongly predicted')
+        plt.scatter(correct_prob, correct_unc, c='g', label='Correctly predicted')
         plt.legend()
         plt.xlabel('probability')
         plt.ylabel('uncertainty')

@@ -97,16 +97,119 @@ f["y"][...] = labels
 ######################## third part: write the images #########################
 import cv2
 
+def insert_in_center(noise, img):
+    # h, w, d = img.shape
+    # print(h,w)
+
+    # hh, ww, dd = noise.shape
+    # print(hh,ww)
+
+    # # compute xoff and yoff for placement of upper left corner of resized image   
+    # yoff = round((hh-h)/2)
+    # xoff = round((ww-w)/2)
+    # print(yoff,xoff)
+
+    # # use numpy indexing to place the resized image in the center of background image
+    # result = noise.copy()
+    # result[yoff:yoff+h, xoff:xoff+w, :] = img
+    x1 = int(.5 * noise.shape[0]) - int(.5 * img.shape[0])
+    y1 = int(.5 * noise.shape[1]) - int(.5 * img.shape[1])
+    x2 = int(.5 * noise.shape[0]) + int(.5 * img.shape[0])
+    y2 = int(.5 * noise.shape[1]) + int(.5 * img.shape[1])
+    # print("")
+    # print(img.shape)
+    # print(x1, y1, x2, y2)
+    # print(x2-x1, y2-y1)
+
+    if img.shape[0] != noise.shape[0]:
+        while x2-x1 < img.shape[0]:
+            x1 -= 1
+        while x2-x1 > img.shape[0]:
+            x1 += 1
+    else:
+        x2 = img.shape[0]
+
+
+    if img.shape[1] != noise.shape[1]:
+        while y2-y1 < img.shape[1]:
+            y1 -= 1
+        while y2-y1 > img.shape[1]:
+            y1 += 1
+    else:
+        y2 = img.shape[1]
+    
+    # print("")
+    # print(x1, y1, x2, y2)
+    # print(x2-x1, y2-y1)
+    # pasting the cropped image over the original image, guided by the transparency mask of cropped image
+    # noise = Image.fromarray(noise)
+    # img = Image.fromarray(img)
+    # result = noise.paste(img, box=(x1, y1, x2, y2), mask=img)
+    # result = np.array(result)
+    
+    # print(img.shape)
+    noise[x1:x2 , y1:y2] = img
+    # result = cv2.resize(noise, dsize=(TARGETSIZE, TARGETSIZE), interpolation=cv2.INTER_CUBIC)
+    # print(result.shape)
+
+    return noise
+
+
+def image_resize(image, width = None, height = None, inter = cv2.INTER_AREA):
+    # initialize the dimensions of the image to be resized and
+    # grab the image size
+    dim = None
+    (h, w) = image.shape[:2]
+
+    # if both the width and height are None, then return the
+    # original image
+    if width is None and height is None:
+        return image
+
+    # check to see if the width is None
+    if width is None:
+        # calculate the ratio of the height and construct the
+        # dimensions
+        r = height / float(h)
+        dim = (int(w * r), height)
+
+    # otherwise, the height is None
+    else:
+        # calculate the ratio of the width and construct the
+        # dimensions
+        r = width / float(w)
+        dim = (width, int(h * r))
+
+    # resize the image
+    resized = cv2.resize(image, dim, interpolation = inter)
+
+    # return the resized image
+    return resized
+
 # loop over train paths
 for i in range(len(addrs)):
+    gaussian_noise = np.zeros((img_rows, img_cols, img_depth),dtype=np.uint8)
+    # gaussian_noise_R = cv2.randn(gaussian_noise, img_cols, 66)
+    # gaussian_noise_G = cv2.randn(gaussian_noise, img_cols, 65)
+    # gaussian_noise_B = cv2.randn(gaussian_noise, img_cols, 64)
+    # gaussian_noise = np.stack((gaussian_noise_R, gaussian_noise_G, gaussian_noise_B), axis=2)    
   
     if i % 1000 == 0 and i > 1:
         print ('Image data: {}/{}'.format(i, len(addrs)) )
 
     addr = addrs[i]
     img = cv2.imread(addr)
-    img = cv2.resize(img, (img_rows, img_cols), interpolation=cv2.INTER_CUBIC)# resize to (img_rows, img_cols)
+    (h, w) = img.shape[:2]
+    # print(img.shape)
+    if h >= w:
+        img = image_resize(img, height = img_cols)# resize to (img_rows, img_cols)
+        print(img.shape)
+    else:
+        img = image_resize(img, width = img_cols)# resize to (img_rows, img_cols)
+        
     img = cv2.cvtColor(img, cv2.COLOR_BGR2RGB) # cv2 load images as BGR, convert it to RGB
+    img = insert_in_center(gaussian_noise, img)
+    # print(img.shape)
     f["x"][i, ...] = img[None] 
 
 f.close()
