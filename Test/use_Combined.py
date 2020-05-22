@@ -73,12 +73,13 @@ def clear_prof_data():
 
 
 # Hyperparameters
-DATANAME = 'MES'
+DATANAME = 'MNIST'
 NEW_DATA = 'MNIST' # or 'local' for local folder
 METHODNAMES = ['MCDO', 'MCBN', 'Ensemble', 'VarianceOutput']
 # METHODNAMES = ['VarianceOutput']
 
 TRAIN_TEST_SPLIT = 0.8 # Value between 0 and 1, e.g. 0.8 creates 80%/20% division train/test
+TRAIN_VAL_SPLIT = 0.875
 
 TEST_ON_OWN_AND_NEW_DATASET = False
 TEST_ON_OWN_DATASET = True
@@ -152,22 +153,19 @@ def load_data(path, to_shuffle):
     if DATANAME == 'MES':
         '''' Load a dataset from a hdf5 file '''
         with h5py.File(path, "r") as f:
-            (x_load, y_load) = np.array(f['x']), np.array(f['y'])
+            x_train, y_train, x_test, y_test = np.array(f['x_train']), np.array(f['y_train']), np.array(f['x_test']), np.array(f['y_test'])
         label_count = [0] * NUM_CLASSES
-        for lab in y_load:
+        for lab in y_train:
             label_count[lab] += 1
 
         if to_shuffle:
             (x_load, y_load) = shuffle_data(x_load, y_load)
 
         # Divide the data into a train and test set
-        x_train = x_load[0:int(TRAIN_TEST_SPLIT*len(x_load))]
-        y_train = y_load[0:int(TRAIN_TEST_SPLIT*len(y_load))]
+        x_test, x_val = np.split(x_test, [int(TRAIN_VAL_SPLIT*len(x_test))])
+        y_test, y_val = np.split(y_test, [int(TRAIN_VAL_SPLIT*len(y_test))])
 
-        x_test = x_load[int(TRAIN_TEST_SPLIT*len(x_load)):]
-        y_test = y_load[int(TRAIN_TEST_SPLIT*len(y_load)):]
-
-        return (x_train, y_train), (x_test, y_test), label_count
+        return (x_train, y_train), (x_val, y_val), (x_test, y_test), label_count
 
 
 def load_hdf5_dataset(DATA_PATH, new_data=False):
@@ -179,7 +177,9 @@ def load_hdf5_dataset(DATA_PATH, new_data=False):
             (x_train, y_train), (x_test, y_test), train_label_count, test_label_count = load_data(DATA_PATH, TO_SHUFFLE)
 
         if DATANAME == 'MES':
-            (x_train, y_train), (x_test, y_test), label_count = load_data(DATA_PATH, TO_SHUFFLE)
+            (x_train, y_train), (x_val, y_val), (x_test, y_test), label_count = load_data(DATA_PATH, TO_SHUFFLE)
+            x_val = np.asarray(x_val)
+            y_val = np.asarray(y_val)
 
         if DATANAME == 'CIFAR10':
             (x_train, y_train), (x_test, y_test) = cifar10.load_data()
@@ -616,16 +616,16 @@ def MCDO(q, METHODNAME):
     if DATANAME == 'MES':
         MCDO_BATCH_SIZE = 128
         MODEL_TO_USE = os.path.sep + METHODNAME
-        MODEL_VERSION = os.path.sep + '2020-05-11_12-31_imagenet_64B_60.3%A'
+        MODEL_VERSION = os.path.sep + '2020-05-20_13-11_imagenet_64B_54.9%A'
         MODEL_NAME = 'MCDO_model.h5'
         DATASET_LOCATION = os.path.sep + 'Datasets'
-        DATASET_HDF5 = os.path.sep + 'Messidor2_PNG_' + str(IMG_HEIGHT) + '.hdf5'
+        DATASET_HDF5 = os.path.sep + 'Messidor2_PNG_AUG_' + str(IMG_HEIGHT) + '.hdf5'
         DATA_PATH = DATA_ROOT_PATH + DATASET_LOCATION + DATASET_HDF5
 
     if DATANAME == 'CIFAR10':
         MCDO_BATCH_SIZE = 128
         MODEL_TO_USE = os.path.sep + METHODNAME
-        MODEL_VERSION = os.path.sep + '2020-05-11_12-09_imagenet_32B_71.9%A'
+        MODEL_VERSION = os.path.sep + '2020-05-20_11-01_imagenet_32B_68.6%A'
         MODEL_NAME = 'MCDO_model.h5'
         DATA_PATH = None
 
@@ -667,6 +667,18 @@ def MCDO(q, METHODNAME):
             (x_train, y_train), (x_test, y_test) = load_hdf5_dataset(DATA_PATH)
             x_pred = load_new_images()
 
+        
+        label_count = [0] * NUM_CLASSES
+        for lab in y_train:
+            label_count[np.argmax(lab)] += 1
+        print("Total labels in train set: ", label_count)      
+        
+        label_count = [0] * NUM_CLASSES
+        for lab in y_test:
+            label_count[np.argmax(lab)] += 1
+        print("Labels in test set: ", label_count) 
+        
+        
         os.chdir(HOME_DIR)
         os.chdir(ROOT_PATH + os.path.sep + ONE_HIGHER_PATH[1] + MODEL_TO_USE + os.path.sep + DATANAME + MODEL_VERSION + os.path.sep)
         print(os.getcwd())
@@ -719,16 +731,16 @@ def MCBN(q, METHODNAME):
     if DATANAME == 'MES':
         MINIBATCH_SIZE = 128
         MODEL_TO_USE = os.path.sep + METHODNAME
-        MODEL_VERSION = os.path.sep + '2020-05-11_14-13_imagenet_64B_59.4%A'
+        MODEL_VERSION = os.path.sep + '2020-05-20_14-11_imagenet_64B_58.4%A'
         MODEL_NAME = 'MCBN_model.h5'
         DATASET_LOCATION = os.path.sep + 'Datasets'
-        DATASET_HDF5 = os.path.sep + 'Messidor2_PNG_' + str(IMG_HEIGHT) + '.hdf5'
+        DATASET_HDF5 = os.path.sep + 'Messidor2_PNG_AUG_' + str(IMG_HEIGHT) + '.hdf5'
         DATA_PATH = DATA_ROOT_PATH + DATASET_LOCATION + DATASET_HDF5
 
     if DATANAME == 'CIFAR10':
         MINIBATCH_SIZE = 128
         MODEL_TO_USE = os.path.sep + METHODNAME
-        MODEL_VERSION = os.path.sep + '2020-05-11_12-09_imagenet_32B_82.2%A'
+        MODEL_VERSION = os.path.sep + '2020-05-20_11-04_imagenet_32B_82.8%A'
         MODEL_NAME = 'MCBN_model.h5'
         DATA_PATH = None
 
@@ -804,6 +816,17 @@ def MCBN(q, METHODNAME):
             (x_train, y_train), (x_test, y_test) = load_hdf5_dataset(DATA_PATH)
             x_pred = load_new_images()
 
+
+        label_count = [0] * NUM_CLASSES
+        for lab in y_train:
+            label_count[np.argmax(lab)] += 1
+        print("Total labels in train set: ", label_count)      
+        
+        label_count = [0] * NUM_CLASSES
+        for lab in y_test:
+            label_count[np.argmax(lab)] += 1
+        print("Labels in test set: ", label_count) 
+
         os.chdir(HOME_DIR)
         os.chdir(ROOT_PATH + os.path.sep + ONE_HIGHER_PATH[1] + MODEL_TO_USE + os.path.sep + DATANAME + MODEL_VERSION + os.path.sep)
         print(os.getcwd())
@@ -872,9 +895,9 @@ def Ensemble(q, METHODNAME):
         # Hyperparameters Messidor
         N_FOLDERS = 1
         N_ENSEMBLE_MEMBERS = [40]
-        MODEL_VERSION = ['2020-05-11_12-19-17']
+        MODEL_VERSION = ['2020-05-20_13-12-22']
         DATASET_LOCATION = os.path.sep + 'Datasets'
-        DATASET_HDF5 = os.path.sep + 'Messidor2_PNG_' + str(IMG_HEIGHT) + '.hdf5'
+        DATASET_HDF5 = os.path.sep + 'Messidor2_PNG_AUG_' + str(IMG_HEIGHT) + '.hdf5'
         DATA_PATH = DATA_ROOT_PATH + DATASET_LOCATION + DATASET_HDF5
 
 
@@ -884,7 +907,7 @@ def Ensemble(q, METHODNAME):
         # N_ENSEMBLE_MEMBERS = [20, 20]
         N_ENSEMBLE_MEMBERS = [40]
         # MODEL_VERSION = ['CIF_ImageNet_32B_20EN', 'CIF_ImageNet_32B_20EN_2']
-        MODEL_VERSION = ['2020-05-11_12-01-39']
+        MODEL_VERSION = ['2020-05-20_10-56-49']
         DATA_PATH = None
 
 
@@ -954,6 +977,16 @@ def Ensemble(q, METHODNAME):
             (x_train, y_train), (x_test, y_test) = load_hdf5_dataset(DATA_PATH)
             x_pred = load_new_images()
 
+        label_count = [0] * NUM_CLASSES
+        for lab in y_train:
+            label_count[np.argmax(lab)] += 1
+        print("Total labels in train set: ", label_count)      
+        
+        label_count = [0] * NUM_CLASSES
+        for lab in y_test:
+            label_count[np.argmax(lab)] += 1
+        print("Labels in test set: ", label_count) 
+
         os.chdir(HOME_DIR)
         fig_dir = os.path.join(HOME_DIR + os.path.sep + METHODNAME, datetime.datetime.now().strftime('%Y-%m-%d_%H-%M-%S'))
         os.makedirs(fig_dir)
@@ -995,7 +1028,7 @@ def VarianceOutput(q, METHODNAME):
 
     if DATANAME == 'MES':
         MCDO_BATCH_SIZE = 128
-        MODEL_VERSION = os.path.sep + '2020-05-11_14-08_imagenet_64B_58.0%A'
+        MODEL_VERSION = os.path.sep + '2020-05-20_14-49_imagenet_64B_50.0%A'
         MODEL_NAME = 'Error_model.h5'
         DATASET_LOCATION = os.path.sep + 'Datasets'
         DATASET_HDF5 = os.path.sep + 'Messidor2_PNG_AUG_' + str(IMG_HEIGHT) + '.hdf5'
@@ -1003,7 +1036,7 @@ def VarianceOutput(q, METHODNAME):
 
     if DATANAME == 'CIFAR10':
         MCDO_BATCH_SIZE = 128
-        MODEL_VERSION = os.path.sep + '2020-05-11_13-33_imagenet_64B_71.5%A'
+        MODEL_VERSION = os.path.sep + '2020-05-20_11-16_imagenet_128B_69.4%A'
         MODEL_NAME = 'Error_model.h5'
         DATA_PATH = None
 
@@ -1190,6 +1223,16 @@ def VarianceOutput(q, METHODNAME):
             (x_train, y_train), (x_test, y_test) = load_hdf5_dataset(DATA_PATH)
             x_pred = load_new_images()
 
+        label_count = [0] * NUM_CLASSES
+        for lab in y_train:
+            label_count[np.argmax(lab)] += 1
+        print("Total labels in train set: ", label_count)      
+        
+        label_count = [0] * NUM_CLASSES
+        for lab in y_test:
+            label_count[np.argmax(lab)] += 1
+        print("Labels in test set: ", label_count) 
+
         os.chdir(HOME_DIR)
         os.chdir(ROOT_PATH + os.path.sep + ONE_HIGHER_PATH[1] + MODEL_TO_USE + os.path.sep + DATANAME + MODEL_VERSION + os.path.sep)
         print(os.getcwd())
@@ -1213,25 +1256,33 @@ def VarianceOutput(q, METHODNAME):
 
         if TEST_ON_OWN_DATASET or LABELS_AVAILABLE or TEST_ON_OWN_AND_NEW_DATASET:
             variance_org_dataset = pre_trained_model.predict(test_generator)
-            variance_org_dataset = convert_to_var(variance_org_dataset)
+            
             old_dir = os.getcwd()
             os.chdir(HOME_DIR)
             save_array(DATANAME + '_Error_' + DATANAME, variance_org_dataset)
             os.chdir(old_dir)
             Uncertainty_output(NUM_CLASSES).results_if_label(variance_org_dataset, y_test, scatter=True, name = DATANAME)
+            print("With error converted to uncertainty")
+            variance_org_dataset = convert_to_var(variance_org_dataset)
+            Uncertainty_output(NUM_CLASSES).results_if_label(variance_org_dataset, y_test, scatter=True, name = DATANAME)
         
         if TEST_ON_OWN_AND_NEW_DATASET:
             variance_new_images_predictions = pre_trained_model.predict(pred_generator)
-            variance_new_images_predictions = convert_to_var(variance_new_images_predictions)
+            
             old_dir = os.getcwd()
             os.chdir(HOME_DIR)
             save_array(DATANAME + '_Error_' + NEW_DATA, variance_new_images_predictions)
             os.chdir(old_dir)
             if LABELS_AVAILABLE:
+                Uncertainty_output(NUM_CLASSES).results_if_label(variance_new_images_predictions, y_pred, scatter=True, name = (NEW_DATA + 'NO_CONV'))
+                print("With error converted to uncertainty")
+                variance_new_images_predictions = convert_to_var(variance_new_images_predictions)
                 Uncertainty_output(NUM_CLASSES).results_if_label(variance_new_images_predictions, y_pred, scatter=True, name = NEW_DATA)
         
         else:
             variance_new_images_predictions = pre_trained_model.predict(pred_generator)
+            Uncertainty_output(NUM_CLASSES).results_if_no_label(variance_new_images_predictions, more_info = True)
+            print("With error converted to uncertainty")
             variance_new_images_predictions = convert_to_var(variance_new_images_predictions)
             Uncertainty_output(NUM_CLASSES).results_if_no_label(variance_new_images_predictions, more_info = True)
 

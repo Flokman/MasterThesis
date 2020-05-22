@@ -1,0 +1,2612 @@
+
+The following have been reloaded with a version change:
+  1) FFTW/3.3.8-gompic-2019b => FFTW/3.3.8-gompi-2019b
+  2) OpenMPI/3.1.4-gcccuda-2019b => OpenMPI/3.1.4-GCC-8.3.0
+  3) ScaLAPACK/2.0.2-gompic-2019b => ScaLAPACK/2.0.2-gompi-2019b
+  4) SciPy-bundle/2019.10-fosscuda-2019b-Python-3.7.4 => SciPy-bundle/2019.10-foss-2019b-Python-3.7.4
+
+2020-05-20 13:12:10.780609: I tensorflow/stream_executor/platform/default/dso_loader.cc:44] Successfully opened dynamic library libcudart.so.10.1
+2020-05-20 13:12:20.783500: I tensorflow/stream_executor/platform/default/dso_loader.cc:44] Successfully opened dynamic library libcuda.so.1
+2020-05-20 13:12:20.791441: I tensorflow/stream_executor/cuda/cuda_gpu_executor.cc:981] successful NUMA node read from SysFS had negative value (-1), but there must be at least one NUMA node, so returning NUMA node zero
+2020-05-20 13:12:20.791967: I tensorflow/core/common_runtime/gpu/gpu_device.cc:1555] Found device 0 with properties: 
+pciBusID: 0000:02:00.0 name: GRID V100D-32Q computeCapability: 7.0
+coreClock: 1.38GHz coreCount: 80 deviceMemorySize: 31.88GiB deviceMemoryBandwidth: 836.37GiB/s
+2020-05-20 13:12:20.792021: I tensorflow/stream_executor/platform/default/dso_loader.cc:44] Successfully opened dynamic library libcudart.so.10.1
+2020-05-20 13:12:20.798393: I tensorflow/stream_executor/platform/default/dso_loader.cc:44] Successfully opened dynamic library libcublas.so.10
+2020-05-20 13:12:20.802940: I tensorflow/stream_executor/platform/default/dso_loader.cc:44] Successfully opened dynamic library libcufft.so.10
+2020-05-20 13:12:20.805172: I tensorflow/stream_executor/platform/default/dso_loader.cc:44] Successfully opened dynamic library libcurand.so.10
+2020-05-20 13:12:20.809910: I tensorflow/stream_executor/platform/default/dso_loader.cc:44] Successfully opened dynamic library libcusolver.so.10
+2020-05-20 13:12:20.813169: I tensorflow/stream_executor/platform/default/dso_loader.cc:44] Successfully opened dynamic library libcusparse.so.10
+2020-05-20 13:12:20.820258: I tensorflow/stream_executor/platform/default/dso_loader.cc:44] Successfully opened dynamic library libcudnn.so.7
+2020-05-20 13:12:20.820544: I tensorflow/stream_executor/cuda/cuda_gpu_executor.cc:981] successful NUMA node read from SysFS had negative value (-1), but there must be at least one NUMA node, so returning NUMA node zero
+2020-05-20 13:12:20.821226: I tensorflow/stream_executor/cuda/cuda_gpu_executor.cc:981] successful NUMA node read from SysFS had negative value (-1), but there must be at least one NUMA node, so returning NUMA node zero
+2020-05-20 13:12:20.821653: I tensorflow/core/common_runtime/gpu/gpu_device.cc:1697] Adding visible gpu devices: 0
+2020-05-20 13:12:20.824906: I tensorflow/stream_executor/cuda/cuda_gpu_executor.cc:981] successful NUMA node read from SysFS had negative value (-1), but there must be at least one NUMA node, so returning NUMA node zero
+2020-05-20 13:12:20.825347: I tensorflow/core/common_runtime/gpu/gpu_device.cc:1555] Found device 0 with properties: 
+pciBusID: 0000:02:00.0 name: GRID V100D-32Q computeCapability: 7.0
+coreClock: 1.38GHz coreCount: 80 deviceMemorySize: 31.88GiB deviceMemoryBandwidth: 836.37GiB/s
+2020-05-20 13:12:20.825401: I tensorflow/stream_executor/platform/default/dso_loader.cc:44] Successfully opened dynamic library libcudart.so.10.1
+2020-05-20 13:12:20.825445: I tensorflow/stream_executor/platform/default/dso_loader.cc:44] Successfully opened dynamic library libcublas.so.10
+2020-05-20 13:12:20.825467: I tensorflow/stream_executor/platform/default/dso_loader.cc:44] Successfully opened dynamic library libcufft.so.10
+2020-05-20 13:12:20.825487: I tensorflow/stream_executor/platform/default/dso_loader.cc:44] Successfully opened dynamic library libcurand.so.10
+2020-05-20 13:12:20.825506: I tensorflow/stream_executor/platform/default/dso_loader.cc:44] Successfully opened dynamic library libcusolver.so.10
+2020-05-20 13:12:20.825526: I tensorflow/stream_executor/platform/default/dso_loader.cc:44] Successfully opened dynamic library libcusparse.so.10
+2020-05-20 13:12:20.825546: I tensorflow/stream_executor/platform/default/dso_loader.cc:44] Successfully opened dynamic library libcudnn.so.7
+2020-05-20 13:12:20.825649: I tensorflow/stream_executor/cuda/cuda_gpu_executor.cc:981] successful NUMA node read from SysFS had negative value (-1), but there must be at least one NUMA node, so returning NUMA node zero
+2020-05-20 13:12:20.826115: I tensorflow/stream_executor/cuda/cuda_gpu_executor.cc:981] successful NUMA node read from SysFS had negative value (-1), but there must be at least one NUMA node, so returning NUMA node zero
+2020-05-20 13:12:20.826501: I tensorflow/core/common_runtime/gpu/gpu_device.cc:1697] Adding visible gpu devices: 0
+2020-05-20 13:12:20.826559: I tensorflow/stream_executor/platform/default/dso_loader.cc:44] Successfully opened dynamic library libcudart.so.10.1
+2020-05-20 13:12:21.528161: I tensorflow/core/common_runtime/gpu/gpu_device.cc:1096] Device interconnect StreamExecutor with strength 1 edge matrix:
+2020-05-20 13:12:21.528248: I tensorflow/core/common_runtime/gpu/gpu_device.cc:1102]      0 
+2020-05-20 13:12:21.528273: I tensorflow/core/common_runtime/gpu/gpu_device.cc:1115] 0:   N 
+2020-05-20 13:12:21.528572: I tensorflow/stream_executor/cuda/cuda_gpu_executor.cc:981] successful NUMA node read from SysFS had negative value (-1), but there must be at least one NUMA node, so returning NUMA node zero
+2020-05-20 13:12:21.529222: I tensorflow/stream_executor/cuda/cuda_gpu_executor.cc:981] successful NUMA node read from SysFS had negative value (-1), but there must be at least one NUMA node, so returning NUMA node zero
+2020-05-20 13:12:21.529777: I tensorflow/stream_executor/cuda/cuda_gpu_executor.cc:981] successful NUMA node read from SysFS had negative value (-1), but there must be at least one NUMA node, so returning NUMA node zero
+2020-05-20 13:12:21.530229: I tensorflow/core/common_runtime/gpu/gpu_device.cc:1241] Created TensorFlow device (/job:localhost/replica:0/task:0/device:GPU:0 with 28652 MB memory) -> physical GPU (device: 0, name: GRID V100D-32Q, pci bus id: 0000:02:00.0, compute capability: 7.0)
+2020-05-20 13:12:21.530822: I tensorflow/core/common_runtime/process_util.cc:147] Creating new thread pool with default inter op setting: 12. Tune using inter_op_parallelism_threads for best performance.
+WARNING:tensorflow:sample_weight modes were coerced from
+  ...
+    to  
+  ['...']
+WARNING:tensorflow:sample_weight modes were coerced from
+  ...
+    to  
+  ['...']
+2020-05-20 13:12:25.824629: I tensorflow/stream_executor/platform/default/dso_loader.cc:44] Successfully opened dynamic library libcublas.so.10
+2020-05-20 13:12:26.084746: I tensorflow/stream_executor/platform/default/dso_loader.cc:44] Successfully opened dynamic library libcudnn.so.7
+2020-05-20 13:12:30.085621: I tensorflow/core/profiler/lib/profiler_session.cc:225] Profiler session started.
+2020-05-20 13:12:30.085730: I tensorflow/core/profiler/internal/gpu/cupti_tracer.cc:1259] Profiler found 1 GPUs
+2020-05-20 13:12:30.089068: I tensorflow/stream_executor/platform/default/dso_loader.cc:44] Successfully opened dynamic library libcupti.so.10.1
+2020-05-20 13:12:30.190205: E tensorflow/core/profiler/internal/gpu/cupti_tracer.cc:1307] function cupti_interface_->Subscribe( &subscriber_, (CUpti_CallbackFunc)ApiCallback, this)failed with error CUPTI_ERROR_VIRTUALIZED_DEVICE_NOT_SUPPORTED
+2020-05-20 13:12:30.190762: E tensorflow/core/profiler/internal/gpu/cupti_tracer.cc:1346] function cupti_interface_->ActivityRegisterCallbacks( AllocCuptiActivityBuffer, FreeCuptiActivityBuffer)failed with error CUPTI_ERROR_VIRTUALIZED_DEVICE_NOT_SUPPORTED
+2020-05-20 13:12:30.393253: E tensorflow/core/profiler/internal/gpu/cupti_tracer.cc:1329] function cupti_interface_->EnableCallback( 0 , subscriber_, CUPTI_CB_DOMAIN_DRIVER_API, cbid)failed with error CUPTI_ERROR_INVALID_PARAMETER
+2020-05-20 13:12:30.393367: I tensorflow/core/profiler/internal/gpu/device_tracer.cc:88]  GpuTracer has collected 0 callback api events and 0 activity events.
+loaded data
+dataset_name = /Messidor2_PNG_AUG_256.hdf5, batch_size = 32, num_classes = 5, epochs = 500,
+          test_img_idx = 87, train_test_split = 0.7, to_shuffle = False,
+          augmentation = False, label_count = [840, 840, 839, 838, 836], label_normalizer = False,
+          save_augmentation_to_hdf5 = False, learn rate = 1e-05, train_all_layers = True,
+          weights_to_use = imagenet, es_patience = 20, train_val_split = 0.875,
+          N_ENSEMBLE_MEMBERS = 40, MIN_DELTA = 0.005, Early_monitor = val_accuracy
+x_train shape: (4193, 256, 256, 3)
+4193 train samples
+346 test samples
+Total labels in train set:  [840, 840, 839, 838, 836]
+Labels in validation set:  [119, 22, 28, 7, 3]
+Labels in test set:  [202, 58, 70, 10, 6]
+Model: "model"
+_________________________________________________________________
+Layer (type)                 Output Shape              Param #   
+=================================================================
+input_1 (InputLayer)         [(None, 256, 256, 3)]     0         
+_________________________________________________________________
+block1_conv1 (Conv2D)        (None, 256, 256, 64)      1792      
+_________________________________________________________________
+block1_conv2 (Conv2D)        (None, 256, 256, 64)      36928     
+_________________________________________________________________
+block1_pool (MaxPooling2D)   (None, 128, 128, 64)      0         
+_________________________________________________________________
+block2_conv1 (Conv2D)        (None, 128, 128, 128)     73856     
+_________________________________________________________________
+block2_conv2 (Conv2D)        (None, 128, 128, 128)     147584    
+_________________________________________________________________
+block2_pool (MaxPooling2D)   (None, 64, 64, 128)       0         
+_________________________________________________________________
+block3_conv1 (Conv2D)        (None, 64, 64, 256)       295168    
+_________________________________________________________________
+block3_conv2 (Conv2D)        (None, 64, 64, 256)       590080    
+_________________________________________________________________
+block3_conv3 (Conv2D)        (None, 64, 64, 256)       590080    
+_________________________________________________________________
+block3_pool (MaxPooling2D)   (None, 32, 32, 256)       0         
+_________________________________________________________________
+block4_conv1 (Conv2D)        (None, 32, 32, 512)       1180160   
+_________________________________________________________________
+block4_conv2 (Conv2D)        (None, 32, 32, 512)       2359808   
+_________________________________________________________________
+block4_conv3 (Conv2D)        (None, 32, 32, 512)       2359808   
+_________________________________________________________________
+block4_pool (MaxPooling2D)   (None, 16, 16, 512)       0         
+_________________________________________________________________
+block5_conv1 (Conv2D)        (None, 16, 16, 512)       2359808   
+_________________________________________________________________
+block5_conv2 (Conv2D)        (None, 16, 16, 512)       2359808   
+_________________________________________________________________
+block5_conv3 (Conv2D)        (None, 16, 16, 512)       2359808   
+_________________________________________________________________
+block5_pool (MaxPooling2D)   (None, 8, 8, 512)         0         
+_________________________________________________________________
+flatten (Flatten)            (None, 32768)             0         
+_________________________________________________________________
+fc1 (Dense)                  (None, 4096)              134221824 
+_________________________________________________________________
+fc2 (Dense)                  (None, 4096)              16781312  
+_________________________________________________________________
+predictions (Dense)          (None, 5)                 20485     
+=================================================================
+Total params: 165,738,309
+Trainable params: 165,738,309
+Non-trainable params: 0
+_________________________________________________________________
+Start fitting ensemble models
+Length split part:  105
+Labels in this part of split:  [54, 16, 24, 8, 3]
+Train for 4 steps, validate for 6 steps
+Epoch 1/500
+4/4 - 15s - loss: 1.4838 - accuracy: 0.4000 - val_loss: 1.0039 - val_accuracy: 0.6648
+Epoch 2/500
+4/4 - 1s - loss: 1.2669 - accuracy: 0.4762 - val_loss: 1.1531 - val_accuracy: 0.6704
+Epoch 3/500
+4/4 - 7s - loss: 1.2201 - accuracy: 0.5143 - val_loss: 0.9822 - val_accuracy: 0.6648
+Epoch 4/500
+4/4 - 1s - loss: 1.1756 - accuracy: 0.5143 - val_loss: 1.0465 - val_accuracy: 0.6648
+Epoch 5/500
+4/4 - 1s - loss: 1.1242 - accuracy: 0.5429 - val_loss: 1.0236 - val_accuracy: 0.6704
+Epoch 6/500
+4/4 - 6s - loss: 1.0804 - accuracy: 0.5238 - val_loss: 0.9793 - val_accuracy: 0.6648
+Epoch 7/500
+4/4 - 1s - loss: 1.0280 - accuracy: 0.5619 - val_loss: 1.0204 - val_accuracy: 0.6648
+Epoch 8/500
+4/4 - 7s - loss: 0.9720 - accuracy: 0.6190 - val_loss: 0.9626 - val_accuracy: 0.6648
+Epoch 9/500
+4/4 - 1s - loss: 0.8995 - accuracy: 0.5905 - val_loss: 1.0438 - val_accuracy: 0.5978
+Epoch 10/500
+4/4 - 1s - loss: 0.8414 - accuracy: 0.6667 - val_loss: 0.9632 - val_accuracy: 0.6704
+Epoch 11/500
+4/4 - 1s - loss: 0.7720 - accuracy: 0.6476 - val_loss: 1.0905 - val_accuracy: 0.5251
+Epoch 12/500
+4/4 - 1s - loss: 0.7131 - accuracy: 0.7619 - val_loss: 0.9836 - val_accuracy: 0.6536
+Epoch 13/500
+4/4 - 1s - loss: 0.6417 - accuracy: 0.7429 - val_loss: 1.0408 - val_accuracy: 0.5754
+Epoch 14/500
+4/4 - 1s - loss: 0.5319 - accuracy: 0.8476 - val_loss: 1.0758 - val_accuracy: 0.5866
+Epoch 15/500
+4/4 - 1s - loss: 0.4375 - accuracy: 0.8762 - val_loss: 1.0833 - val_accuracy: 0.5922
+Epoch 16/500
+4/4 - 1s - loss: 0.3511 - accuracy: 0.9048 - val_loss: 1.1633 - val_accuracy: 0.5698
+Epoch 17/500
+4/4 - 1s - loss: 0.2920 - accuracy: 0.9143 - val_loss: 1.1738 - val_accuracy: 0.5922
+Epoch 18/500
+4/4 - 1s - loss: 0.2337 - accuracy: 0.9524 - val_loss: 1.3437 - val_accuracy: 0.5307
+Epoch 19/500
+4/4 - 1s - loss: 0.1831 - accuracy: 0.9524 - val_loss: 1.3318 - val_accuracy: 0.6034
+Epoch 20/500
+4/4 - 1s - loss: 0.1476 - accuracy: 0.9714 - val_loss: 1.4517 - val_accuracy: 0.5251
+Epoch 21/500
+4/4 - 1s - loss: 0.1091 - accuracy: 0.9905 - val_loss: 1.4634 - val_accuracy: 0.5419
+Epoch 22/500
+4/4 - 1s - loss: 0.0658 - accuracy: 1.0000 - val_loss: 1.6009 - val_accuracy: 0.5698
+WARNING:tensorflow:sample_weight modes were coerced from
+  ...
+    to  
+  ['...']
+WARNING:tensorflow:sample_weight modes were coerced from
+  ...
+    to  
+  ['...']
+2020-05-20 13:13:24.678034: I tensorflow/core/profiler/lib/profiler_session.cc:225] Profiler session started.
+2020-05-20 13:13:24.678194: E tensorflow/core/profiler/internal/gpu/cupti_tracer.cc:1307] function cupti_interface_->Subscribe( &subscriber_, (CUpti_CallbackFunc)ApiCallback, this)failed with error CUPTI_ERROR_NOT_INITIALIZED
+2020-05-20 13:13:24.678226: E tensorflow/core/profiler/internal/gpu/cupti_tracer.cc:1346] function cupti_interface_->ActivityRegisterCallbacks( AllocCuptiActivityBuffer, FreeCuptiActivityBuffer)failed with error CUPTI_ERROR_NOT_INITIALIZED
+2020-05-20 13:13:24.751902: E tensorflow/core/profiler/internal/gpu/cupti_tracer.cc:1329] function cupti_interface_->EnableCallback( 0 , subscriber_, CUPTI_CB_DOMAIN_DRIVER_API, cbid)failed with error CUPTI_ERROR_INVALID_PARAMETER
+2020-05-20 13:13:24.752011: I tensorflow/core/profiler/internal/gpu/device_tracer.cc:88]  GpuTracer has collected 0 callback api events and 0 activity events.
+Epoch 00022: early stopping
+Labels in this part of split:  [60, 15, 25, 4, 1]
+Train for 4 steps, validate for 6 steps
+Epoch 1/500
+4/4 - 7s - loss: 1.4126 - accuracy: 0.4095 - val_loss: 1.1271 - val_accuracy: 0.6648
+Epoch 2/500
+4/4 - 10s - loss: 1.2495 - accuracy: 0.5714 - val_loss: 1.0897 - val_accuracy: 0.6704
+Epoch 3/500
+4/4 - 9s - loss: 1.1254 - accuracy: 0.5429 - val_loss: 1.0401 - val_accuracy: 0.6648
+Epoch 4/500
+4/4 - 7s - loss: 1.0875 - accuracy: 0.5714 - val_loss: 1.0099 - val_accuracy: 0.6648
+Epoch 5/500
+4/4 - 1s - loss: 1.0340 - accuracy: 0.5714 - val_loss: 1.0833 - val_accuracy: 0.5978
+Epoch 6/500
+4/4 - 8s - loss: 0.9994 - accuracy: 0.6000 - val_loss: 0.9907 - val_accuracy: 0.6648
+Epoch 7/500
+4/4 - 1s - loss: 0.9444 - accuracy: 0.5810 - val_loss: 0.9976 - val_accuracy: 0.6592
+Epoch 8/500
+4/4 - 1s - loss: 0.9030 - accuracy: 0.6571 - val_loss: 1.0236 - val_accuracy: 0.6313
+Epoch 9/500
+4/4 - 1s - loss: 0.8634 - accuracy: 0.6476 - val_loss: 0.9996 - val_accuracy: 0.6480
+Epoch 10/500
+4/4 - 1s - loss: 0.8295 - accuracy: 0.6762 - val_loss: 1.0138 - val_accuracy: 0.6313
+Epoch 11/500
+4/4 - 1s - loss: 0.7878 - accuracy: 0.7333 - val_loss: 1.0050 - val_accuracy: 0.6425
+Epoch 12/500
+4/4 - 1s - loss: 0.7392 - accuracy: 0.7238 - val_loss: 1.0251 - val_accuracy: 0.6257
+Epoch 13/500
+4/4 - 1s - loss: 0.6864 - accuracy: 0.7429 - val_loss: 1.0132 - val_accuracy: 0.6425
+Epoch 14/500
+4/4 - 1s - loss: 0.6382 - accuracy: 0.7619 - val_loss: 1.0456 - val_accuracy: 0.6145
+Epoch 15/500
+4/4 - 1s - loss: 0.5710 - accuracy: 0.8000 - val_loss: 1.0372 - val_accuracy: 0.6201
+Epoch 16/500
+4/4 - 1s - loss: 0.5023 - accuracy: 0.8190 - val_loss: 1.0617 - val_accuracy: 0.6201
+Epoch 17/500
+4/4 - 1s - loss: 0.4373 - accuracy: 0.8571 - val_loss: 1.1200 - val_accuracy: 0.5587
+Epoch 18/500
+4/4 - 1s - loss: 0.3848 - accuracy: 0.8952 - val_loss: 1.0948 - val_accuracy: 0.6034
+Epoch 19/500
+4/4 - 1s - loss: 0.3180 - accuracy: 0.9048 - val_loss: 1.1253 - val_accuracy: 0.6089
+Epoch 20/500
+4/4 - 1s - loss: 0.2634 - accuracy: 0.9048 - val_loss: 1.2379 - val_accuracy: 0.5531
+Epoch 21/500
+4/4 - 1s - loss: 0.2043 - accuracy: 0.9429 - val_loss: 1.2161 - val_accuracy: 0.6145
+Epoch 22/500
+4/4 - 1s - loss: 0.1915 - accuracy: 0.9333 - val_loss: 1.2775 - val_accuracy: 0.6369
+WARNING:tensorflow:sample_weight modes were coerced from
+  ...
+    to  
+  ['...']
+WARNING:tensorflow:sample_weight modes were coerced from
+  ...
+    to  
+  ['...']
+2020-05-20 13:14:29.698828: I tensorflow/core/profiler/lib/profiler_session.cc:225] Profiler session started.
+2020-05-20 13:14:29.698986: E tensorflow/core/profiler/internal/gpu/cupti_tracer.cc:1307] function cupti_interface_->Subscribe( &subscriber_, (CUpti_CallbackFunc)ApiCallback, this)failed with error CUPTI_ERROR_NOT_INITIALIZED
+2020-05-20 13:14:29.699017: E tensorflow/core/profiler/internal/gpu/cupti_tracer.cc:1346] function cupti_interface_->ActivityRegisterCallbacks( AllocCuptiActivityBuffer, FreeCuptiActivityBuffer)failed with error CUPTI_ERROR_NOT_INITIALIZED
+2020-05-20 13:14:29.899232: E tensorflow/core/profiler/internal/gpu/cupti_tracer.cc:1329] function cupti_interface_->EnableCallback( 0 , subscriber_, CUPTI_CB_DOMAIN_DRIVER_API, cbid)failed with error CUPTI_ERROR_INVALID_PARAMETER
+2020-05-20 13:14:29.899347: I tensorflow/core/profiler/internal/gpu/device_tracer.cc:88]  GpuTracer has collected 0 callback api events and 0 activity events.
+Epoch 00022: early stopping
+Labels in this part of split:  [64, 17, 20, 2, 2]
+Train for 4 steps, validate for 6 steps
+Epoch 1/500
+4/4 - 5s - loss: 1.2784 - accuracy: 0.3714 - val_loss: 1.2170 - val_accuracy: 0.6648
+Epoch 2/500
+4/4 - 1s - loss: 1.3776 - accuracy: 0.6095 - val_loss: 1.2529 - val_accuracy: 0.6648
+Epoch 3/500
+4/4 - 6s - loss: 1.1217 - accuracy: 0.6095 - val_loss: 1.0938 - val_accuracy: 0.6648
+Epoch 4/500
+4/4 - 6s - loss: 1.0563 - accuracy: 0.6095 - val_loss: 1.0880 - val_accuracy: 0.6648
+Epoch 5/500
+4/4 - 6s - loss: 1.0279 - accuracy: 0.6095 - val_loss: 1.0602 - val_accuracy: 0.6648
+Epoch 6/500
+4/4 - 1s - loss: 1.0058 - accuracy: 0.6095 - val_loss: 1.0751 - val_accuracy: 0.6704
+Epoch 7/500
+4/4 - 6s - loss: 0.9806 - accuracy: 0.6095 - val_loss: 1.0538 - val_accuracy: 0.6648
+Epoch 8/500
+4/4 - 6s - loss: 0.9459 - accuracy: 0.6095 - val_loss: 1.0489 - val_accuracy: 0.6592
+Epoch 9/500
+4/4 - 1s - loss: 0.9395 - accuracy: 0.6667 - val_loss: 1.0579 - val_accuracy: 0.6536
+Epoch 10/500
+4/4 - 1s - loss: 0.9095 - accuracy: 0.6571 - val_loss: 1.0599 - val_accuracy: 0.6704
+Epoch 11/500
+4/4 - 1s - loss: 0.8927 - accuracy: 0.6190 - val_loss: 1.0551 - val_accuracy: 0.6648
+Epoch 12/500
+4/4 - 1s - loss: 0.8560 - accuracy: 0.6762 - val_loss: 1.0558 - val_accuracy: 0.6425
+Epoch 13/500
+4/4 - 1s - loss: 0.8661 - accuracy: 0.6667 - val_loss: 1.0530 - val_accuracy: 0.6425
+Epoch 14/500
+4/4 - 1s - loss: 0.8280 - accuracy: 0.6571 - val_loss: 1.0711 - val_accuracy: 0.6536
+Epoch 15/500
+4/4 - 1s - loss: 0.8186 - accuracy: 0.6667 - val_loss: 1.0853 - val_accuracy: 0.6369
+Epoch 16/500
+4/4 - 1s - loss: 0.7548 - accuracy: 0.7048 - val_loss: 1.0644 - val_accuracy: 0.6257
+Epoch 17/500
+4/4 - 1s - loss: 0.7482 - accuracy: 0.7048 - val_loss: 1.0610 - val_accuracy: 0.6425
+Epoch 18/500
+4/4 - 1s - loss: 0.7151 - accuracy: 0.7143 - val_loss: 1.1049 - val_accuracy: 0.6425
+Epoch 19/500
+4/4 - 1s - loss: 0.6492 - accuracy: 0.7619 - val_loss: 1.0862 - val_accuracy: 0.6313
+Epoch 20/500
+4/4 - 1s - loss: 0.6308 - accuracy: 0.7714 - val_loss: 1.0856 - val_accuracy: 0.6369
+Epoch 21/500
+4/4 - 1s - loss: 0.5770 - accuracy: 0.7714 - val_loss: 1.1354 - val_accuracy: 0.5978
+Epoch 22/500
+4/4 - 1s - loss: 0.5379 - accuracy: 0.8000 - val_loss: 1.1105 - val_accuracy: 0.6313
+Epoch 23/500
+4/4 - 1s - loss: 0.4876 - accuracy: 0.8476 - val_loss: 1.1543 - val_accuracy: 0.5978
+Epoch 24/500
+4/4 - 1s - loss: 0.4297 - accuracy: 0.8381 - val_loss: 1.1609 - val_accuracy: 0.6034
+Epoch 25/500
+4/4 - 1s - loss: 0.3817 - accuracy: 0.8857 - val_loss: 1.1998 - val_accuracy: 0.6145
+Epoch 26/500
+4/4 - 1s - loss: 0.3426 - accuracy: 0.8857 - val_loss: 1.2313 - val_accuracy: 0.5754
+WARNING:tensorflow:sample_weight modes were coerced from
+  ...
+    to  
+  ['...']
+WARNING:tensorflow:sample_weight modes were coerced from
+  ...
+    to  
+  ['...']
+2020-05-20 13:15:31.944617: I tensorflow/core/profiler/lib/profiler_session.cc:225] Profiler session started.
+2020-05-20 13:15:31.944765: E tensorflow/core/profiler/internal/gpu/cupti_tracer.cc:1307] function cupti_interface_->Subscribe( &subscriber_, (CUpti_CallbackFunc)ApiCallback, this)failed with error CUPTI_ERROR_NOT_INITIALIZED
+2020-05-20 13:15:31.944797: E tensorflow/core/profiler/internal/gpu/cupti_tracer.cc:1346] function cupti_interface_->ActivityRegisterCallbacks( AllocCuptiActivityBuffer, FreeCuptiActivityBuffer)failed with error CUPTI_ERROR_NOT_INITIALIZED
+2020-05-20 13:15:32.144515: E tensorflow/core/profiler/internal/gpu/cupti_tracer.cc:1329] function cupti_interface_->EnableCallback( 0 , subscriber_, CUPTI_CB_DOMAIN_DRIVER_API, cbid)failed with error CUPTI_ERROR_INVALID_PARAMETER
+2020-05-20 13:15:32.144614: I tensorflow/core/profiler/internal/gpu/device_tracer.cc:88]  GpuTracer has collected 0 callback api events and 0 activity events.
+Epoch 00026: early stopping
+Labels in this part of split:  [59, 20, 18, 6, 2]
+Train for 4 steps, validate for 6 steps
+Epoch 1/500
+4/4 - 5s - loss: 1.4427 - accuracy: 0.3048 - val_loss: 1.1112 - val_accuracy: 0.6648
+Epoch 2/500
+4/4 - 6s - loss: 1.3056 - accuracy: 0.5619 - val_loss: 1.0949 - val_accuracy: 0.6648
+Epoch 3/500
+4/4 - 1s - loss: 1.2154 - accuracy: 0.5714 - val_loss: 1.1169 - val_accuracy: 0.6648
+Epoch 4/500
+4/4 - 5s - loss: 1.1234 - accuracy: 0.5619 - val_loss: 1.0390 - val_accuracy: 0.6648
+Epoch 5/500
+4/4 - 1s - loss: 1.1094 - accuracy: 0.5619 - val_loss: 1.0843 - val_accuracy: 0.6648
+Epoch 6/500
+4/4 - 1s - loss: 1.0742 - accuracy: 0.5905 - val_loss: 1.0877 - val_accuracy: 0.6648
+Epoch 7/500
+4/4 - 1s - loss: 1.0212 - accuracy: 0.5810 - val_loss: 1.0401 - val_accuracy: 0.6648
+Epoch 8/500
+4/4 - 1s - loss: 0.9879 - accuracy: 0.6000 - val_loss: 1.0784 - val_accuracy: 0.6592
+Epoch 9/500
+4/4 - 5s - loss: 0.9339 - accuracy: 0.6095 - val_loss: 1.0328 - val_accuracy: 0.6648
+Epoch 10/500
+4/4 - 1s - loss: 0.8899 - accuracy: 0.6476 - val_loss: 1.0840 - val_accuracy: 0.6313
+Epoch 11/500
+4/4 - 1s - loss: 0.8361 - accuracy: 0.6667 - val_loss: 1.0690 - val_accuracy: 0.6704
+Epoch 12/500
+4/4 - 1s - loss: 0.7978 - accuracy: 0.6857 - val_loss: 1.0720 - val_accuracy: 0.6592
+Epoch 13/500
+4/4 - 1s - loss: 0.7144 - accuracy: 0.7333 - val_loss: 1.1176 - val_accuracy: 0.6201
+Epoch 14/500
+4/4 - 1s - loss: 0.6376 - accuracy: 0.7619 - val_loss: 1.1059 - val_accuracy: 0.6648
+Epoch 15/500
+4/4 - 1s - loss: 0.6014 - accuracy: 0.7429 - val_loss: 1.2997 - val_accuracy: 0.5140
+Epoch 16/500
+4/4 - 1s - loss: 0.5302 - accuracy: 0.8000 - val_loss: 1.1688 - val_accuracy: 0.6257
+Epoch 17/500
+4/4 - 1s - loss: 0.4330 - accuracy: 0.8667 - val_loss: 1.2130 - val_accuracy: 0.5810
+Epoch 18/500
+4/4 - 1s - loss: 0.4210 - accuracy: 0.8095 - val_loss: 1.2902 - val_accuracy: 0.5307
+Epoch 19/500
+4/4 - 1s - loss: 0.3764 - accuracy: 0.8667 - val_loss: 1.2800 - val_accuracy: 0.6536
+Epoch 20/500
+4/4 - 1s - loss: 0.3774 - accuracy: 0.8286 - val_loss: 1.3308 - val_accuracy: 0.5251
+Epoch 21/500
+4/4 - 1s - loss: 0.2962 - accuracy: 0.8952 - val_loss: 1.4002 - val_accuracy: 0.5978
+Epoch 22/500
+4/4 - 1s - loss: 0.2894 - accuracy: 0.8476 - val_loss: 1.6433 - val_accuracy: 0.4525
+Epoch 23/500
+4/4 - 1s - loss: 0.2543 - accuracy: 0.8667 - val_loss: 1.4554 - val_accuracy: 0.6089
+Epoch 24/500
+4/4 - 1s - loss: 0.1764 - accuracy: 0.9524 - val_loss: 1.4946 - val_accuracy: 0.5084
+Epoch 25/500
+4/4 - 1s - loss: 0.1200 - accuracy: 0.9619 - val_loss: 1.4595 - val_accuracy: 0.5698
+Epoch 26/500
+4/4 - 1s - loss: 0.1260 - accuracy: 0.9810 - val_loss: 1.5655 - val_accuracy: 0.5531
+Epoch 27/500
+4/4 - 1s - loss: 0.1195 - accuracy: 0.9714 - val_loss: 1.5367 - val_accuracy: 0.6089
+Epoch 28/500
+4/4 - 1s - loss: 0.0820 - accuracy: 0.9810 - val_loss: 1.7090 - val_accuracy: 0.5531
+Epoch 29/500
+4/4 - 1s - loss: 0.0719 - accuracy: 0.9905 - val_loss: 1.6470 - val_accuracy: 0.5587
+Epoch 30/500
+4/4 - 1s - loss: 0.0513 - accuracy: 0.9810 - val_loss: 1.6960 - val_accuracy: 0.5307
+Epoch 31/500
+4/4 - 1s - loss: 0.0470 - accuracy: 0.9905 - val_loss: 1.8254 - val_accuracy: 0.5587
+WARNING:tensorflow:sample_weight modes were coerced from
+  ...
+    to  
+  ['...']
+WARNING:tensorflow:sample_weight modes were coerced from
+  ...
+    to  
+  ['...']
+2020-05-20 13:16:28.981484: I tensorflow/core/profiler/lib/profiler_session.cc:225] Profiler session started.
+2020-05-20 13:16:28.981634: E tensorflow/core/profiler/internal/gpu/cupti_tracer.cc:1307] function cupti_interface_->Subscribe( &subscriber_, (CUpti_CallbackFunc)ApiCallback, this)failed with error CUPTI_ERROR_NOT_INITIALIZED
+2020-05-20 13:16:28.981667: E tensorflow/core/profiler/internal/gpu/cupti_tracer.cc:1346] function cupti_interface_->ActivityRegisterCallbacks( AllocCuptiActivityBuffer, FreeCuptiActivityBuffer)failed with error CUPTI_ERROR_NOT_INITIALIZED
+2020-05-20 13:16:29.181537: E tensorflow/core/profiler/internal/gpu/cupti_tracer.cc:1329] function cupti_interface_->EnableCallback( 0 , subscriber_, CUPTI_CB_DOMAIN_DRIVER_API, cbid)failed with error CUPTI_ERROR_INVALID_PARAMETER
+2020-05-20 13:16:29.181642: I tensorflow/core/profiler/internal/gpu/device_tracer.cc:88]  GpuTracer has collected 0 callback api events and 0 activity events.
+Epoch 00031: early stopping
+Labels in this part of split:  [66, 16, 18, 4, 1]
+Train for 4 steps, validate for 6 steps
+Epoch 1/500
+4/4 - 5s - loss: 1.3542 - accuracy: 0.5333 - val_loss: 1.1711 - val_accuracy: 0.6648
+Epoch 2/500
+4/4 - 5s - loss: 1.2243 - accuracy: 0.6286 - val_loss: 1.0896 - val_accuracy: 0.6648
+Epoch 3/500
+4/4 - 5s - loss: 0.9771 - accuracy: 0.6286 - val_loss: 1.0458 - val_accuracy: 0.6648
+Epoch 4/500
+4/4 - 6s - loss: 0.9641 - accuracy: 0.6286 - val_loss: 1.0120 - val_accuracy: 0.6648
+Epoch 5/500
+4/4 - 1s - loss: 0.9760 - accuracy: 0.6286 - val_loss: 1.0295 - val_accuracy: 0.6648
+Epoch 6/500
+4/4 - 1s - loss: 0.8992 - accuracy: 0.6667 - val_loss: 1.0612 - val_accuracy: 0.5810
+Epoch 7/500
+4/4 - 6s - loss: 0.9021 - accuracy: 0.6476 - val_loss: 1.0082 - val_accuracy: 0.6648
+Epoch 8/500
+4/4 - 1s - loss: 0.8520 - accuracy: 0.6476 - val_loss: 1.0125 - val_accuracy: 0.6369
+Epoch 9/500
+4/4 - 1s - loss: 0.8219 - accuracy: 0.6476 - val_loss: 1.0469 - val_accuracy: 0.5978
+Epoch 10/500
+4/4 - 1s - loss: 0.8145 - accuracy: 0.6667 - val_loss: 1.0202 - val_accuracy: 0.6425
+Epoch 11/500
+4/4 - 1s - loss: 0.7820 - accuracy: 0.6571 - val_loss: 1.0362 - val_accuracy: 0.5978
+Epoch 12/500
+4/4 - 1s - loss: 0.7617 - accuracy: 0.7143 - val_loss: 1.0308 - val_accuracy: 0.5922
+Epoch 13/500
+4/4 - 1s - loss: 0.7381 - accuracy: 0.7048 - val_loss: 1.0441 - val_accuracy: 0.5978
+Epoch 14/500
+4/4 - 1s - loss: 0.7103 - accuracy: 0.7333 - val_loss: 1.0319 - val_accuracy: 0.6480
+Epoch 15/500
+4/4 - 1s - loss: 0.7098 - accuracy: 0.6762 - val_loss: 1.0658 - val_accuracy: 0.5922
+Epoch 16/500
+4/4 - 1s - loss: 0.6746 - accuracy: 0.7619 - val_loss: 1.0404 - val_accuracy: 0.6480
+Epoch 17/500
+4/4 - 1s - loss: 0.6439 - accuracy: 0.7714 - val_loss: 1.0752 - val_accuracy: 0.5922
+Epoch 18/500
+4/4 - 1s - loss: 0.6058 - accuracy: 0.7143 - val_loss: 1.0553 - val_accuracy: 0.6145
+Epoch 19/500
+4/4 - 1s - loss: 0.5706 - accuracy: 0.7810 - val_loss: 1.1205 - val_accuracy: 0.5754
+Epoch 20/500
+4/4 - 1s - loss: 0.5516 - accuracy: 0.7810 - val_loss: 1.0816 - val_accuracy: 0.6257
+Epoch 21/500
+4/4 - 1s - loss: 0.5029 - accuracy: 0.8190 - val_loss: 1.0812 - val_accuracy: 0.6201
+WARNING:tensorflow:sample_weight modes were coerced from
+  ...
+    to  
+  ['...']
+WARNING:tensorflow:sample_weight modes were coerced from
+  ...
+    to  
+  ['...']
+2020-05-20 13:17:18.590988: I tensorflow/core/profiler/lib/profiler_session.cc:225] Profiler session started.
+2020-05-20 13:17:18.591150: E tensorflow/core/profiler/internal/gpu/cupti_tracer.cc:1307] function cupti_interface_->Subscribe( &subscriber_, (CUpti_CallbackFunc)ApiCallback, this)failed with error CUPTI_ERROR_NOT_INITIALIZED
+2020-05-20 13:17:18.591183: E tensorflow/core/profiler/internal/gpu/cupti_tracer.cc:1346] function cupti_interface_->ActivityRegisterCallbacks( AllocCuptiActivityBuffer, FreeCuptiActivityBuffer)failed with error CUPTI_ERROR_NOT_INITIALIZED
+2020-05-20 13:17:18.792844: E tensorflow/core/profiler/internal/gpu/cupti_tracer.cc:1329] function cupti_interface_->EnableCallback( 0 , subscriber_, CUPTI_CB_DOMAIN_DRIVER_API, cbid)failed with error CUPTI_ERROR_INVALID_PARAMETER
+2020-05-20 13:17:18.792947: I tensorflow/core/profiler/internal/gpu/device_tracer.cc:88]  GpuTracer has collected 0 callback api events and 0 activity events.
+Epoch 00021: early stopping
+Labels in this part of split:  [57, 22, 19, 5, 2]
+Train for 4 steps, validate for 6 steps
+Epoch 1/500
+4/4 - 5s - loss: 1.5051 - accuracy: 0.2857 - val_loss: 1.0314 - val_accuracy: 0.6648
+Epoch 2/500
+4/4 - 1s - loss: 1.1877 - accuracy: 0.5429 - val_loss: 1.2644 - val_accuracy: 0.3911
+Epoch 3/500
+4/4 - 1s - loss: 1.2061 - accuracy: 0.5429 - val_loss: 1.1673 - val_accuracy: 0.5642
+Epoch 4/500
+4/4 - 1s - loss: 1.1397 - accuracy: 0.5429 - val_loss: 1.0529 - val_accuracy: 0.6648
+Epoch 5/500
+4/4 - 1s - loss: 1.0433 - accuracy: 0.5905 - val_loss: 1.2677 - val_accuracy: 0.4302
+Epoch 6/500
+4/4 - 1s - loss: 1.0237 - accuracy: 0.6095 - val_loss: 1.1233 - val_accuracy: 0.5307
+Epoch 7/500
+4/4 - 1s - loss: 1.0033 - accuracy: 0.5810 - val_loss: 1.1335 - val_accuracy: 0.5419
+Epoch 8/500
+4/4 - 1s - loss: 0.8825 - accuracy: 0.6667 - val_loss: 1.3181 - val_accuracy: 0.4302
+Epoch 9/500
+4/4 - 1s - loss: 0.8770 - accuracy: 0.6762 - val_loss: 1.1372 - val_accuracy: 0.5307
+Epoch 10/500
+4/4 - 1s - loss: 0.8413 - accuracy: 0.6571 - val_loss: 1.2781 - val_accuracy: 0.4637
+Epoch 11/500
+4/4 - 1s - loss: 0.7230 - accuracy: 0.7429 - val_loss: 1.1639 - val_accuracy: 0.5084
+Epoch 12/500
+4/4 - 1s - loss: 0.6866 - accuracy: 0.7714 - val_loss: 1.2876 - val_accuracy: 0.4637
+Epoch 13/500
+4/4 - 1s - loss: 0.6193 - accuracy: 0.7905 - val_loss: 1.2249 - val_accuracy: 0.4916
+Epoch 14/500
+4/4 - 1s - loss: 0.5490 - accuracy: 0.8286 - val_loss: 1.3352 - val_accuracy: 0.4637
+Epoch 15/500
+4/4 - 1s - loss: 0.4866 - accuracy: 0.8190 - val_loss: 1.2725 - val_accuracy: 0.4916
+Epoch 16/500
+4/4 - 1s - loss: 0.4204 - accuracy: 0.8762 - val_loss: 1.3892 - val_accuracy: 0.4804
+Epoch 17/500
+4/4 - 1s - loss: 0.3518 - accuracy: 0.8952 - val_loss: 1.4397 - val_accuracy: 0.4693
+Epoch 18/500
+4/4 - 1s - loss: 0.2923 - accuracy: 0.9238 - val_loss: 1.3951 - val_accuracy: 0.5363
+Epoch 19/500
+4/4 - 1s - loss: 0.2128 - accuracy: 0.9429 - val_loss: 1.6042 - val_accuracy: 0.4804
+Epoch 20/500
+4/4 - 1s - loss: 0.1729 - accuracy: 0.9714 - val_loss: 1.7510 - val_accuracy: 0.4804
+Epoch 21/500
+4/4 - 1s - loss: 0.1193 - accuracy: 0.9905 - val_loss: 1.6320 - val_accuracy: 0.5587
+WARNING:tensorflow:sample_weight modes were coerced from
+  ...
+    to  
+  ['...']
+WARNING:tensorflow:sample_weight modes were coerced from
+  ...
+    to  
+  ['...']
+2020-05-20 13:17:51.308764: I tensorflow/core/profiler/lib/profiler_session.cc:225] Profiler session started.
+2020-05-20 13:17:51.308947: E tensorflow/core/profiler/internal/gpu/cupti_tracer.cc:1307] function cupti_interface_->Subscribe( &subscriber_, (CUpti_CallbackFunc)ApiCallback, this)failed with error CUPTI_ERROR_NOT_INITIALIZED
+2020-05-20 13:17:51.308981: E tensorflow/core/profiler/internal/gpu/cupti_tracer.cc:1346] function cupti_interface_->ActivityRegisterCallbacks( AllocCuptiActivityBuffer, FreeCuptiActivityBuffer)failed with error CUPTI_ERROR_NOT_INITIALIZED
+2020-05-20 13:17:51.382337: E tensorflow/core/profiler/internal/gpu/cupti_tracer.cc:1329] function cupti_interface_->EnableCallback( 0 , subscriber_, CUPTI_CB_DOMAIN_DRIVER_API, cbid)failed with error CUPTI_ERROR_INVALID_PARAMETER
+2020-05-20 13:17:51.382440: I tensorflow/core/profiler/internal/gpu/device_tracer.cc:88]  GpuTracer has collected 0 callback api events and 0 activity events.
+Epoch 00021: early stopping
+Labels in this part of split:  [63, 13, 22, 4, 3]
+Train for 4 steps, validate for 6 steps
+Epoch 1/500
+4/4 - 5s - loss: 1.5247 - accuracy: 0.3714 - val_loss: 1.0931 - val_accuracy: 0.6648
+Epoch 2/500
+4/4 - 5s - loss: 1.2425 - accuracy: 0.6000 - val_loss: 1.0422 - val_accuracy: 0.6648
+Epoch 3/500
+4/4 - 1s - loss: 1.1787 - accuracy: 0.5905 - val_loss: 1.0535 - val_accuracy: 0.6648
+Epoch 4/500
+4/4 - 6s - loss: 1.1789 - accuracy: 0.6000 - val_loss: 1.0075 - val_accuracy: 0.6648
+Epoch 5/500
+4/4 - 1s - loss: 1.1015 - accuracy: 0.6000 - val_loss: 1.0866 - val_accuracy: 0.6369
+Epoch 6/500
+4/4 - 1s - loss: 1.0984 - accuracy: 0.5905 - val_loss: 1.0452 - val_accuracy: 0.6704
+Epoch 7/500
+4/4 - 6s - loss: 1.0106 - accuracy: 0.6095 - val_loss: 1.0018 - val_accuracy: 0.6648
+Epoch 8/500
+4/4 - 6s - loss: 1.0146 - accuracy: 0.6000 - val_loss: 0.9790 - val_accuracy: 0.6648
+Epoch 9/500
+4/4 - 1s - loss: 0.9317 - accuracy: 0.6190 - val_loss: 1.0348 - val_accuracy: 0.6480
+Epoch 10/500
+4/4 - 1s - loss: 0.9503 - accuracy: 0.6190 - val_loss: 0.9882 - val_accuracy: 0.6648
+Epoch 11/500
+4/4 - 1s - loss: 0.9428 - accuracy: 0.6095 - val_loss: 1.0183 - val_accuracy: 0.6648
+Epoch 12/500
+4/4 - 1s - loss: 0.8942 - accuracy: 0.6476 - val_loss: 1.0548 - val_accuracy: 0.6257
+Epoch 13/500
+4/4 - 1s - loss: 0.8294 - accuracy: 0.6762 - val_loss: 0.9802 - val_accuracy: 0.6592
+Epoch 14/500
+4/4 - 1s - loss: 0.8012 - accuracy: 0.6857 - val_loss: 1.0294 - val_accuracy: 0.6369
+Epoch 15/500
+4/4 - 1s - loss: 0.7341 - accuracy: 0.6952 - val_loss: 1.0527 - val_accuracy: 0.6089
+Epoch 16/500
+4/4 - 1s - loss: 0.6911 - accuracy: 0.7524 - val_loss: 0.9985 - val_accuracy: 0.6257
+Epoch 17/500
+4/4 - 1s - loss: 0.5886 - accuracy: 0.8000 - val_loss: 1.0328 - val_accuracy: 0.6089
+Epoch 18/500
+4/4 - 1s - loss: 0.5615 - accuracy: 0.8095 - val_loss: 1.0323 - val_accuracy: 0.5978
+Epoch 19/500
+4/4 - 1s - loss: 0.4909 - accuracy: 0.8571 - val_loss: 1.0101 - val_accuracy: 0.6257
+Epoch 20/500
+4/4 - 1s - loss: 0.4161 - accuracy: 0.8762 - val_loss: 1.0755 - val_accuracy: 0.5866
+Epoch 21/500
+4/4 - 1s - loss: 0.3536 - accuracy: 0.8762 - val_loss: 1.0895 - val_accuracy: 0.5810
+Epoch 22/500
+4/4 - 1s - loss: 0.3046 - accuracy: 0.9333 - val_loss: 1.1106 - val_accuracy: 0.6257
+Epoch 23/500
+4/4 - 1s - loss: 0.2731 - accuracy: 0.9048 - val_loss: 1.2960 - val_accuracy: 0.5196
+Epoch 24/500
+4/4 - 1s - loss: 0.2408 - accuracy: 0.9143 - val_loss: 1.1796 - val_accuracy: 0.5531
+Epoch 25/500
+4/4 - 1s - loss: 0.2251 - accuracy: 0.9619 - val_loss: 1.2793 - val_accuracy: 0.6257
+Epoch 26/500
+4/4 - 1s - loss: 0.2333 - accuracy: 0.8762 - val_loss: 1.4774 - val_accuracy: 0.4916
+WARNING:tensorflow:sample_weight modes were coerced from
+  ...
+    to  
+  ['...']
+WARNING:tensorflow:sample_weight modes were coerced from
+  ...
+    to  
+  ['...']
+2020-05-20 13:18:47.771545: I tensorflow/core/profiler/lib/profiler_session.cc:225] Profiler session started.
+2020-05-20 13:18:47.771732: E tensorflow/core/profiler/internal/gpu/cupti_tracer.cc:1307] function cupti_interface_->Subscribe( &subscriber_, (CUpti_CallbackFunc)ApiCallback, this)failed with error CUPTI_ERROR_NOT_INITIALIZED
+2020-05-20 13:18:47.771787: E tensorflow/core/profiler/internal/gpu/cupti_tracer.cc:1346] function cupti_interface_->ActivityRegisterCallbacks( AllocCuptiActivityBuffer, FreeCuptiActivityBuffer)failed with error CUPTI_ERROR_NOT_INITIALIZED
+2020-05-20 13:18:47.973338: E tensorflow/core/profiler/internal/gpu/cupti_tracer.cc:1329] function cupti_interface_->EnableCallback( 0 , subscriber_, CUPTI_CB_DOMAIN_DRIVER_API, cbid)failed with error CUPTI_ERROR_INVALID_PARAMETER
+2020-05-20 13:18:47.973443: I tensorflow/core/profiler/internal/gpu/device_tracer.cc:88]  GpuTracer has collected 0 callback api events and 0 activity events.
+Epoch 00026: early stopping
+Labels in this part of split:  [65, 15, 20, 3, 2]
+Train for 4 steps, validate for 6 steps
+Epoch 1/500
+4/4 - 6s - loss: 1.4135 - accuracy: 0.3429 - val_loss: 1.0799 - val_accuracy: 0.6648
+Epoch 2/500
+4/4 - 1s - loss: 1.1348 - accuracy: 0.6190 - val_loss: 1.1004 - val_accuracy: 0.6648
+Epoch 3/500
+4/4 - 5s - loss: 1.1447 - accuracy: 0.4952 - val_loss: 1.0791 - val_accuracy: 0.6648
+Epoch 4/500
+4/4 - 6s - loss: 1.0113 - accuracy: 0.6190 - val_loss: 1.0770 - val_accuracy: 0.6648
+Epoch 5/500
+4/4 - 1s - loss: 1.0045 - accuracy: 0.6190 - val_loss: 1.0805 - val_accuracy: 0.6480
+Epoch 6/500
+4/4 - 5s - loss: 0.9941 - accuracy: 0.6190 - val_loss: 1.0401 - val_accuracy: 0.6592
+Epoch 7/500
+4/4 - 6s - loss: 0.8961 - accuracy: 0.6476 - val_loss: 1.0197 - val_accuracy: 0.6648
+Epoch 8/500
+4/4 - 1s - loss: 0.8716 - accuracy: 0.6476 - val_loss: 1.0753 - val_accuracy: 0.5642
+Epoch 9/500
+4/4 - 1s - loss: 0.8448 - accuracy: 0.6667 - val_loss: 1.0382 - val_accuracy: 0.6425
+Epoch 10/500
+4/4 - 1s - loss: 0.8364 - accuracy: 0.6571 - val_loss: 1.0381 - val_accuracy: 0.6480
+Epoch 11/500
+4/4 - 1s - loss: 0.7955 - accuracy: 0.6667 - val_loss: 1.0876 - val_accuracy: 0.5587
+Epoch 12/500
+4/4 - 1s - loss: 0.7326 - accuracy: 0.6952 - val_loss: 1.0611 - val_accuracy: 0.6536
+Epoch 13/500
+4/4 - 1s - loss: 0.7144 - accuracy: 0.7238 - val_loss: 1.0977 - val_accuracy: 0.5475
+Epoch 14/500
+4/4 - 1s - loss: 0.6744 - accuracy: 0.7333 - val_loss: 1.0496 - val_accuracy: 0.6648
+Epoch 15/500
+4/4 - 1s - loss: 0.6806 - accuracy: 0.6952 - val_loss: 1.0999 - val_accuracy: 0.5642
+Epoch 16/500
+4/4 - 1s - loss: 0.6026 - accuracy: 0.7524 - val_loss: 1.1075 - val_accuracy: 0.5978
+Epoch 17/500
+4/4 - 1s - loss: 0.6127 - accuracy: 0.7333 - val_loss: 1.0852 - val_accuracy: 0.6034
+Epoch 18/500
+4/4 - 1s - loss: 0.5367 - accuracy: 0.7619 - val_loss: 1.1552 - val_accuracy: 0.5531
+Epoch 19/500
+4/4 - 1s - loss: 0.5491 - accuracy: 0.7714 - val_loss: 1.0982 - val_accuracy: 0.6313
+Epoch 20/500
+4/4 - 1s - loss: 0.5230 - accuracy: 0.7714 - val_loss: 1.0841 - val_accuracy: 0.6313
+Epoch 21/500
+4/4 - 1s - loss: 0.4600 - accuracy: 0.8190 - val_loss: 1.1385 - val_accuracy: 0.5419
+WARNING:tensorflow:sample_weight modes were coerced from
+  ...
+    to  
+  ['...']
+WARNING:tensorflow:sample_weight modes were coerced from
+  ...
+    to  
+  ['...']
+2020-05-20 13:19:38.360329: I tensorflow/core/profiler/lib/profiler_session.cc:225] Profiler session started.
+2020-05-20 13:19:38.360494: E tensorflow/core/profiler/internal/gpu/cupti_tracer.cc:1307] function cupti_interface_->Subscribe( &subscriber_, (CUpti_CallbackFunc)ApiCallback, this)failed with error CUPTI_ERROR_NOT_INITIALIZED
+2020-05-20 13:19:38.360531: E tensorflow/core/profiler/internal/gpu/cupti_tracer.cc:1346] function cupti_interface_->ActivityRegisterCallbacks( AllocCuptiActivityBuffer, FreeCuptiActivityBuffer)failed with error CUPTI_ERROR_NOT_INITIALIZED
+2020-05-20 13:19:38.560869: E tensorflow/core/profiler/internal/gpu/cupti_tracer.cc:1329] function cupti_interface_->EnableCallback( 0 , subscriber_, CUPTI_CB_DOMAIN_DRIVER_API, cbid)failed with error CUPTI_ERROR_INVALID_PARAMETER
+2020-05-20 13:19:38.560972: I tensorflow/core/profiler/internal/gpu/device_tracer.cc:88]  GpuTracer has collected 0 callback api events and 0 activity events.
+Epoch 00021: early stopping
+Labels in this part of split:  [60, 15, 26, 3, 1]
+Train for 4 steps, validate for 6 steps
+Epoch 1/500
+4/4 - 5s - loss: 1.3012 - accuracy: 0.4476 - val_loss: 1.0722 - val_accuracy: 0.6648
+Epoch 2/500
+4/4 - 1s - loss: 1.2094 - accuracy: 0.5714 - val_loss: 1.0745 - val_accuracy: 0.6648
+Epoch 3/500
+4/4 - 1s - loss: 1.1166 - accuracy: 0.5048 - val_loss: 1.1941 - val_accuracy: 0.5866
+Epoch 4/500
+4/4 - 6s - loss: 1.0408 - accuracy: 0.5810 - val_loss: 1.0411 - val_accuracy: 0.6648
+Epoch 5/500
+4/4 - 1s - loss: 1.0332 - accuracy: 0.5714 - val_loss: 1.0999 - val_accuracy: 0.5978
+Epoch 6/500
+4/4 - 1s - loss: 0.9925 - accuracy: 0.6095 - val_loss: 1.0983 - val_accuracy: 0.5866
+Epoch 7/500
+4/4 - 6s - loss: 0.9543 - accuracy: 0.5619 - val_loss: 1.0200 - val_accuracy: 0.6648
+Epoch 8/500
+4/4 - 1s - loss: 0.9112 - accuracy: 0.6190 - val_loss: 1.1132 - val_accuracy: 0.5587
+Epoch 9/500
+4/4 - 1s - loss: 0.8933 - accuracy: 0.6190 - val_loss: 1.0676 - val_accuracy: 0.5866
+Epoch 10/500
+4/4 - 1s - loss: 0.8712 - accuracy: 0.6286 - val_loss: 1.0447 - val_accuracy: 0.6034
+Epoch 11/500
+4/4 - 1s - loss: 0.8374 - accuracy: 0.6667 - val_loss: 1.1457 - val_accuracy: 0.5531
+Epoch 12/500
+4/4 - 1s - loss: 0.8139 - accuracy: 0.6762 - val_loss: 1.0781 - val_accuracy: 0.5866
+Epoch 13/500
+4/4 - 1s - loss: 0.7888 - accuracy: 0.6762 - val_loss: 1.1471 - val_accuracy: 0.5363
+Epoch 14/500
+4/4 - 1s - loss: 0.7686 - accuracy: 0.6857 - val_loss: 1.1005 - val_accuracy: 0.5922
+Epoch 15/500
+4/4 - 1s - loss: 0.7473 - accuracy: 0.6952 - val_loss: 1.1519 - val_accuracy: 0.5698
+Epoch 16/500
+4/4 - 1s - loss: 0.7160 - accuracy: 0.7238 - val_loss: 1.1133 - val_accuracy: 0.5866
+Epoch 17/500
+4/4 - 1s - loss: 0.6916 - accuracy: 0.6857 - val_loss: 1.2024 - val_accuracy: 0.5307
+Epoch 18/500
+4/4 - 1s - loss: 0.6764 - accuracy: 0.7619 - val_loss: 1.1709 - val_accuracy: 0.5531
+Epoch 19/500
+4/4 - 1s - loss: 0.6155 - accuracy: 0.7333 - val_loss: 1.1625 - val_accuracy: 0.5531
+Epoch 20/500
+4/4 - 1s - loss: 0.6140 - accuracy: 0.7524 - val_loss: 1.1695 - val_accuracy: 0.5810
+Epoch 21/500
+4/4 - 1s - loss: 0.5730 - accuracy: 0.7429 - val_loss: 1.2643 - val_accuracy: 0.4637
+WARNING:tensorflow:sample_weight modes were coerced from
+  ...
+    to  
+  ['...']
+WARNING:tensorflow:sample_weight modes were coerced from
+  ...
+    to  
+  ['...']
+2020-05-20 13:20:19.968877: I tensorflow/core/profiler/lib/profiler_session.cc:225] Profiler session started.
+2020-05-20 13:20:19.969038: E tensorflow/core/profiler/internal/gpu/cupti_tracer.cc:1307] function cupti_interface_->Subscribe( &subscriber_, (CUpti_CallbackFunc)ApiCallback, this)failed with error CUPTI_ERROR_NOT_INITIALIZED
+2020-05-20 13:20:19.969070: E tensorflow/core/profiler/internal/gpu/cupti_tracer.cc:1346] function cupti_interface_->ActivityRegisterCallbacks( AllocCuptiActivityBuffer, FreeCuptiActivityBuffer)failed with error CUPTI_ERROR_NOT_INITIALIZED
+2020-05-20 13:20:20.170723: E tensorflow/core/profiler/internal/gpu/cupti_tracer.cc:1329] function cupti_interface_->EnableCallback( 0 , subscriber_, CUPTI_CB_DOMAIN_DRIVER_API, cbid)failed with error CUPTI_ERROR_INVALID_PARAMETER
+2020-05-20 13:20:20.170827: I tensorflow/core/profiler/internal/gpu/device_tracer.cc:88]  GpuTracer has collected 0 callback api events and 0 activity events.
+Epoch 00021: early stopping
+Labels in this part of split:  [61, 15, 19, 8, 2]
+Train for 4 steps, validate for 6 steps
+Epoch 1/500
+4/4 - 6s - loss: 1.3843 - accuracy: 0.3048 - val_loss: 1.0823 - val_accuracy: 0.6648
+Epoch 2/500
+4/4 - 6s - loss: 1.3567 - accuracy: 0.5810 - val_loss: 1.0425 - val_accuracy: 0.6648
+Epoch 3/500
+4/4 - 1s - loss: 1.2605 - accuracy: 0.5810 - val_loss: 1.2219 - val_accuracy: 0.5307
+Epoch 4/500
+4/4 - 1s - loss: 1.0928 - accuracy: 0.5905 - val_loss: 1.0485 - val_accuracy: 0.6648
+Epoch 5/500
+4/4 - 6s - loss: 1.1096 - accuracy: 0.5810 - val_loss: 1.0308 - val_accuracy: 0.6648
+Epoch 6/500
+4/4 - 1s - loss: 1.0365 - accuracy: 0.5810 - val_loss: 1.0611 - val_accuracy: 0.6592
+Epoch 7/500
+4/4 - 1s - loss: 1.0084 - accuracy: 0.6000 - val_loss: 1.0396 - val_accuracy: 0.6592
+Epoch 8/500
+4/4 - 8s - loss: 0.9742 - accuracy: 0.5905 - val_loss: 1.0210 - val_accuracy: 0.6648
+Epoch 9/500
+4/4 - 1s - loss: 0.9414 - accuracy: 0.6000 - val_loss: 1.0427 - val_accuracy: 0.6480
+Epoch 10/500
+4/4 - 1s - loss: 0.9169 - accuracy: 0.6190 - val_loss: 1.0565 - val_accuracy: 0.6425
+Epoch 11/500
+4/4 - 1s - loss: 0.8873 - accuracy: 0.6190 - val_loss: 1.0412 - val_accuracy: 0.6592
+Epoch 12/500
+4/4 - 1s - loss: 0.8426 - accuracy: 0.6190 - val_loss: 1.0736 - val_accuracy: 0.6089
+Epoch 13/500
+4/4 - 1s - loss: 0.8168 - accuracy: 0.6571 - val_loss: 1.0854 - val_accuracy: 0.6089
+Epoch 14/500
+4/4 - 1s - loss: 0.7940 - accuracy: 0.6476 - val_loss: 1.0790 - val_accuracy: 0.6536
+Epoch 15/500
+4/4 - 1s - loss: 0.7310 - accuracy: 0.6667 - val_loss: 1.1688 - val_accuracy: 0.5140
+Epoch 16/500
+4/4 - 1s - loss: 0.6584 - accuracy: 0.7429 - val_loss: 1.1125 - val_accuracy: 0.6536
+Epoch 17/500
+4/4 - 1s - loss: 0.6473 - accuracy: 0.6952 - val_loss: 1.1774 - val_accuracy: 0.5698
+Epoch 18/500
+4/4 - 1s - loss: 0.5588 - accuracy: 0.7714 - val_loss: 1.1849 - val_accuracy: 0.5587
+Epoch 19/500
+4/4 - 1s - loss: 0.5069 - accuracy: 0.8000 - val_loss: 1.2188 - val_accuracy: 0.5475
+Epoch 20/500
+4/4 - 1s - loss: 0.4408 - accuracy: 0.8286 - val_loss: 1.2896 - val_accuracy: 0.5084
+Epoch 21/500
+4/4 - 1s - loss: 0.3743 - accuracy: 0.8762 - val_loss: 1.2965 - val_accuracy: 0.5475
+WARNING:tensorflow:sample_weight modes were coerced from
+  ...
+    to  
+  ['...']
+WARNING:tensorflow:sample_weight modes were coerced from
+  ...
+    to  
+  ['...']
+2020-05-20 13:21:10.595190: I tensorflow/core/profiler/lib/profiler_session.cc:225] Profiler session started.
+2020-05-20 13:21:10.595359: E tensorflow/core/profiler/internal/gpu/cupti_tracer.cc:1307] function cupti_interface_->Subscribe( &subscriber_, (CUpti_CallbackFunc)ApiCallback, this)failed with error CUPTI_ERROR_NOT_INITIALIZED
+2020-05-20 13:21:10.595394: E tensorflow/core/profiler/internal/gpu/cupti_tracer.cc:1346] function cupti_interface_->ActivityRegisterCallbacks( AllocCuptiActivityBuffer, FreeCuptiActivityBuffer)failed with error CUPTI_ERROR_NOT_INITIALIZED
+2020-05-20 13:21:10.796709: E tensorflow/core/profiler/internal/gpu/cupti_tracer.cc:1329] function cupti_interface_->EnableCallback( 0 , subscriber_, CUPTI_CB_DOMAIN_DRIVER_API, cbid)failed with error CUPTI_ERROR_INVALID_PARAMETER
+2020-05-20 13:21:10.796811: I tensorflow/core/profiler/internal/gpu/device_tracer.cc:88]  GpuTracer has collected 0 callback api events and 0 activity events.
+Epoch 00021: early stopping
+Labels in this part of split:  [56, 14, 23, 7, 5]
+Train for 4 steps, validate for 6 steps
+Epoch 1/500
+4/4 - 5s - loss: 1.4426 - accuracy: 0.3714 - val_loss: 1.1680 - val_accuracy: 0.6648
+Epoch 2/500
+4/4 - 5s - loss: 1.4058 - accuracy: 0.5333 - val_loss: 1.0305 - val_accuracy: 0.6648
+Epoch 3/500
+4/4 - 1s - loss: 1.2426 - accuracy: 0.5333 - val_loss: 1.1302 - val_accuracy: 0.6648
+Epoch 4/500
+4/4 - 7s - loss: 1.2015 - accuracy: 0.5333 - val_loss: 1.0132 - val_accuracy: 0.6648
+Epoch 5/500
+4/4 - 1s - loss: 1.1344 - accuracy: 0.5333 - val_loss: 1.0234 - val_accuracy: 0.6648
+Epoch 6/500
+4/4 - 1s - loss: 1.1220 - accuracy: 0.5333 - val_loss: 1.0386 - val_accuracy: 0.6648
+Epoch 7/500
+4/4 - 1s - loss: 1.0739 - accuracy: 0.5333 - val_loss: 1.0285 - val_accuracy: 0.6648
+Epoch 8/500
+4/4 - 1s - loss: 1.0412 - accuracy: 0.5333 - val_loss: 1.0267 - val_accuracy: 0.6648
+Epoch 9/500
+4/4 - 1s - loss: 1.0050 - accuracy: 0.5333 - val_loss: 1.0204 - val_accuracy: 0.6648
+Epoch 10/500
+4/4 - 1s - loss: 1.0083 - accuracy: 0.5333 - val_loss: 1.0405 - val_accuracy: 0.6704
+Epoch 11/500
+4/4 - 1s - loss: 0.9988 - accuracy: 0.5429 - val_loss: 1.0805 - val_accuracy: 0.6201
+Epoch 12/500
+4/4 - 1s - loss: 0.9142 - accuracy: 0.5524 - val_loss: 1.0471 - val_accuracy: 0.6648
+Epoch 13/500
+4/4 - 1s - loss: 0.8759 - accuracy: 0.6095 - val_loss: 1.0829 - val_accuracy: 0.6257
+Epoch 14/500
+4/4 - 1s - loss: 0.8451 - accuracy: 0.6476 - val_loss: 1.0710 - val_accuracy: 0.6760
+Epoch 15/500
+4/4 - 1s - loss: 0.7700 - accuracy: 0.6476 - val_loss: 1.1085 - val_accuracy: 0.5754
+Epoch 16/500
+4/4 - 1s - loss: 0.7220 - accuracy: 0.7429 - val_loss: 1.0954 - val_accuracy: 0.6480
+Epoch 17/500
+4/4 - 1s - loss: 0.6890 - accuracy: 0.7333 - val_loss: 1.1232 - val_accuracy: 0.6313
+Epoch 18/500
+4/4 - 1s - loss: 0.7111 - accuracy: 0.6762 - val_loss: 1.1825 - val_accuracy: 0.5363
+Epoch 19/500
+4/4 - 1s - loss: 0.5945 - accuracy: 0.8000 - val_loss: 1.2911 - val_accuracy: 0.5419
+Epoch 20/500
+4/4 - 1s - loss: 0.6423 - accuracy: 0.6571 - val_loss: 1.2772 - val_accuracy: 0.4749
+Epoch 21/500
+4/4 - 1s - loss: 0.5649 - accuracy: 0.8000 - val_loss: 1.2307 - val_accuracy: 0.6480
+Epoch 22/500
+4/4 - 1s - loss: 0.5277 - accuracy: 0.7333 - val_loss: 1.2268 - val_accuracy: 0.6145
+Epoch 23/500
+4/4 - 1s - loss: 0.4188 - accuracy: 0.8952 - val_loss: 1.2514 - val_accuracy: 0.5363
+Epoch 24/500
+4/4 - 1s - loss: 0.4015 - accuracy: 0.8286 - val_loss: 1.3142 - val_accuracy: 0.6034
+Epoch 25/500
+4/4 - 1s - loss: 0.3243 - accuracy: 0.8571 - val_loss: 1.2392 - val_accuracy: 0.6089
+Epoch 26/500
+4/4 - 1s - loss: 0.2603 - accuracy: 0.9143 - val_loss: 1.2587 - val_accuracy: 0.5866
+Epoch 27/500
+4/4 - 1s - loss: 0.1686 - accuracy: 0.9714 - val_loss: 1.5034 - val_accuracy: 0.5028
+Epoch 28/500
+4/4 - 1s - loss: 0.1683 - accuracy: 0.9619 - val_loss: 1.3758 - val_accuracy: 0.6257
+Epoch 29/500
+4/4 - 1s - loss: 0.1215 - accuracy: 0.9619 - val_loss: 1.4571 - val_accuracy: 0.5475
+Epoch 30/500
+4/4 - 1s - loss: 0.0969 - accuracy: 0.9714 - val_loss: 1.4598 - val_accuracy: 0.5978
+Epoch 31/500
+4/4 - 1s - loss: 0.0901 - accuracy: 0.9714 - val_loss: 1.5306 - val_accuracy: 0.6201
+Epoch 32/500
+4/4 - 1s - loss: 0.0539 - accuracy: 0.9810 - val_loss: 1.6866 - val_accuracy: 0.5196
+Epoch 33/500
+4/4 - 1s - loss: 0.0537 - accuracy: 0.9905 - val_loss: 1.5936 - val_accuracy: 0.6145
+Epoch 34/500
+4/4 - 1s - loss: 0.0509 - accuracy: 0.9714 - val_loss: 1.6362 - val_accuracy: 0.6313
+WARNING:tensorflow:sample_weight modes were coerced from
+  ...
+    to  
+  ['...']
+WARNING:tensorflow:sample_weight modes were coerced from
+  ...
+    to  
+  ['...']
+2020-05-20 13:22:07.355441: I tensorflow/core/profiler/lib/profiler_session.cc:225] Profiler session started.
+2020-05-20 13:22:07.355594: E tensorflow/core/profiler/internal/gpu/cupti_tracer.cc:1307] function cupti_interface_->Subscribe( &subscriber_, (CUpti_CallbackFunc)ApiCallback, this)failed with error CUPTI_ERROR_NOT_INITIALIZED
+2020-05-20 13:22:07.355627: E tensorflow/core/profiler/internal/gpu/cupti_tracer.cc:1346] function cupti_interface_->ActivityRegisterCallbacks( AllocCuptiActivityBuffer, FreeCuptiActivityBuffer)failed with error CUPTI_ERROR_NOT_INITIALIZED
+2020-05-20 13:22:07.429492: E tensorflow/core/profiler/internal/gpu/cupti_tracer.cc:1329] function cupti_interface_->EnableCallback( 0 , subscriber_, CUPTI_CB_DOMAIN_DRIVER_API, cbid)failed with error CUPTI_ERROR_INVALID_PARAMETER
+2020-05-20 13:22:07.429599: I tensorflow/core/profiler/internal/gpu/device_tracer.cc:88]  GpuTracer has collected 0 callback api events and 0 activity events.
+Epoch 00034: early stopping
+Labels in this part of split:  [72, 12, 15, 4, 2]
+Train for 4 steps, validate for 6 steps
+Epoch 1/500
+4/4 - 6s - loss: 1.2601 - accuracy: 0.5619 - val_loss: 1.1665 - val_accuracy: 0.6648
+Epoch 2/500
+4/4 - 1s - loss: 1.3445 - accuracy: 0.6857 - val_loss: 1.3069 - val_accuracy: 0.6648
+Epoch 3/500
+4/4 - 1s - loss: 0.9454 - accuracy: 0.6857 - val_loss: 1.2026 - val_accuracy: 0.6313
+Epoch 4/500
+4/4 - 5s - loss: 1.1009 - accuracy: 0.5714 - val_loss: 1.1223 - val_accuracy: 0.6648
+Epoch 5/500
+4/4 - 6s - loss: 0.8856 - accuracy: 0.6857 - val_loss: 1.0997 - val_accuracy: 0.6648
+Epoch 6/500
+4/4 - 5s - loss: 0.9113 - accuracy: 0.6857 - val_loss: 1.0566 - val_accuracy: 0.6648
+Epoch 7/500
+4/4 - 1s - loss: 0.8537 - accuracy: 0.7048 - val_loss: 1.1206 - val_accuracy: 0.6313
+Epoch 8/500
+4/4 - 1s - loss: 0.8155 - accuracy: 0.6762 - val_loss: 1.0611 - val_accuracy: 0.6648
+Epoch 9/500
+4/4 - 1s - loss: 0.7891 - accuracy: 0.6952 - val_loss: 1.1098 - val_accuracy: 0.5978
+Epoch 10/500
+4/4 - 1s - loss: 0.7412 - accuracy: 0.7238 - val_loss: 1.0638 - val_accuracy: 0.6425
+Epoch 11/500
+4/4 - 1s - loss: 0.7152 - accuracy: 0.7048 - val_loss: 1.0728 - val_accuracy: 0.6201
+Epoch 12/500
+4/4 - 1s - loss: 0.6934 - accuracy: 0.7429 - val_loss: 1.1129 - val_accuracy: 0.5810
+Epoch 13/500
+4/4 - 1s - loss: 0.6550 - accuracy: 0.7524 - val_loss: 1.0999 - val_accuracy: 0.6313
+Epoch 14/500
+4/4 - 1s - loss: 0.6213 - accuracy: 0.7905 - val_loss: 1.1410 - val_accuracy: 0.5754
+Epoch 15/500
+4/4 - 1s - loss: 0.5859 - accuracy: 0.8286 - val_loss: 1.1316 - val_accuracy: 0.6145
+Epoch 16/500
+4/4 - 1s - loss: 0.5652 - accuracy: 0.7714 - val_loss: 1.1629 - val_accuracy: 0.5587
+Epoch 17/500
+4/4 - 1s - loss: 0.5216 - accuracy: 0.8381 - val_loss: 1.1560 - val_accuracy: 0.6201
+Epoch 18/500
+4/4 - 1s - loss: 0.4846 - accuracy: 0.8476 - val_loss: 1.1833 - val_accuracy: 0.5698
+Epoch 19/500
+4/4 - 1s - loss: 0.4604 - accuracy: 0.8381 - val_loss: 1.1894 - val_accuracy: 0.6201
+Epoch 20/500
+4/4 - 1s - loss: 0.4206 - accuracy: 0.8286 - val_loss: 1.2259 - val_accuracy: 0.5475
+Epoch 21/500
+4/4 - 1s - loss: 0.3737 - accuracy: 0.8762 - val_loss: 1.2323 - val_accuracy: 0.5810
+WARNING:tensorflow:sample_weight modes were coerced from
+  ...
+    to  
+  ['...']
+WARNING:tensorflow:sample_weight modes were coerced from
+  ...
+    to  
+  ['...']
+2020-05-20 13:22:52.896908: I tensorflow/core/profiler/lib/profiler_session.cc:225] Profiler session started.
+2020-05-20 13:22:52.897063: E tensorflow/core/profiler/internal/gpu/cupti_tracer.cc:1307] function cupti_interface_->Subscribe( &subscriber_, (CUpti_CallbackFunc)ApiCallback, this)failed with error CUPTI_ERROR_NOT_INITIALIZED
+2020-05-20 13:22:52.897095: E tensorflow/core/profiler/internal/gpu/cupti_tracer.cc:1346] function cupti_interface_->ActivityRegisterCallbacks( AllocCuptiActivityBuffer, FreeCuptiActivityBuffer)failed with error CUPTI_ERROR_NOT_INITIALIZED
+2020-05-20 13:22:53.097227: E tensorflow/core/profiler/internal/gpu/cupti_tracer.cc:1329] function cupti_interface_->EnableCallback( 0 , subscriber_, CUPTI_CB_DOMAIN_DRIVER_API, cbid)failed with error CUPTI_ERROR_INVALID_PARAMETER
+2020-05-20 13:22:53.097344: I tensorflow/core/profiler/internal/gpu/device_tracer.cc:88]  GpuTracer has collected 0 callback api events and 0 activity events.
+Epoch 00021: early stopping
+Labels in this part of split:  [103, 2, 0, 0, 0]
+Train for 4 steps, validate for 6 steps
+Epoch 1/500
+4/4 - 7s - loss: 0.8758 - accuracy: 0.8286 - val_loss: 1.7364 - val_accuracy: 0.6648
+Epoch 2/500
+4/4 - 1s - loss: 0.0893 - accuracy: 0.9810 - val_loss: 3.1765 - val_accuracy: 0.6648
+Epoch 3/500
+4/4 - 1s - loss: 0.1676 - accuracy: 0.9810 - val_loss: 3.9448 - val_accuracy: 0.6648
+Epoch 4/500
+4/4 - 1s - loss: 0.1735 - accuracy: 0.9810 - val_loss: 4.0323 - val_accuracy: 0.6648
+Epoch 5/500
+4/4 - 1s - loss: 0.1632 - accuracy: 0.9810 - val_loss: 3.8725 - val_accuracy: 0.6648
+Epoch 6/500
+4/4 - 1s - loss: 0.1380 - accuracy: 0.9810 - val_loss: 3.6261 - val_accuracy: 0.6648
+Epoch 7/500
+4/4 - 1s - loss: 0.1125 - accuracy: 0.9810 - val_loss: 3.2830 - val_accuracy: 0.6648
+Epoch 8/500
+4/4 - 1s - loss: 0.0834 - accuracy: 0.9810 - val_loss: 2.8958 - val_accuracy: 0.6648
+Epoch 9/500
+4/4 - 1s - loss: 0.0581 - accuracy: 0.9810 - val_loss: 2.6599 - val_accuracy: 0.6648
+Epoch 10/500
+4/4 - 1s - loss: 0.0669 - accuracy: 0.9810 - val_loss: 2.6629 - val_accuracy: 0.6648
+Epoch 11/500
+4/4 - 1s - loss: 0.0488 - accuracy: 0.9810 - val_loss: 2.8828 - val_accuracy: 0.6648
+Epoch 12/500
+4/4 - 1s - loss: 0.0530 - accuracy: 0.9810 - val_loss: 3.0322 - val_accuracy: 0.6648
+Epoch 13/500
+4/4 - 1s - loss: 0.0457 - accuracy: 0.9810 - val_loss: 2.9640 - val_accuracy: 0.6648
+Epoch 14/500
+4/4 - 1s - loss: 0.0345 - accuracy: 0.9810 - val_loss: 2.8130 - val_accuracy: 0.6648
+Epoch 15/500
+4/4 - 1s - loss: 0.0367 - accuracy: 0.9905 - val_loss: 2.6944 - val_accuracy: 0.6648
+Epoch 16/500
+4/4 - 1s - loss: 0.0322 - accuracy: 0.9905 - val_loss: 2.7916 - val_accuracy: 0.6648
+Epoch 17/500
+4/4 - 1s - loss: 0.0308 - accuracy: 0.9905 - val_loss: 2.9979 - val_accuracy: 0.6648
+Epoch 18/500
+4/4 - 1s - loss: 0.0256 - accuracy: 0.9905 - val_loss: 2.8864 - val_accuracy: 0.6648
+Epoch 19/500
+4/4 - 1s - loss: 0.0205 - accuracy: 0.9905 - val_loss: 2.8271 - val_accuracy: 0.6648
+Epoch 20/500
+4/4 - 1s - loss: 0.0196 - accuracy: 0.9905 - val_loss: 2.8697 - val_accuracy: 0.6648
+Epoch 21/500
+4/4 - 1s - loss: 0.0168 - accuracy: 0.9905 - val_loss: 2.9913 - val_accuracy: 0.6648
+WARNING:tensorflow:sample_weight modes were coerced from
+  ...
+    to  
+  ['...']
+WARNING:tensorflow:sample_weight modes were coerced from
+  ...
+    to  
+  ['...']
+2020-05-20 13:23:28.854172: I tensorflow/core/profiler/lib/profiler_session.cc:225] Profiler session started.
+2020-05-20 13:23:28.854340: E tensorflow/core/profiler/internal/gpu/cupti_tracer.cc:1307] function cupti_interface_->Subscribe( &subscriber_, (CUpti_CallbackFunc)ApiCallback, this)failed with error CUPTI_ERROR_NOT_INITIALIZED
+2020-05-20 13:23:28.854374: E tensorflow/core/profiler/internal/gpu/cupti_tracer.cc:1346] function cupti_interface_->ActivityRegisterCallbacks( AllocCuptiActivityBuffer, FreeCuptiActivityBuffer)failed with error CUPTI_ERROR_NOT_INITIALIZED
+2020-05-20 13:23:28.927919: E tensorflow/core/profiler/internal/gpu/cupti_tracer.cc:1329] function cupti_interface_->EnableCallback( 0 , subscriber_, CUPTI_CB_DOMAIN_DRIVER_API, cbid)failed with error CUPTI_ERROR_INVALID_PARAMETER
+2020-05-20 13:23:28.928020: I tensorflow/core/profiler/internal/gpu/device_tracer.cc:88]  GpuTracer has collected 0 callback api events and 0 activity events.
+Epoch 00021: early stopping
+Labels in this part of split:  [0, 105, 0, 0, 0]
+Train for 4 steps, validate for 6 steps
+Epoch 1/500
+4/4 - 5s - loss: 0.6913 - accuracy: 0.6952 - val_loss: 5.1354 - val_accuracy: 0.1229
+Epoch 2/500
+4/4 - 1s - loss: 0.0038 - accuracy: 1.0000 - val_loss: 8.9036 - val_accuracy: 0.1229
+Epoch 3/500
+4/4 - 1s - loss: 7.9799e-05 - accuracy: 1.0000 - val_loss: 11.1652 - val_accuracy: 0.1229
+Epoch 4/500
+4/4 - 1s - loss: 8.3242e-06 - accuracy: 1.0000 - val_loss: 12.5851 - val_accuracy: 0.1229
+Epoch 5/500
+4/4 - 1s - loss: 2.0417e-06 - accuracy: 1.0000 - val_loss: 13.5037 - val_accuracy: 0.1229
+Epoch 6/500
+4/4 - 1s - loss: 7.9667e-07 - accuracy: 1.0000 - val_loss: 14.1061 - val_accuracy: 0.1229
+Epoch 7/500
+4/4 - 1s - loss: 4.3083e-07 - accuracy: 1.0000 - val_loss: 14.5018 - val_accuracy: 0.1229
+Epoch 8/500
+4/4 - 1s - loss: 3.4888e-07 - accuracy: 1.0000 - val_loss: 14.7621 - val_accuracy: 0.1229
+Epoch 9/500
+4/4 - 1s - loss: 3.1684e-07 - accuracy: 1.0000 - val_loss: 14.9333 - val_accuracy: 0.1229
+Epoch 10/500
+4/4 - 1s - loss: 2.3627e-07 - accuracy: 1.0000 - val_loss: 15.0459 - val_accuracy: 0.1229
+Epoch 11/500
+4/4 - 1s - loss: 1.8491e-07 - accuracy: 1.0000 - val_loss: 15.1200 - val_accuracy: 0.1229
+Epoch 12/500
+4/4 - 1s - loss: 1.3938e-07 - accuracy: 1.0000 - val_loss: 15.1688 - val_accuracy: 0.1229
+Epoch 13/500
+4/4 - 1s - loss: 1.1714e-07 - accuracy: 1.0000 - val_loss: 15.2010 - val_accuracy: 0.1229
+Epoch 14/500
+4/4 - 1s - loss: 1.0260e-07 - accuracy: 1.0000 - val_loss: 15.2222 - val_accuracy: 0.1229
+Epoch 15/500
+4/4 - 1s - loss: 8.7089e-08 - accuracy: 1.0000 - val_loss: 15.2361 - val_accuracy: 0.1229
+Epoch 16/500
+4/4 - 1s - loss: 8.3201e-08 - accuracy: 1.0000 - val_loss: 15.2453 - val_accuracy: 0.1229
+Epoch 17/500
+4/4 - 1s - loss: 7.6436e-08 - accuracy: 1.0000 - val_loss: 15.2514 - val_accuracy: 0.1229
+Epoch 18/500
+4/4 - 1s - loss: 7.6436e-08 - accuracy: 1.0000 - val_loss: 15.2554 - val_accuracy: 0.1229
+Epoch 19/500
+4/4 - 1s - loss: 7.2547e-08 - accuracy: 1.0000 - val_loss: 15.2581 - val_accuracy: 0.1229
+Epoch 20/500
+4/4 - 1s - loss: 7.2547e-08 - accuracy: 1.0000 - val_loss: 15.2599 - val_accuracy: 0.1229
+Epoch 21/500
+4/4 - 1s - loss: 7.1575e-08 - accuracy: 1.0000 - val_loss: 15.2611 - val_accuracy: 0.1229
+WARNING:tensorflow:sample_weight modes were coerced from
+  ...
+    to  
+  ['...']
+WARNING:tensorflow:sample_weight modes were coerced from
+  ...
+    to  
+  ['...']
+2020-05-20 13:24:01.239022: I tensorflow/core/profiler/lib/profiler_session.cc:225] Profiler session started.
+2020-05-20 13:24:01.239180: E tensorflow/core/profiler/internal/gpu/cupti_tracer.cc:1307] function cupti_interface_->Subscribe( &subscriber_, (CUpti_CallbackFunc)ApiCallback, this)failed with error CUPTI_ERROR_NOT_INITIALIZED
+2020-05-20 13:24:01.239213: E tensorflow/core/profiler/internal/gpu/cupti_tracer.cc:1346] function cupti_interface_->ActivityRegisterCallbacks( AllocCuptiActivityBuffer, FreeCuptiActivityBuffer)failed with error CUPTI_ERROR_NOT_INITIALIZED
+2020-05-20 13:24:01.313034: E tensorflow/core/profiler/internal/gpu/cupti_tracer.cc:1329] function cupti_interface_->EnableCallback( 0 , subscriber_, CUPTI_CB_DOMAIN_DRIVER_API, cbid)failed with error CUPTI_ERROR_INVALID_PARAMETER
+2020-05-20 13:24:01.313142: I tensorflow/core/profiler/internal/gpu/device_tracer.cc:88]  GpuTracer has collected 0 callback api events and 0 activity events.
+Epoch 00021: early stopping
+Labels in this part of split:  [0, 105, 0, 0, 0]
+Train for 4 steps, validate for 6 steps
+Epoch 1/500
+4/4 - 4s - loss: 0.6938 - accuracy: 0.6952 - val_loss: 5.0284 - val_accuracy: 0.1229
+Epoch 2/500
+4/4 - 1s - loss: 0.0039 - accuracy: 1.0000 - val_loss: 8.7452 - val_accuracy: 0.1229
+Epoch 3/500
+4/4 - 1s - loss: 9.0639e-05 - accuracy: 1.0000 - val_loss: 10.9851 - val_accuracy: 0.1229
+Epoch 4/500
+4/4 - 1s - loss: 9.2248e-06 - accuracy: 1.0000 - val_loss: 12.3873 - val_accuracy: 0.1229
+Epoch 5/500
+4/4 - 1s - loss: 2.3985e-06 - accuracy: 1.0000 - val_loss: 13.2903 - val_accuracy: 0.1229
+Epoch 6/500
+4/4 - 1s - loss: 9.5120e-07 - accuracy: 1.0000 - val_loss: 13.8796 - val_accuracy: 0.1229
+Epoch 7/500
+4/4 - 1s - loss: 5.1459e-07 - accuracy: 1.0000 - val_loss: 14.2659 - val_accuracy: 0.1229
+Epoch 8/500
+4/4 - 1s - loss: 3.8752e-07 - accuracy: 1.0000 - val_loss: 14.5195 - val_accuracy: 0.1229
+Epoch 9/500
+4/4 - 1s - loss: 3.2684e-07 - accuracy: 1.0000 - val_loss: 14.6863 - val_accuracy: 0.1229
+Epoch 10/500
+4/4 - 1s - loss: 2.8212e-07 - accuracy: 1.0000 - val_loss: 14.7960 - val_accuracy: 0.1229
+Epoch 11/500
+4/4 - 1s - loss: 2.5592e-07 - accuracy: 1.0000 - val_loss: 14.8683 - val_accuracy: 0.1229
+Epoch 12/500
+4/4 - 1s - loss: 2.2392e-07 - accuracy: 1.0000 - val_loss: 14.9159 - val_accuracy: 0.1229
+Epoch 13/500
+4/4 - 1s - loss: 2.0354e-07 - accuracy: 1.0000 - val_loss: 14.9473 - val_accuracy: 0.1229
+Epoch 14/500
+4/4 - 1s - loss: 1.9099e-07 - accuracy: 1.0000 - val_loss: 14.9680 - val_accuracy: 0.1229
+Epoch 15/500
+4/4 - 1s - loss: 1.8612e-07 - accuracy: 1.0000 - val_loss: 14.9817 - val_accuracy: 0.1229
+Epoch 16/500
+4/4 - 1s - loss: 1.8126e-07 - accuracy: 1.0000 - val_loss: 14.9908 - val_accuracy: 0.1229
+Epoch 17/500
+4/4 - 1s - loss: 1.7932e-07 - accuracy: 1.0000 - val_loss: 14.9969 - val_accuracy: 0.1229
+Epoch 18/500
+4/4 - 1s - loss: 1.7640e-07 - accuracy: 1.0000 - val_loss: 15.0009 - val_accuracy: 0.1229
+Epoch 19/500
+4/4 - 1s - loss: 1.7543e-07 - accuracy: 1.0000 - val_loss: 15.0036 - val_accuracy: 0.1229
+Epoch 20/500
+4/4 - 1s - loss: 1.7349e-07 - accuracy: 1.0000 - val_loss: 15.0055 - val_accuracy: 0.1229
+Epoch 21/500
+4/4 - 1s - loss: 1.7154e-07 - accuracy: 1.0000 - val_loss: 15.0068 - val_accuracy: 0.1229
+WARNING:tensorflow:sample_weight modes were coerced from
+  ...
+    to  
+  ['...']
+WARNING:tensorflow:sample_weight modes were coerced from
+  ...
+    to  
+  ['...']
+2020-05-20 13:24:32.761690: I tensorflow/core/profiler/lib/profiler_session.cc:225] Profiler session started.
+2020-05-20 13:24:32.761841: E tensorflow/core/profiler/internal/gpu/cupti_tracer.cc:1307] function cupti_interface_->Subscribe( &subscriber_, (CUpti_CallbackFunc)ApiCallback, this)failed with error CUPTI_ERROR_NOT_INITIALIZED
+2020-05-20 13:24:32.761873: E tensorflow/core/profiler/internal/gpu/cupti_tracer.cc:1346] function cupti_interface_->ActivityRegisterCallbacks( AllocCuptiActivityBuffer, FreeCuptiActivityBuffer)failed with error CUPTI_ERROR_NOT_INITIALIZED
+2020-05-20 13:24:32.961669: E tensorflow/core/profiler/internal/gpu/cupti_tracer.cc:1329] function cupti_interface_->EnableCallback( 0 , subscriber_, CUPTI_CB_DOMAIN_DRIVER_API, cbid)failed with error CUPTI_ERROR_INVALID_PARAMETER
+2020-05-20 13:24:32.961771: I tensorflow/core/profiler/internal/gpu/device_tracer.cc:88]  GpuTracer has collected 0 callback api events and 0 activity events.
+Epoch 00021: early stopping
+Labels in this part of split:  [0, 105, 0, 0, 0]
+Train for 4 steps, validate for 6 steps
+Epoch 1/500
+4/4 - 4s - loss: 0.6604 - accuracy: 0.9143 - val_loss: 5.0806 - val_accuracy: 0.1229
+Epoch 2/500
+4/4 - 1s - loss: 0.0042 - accuracy: 1.0000 - val_loss: 8.8219 - val_accuracy: 0.1229
+Epoch 3/500
+4/4 - 1s - loss: 8.7958e-05 - accuracy: 1.0000 - val_loss: 11.0684 - val_accuracy: 0.1229
+Epoch 4/500
+4/4 - 1s - loss: 8.6625e-06 - accuracy: 1.0000 - val_loss: 12.4702 - val_accuracy: 0.1229
+Epoch 5/500
+4/4 - 1s - loss: 2.2295e-06 - accuracy: 1.0000 - val_loss: 13.3680 - val_accuracy: 0.1229
+Epoch 6/500
+4/4 - 1s - loss: 9.1418e-07 - accuracy: 1.0000 - val_loss: 13.9534 - val_accuracy: 0.1229
+Epoch 7/500
+4/4 - 1s - loss: 4.9997e-07 - accuracy: 1.0000 - val_loss: 14.3369 - val_accuracy: 0.1229
+Epoch 8/500
+4/4 - 1s - loss: 3.6054e-07 - accuracy: 1.0000 - val_loss: 14.5886 - val_accuracy: 0.1229
+Epoch 9/500
+4/4 - 1s - loss: 3.2858e-07 - accuracy: 1.0000 - val_loss: 14.7538 - val_accuracy: 0.1229
+Epoch 10/500
+4/4 - 1s - loss: 2.8873e-07 - accuracy: 1.0000 - val_loss: 14.8624 - val_accuracy: 0.1229
+Epoch 11/500
+4/4 - 1s - loss: 2.5762e-07 - accuracy: 1.0000 - val_loss: 14.9338 - val_accuracy: 0.1229
+Epoch 12/500
+4/4 - 1s - loss: 2.2469e-07 - accuracy: 1.0000 - val_loss: 14.9808 - val_accuracy: 0.1229
+Epoch 13/500
+4/4 - 1s - loss: 1.9763e-07 - accuracy: 1.0000 - val_loss: 15.0118 - val_accuracy: 0.1229
+Epoch 14/500
+4/4 - 1s - loss: 1.8698e-07 - accuracy: 1.0000 - val_loss: 15.0322 - val_accuracy: 0.1229
+Epoch 15/500
+4/4 - 1s - loss: 1.7632e-07 - accuracy: 1.0000 - val_loss: 15.0456 - val_accuracy: 0.1229
+Epoch 16/500
+4/4 - 1s - loss: 1.7243e-07 - accuracy: 1.0000 - val_loss: 15.0545 - val_accuracy: 0.1229
+Epoch 17/500
+4/4 - 1s - loss: 1.7049e-07 - accuracy: 1.0000 - val_loss: 15.0603 - val_accuracy: 0.1229
+Epoch 18/500
+4/4 - 1s - loss: 1.6952e-07 - accuracy: 1.0000 - val_loss: 15.0642 - val_accuracy: 0.1229
+Epoch 19/500
+4/4 - 1s - loss: 1.6855e-07 - accuracy: 1.0000 - val_loss: 15.0668 - val_accuracy: 0.1229
+Epoch 20/500
+4/4 - 1s - loss: 1.6466e-07 - accuracy: 1.0000 - val_loss: 15.0685 - val_accuracy: 0.1229
+Epoch 21/500
+4/4 - 1s - loss: 1.6466e-07 - accuracy: 1.0000 - val_loss: 15.0697 - val_accuracy: 0.1229
+WARNING:tensorflow:sample_weight modes were coerced from
+  ...
+    to  
+  ['...']
+WARNING:tensorflow:sample_weight modes were coerced from
+  ...
+    to  
+  ['...']
+2020-05-20 13:25:04.710637: I tensorflow/core/profiler/lib/profiler_session.cc:225] Profiler session started.
+2020-05-20 13:25:04.710805: E tensorflow/core/profiler/internal/gpu/cupti_tracer.cc:1307] function cupti_interface_->Subscribe( &subscriber_, (CUpti_CallbackFunc)ApiCallback, this)failed with error CUPTI_ERROR_NOT_INITIALIZED
+2020-05-20 13:25:04.710838: E tensorflow/core/profiler/internal/gpu/cupti_tracer.cc:1346] function cupti_interface_->ActivityRegisterCallbacks( AllocCuptiActivityBuffer, FreeCuptiActivityBuffer)failed with error CUPTI_ERROR_NOT_INITIALIZED
+2020-05-20 13:25:04.911206: E tensorflow/core/profiler/internal/gpu/cupti_tracer.cc:1329] function cupti_interface_->EnableCallback( 0 , subscriber_, CUPTI_CB_DOMAIN_DRIVER_API, cbid)failed with error CUPTI_ERROR_INVALID_PARAMETER
+2020-05-20 13:25:04.911320: I tensorflow/core/profiler/internal/gpu/device_tracer.cc:88]  GpuTracer has collected 0 callback api events and 0 activity events.
+Epoch 00021: early stopping
+Labels in this part of split:  [0, 105, 0, 0, 0]
+Train for 4 steps, validate for 6 steps
+Epoch 1/500
+4/4 - 6s - loss: 0.6728 - accuracy: 0.9143 - val_loss: 5.1037 - val_accuracy: 0.1229
+Epoch 2/500
+4/4 - 1s - loss: 0.0036 - accuracy: 1.0000 - val_loss: 8.8898 - val_accuracy: 0.1229
+Epoch 3/500
+4/4 - 1s - loss: 6.9734e-05 - accuracy: 1.0000 - val_loss: 11.1495 - val_accuracy: 0.1229
+Epoch 4/500
+4/4 - 1s - loss: 8.0068e-06 - accuracy: 1.0000 - val_loss: 12.5602 - val_accuracy: 0.1229
+Epoch 5/500
+4/4 - 1s - loss: 1.9507e-06 - accuracy: 1.0000 - val_loss: 13.4711 - val_accuracy: 0.1229
+Epoch 6/500
+4/4 - 1s - loss: 7.8654e-07 - accuracy: 1.0000 - val_loss: 14.0677 - val_accuracy: 0.1229
+Epoch 7/500
+4/4 - 1s - loss: 4.3418e-07 - accuracy: 1.0000 - val_loss: 14.4588 - val_accuracy: 0.1229
+Epoch 8/500
+4/4 - 1s - loss: 3.1210e-07 - accuracy: 1.0000 - val_loss: 14.7154 - val_accuracy: 0.1229
+Epoch 9/500
+4/4 - 1s - loss: 2.4624e-07 - accuracy: 1.0000 - val_loss: 14.8840 - val_accuracy: 0.1229
+Epoch 10/500
+4/4 - 1s - loss: 1.9508e-07 - accuracy: 1.0000 - val_loss: 14.9949 - val_accuracy: 0.1229
+Epoch 11/500
+4/4 - 1s - loss: 1.6105e-07 - accuracy: 1.0000 - val_loss: 15.0679 - val_accuracy: 0.1229
+Epoch 12/500
+4/4 - 1s - loss: 1.3881e-07 - accuracy: 1.0000 - val_loss: 15.1159 - val_accuracy: 0.1229
+Epoch 13/500
+4/4 - 1s - loss: 1.2909e-07 - accuracy: 1.0000 - val_loss: 15.1475 - val_accuracy: 0.1229
+Epoch 14/500
+4/4 - 1s - loss: 1.1937e-07 - accuracy: 1.0000 - val_loss: 15.1684 - val_accuracy: 0.1229
+Epoch 15/500
+4/4 - 1s - loss: 1.1354e-07 - accuracy: 1.0000 - val_loss: 15.1821 - val_accuracy: 0.1229
+Epoch 16/500
+4/4 - 1s - loss: 1.0965e-07 - accuracy: 1.0000 - val_loss: 15.1912 - val_accuracy: 0.1229
+Epoch 17/500
+4/4 - 1s - loss: 1.0288e-07 - accuracy: 1.0000 - val_loss: 15.1971 - val_accuracy: 0.1229
+Epoch 18/500
+4/4 - 1s - loss: 1.0094e-07 - accuracy: 1.0000 - val_loss: 15.2011 - val_accuracy: 0.1229
+Epoch 19/500
+4/4 - 1s - loss: 1.0094e-07 - accuracy: 1.0000 - val_loss: 15.2037 - val_accuracy: 0.1229
+Epoch 20/500
+4/4 - 1s - loss: 9.6079e-08 - accuracy: 1.0000 - val_loss: 15.2055 - val_accuracy: 0.1229
+Epoch 21/500
+4/4 - 1s - loss: 9.6079e-08 - accuracy: 1.0000 - val_loss: 15.2067 - val_accuracy: 0.1229
+WARNING:tensorflow:sample_weight modes were coerced from
+  ...
+    to  
+  ['...']
+WARNING:tensorflow:sample_weight modes were coerced from
+  ...
+    to  
+  ['...']
+2020-05-20 13:25:37.782612: I tensorflow/core/profiler/lib/profiler_session.cc:225] Profiler session started.
+2020-05-20 13:25:37.782772: E tensorflow/core/profiler/internal/gpu/cupti_tracer.cc:1307] function cupti_interface_->Subscribe( &subscriber_, (CUpti_CallbackFunc)ApiCallback, this)failed with error CUPTI_ERROR_NOT_INITIALIZED
+2020-05-20 13:25:37.782805: E tensorflow/core/profiler/internal/gpu/cupti_tracer.cc:1346] function cupti_interface_->ActivityRegisterCallbacks( AllocCuptiActivityBuffer, FreeCuptiActivityBuffer)failed with error CUPTI_ERROR_NOT_INITIALIZED
+2020-05-20 13:25:37.855948: E tensorflow/core/profiler/internal/gpu/cupti_tracer.cc:1329] function cupti_interface_->EnableCallback( 0 , subscriber_, CUPTI_CB_DOMAIN_DRIVER_API, cbid)failed with error CUPTI_ERROR_INVALID_PARAMETER
+2020-05-20 13:25:37.856054: I tensorflow/core/profiler/internal/gpu/device_tracer.cc:88]  GpuTracer has collected 0 callback api events and 0 activity events.
+Epoch 00021: early stopping
+Labels in this part of split:  [0, 105, 0, 0, 0]
+Train for 4 steps, validate for 6 steps
+Epoch 1/500
+4/4 - 5s - loss: 0.7041 - accuracy: 0.6952 - val_loss: 5.0804 - val_accuracy: 0.1229
+Epoch 2/500
+4/4 - 1s - loss: 0.0038 - accuracy: 1.0000 - val_loss: 8.8018 - val_accuracy: 0.1229
+Epoch 3/500
+4/4 - 1s - loss: 9.0176e-05 - accuracy: 1.0000 - val_loss: 11.0275 - val_accuracy: 0.1229
+Epoch 4/500
+4/4 - 1s - loss: 8.5151e-06 - accuracy: 1.0000 - val_loss: 12.4221 - val_accuracy: 0.1229
+Epoch 5/500
+4/4 - 1s - loss: 2.3689e-06 - accuracy: 1.0000 - val_loss: 13.3165 - val_accuracy: 0.1229
+Epoch 6/500
+4/4 - 1s - loss: 8.8939e-07 - accuracy: 1.0000 - val_loss: 13.9009 - val_accuracy: 0.1229
+Epoch 7/500
+4/4 - 1s - loss: 4.9640e-07 - accuracy: 1.0000 - val_loss: 14.2842 - val_accuracy: 0.1229
+Epoch 8/500
+4/4 - 1s - loss: 3.8096e-07 - accuracy: 1.0000 - val_loss: 14.5359 - val_accuracy: 0.1229
+Epoch 9/500
+4/4 - 1s - loss: 3.3357e-07 - accuracy: 1.0000 - val_loss: 14.7014 - val_accuracy: 0.1229
+Epoch 10/500
+4/4 - 1s - loss: 2.9581e-07 - accuracy: 1.0000 - val_loss: 14.8103 - val_accuracy: 0.1229
+Epoch 11/500
+4/4 - 1s - loss: 2.5308e-07 - accuracy: 1.0000 - val_loss: 14.8820 - val_accuracy: 0.1229
+Epoch 12/500
+4/4 - 1s - loss: 2.1444e-07 - accuracy: 1.0000 - val_loss: 14.9291 - val_accuracy: 0.1229
+Epoch 13/500
+4/4 - 1s - loss: 1.9503e-07 - accuracy: 1.0000 - val_loss: 14.9602 - val_accuracy: 0.1229
+Epoch 14/500
+4/4 - 1s - loss: 1.8151e-07 - accuracy: 1.0000 - val_loss: 14.9807 - val_accuracy: 0.1229
+Epoch 15/500
+4/4 - 1s - loss: 1.7276e-07 - accuracy: 1.0000 - val_loss: 14.9942 - val_accuracy: 0.1229
+Epoch 16/500
+4/4 - 1s - loss: 1.6887e-07 - accuracy: 1.0000 - val_loss: 15.0031 - val_accuracy: 0.1229
+Epoch 17/500
+4/4 - 1s - loss: 1.6595e-07 - accuracy: 1.0000 - val_loss: 15.0090 - val_accuracy: 0.1229
+Epoch 18/500
+4/4 - 1s - loss: 1.6113e-07 - accuracy: 1.0000 - val_loss: 15.0129 - val_accuracy: 0.1229
+Epoch 19/500
+4/4 - 1s - loss: 1.5919e-07 - accuracy: 1.0000 - val_loss: 15.0156 - val_accuracy: 0.1229
+Epoch 20/500
+4/4 - 1s - loss: 1.5724e-07 - accuracy: 1.0000 - val_loss: 15.0173 - val_accuracy: 0.1229
+Epoch 21/500
+4/4 - 1s - loss: 1.5724e-07 - accuracy: 1.0000 - val_loss: 15.0185 - val_accuracy: 0.1229
+WARNING:tensorflow:sample_weight modes were coerced from
+  ...
+    to  
+  ['...']
+WARNING:tensorflow:sample_weight modes were coerced from
+  ...
+    to  
+  ['...']
+2020-05-20 13:26:10.166507: I tensorflow/core/profiler/lib/profiler_session.cc:225] Profiler session started.
+2020-05-20 13:26:10.166671: E tensorflow/core/profiler/internal/gpu/cupti_tracer.cc:1307] function cupti_interface_->Subscribe( &subscriber_, (CUpti_CallbackFunc)ApiCallback, this)failed with error CUPTI_ERROR_NOT_INITIALIZED
+2020-05-20 13:26:10.166710: E tensorflow/core/profiler/internal/gpu/cupti_tracer.cc:1346] function cupti_interface_->ActivityRegisterCallbacks( AllocCuptiActivityBuffer, FreeCuptiActivityBuffer)failed with error CUPTI_ERROR_NOT_INITIALIZED
+2020-05-20 13:26:10.368394: E tensorflow/core/profiler/internal/gpu/cupti_tracer.cc:1329] function cupti_interface_->EnableCallback( 0 , subscriber_, CUPTI_CB_DOMAIN_DRIVER_API, cbid)failed with error CUPTI_ERROR_INVALID_PARAMETER
+2020-05-20 13:26:10.368492: I tensorflow/core/profiler/internal/gpu/device_tracer.cc:88]  GpuTracer has collected 0 callback api events and 0 activity events.
+Epoch 00021: early stopping
+Labels in this part of split:  [0, 105, 0, 0, 0]
+Train for 4 steps, validate for 6 steps
+Epoch 1/500
+4/4 - 5s - loss: 0.7394 - accuracy: 0.6952 - val_loss: 5.1486 - val_accuracy: 0.1229
+Epoch 2/500
+4/4 - 1s - loss: 0.0045 - accuracy: 1.0000 - val_loss: 8.8581 - val_accuracy: 0.1229
+Epoch 3/500
+4/4 - 1s - loss: 9.3312e-05 - accuracy: 1.0000 - val_loss: 11.0582 - val_accuracy: 0.1229
+Epoch 4/500
+4/4 - 1s - loss: 1.0112e-05 - accuracy: 1.0000 - val_loss: 12.4327 - val_accuracy: 0.1229
+Epoch 5/500
+4/4 - 1s - loss: 2.5214e-06 - accuracy: 1.0000 - val_loss: 13.3129 - val_accuracy: 0.1229
+Epoch 6/500
+4/4 - 1s - loss: 1.0688e-06 - accuracy: 1.0000 - val_loss: 13.8878 - val_accuracy: 0.1229
+Epoch 7/500
+4/4 - 1s - loss: 5.9499e-07 - accuracy: 1.0000 - val_loss: 14.2651 - val_accuracy: 0.1229
+Epoch 8/500
+4/4 - 1s - loss: 3.8481e-07 - accuracy: 1.0000 - val_loss: 14.5131 - val_accuracy: 0.1229
+Epoch 9/500
+4/4 - 1s - loss: 3.5860e-07 - accuracy: 1.0000 - val_loss: 14.6762 - val_accuracy: 0.1229
+Epoch 10/500
+4/4 - 1s - loss: 3.5471e-07 - accuracy: 1.0000 - val_loss: 14.7834 - val_accuracy: 0.1229
+Epoch 11/500
+4/4 - 1s - loss: 3.4600e-07 - accuracy: 1.0000 - val_loss: 14.8540 - val_accuracy: 0.1229
+Epoch 12/500
+4/4 - 1s - loss: 3.2850e-07 - accuracy: 1.0000 - val_loss: 14.9004 - val_accuracy: 0.1229
+Epoch 13/500
+4/4 - 1s - loss: 3.0533e-07 - accuracy: 1.0000 - val_loss: 14.9310 - val_accuracy: 0.1229
+Epoch 14/500
+4/4 - 1s - loss: 2.9270e-07 - accuracy: 1.0000 - val_loss: 14.9512 - val_accuracy: 0.1229
+Epoch 15/500
+4/4 - 1s - loss: 2.8686e-07 - accuracy: 1.0000 - val_loss: 14.9646 - val_accuracy: 0.1229
+Epoch 16/500
+4/4 - 1s - loss: 2.8298e-07 - accuracy: 1.0000 - val_loss: 14.9734 - val_accuracy: 0.1229
+Epoch 17/500
+4/4 - 1s - loss: 2.7524e-07 - accuracy: 1.0000 - val_loss: 14.9793 - val_accuracy: 0.1229
+Epoch 18/500
+4/4 - 1s - loss: 2.7524e-07 - accuracy: 1.0000 - val_loss: 14.9832 - val_accuracy: 0.1229
+Epoch 19/500
+4/4 - 1s - loss: 2.7524e-07 - accuracy: 1.0000 - val_loss: 14.9858 - val_accuracy: 0.1229
+Epoch 20/500
+4/4 - 1s - loss: 2.7236e-07 - accuracy: 1.0000 - val_loss: 14.9876 - val_accuracy: 0.1229
+Epoch 21/500
+4/4 - 1s - loss: 2.7139e-07 - accuracy: 1.0000 - val_loss: 14.9888 - val_accuracy: 0.1229
+WARNING:tensorflow:sample_weight modes were coerced from
+  ...
+    to  
+  ['...']
+WARNING:tensorflow:sample_weight modes were coerced from
+  ...
+    to  
+  ['...']
+2020-05-20 13:26:42.182690: I tensorflow/core/profiler/lib/profiler_session.cc:225] Profiler session started.
+2020-05-20 13:26:42.182841: E tensorflow/core/profiler/internal/gpu/cupti_tracer.cc:1307] function cupti_interface_->Subscribe( &subscriber_, (CUpti_CallbackFunc)ApiCallback, this)failed with error CUPTI_ERROR_NOT_INITIALIZED
+2020-05-20 13:26:42.182874: E tensorflow/core/profiler/internal/gpu/cupti_tracer.cc:1346] function cupti_interface_->ActivityRegisterCallbacks( AllocCuptiActivityBuffer, FreeCuptiActivityBuffer)failed with error CUPTI_ERROR_NOT_INITIALIZED
+2020-05-20 13:26:42.256724: E tensorflow/core/profiler/internal/gpu/cupti_tracer.cc:1329] function cupti_interface_->EnableCallback( 0 , subscriber_, CUPTI_CB_DOMAIN_DRIVER_API, cbid)failed with error CUPTI_ERROR_INVALID_PARAMETER
+2020-05-20 13:26:42.256827: I tensorflow/core/profiler/internal/gpu/device_tracer.cc:88]  GpuTracer has collected 0 callback api events and 0 activity events.
+Epoch 00021: early stopping
+Labels in this part of split:  [0, 18, 87, 0, 0]
+Train for 4 steps, validate for 6 steps
+Epoch 1/500
+4/4 - 5s - loss: 0.7940 - accuracy: 0.8286 - val_loss: 4.2267 - val_accuracy: 0.1564
+Epoch 2/500
+4/4 - 1s - loss: 0.5419 - accuracy: 0.8286 - val_loss: 4.6336 - val_accuracy: 0.1564
+Epoch 3/500
+4/4 - 1s - loss: 0.4429 - accuracy: 0.8000 - val_loss: 5.2447 - val_accuracy: 0.1564
+Epoch 4/500
+4/4 - 1s - loss: 0.4155 - accuracy: 0.8381 - val_loss: 6.2576 - val_accuracy: 0.1564
+Epoch 5/500
+4/4 - 1s - loss: 0.3799 - accuracy: 0.8286 - val_loss: 6.0821 - val_accuracy: 0.1564
+Epoch 6/500
+4/4 - 1s - loss: 0.3651 - accuracy: 0.8667 - val_loss: 6.5106 - val_accuracy: 0.1564
+Epoch 7/500
+4/4 - 1s - loss: 0.3353 - accuracy: 0.8381 - val_loss: 6.6985 - val_accuracy: 0.1564
+Epoch 8/500
+4/4 - 1s - loss: 0.3195 - accuracy: 0.8476 - val_loss: 6.7187 - val_accuracy: 0.1564
+Epoch 9/500
+4/4 - 1s - loss: 0.2971 - accuracy: 0.8476 - val_loss: 7.0720 - val_accuracy: 0.1564
+Epoch 10/500
+4/4 - 1s - loss: 0.2885 - accuracy: 0.8762 - val_loss: 6.8766 - val_accuracy: 0.1564
+Epoch 11/500
+4/4 - 1s - loss: 0.2608 - accuracy: 0.8857 - val_loss: 7.3489 - val_accuracy: 0.1564
+Epoch 12/500
+4/4 - 1s - loss: 0.2266 - accuracy: 0.8952 - val_loss: 6.9938 - val_accuracy: 0.1564
+Epoch 13/500
+4/4 - 1s - loss: 0.2232 - accuracy: 0.9429 - val_loss: 7.4604 - val_accuracy: 0.1564
+Epoch 14/500
+4/4 - 1s - loss: 0.2072 - accuracy: 0.8762 - val_loss: 7.2220 - val_accuracy: 0.1564
+Epoch 15/500
+4/4 - 1s - loss: 0.1631 - accuracy: 0.9524 - val_loss: 7.4021 - val_accuracy: 0.1564
+Epoch 16/500
+4/4 - 1s - loss: 0.1430 - accuracy: 0.9333 - val_loss: 7.4220 - val_accuracy: 0.1564
+Epoch 17/500
+4/4 - 1s - loss: 0.1140 - accuracy: 0.9714 - val_loss: 7.6213 - val_accuracy: 0.1564
+Epoch 18/500
+4/4 - 1s - loss: 0.0928 - accuracy: 0.9714 - val_loss: 7.7020 - val_accuracy: 0.1564
+Epoch 19/500
+4/4 - 1s - loss: 0.0729 - accuracy: 0.9905 - val_loss: 7.7852 - val_accuracy: 0.1564
+Epoch 20/500
+4/4 - 1s - loss: 0.0562 - accuracy: 1.0000 - val_loss: 8.1896 - val_accuracy: 0.1564
+Epoch 21/500
+4/4 - 1s - loss: 0.0466 - accuracy: 1.0000 - val_loss: 7.9705 - val_accuracy: 0.1676
+Epoch 22/500
+4/4 - 1s - loss: 0.0346 - accuracy: 1.0000 - val_loss: 8.5453 - val_accuracy: 0.1564
+Epoch 23/500
+4/4 - 1s - loss: 0.0288 - accuracy: 1.0000 - val_loss: 8.2219 - val_accuracy: 0.1620
+Epoch 24/500
+4/4 - 1s - loss: 0.0204 - accuracy: 1.0000 - val_loss: 8.6281 - val_accuracy: 0.1564
+Epoch 25/500
+4/4 - 1s - loss: 0.0191 - accuracy: 1.0000 - val_loss: 8.8025 - val_accuracy: 0.1564
+Epoch 26/500
+4/4 - 1s - loss: 0.0100 - accuracy: 1.0000 - val_loss: 8.4460 - val_accuracy: 0.1620
+Epoch 27/500
+4/4 - 1s - loss: 0.0092 - accuracy: 1.0000 - val_loss: 8.9830 - val_accuracy: 0.1564
+Epoch 28/500
+4/4 - 1s - loss: 0.0075 - accuracy: 1.0000 - val_loss: 9.1918 - val_accuracy: 0.1564
+Epoch 29/500
+4/4 - 1s - loss: 0.0046 - accuracy: 1.0000 - val_loss: 8.8994 - val_accuracy: 0.1676
+Epoch 30/500
+4/4 - 1s - loss: 0.0043 - accuracy: 1.0000 - val_loss: 8.9676 - val_accuracy: 0.1676
+Epoch 31/500
+4/4 - 1s - loss: 0.0031 - accuracy: 1.0000 - val_loss: 9.2407 - val_accuracy: 0.1676
+Epoch 32/500
+4/4 - 1s - loss: 0.0028 - accuracy: 1.0000 - val_loss: 9.3440 - val_accuracy: 0.1620
+Epoch 33/500
+4/4 - 1s - loss: 0.0024 - accuracy: 1.0000 - val_loss: 9.2951 - val_accuracy: 0.1676
+Epoch 34/500
+4/4 - 1s - loss: 0.0020 - accuracy: 1.0000 - val_loss: 9.2342 - val_accuracy: 0.1676
+Epoch 35/500
+4/4 - 1s - loss: 0.0018 - accuracy: 1.0000 - val_loss: 9.3179 - val_accuracy: 0.1676
+Epoch 36/500
+4/4 - 1s - loss: 0.0016 - accuracy: 1.0000 - val_loss: 9.4104 - val_accuracy: 0.1676
+Epoch 37/500
+4/4 - 1s - loss: 0.0015 - accuracy: 1.0000 - val_loss: 9.4885 - val_accuracy: 0.1676
+Epoch 38/500
+4/4 - 1s - loss: 0.0014 - accuracy: 1.0000 - val_loss: 9.5033 - val_accuracy: 0.1676
+Epoch 39/500
+4/4 - 1s - loss: 0.0012 - accuracy: 1.0000 - val_loss: 9.4953 - val_accuracy: 0.1676
+Epoch 40/500
+4/4 - 1s - loss: 0.0011 - accuracy: 1.0000 - val_loss: 9.5161 - val_accuracy: 0.1676
+Epoch 41/500
+4/4 - 1s - loss: 0.0011 - accuracy: 1.0000 - val_loss: 9.5567 - val_accuracy: 0.1676
+WARNING:tensorflow:sample_weight modes were coerced from
+  ...
+    to  
+  ['...']
+WARNING:tensorflow:sample_weight modes were coerced from
+  ...
+    to  
+  ['...']
+2020-05-20 13:27:36.588753: I tensorflow/core/profiler/lib/profiler_session.cc:225] Profiler session started.
+2020-05-20 13:27:36.588905: E tensorflow/core/profiler/internal/gpu/cupti_tracer.cc:1307] function cupti_interface_->Subscribe( &subscriber_, (CUpti_CallbackFunc)ApiCallback, this)failed with error CUPTI_ERROR_NOT_INITIALIZED
+2020-05-20 13:27:36.588937: E tensorflow/core/profiler/internal/gpu/cupti_tracer.cc:1346] function cupti_interface_->ActivityRegisterCallbacks( AllocCuptiActivityBuffer, FreeCuptiActivityBuffer)failed with error CUPTI_ERROR_NOT_INITIALIZED
+2020-05-20 13:27:36.790680: E tensorflow/core/profiler/internal/gpu/cupti_tracer.cc:1329] function cupti_interface_->EnableCallback( 0 , subscriber_, CUPTI_CB_DOMAIN_DRIVER_API, cbid)failed with error CUPTI_ERROR_INVALID_PARAMETER
+2020-05-20 13:27:36.790781: I tensorflow/core/profiler/internal/gpu/device_tracer.cc:88]  GpuTracer has collected 0 callback api events and 0 activity events.
+Epoch 00041: early stopping
+Labels in this part of split:  [0, 0, 105, 0, 0]
+Train for 4 steps, validate for 6 steps
+Epoch 1/500
+4/4 - 5s - loss: 0.3883 - accuracy: 1.0000 - val_loss: 5.7160 - val_accuracy: 0.1564
+Epoch 2/500
+4/4 - 1s - loss: 0.0013 - accuracy: 1.0000 - val_loss: 9.8079 - val_accuracy: 0.1564
+Epoch 3/500
+4/4 - 1s - loss: 1.3457e-05 - accuracy: 1.0000 - val_loss: 12.5672 - val_accuracy: 0.1564
+Epoch 4/500
+4/4 - 1s - loss: 6.4721e-07 - accuracy: 1.0000 - val_loss: 14.4066 - val_accuracy: 0.1564
+Epoch 5/500
+4/4 - 1s - loss: 5.4969e-08 - accuracy: 1.0000 - val_loss: 15.6222 - val_accuracy: 0.1564
+Epoch 6/500
+4/4 - 1s - loss: 9.7212e-10 - accuracy: 1.0000 - val_loss: 16.4281 - val_accuracy: 0.1564
+Epoch 7/500
+4/4 - 1s - loss: 0.0000e+00 - accuracy: 1.0000 - val_loss: 16.9613 - val_accuracy: 0.1564
+Epoch 8/500
+4/4 - 1s - loss: 0.0000e+00 - accuracy: 1.0000 - val_loss: 17.3134 - val_accuracy: 0.1564
+Epoch 9/500
+4/4 - 1s - loss: 0.0000e+00 - accuracy: 1.0000 - val_loss: 17.5457 - val_accuracy: 0.1564
+Epoch 10/500
+4/4 - 1s - loss: 0.0000e+00 - accuracy: 1.0000 - val_loss: 17.6987 - val_accuracy: 0.1564
+Epoch 11/500
+4/4 - 1s - loss: 0.0000e+00 - accuracy: 1.0000 - val_loss: 17.7994 - val_accuracy: 0.1564
+Epoch 12/500
+4/4 - 1s - loss: 0.0000e+00 - accuracy: 1.0000 - val_loss: 17.8657 - val_accuracy: 0.1564
+Epoch 13/500
+4/4 - 1s - loss: 0.0000e+00 - accuracy: 1.0000 - val_loss: 17.9092 - val_accuracy: 0.1564
+Epoch 14/500
+4/4 - 1s - loss: 0.0000e+00 - accuracy: 1.0000 - val_loss: 17.9379 - val_accuracy: 0.1564
+Epoch 15/500
+4/4 - 1s - loss: 0.0000e+00 - accuracy: 1.0000 - val_loss: 17.9568 - val_accuracy: 0.1564
+Epoch 16/500
+4/4 - 1s - loss: 0.0000e+00 - accuracy: 1.0000 - val_loss: 17.9692 - val_accuracy: 0.1564
+Epoch 17/500
+4/4 - 1s - loss: 0.0000e+00 - accuracy: 1.0000 - val_loss: 17.9773 - val_accuracy: 0.1564
+Epoch 18/500
+4/4 - 1s - loss: 0.0000e+00 - accuracy: 1.0000 - val_loss: 17.9827 - val_accuracy: 0.1564
+Epoch 19/500
+4/4 - 1s - loss: 0.0000e+00 - accuracy: 1.0000 - val_loss: 17.9862 - val_accuracy: 0.1564
+Epoch 20/500
+4/4 - 1s - loss: 0.0000e+00 - accuracy: 1.0000 - val_loss: 17.9885 - val_accuracy: 0.1564
+Epoch 21/500
+4/4 - 1s - loss: 0.0000e+00 - accuracy: 1.0000 - val_loss: 17.9900 - val_accuracy: 0.1564
+WARNING:tensorflow:sample_weight modes were coerced from
+  ...
+    to  
+  ['...']
+WARNING:tensorflow:sample_weight modes were coerced from
+  ...
+    to  
+  ['...']
+2020-05-20 13:28:08.580503: I tensorflow/core/profiler/lib/profiler_session.cc:225] Profiler session started.
+2020-05-20 13:28:08.580651: E tensorflow/core/profiler/internal/gpu/cupti_tracer.cc:1307] function cupti_interface_->Subscribe( &subscriber_, (CUpti_CallbackFunc)ApiCallback, this)failed with error CUPTI_ERROR_NOT_INITIALIZED
+2020-05-20 13:28:08.580683: E tensorflow/core/profiler/internal/gpu/cupti_tracer.cc:1346] function cupti_interface_->ActivityRegisterCallbacks( AllocCuptiActivityBuffer, FreeCuptiActivityBuffer)failed with error CUPTI_ERROR_NOT_INITIALIZED
+2020-05-20 13:28:08.781329: E tensorflow/core/profiler/internal/gpu/cupti_tracer.cc:1329] function cupti_interface_->EnableCallback( 0 , subscriber_, CUPTI_CB_DOMAIN_DRIVER_API, cbid)failed with error CUPTI_ERROR_INVALID_PARAMETER
+2020-05-20 13:28:08.781425: I tensorflow/core/profiler/internal/gpu/device_tracer.cc:88]  GpuTracer has collected 0 callback api events and 0 activity events.
+Epoch 00021: early stopping
+Labels in this part of split:  [0, 0, 105, 0, 0]
+Train for 4 steps, validate for 6 steps
+Epoch 1/500
+4/4 - 5s - loss: 0.3483 - accuracy: 1.0000 - val_loss: 5.7762 - val_accuracy: 0.1564
+Epoch 2/500
+4/4 - 1s - loss: 0.0012 - accuracy: 1.0000 - val_loss: 9.8702 - val_accuracy: 0.1564
+Epoch 3/500
+4/4 - 1s - loss: 1.1810e-05 - accuracy: 1.0000 - val_loss: 12.6061 - val_accuracy: 0.1564
+Epoch 4/500
+4/4 - 1s - loss: 5.5076e-07 - accuracy: 1.0000 - val_loss: 14.4246 - val_accuracy: 0.1564
+Epoch 5/500
+4/4 - 1s - loss: 3.4755e-08 - accuracy: 1.0000 - val_loss: 15.6273 - val_accuracy: 0.1564
+Epoch 6/500
+4/4 - 1s - loss: 0.0000e+00 - accuracy: 1.0000 - val_loss: 16.4263 - val_accuracy: 0.1564
+Epoch 7/500
+4/4 - 1s - loss: 0.0000e+00 - accuracy: 1.0000 - val_loss: 16.9553 - val_accuracy: 0.1564
+Epoch 8/500
+4/4 - 1s - loss: 0.0000e+00 - accuracy: 1.0000 - val_loss: 17.3050 - val_accuracy: 0.1564
+Epoch 9/500
+4/4 - 1s - loss: 0.0000e+00 - accuracy: 1.0000 - val_loss: 17.5357 - val_accuracy: 0.1564
+Epoch 10/500
+4/4 - 1s - loss: 0.0000e+00 - accuracy: 1.0000 - val_loss: 17.6877 - val_accuracy: 0.1564
+Epoch 11/500
+4/4 - 1s - loss: 0.0000e+00 - accuracy: 1.0000 - val_loss: 17.7878 - val_accuracy: 0.1564
+Epoch 12/500
+4/4 - 1s - loss: 0.0000e+00 - accuracy: 1.0000 - val_loss: 17.8537 - val_accuracy: 0.1564
+Epoch 13/500
+4/4 - 1s - loss: 0.0000e+00 - accuracy: 1.0000 - val_loss: 17.8970 - val_accuracy: 0.1564
+Epoch 14/500
+4/4 - 1s - loss: 0.0000e+00 - accuracy: 1.0000 - val_loss: 17.9255 - val_accuracy: 0.1564
+Epoch 15/500
+4/4 - 1s - loss: 0.0000e+00 - accuracy: 1.0000 - val_loss: 17.9443 - val_accuracy: 0.1564
+Epoch 16/500
+4/4 - 1s - loss: 0.0000e+00 - accuracy: 1.0000 - val_loss: 17.9566 - val_accuracy: 0.1564
+Epoch 17/500
+4/4 - 1s - loss: 0.0000e+00 - accuracy: 1.0000 - val_loss: 17.9648 - val_accuracy: 0.1564
+Epoch 18/500
+4/4 - 1s - loss: 0.0000e+00 - accuracy: 1.0000 - val_loss: 17.9701 - val_accuracy: 0.1564
+Epoch 19/500
+4/4 - 1s - loss: 0.0000e+00 - accuracy: 1.0000 - val_loss: 17.9736 - val_accuracy: 0.1564
+Epoch 20/500
+4/4 - 1s - loss: 0.0000e+00 - accuracy: 1.0000 - val_loss: 17.9759 - val_accuracy: 0.1564
+Epoch 21/500
+4/4 - 1s - loss: 0.0000e+00 - accuracy: 1.0000 - val_loss: 17.9774 - val_accuracy: 0.1564
+WARNING:tensorflow:sample_weight modes were coerced from
+  ...
+    to  
+  ['...']
+WARNING:tensorflow:sample_weight modes were coerced from
+  ...
+    to  
+  ['...']
+2020-05-20 13:28:41.072909: I tensorflow/core/profiler/lib/profiler_session.cc:225] Profiler session started.
+2020-05-20 13:28:41.073063: E tensorflow/core/profiler/internal/gpu/cupti_tracer.cc:1307] function cupti_interface_->Subscribe( &subscriber_, (CUpti_CallbackFunc)ApiCallback, this)failed with error CUPTI_ERROR_NOT_INITIALIZED
+2020-05-20 13:28:41.073117: E tensorflow/core/profiler/internal/gpu/cupti_tracer.cc:1346] function cupti_interface_->ActivityRegisterCallbacks( AllocCuptiActivityBuffer, FreeCuptiActivityBuffer)failed with error CUPTI_ERROR_NOT_INITIALIZED
+2020-05-20 13:28:41.275609: E tensorflow/core/profiler/internal/gpu/cupti_tracer.cc:1329] function cupti_interface_->EnableCallback( 0 , subscriber_, CUPTI_CB_DOMAIN_DRIVER_API, cbid)failed with error CUPTI_ERROR_INVALID_PARAMETER
+2020-05-20 13:28:41.275713: I tensorflow/core/profiler/internal/gpu/device_tracer.cc:88]  GpuTracer has collected 0 callback api events and 0 activity events.
+Epoch 00021: early stopping
+Labels in this part of split:  [0, 0, 105, 0, 0]
+Train for 4 steps, validate for 6 steps
+Epoch 1/500
+4/4 - 6s - loss: 0.3782 - accuracy: 1.0000 - val_loss: 5.7417 - val_accuracy: 0.1564
+Epoch 2/500
+4/4 - 1s - loss: 0.0012 - accuracy: 1.0000 - val_loss: 9.8767 - val_accuracy: 0.1564
+Epoch 3/500
+4/4 - 1s - loss: 1.1803e-05 - accuracy: 1.0000 - val_loss: 12.6572 - val_accuracy: 0.1564
+Epoch 4/500
+4/4 - 1s - loss: 5.1835e-07 - accuracy: 1.0000 - val_loss: 14.5049 - val_accuracy: 0.1564
+Epoch 5/500
+4/4 - 1s - loss: 2.7219e-08 - accuracy: 1.0000 - val_loss: 15.7265 - val_accuracy: 0.1564
+Epoch 6/500
+4/4 - 1s - loss: 0.0000e+00 - accuracy: 1.0000 - val_loss: 16.5363 - val_accuracy: 0.1564
+Epoch 7/500
+4/4 - 1s - loss: 0.0000e+00 - accuracy: 1.0000 - val_loss: 17.0723 - val_accuracy: 0.1564
+Epoch 8/500
+4/4 - 1s - loss: 0.0000e+00 - accuracy: 1.0000 - val_loss: 17.4263 - val_accuracy: 0.1564
+Epoch 9/500
+4/4 - 1s - loss: 0.0000e+00 - accuracy: 1.0000 - val_loss: 17.6596 - val_accuracy: 0.1564
+Epoch 10/500
+4/4 - 1s - loss: 0.0000e+00 - accuracy: 1.0000 - val_loss: 17.8133 - val_accuracy: 0.1564
+Epoch 11/500
+4/4 - 1s - loss: 0.0000e+00 - accuracy: 1.0000 - val_loss: 17.9145 - val_accuracy: 0.1564
+Epoch 12/500
+4/4 - 1s - loss: 0.0000e+00 - accuracy: 1.0000 - val_loss: 17.9811 - val_accuracy: 0.1564
+Epoch 13/500
+4/4 - 1s - loss: 0.0000e+00 - accuracy: 1.0000 - val_loss: 18.0250 - val_accuracy: 0.1564
+Epoch 14/500
+4/4 - 1s - loss: 0.0000e+00 - accuracy: 1.0000 - val_loss: 18.0538 - val_accuracy: 0.1564
+Epoch 15/500
+4/4 - 1s - loss: 0.0000e+00 - accuracy: 1.0000 - val_loss: 18.0727 - val_accuracy: 0.1564
+Epoch 16/500
+4/4 - 1s - loss: 0.0000e+00 - accuracy: 1.0000 - val_loss: 18.0852 - val_accuracy: 0.1564
+Epoch 17/500
+4/4 - 1s - loss: 0.0000e+00 - accuracy: 1.0000 - val_loss: 18.0934 - val_accuracy: 0.1564
+Epoch 18/500
+4/4 - 1s - loss: 0.0000e+00 - accuracy: 1.0000 - val_loss: 18.0988 - val_accuracy: 0.1564
+Epoch 19/500
+4/4 - 1s - loss: 0.0000e+00 - accuracy: 1.0000 - val_loss: 18.1024 - val_accuracy: 0.1564
+Epoch 20/500
+4/4 - 1s - loss: 0.0000e+00 - accuracy: 1.0000 - val_loss: 18.1047 - val_accuracy: 0.1564
+Epoch 21/500
+4/4 - 1s - loss: 0.0000e+00 - accuracy: 1.0000 - val_loss: 18.1062 - val_accuracy: 0.1564
+WARNING:tensorflow:sample_weight modes were coerced from
+  ...
+    to  
+  ['...']
+WARNING:tensorflow:sample_weight modes were coerced from
+  ...
+    to  
+  ['...']
+2020-05-20 13:29:14.677406: I tensorflow/core/profiler/lib/profiler_session.cc:225] Profiler session started.
+2020-05-20 13:29:14.677566: E tensorflow/core/profiler/internal/gpu/cupti_tracer.cc:1307] function cupti_interface_->Subscribe( &subscriber_, (CUpti_CallbackFunc)ApiCallback, this)failed with error CUPTI_ERROR_NOT_INITIALIZED
+2020-05-20 13:29:14.677600: E tensorflow/core/profiler/internal/gpu/cupti_tracer.cc:1346] function cupti_interface_->ActivityRegisterCallbacks( AllocCuptiActivityBuffer, FreeCuptiActivityBuffer)failed with error CUPTI_ERROR_NOT_INITIALIZED
+2020-05-20 13:29:14.750949: E tensorflow/core/profiler/internal/gpu/cupti_tracer.cc:1329] function cupti_interface_->EnableCallback( 0 , subscriber_, CUPTI_CB_DOMAIN_DRIVER_API, cbid)failed with error CUPTI_ERROR_INVALID_PARAMETER
+2020-05-20 13:29:14.751068: I tensorflow/core/profiler/internal/gpu/device_tracer.cc:88]  GpuTracer has collected 0 callback api events and 0 activity events.
+Epoch 00021: early stopping
+Labels in this part of split:  [0, 0, 105, 0, 0]
+Train for 4 steps, validate for 6 steps
+Epoch 1/500
+4/4 - 5s - loss: 0.3682 - accuracy: 1.0000 - val_loss: 5.8414 - val_accuracy: 0.1564
+Epoch 2/500
+4/4 - 1s - loss: 0.0013 - accuracy: 1.0000 - val_loss: 9.9632 - val_accuracy: 0.1564
+Epoch 3/500
+4/4 - 1s - loss: 1.2280e-05 - accuracy: 1.0000 - val_loss: 12.7226 - val_accuracy: 0.1564
+Epoch 4/500
+4/4 - 1s - loss: 5.6972e-07 - accuracy: 1.0000 - val_loss: 14.5510 - val_accuracy: 0.1564
+Epoch 5/500
+4/4 - 1s - loss: 4.1761e-08 - accuracy: 1.0000 - val_loss: 15.7620 - val_accuracy: 0.1564
+Epoch 6/500
+4/4 - 1s - loss: 0.0000e+00 - accuracy: 1.0000 - val_loss: 16.5662 - val_accuracy: 0.1564
+Epoch 7/500
+4/4 - 1s - loss: 0.0000e+00 - accuracy: 1.0000 - val_loss: 17.0976 - val_accuracy: 0.1564
+Epoch 8/500
+4/4 - 1s - loss: 0.0000e+00 - accuracy: 1.0000 - val_loss: 17.4484 - val_accuracy: 0.1564
+Epoch 9/500
+4/4 - 1s - loss: 0.0000e+00 - accuracy: 1.0000 - val_loss: 17.6796 - val_accuracy: 0.1564
+Epoch 10/500
+4/4 - 1s - loss: 0.0000e+00 - accuracy: 1.0000 - val_loss: 17.8319 - val_accuracy: 0.1564
+Epoch 11/500
+4/4 - 1s - loss: 0.0000e+00 - accuracy: 1.0000 - val_loss: 17.9321 - val_accuracy: 0.1564
+Epoch 12/500
+4/4 - 1s - loss: 0.0000e+00 - accuracy: 1.0000 - val_loss: 17.9980 - val_accuracy: 0.1564
+Epoch 13/500
+4/4 - 1s - loss: 0.0000e+00 - accuracy: 1.0000 - val_loss: 18.0414 - val_accuracy: 0.1564
+Epoch 14/500
+4/4 - 1s - loss: 0.0000e+00 - accuracy: 1.0000 - val_loss: 18.0699 - val_accuracy: 0.1564
+Epoch 15/500
+4/4 - 1s - loss: 0.0000e+00 - accuracy: 1.0000 - val_loss: 18.0887 - val_accuracy: 0.1564
+Epoch 16/500
+4/4 - 1s - loss: 0.0000e+00 - accuracy: 1.0000 - val_loss: 18.1010 - val_accuracy: 0.1564
+Epoch 17/500
+4/4 - 1s - loss: 0.0000e+00 - accuracy: 1.0000 - val_loss: 18.1092 - val_accuracy: 0.1564
+Epoch 18/500
+4/4 - 1s - loss: 0.0000e+00 - accuracy: 1.0000 - val_loss: 18.1145 - val_accuracy: 0.1564
+Epoch 19/500
+4/4 - 1s - loss: 0.0000e+00 - accuracy: 1.0000 - val_loss: 18.1180 - val_accuracy: 0.1564
+Epoch 20/500
+4/4 - 1s - loss: 0.0000e+00 - accuracy: 1.0000 - val_loss: 18.1203 - val_accuracy: 0.1564
+Epoch 21/500
+4/4 - 1s - loss: 0.0000e+00 - accuracy: 1.0000 - val_loss: 18.1218 - val_accuracy: 0.1564
+WARNING:tensorflow:sample_weight modes were coerced from
+  ...
+    to  
+  ['...']
+WARNING:tensorflow:sample_weight modes were coerced from
+  ...
+    to  
+  ['...']
+2020-05-20 13:29:47.034537: I tensorflow/core/profiler/lib/profiler_session.cc:225] Profiler session started.
+2020-05-20 13:29:47.034693: E tensorflow/core/profiler/internal/gpu/cupti_tracer.cc:1307] function cupti_interface_->Subscribe( &subscriber_, (CUpti_CallbackFunc)ApiCallback, this)failed with error CUPTI_ERROR_NOT_INITIALIZED
+2020-05-20 13:29:47.034727: E tensorflow/core/profiler/internal/gpu/cupti_tracer.cc:1346] function cupti_interface_->ActivityRegisterCallbacks( AllocCuptiActivityBuffer, FreeCuptiActivityBuffer)failed with error CUPTI_ERROR_NOT_INITIALIZED
+2020-05-20 13:29:47.235086: E tensorflow/core/profiler/internal/gpu/cupti_tracer.cc:1329] function cupti_interface_->EnableCallback( 0 , subscriber_, CUPTI_CB_DOMAIN_DRIVER_API, cbid)failed with error CUPTI_ERROR_INVALID_PARAMETER
+2020-05-20 13:29:47.235191: I tensorflow/core/profiler/internal/gpu/device_tracer.cc:88]  GpuTracer has collected 0 callback api events and 0 activity events.
+Epoch 00021: early stopping
+Labels in this part of split:  [0, 0, 83, 22, 0]
+Train for 4 steps, validate for 6 steps
+Epoch 1/500
+4/4 - 6s - loss: 0.9166 - accuracy: 0.7905 - val_loss: 4.1905 - val_accuracy: 0.1564
+Epoch 2/500
+4/4 - 1s - loss: 0.5041 - accuracy: 0.7810 - val_loss: 6.5996 - val_accuracy: 0.1564
+Epoch 3/500
+4/4 - 1s - loss: 0.4774 - accuracy: 0.7905 - val_loss: 8.1805 - val_accuracy: 0.1564
+Epoch 4/500
+4/4 - 1s - loss: 0.4114 - accuracy: 0.8286 - val_loss: 9.2546 - val_accuracy: 0.1564
+Epoch 5/500
+4/4 - 1s - loss: 0.3768 - accuracy: 0.8095 - val_loss: 9.5937 - val_accuracy: 0.1564
+Epoch 6/500
+4/4 - 1s - loss: 0.3198 - accuracy: 0.8381 - val_loss: 10.0447 - val_accuracy: 0.1564
+Epoch 7/500
+4/4 - 1s - loss: 0.2691 - accuracy: 0.8952 - val_loss: 10.4291 - val_accuracy: 0.1564
+Epoch 8/500
+4/4 - 1s - loss: 0.2324 - accuracy: 0.9143 - val_loss: 10.7058 - val_accuracy: 0.1564
+Epoch 9/500
+4/4 - 1s - loss: 0.1872 - accuracy: 0.9429 - val_loss: 10.8976 - val_accuracy: 0.1564
+Epoch 10/500
+4/4 - 1s - loss: 0.1472 - accuracy: 0.9714 - val_loss: 11.1897 - val_accuracy: 0.1564
+Epoch 11/500
+4/4 - 1s - loss: 0.1158 - accuracy: 0.9810 - val_loss: 11.7239 - val_accuracy: 0.1564
+Epoch 12/500
+4/4 - 1s - loss: 0.0865 - accuracy: 0.9810 - val_loss: 11.6707 - val_accuracy: 0.1620
+Epoch 13/500
+4/4 - 1s - loss: 0.0565 - accuracy: 1.0000 - val_loss: 12.0392 - val_accuracy: 0.1564
+Epoch 14/500
+4/4 - 1s - loss: 0.0355 - accuracy: 1.0000 - val_loss: 12.5860 - val_accuracy: 0.1564
+Epoch 15/500
+4/4 - 1s - loss: 0.0268 - accuracy: 1.0000 - val_loss: 12.7381 - val_accuracy: 0.1564
+Epoch 16/500
+4/4 - 1s - loss: 0.0186 - accuracy: 1.0000 - val_loss: 12.7419 - val_accuracy: 0.1508
+Epoch 17/500
+4/4 - 1s - loss: 0.0127 - accuracy: 1.0000 - val_loss: 13.3437 - val_accuracy: 0.1564
+Epoch 18/500
+4/4 - 1s - loss: 0.0086 - accuracy: 1.0000 - val_loss: 13.1208 - val_accuracy: 0.1564
+Epoch 19/500
+4/4 - 1s - loss: 0.0067 - accuracy: 1.0000 - val_loss: 13.8040 - val_accuracy: 0.1564
+Epoch 20/500
+4/4 - 1s - loss: 0.0050 - accuracy: 1.0000 - val_loss: 13.6269 - val_accuracy: 0.1564
+Epoch 21/500
+4/4 - 1s - loss: 0.0037 - accuracy: 1.0000 - val_loss: 13.5776 - val_accuracy: 0.1508
+Epoch 22/500
+4/4 - 1s - loss: 0.0021 - accuracy: 1.0000 - val_loss: 14.1615 - val_accuracy: 0.1564
+Epoch 23/500
+4/4 - 1s - loss: 0.0020 - accuracy: 1.0000 - val_loss: 14.0864 - val_accuracy: 0.1564
+Epoch 24/500
+4/4 - 1s - loss: 0.0015 - accuracy: 1.0000 - val_loss: 13.9852 - val_accuracy: 0.1508
+Epoch 25/500
+4/4 - 1s - loss: 0.0013 - accuracy: 1.0000 - val_loss: 14.3725 - val_accuracy: 0.1564
+Epoch 26/500
+4/4 - 1s - loss: 0.0011 - accuracy: 1.0000 - val_loss: 14.4982 - val_accuracy: 0.1564
+Epoch 27/500
+4/4 - 1s - loss: 9.2316e-04 - accuracy: 1.0000 - val_loss: 14.3957 - val_accuracy: 0.1564
+Epoch 28/500
+4/4 - 1s - loss: 8.3295e-04 - accuracy: 1.0000 - val_loss: 14.3698 - val_accuracy: 0.1564
+Epoch 29/500
+4/4 - 1s - loss: 7.7122e-04 - accuracy: 1.0000 - val_loss: 14.4665 - val_accuracy: 0.1564
+Epoch 30/500
+4/4 - 1s - loss: 6.8171e-04 - accuracy: 1.0000 - val_loss: 14.5888 - val_accuracy: 0.1564
+Epoch 31/500
+4/4 - 1s - loss: 6.3587e-04 - accuracy: 1.0000 - val_loss: 14.6244 - val_accuracy: 0.1564
+Epoch 32/500
+4/4 - 1s - loss: 5.8900e-04 - accuracy: 1.0000 - val_loss: 14.5954 - val_accuracy: 0.1564
+WARNING:tensorflow:sample_weight modes were coerced from
+  ...
+    to  
+  ['...']
+WARNING:tensorflow:sample_weight modes were coerced from
+  ...
+    to  
+  ['...']
+2020-05-20 13:30:33.076858: I tensorflow/core/profiler/lib/profiler_session.cc:225] Profiler session started.
+2020-05-20 13:30:33.077053: E tensorflow/core/profiler/internal/gpu/cupti_tracer.cc:1307] function cupti_interface_->Subscribe( &subscriber_, (CUpti_CallbackFunc)ApiCallback, this)failed with error CUPTI_ERROR_NOT_INITIALIZED
+2020-05-20 13:30:33.077100: E tensorflow/core/profiler/internal/gpu/cupti_tracer.cc:1346] function cupti_interface_->ActivityRegisterCallbacks( AllocCuptiActivityBuffer, FreeCuptiActivityBuffer)failed with error CUPTI_ERROR_NOT_INITIALIZED
+2020-05-20 13:30:33.278178: E tensorflow/core/profiler/internal/gpu/cupti_tracer.cc:1329] function cupti_interface_->EnableCallback( 0 , subscriber_, CUPTI_CB_DOMAIN_DRIVER_API, cbid)failed with error CUPTI_ERROR_INVALID_PARAMETER
+2020-05-20 13:30:33.278292: I tensorflow/core/profiler/internal/gpu/device_tracer.cc:88]  GpuTracer has collected 0 callback api events and 0 activity events.
+Epoch 00032: early stopping
+Labels in this part of split:  [0, 0, 0, 105, 0]
+Train for 4 steps, validate for 6 steps
+Epoch 1/500
+4/4 - 5s - loss: 0.9133 - accuracy: 0.6952 - val_loss: 7.8696 - val_accuracy: 0.0391
+Epoch 2/500
+4/4 - 1s - loss: 4.1887e-04 - accuracy: 1.0000 - val_loss: 13.3292 - val_accuracy: 0.0391
+Epoch 3/500
+4/4 - 1s - loss: 1.6432e-06 - accuracy: 1.0000 - val_loss: 16.6253 - val_accuracy: 0.0391
+Epoch 4/500
+4/4 - 1s - loss: 3.8885e-08 - accuracy: 1.0000 - val_loss: 18.7675 - val_accuracy: 0.0391
+Epoch 5/500
+4/4 - 1s - loss: 0.0000e+00 - accuracy: 1.0000 - val_loss: 20.2024 - val_accuracy: 0.0391
+Epoch 6/500
+4/4 - 1s - loss: 0.0000e+00 - accuracy: 1.0000 - val_loss: 21.1608 - val_accuracy: 0.0391
+Epoch 7/500
+4/4 - 1s - loss: 0.0000e+00 - accuracy: 1.0000 - val_loss: 21.7976 - val_accuracy: 0.0391
+Epoch 8/500
+4/4 - 1s - loss: 0.0000e+00 - accuracy: 1.0000 - val_loss: 22.2201 - val_accuracy: 0.0391
+Epoch 9/500
+4/4 - 1s - loss: 0.0000e+00 - accuracy: 1.0000 - val_loss: 22.4995 - val_accuracy: 0.0391
+Epoch 10/500
+4/4 - 1s - loss: 0.0000e+00 - accuracy: 1.0000 - val_loss: 22.6838 - val_accuracy: 0.0391
+Epoch 11/500
+4/4 - 1s - loss: 0.0000e+00 - accuracy: 1.0000 - val_loss: 22.8053 - val_accuracy: 0.0391
+Epoch 12/500
+4/4 - 1s - loss: 0.0000e+00 - accuracy: 1.0000 - val_loss: 22.8853 - val_accuracy: 0.0391
+Epoch 13/500
+4/4 - 1s - loss: 0.0000e+00 - accuracy: 1.0000 - val_loss: 22.9380 - val_accuracy: 0.0391
+Epoch 14/500
+4/4 - 1s - loss: 0.0000e+00 - accuracy: 1.0000 - val_loss: 22.9726 - val_accuracy: 0.0391
+Epoch 15/500
+4/4 - 1s - loss: 0.0000e+00 - accuracy: 1.0000 - val_loss: 22.9954 - val_accuracy: 0.0391
+Epoch 16/500
+4/4 - 1s - loss: 0.0000e+00 - accuracy: 1.0000 - val_loss: 23.0104 - val_accuracy: 0.0391
+Epoch 17/500
+4/4 - 1s - loss: 0.0000e+00 - accuracy: 1.0000 - val_loss: 23.0202 - val_accuracy: 0.0391
+Epoch 18/500
+4/4 - 1s - loss: 0.0000e+00 - accuracy: 1.0000 - val_loss: 23.0267 - val_accuracy: 0.0391
+Epoch 19/500
+4/4 - 1s - loss: 0.0000e+00 - accuracy: 1.0000 - val_loss: 23.0310 - val_accuracy: 0.0391
+Epoch 20/500
+4/4 - 1s - loss: 0.0000e+00 - accuracy: 1.0000 - val_loss: 23.0338 - val_accuracy: 0.0391
+Epoch 21/500
+4/4 - 1s - loss: 0.0000e+00 - accuracy: 1.0000 - val_loss: 23.0356 - val_accuracy: 0.0391
+WARNING:tensorflow:sample_weight modes were coerced from
+  ...
+    to  
+  ['...']
+WARNING:tensorflow:sample_weight modes were coerced from
+  ...
+    to  
+  ['...']
+2020-05-20 13:31:06.058549: I tensorflow/core/profiler/lib/profiler_session.cc:225] Profiler session started.
+2020-05-20 13:31:06.058700: E tensorflow/core/profiler/internal/gpu/cupti_tracer.cc:1307] function cupti_interface_->Subscribe( &subscriber_, (CUpti_CallbackFunc)ApiCallback, this)failed with error CUPTI_ERROR_NOT_INITIALIZED
+2020-05-20 13:31:06.058733: E tensorflow/core/profiler/internal/gpu/cupti_tracer.cc:1346] function cupti_interface_->ActivityRegisterCallbacks( AllocCuptiActivityBuffer, FreeCuptiActivityBuffer)failed with error CUPTI_ERROR_NOT_INITIALIZED
+2020-05-20 13:31:06.258869: E tensorflow/core/profiler/internal/gpu/cupti_tracer.cc:1329] function cupti_interface_->EnableCallback( 0 , subscriber_, CUPTI_CB_DOMAIN_DRIVER_API, cbid)failed with error CUPTI_ERROR_INVALID_PARAMETER
+2020-05-20 13:31:06.258975: I tensorflow/core/profiler/internal/gpu/device_tracer.cc:88]  GpuTracer has collected 0 callback api events and 0 activity events.
+Epoch 00021: early stopping
+Labels in this part of split:  [0, 0, 0, 105, 0]
+Train for 4 steps, validate for 6 steps
+Epoch 1/500
+4/4 - 4s - loss: 0.9539 - accuracy: 0.6952 - val_loss: 7.5990 - val_accuracy: 0.0391
+Epoch 2/500
+4/4 - 1s - loss: 5.7261e-04 - accuracy: 1.0000 - val_loss: 13.1060 - val_accuracy: 0.0391
+Epoch 3/500
+4/4 - 1s - loss: 2.1220e-06 - accuracy: 1.0000 - val_loss: 16.4595 - val_accuracy: 0.0391
+Epoch 4/500
+4/4 - 1s - loss: 6.3838e-08 - accuracy: 1.0000 - val_loss: 18.6489 - val_accuracy: 0.0391
+Epoch 5/500
+4/4 - 1s - loss: 0.0000e+00 - accuracy: 1.0000 - val_loss: 20.1179 - val_accuracy: 0.0391
+Epoch 6/500
+4/4 - 1s - loss: 0.0000e+00 - accuracy: 1.0000 - val_loss: 21.0999 - val_accuracy: 0.0391
+Epoch 7/500
+4/4 - 1s - loss: 0.0000e+00 - accuracy: 1.0000 - val_loss: 21.7536 - val_accuracy: 0.0391
+Epoch 8/500
+4/4 - 1s - loss: 0.0000e+00 - accuracy: 1.0000 - val_loss: 22.1870 - val_accuracy: 0.0391
+Epoch 9/500
+4/4 - 1s - loss: 0.0000e+00 - accuracy: 1.0000 - val_loss: 22.4734 - val_accuracy: 0.0391
+Epoch 10/500
+4/4 - 1s - loss: 0.0000e+00 - accuracy: 1.0000 - val_loss: 22.6624 - val_accuracy: 0.0391
+Epoch 11/500
+4/4 - 1s - loss: 0.0000e+00 - accuracy: 1.0000 - val_loss: 22.7870 - val_accuracy: 0.0391
+Epoch 12/500
+4/4 - 1s - loss: 0.0000e+00 - accuracy: 1.0000 - val_loss: 22.8690 - val_accuracy: 0.0391
+Epoch 13/500
+4/4 - 1s - loss: 0.0000e+00 - accuracy: 1.0000 - val_loss: 22.9230 - val_accuracy: 0.0391
+Epoch 14/500
+4/4 - 1s - loss: 0.0000e+00 - accuracy: 1.0000 - val_loss: 22.9586 - val_accuracy: 0.0391
+Epoch 15/500
+4/4 - 1s - loss: 0.0000e+00 - accuracy: 1.0000 - val_loss: 22.9819 - val_accuracy: 0.0391
+Epoch 16/500
+4/4 - 1s - loss: 0.0000e+00 - accuracy: 1.0000 - val_loss: 22.9973 - val_accuracy: 0.0391
+Epoch 17/500
+4/4 - 1s - loss: 0.0000e+00 - accuracy: 1.0000 - val_loss: 23.0074 - val_accuracy: 0.0391
+Epoch 18/500
+4/4 - 1s - loss: 0.0000e+00 - accuracy: 1.0000 - val_loss: 23.0141 - val_accuracy: 0.0391
+Epoch 19/500
+4/4 - 1s - loss: 0.0000e+00 - accuracy: 1.0000 - val_loss: 23.0185 - val_accuracy: 0.0391
+Epoch 20/500
+4/4 - 1s - loss: 0.0000e+00 - accuracy: 1.0000 - val_loss: 23.0213 - val_accuracy: 0.0391
+Epoch 21/500
+4/4 - 1s - loss: 0.0000e+00 - accuracy: 1.0000 - val_loss: 23.0232 - val_accuracy: 0.0391
+WARNING:tensorflow:sample_weight modes were coerced from
+  ...
+    to  
+  ['...']
+WARNING:tensorflow:sample_weight modes were coerced from
+  ...
+    to  
+  ['...']
+2020-05-20 13:31:38.378102: I tensorflow/core/profiler/lib/profiler_session.cc:225] Profiler session started.
+2020-05-20 13:31:38.378254: E tensorflow/core/profiler/internal/gpu/cupti_tracer.cc:1307] function cupti_interface_->Subscribe( &subscriber_, (CUpti_CallbackFunc)ApiCallback, this)failed with error CUPTI_ERROR_NOT_INITIALIZED
+2020-05-20 13:31:38.378299: E tensorflow/core/profiler/internal/gpu/cupti_tracer.cc:1346] function cupti_interface_->ActivityRegisterCallbacks( AllocCuptiActivityBuffer, FreeCuptiActivityBuffer)failed with error CUPTI_ERROR_NOT_INITIALIZED
+2020-05-20 13:31:38.451624: E tensorflow/core/profiler/internal/gpu/cupti_tracer.cc:1329] function cupti_interface_->EnableCallback( 0 , subscriber_, CUPTI_CB_DOMAIN_DRIVER_API, cbid)failed with error CUPTI_ERROR_INVALID_PARAMETER
+2020-05-20 13:31:38.451731: I tensorflow/core/profiler/internal/gpu/device_tracer.cc:88]  GpuTracer has collected 0 callback api events and 0 activity events.
+Epoch 00021: early stopping
+Labels in this part of split:  [0, 0, 0, 105, 0]
+Train for 4 steps, validate for 6 steps
+Epoch 1/500
+4/4 - 5s - loss: 0.9118 - accuracy: 0.6952 - val_loss: 7.4134 - val_accuracy: 0.0391
+Epoch 2/500
+4/4 - 1s - loss: 6.9691e-04 - accuracy: 1.0000 - val_loss: 12.8417 - val_accuracy: 0.0391
+Epoch 3/500
+4/4 - 1s - loss: 2.7204e-06 - accuracy: 1.0000 - val_loss: 16.1316 - val_accuracy: 0.0391
+Epoch 4/500
+4/4 - 1s - loss: 1.0596e-07 - accuracy: 1.0000 - val_loss: 18.2898 - val_accuracy: 0.0391
+Epoch 5/500
+4/4 - 1s - loss: 0.0000e+00 - accuracy: 1.0000 - val_loss: 19.7336 - val_accuracy: 0.0391
+Epoch 6/500
+4/4 - 1s - loss: 0.0000e+00 - accuracy: 1.0000 - val_loss: 20.6968 - val_accuracy: 0.0391
+Epoch 7/500
+4/4 - 1s - loss: 0.0000e+00 - accuracy: 1.0000 - val_loss: 21.3367 - val_accuracy: 0.0391
+Epoch 8/500
+4/4 - 1s - loss: 0.0000e+00 - accuracy: 1.0000 - val_loss: 21.7610 - val_accuracy: 0.0391
+Epoch 9/500
+4/4 - 1s - loss: 0.0000e+00 - accuracy: 1.0000 - val_loss: 22.0415 - val_accuracy: 0.0391
+Epoch 10/500
+4/4 - 1s - loss: 0.0000e+00 - accuracy: 1.0000 - val_loss: 22.2265 - val_accuracy: 0.0391
+Epoch 11/500
+4/4 - 1s - loss: 0.0000e+00 - accuracy: 1.0000 - val_loss: 22.3485 - val_accuracy: 0.0391
+Epoch 12/500
+4/4 - 1s - loss: 0.0000e+00 - accuracy: 1.0000 - val_loss: 22.4288 - val_accuracy: 0.0391
+Epoch 13/500
+4/4 - 1s - loss: 0.0000e+00 - accuracy: 1.0000 - val_loss: 22.4817 - val_accuracy: 0.0391
+Epoch 14/500
+4/4 - 1s - loss: 0.0000e+00 - accuracy: 1.0000 - val_loss: 22.5165 - val_accuracy: 0.0391
+Epoch 15/500
+4/4 - 1s - loss: 0.0000e+00 - accuracy: 1.0000 - val_loss: 22.5394 - val_accuracy: 0.0391
+Epoch 16/500
+4/4 - 1s - loss: 0.0000e+00 - accuracy: 1.0000 - val_loss: 22.5544 - val_accuracy: 0.0391
+Epoch 17/500
+4/4 - 1s - loss: 0.0000e+00 - accuracy: 1.0000 - val_loss: 22.5643 - val_accuracy: 0.0391
+Epoch 18/500
+4/4 - 1s - loss: 0.0000e+00 - accuracy: 1.0000 - val_loss: 22.5708 - val_accuracy: 0.0391
+Epoch 19/500
+4/4 - 1s - loss: 0.0000e+00 - accuracy: 1.0000 - val_loss: 22.5751 - val_accuracy: 0.0391
+Epoch 20/500
+4/4 - 1s - loss: 0.0000e+00 - accuracy: 1.0000 - val_loss: 22.5779 - val_accuracy: 0.0391
+Epoch 21/500
+4/4 - 1s - loss: 0.0000e+00 - accuracy: 1.0000 - val_loss: 22.5798 - val_accuracy: 0.0391
+WARNING:tensorflow:sample_weight modes were coerced from
+  ...
+    to  
+  ['...']
+WARNING:tensorflow:sample_weight modes were coerced from
+  ...
+    to  
+  ['...']
+2020-05-20 13:32:10.983897: I tensorflow/core/profiler/lib/profiler_session.cc:225] Profiler session started.
+2020-05-20 13:32:10.984055: E tensorflow/core/profiler/internal/gpu/cupti_tracer.cc:1307] function cupti_interface_->Subscribe( &subscriber_, (CUpti_CallbackFunc)ApiCallback, this)failed with error CUPTI_ERROR_NOT_INITIALIZED
+2020-05-20 13:32:10.984088: E tensorflow/core/profiler/internal/gpu/cupti_tracer.cc:1346] function cupti_interface_->ActivityRegisterCallbacks( AllocCuptiActivityBuffer, FreeCuptiActivityBuffer)failed with error CUPTI_ERROR_NOT_INITIALIZED
+2020-05-20 13:32:11.057869: E tensorflow/core/profiler/internal/gpu/cupti_tracer.cc:1329] function cupti_interface_->EnableCallback( 0 , subscriber_, CUPTI_CB_DOMAIN_DRIVER_API, cbid)failed with error CUPTI_ERROR_INVALID_PARAMETER
+2020-05-20 13:32:11.057970: I tensorflow/core/profiler/internal/gpu/device_tracer.cc:88]  GpuTracer has collected 0 callback api events and 0 activity events.
+Epoch 00021: early stopping
+Labels in this part of split:  [0, 0, 0, 105, 0]
+Train for 4 steps, validate for 6 steps
+Epoch 1/500
+4/4 - 4s - loss: 0.9327 - accuracy: 0.6952 - val_loss: 7.3063 - val_accuracy: 0.0391
+Epoch 2/500
+4/4 - 1s - loss: 6.2186e-04 - accuracy: 1.0000 - val_loss: 12.7080 - val_accuracy: 0.0391
+Epoch 3/500
+4/4 - 1s - loss: 2.9618e-06 - accuracy: 1.0000 - val_loss: 15.9924 - val_accuracy: 0.0391
+Epoch 4/500
+4/4 - 1s - loss: 1.0524e-07 - accuracy: 1.0000 - val_loss: 18.1658 - val_accuracy: 0.0391
+Epoch 5/500
+4/4 - 1s - loss: 0.0000e+00 - accuracy: 1.0000 - val_loss: 19.6242 - val_accuracy: 0.0391
+Epoch 6/500
+4/4 - 1s - loss: 0.0000e+00 - accuracy: 1.0000 - val_loss: 20.5986 - val_accuracy: 0.0391
+Epoch 7/500
+4/4 - 1s - loss: 0.0000e+00 - accuracy: 1.0000 - val_loss: 21.2462 - val_accuracy: 0.0391
+Epoch 8/500
+4/4 - 1s - loss: 0.0000e+00 - accuracy: 1.0000 - val_loss: 21.6752 - val_accuracy: 0.0391
+Epoch 9/500
+4/4 - 1s - loss: 0.0000e+00 - accuracy: 1.0000 - val_loss: 21.9589 - val_accuracy: 0.0391
+Epoch 10/500
+4/4 - 1s - loss: 0.0000e+00 - accuracy: 1.0000 - val_loss: 22.1460 - val_accuracy: 0.0391
+Epoch 11/500
+4/4 - 1s - loss: 0.0000e+00 - accuracy: 1.0000 - val_loss: 22.2694 - val_accuracy: 0.0391
+Epoch 12/500
+4/4 - 1s - loss: 0.0000e+00 - accuracy: 1.0000 - val_loss: 22.3506 - val_accuracy: 0.0391
+Epoch 13/500
+4/4 - 1s - loss: 0.0000e+00 - accuracy: 1.0000 - val_loss: 22.4041 - val_accuracy: 0.0391
+Epoch 14/500
+4/4 - 1s - loss: 0.0000e+00 - accuracy: 1.0000 - val_loss: 22.4393 - val_accuracy: 0.0391
+Epoch 15/500
+4/4 - 1s - loss: 0.0000e+00 - accuracy: 1.0000 - val_loss: 22.4624 - val_accuracy: 0.0391
+Epoch 16/500
+4/4 - 1s - loss: 0.0000e+00 - accuracy: 1.0000 - val_loss: 22.4776 - val_accuracy: 0.0391
+Epoch 17/500
+4/4 - 1s - loss: 0.0000e+00 - accuracy: 1.0000 - val_loss: 22.4876 - val_accuracy: 0.0391
+Epoch 18/500
+4/4 - 1s - loss: 0.0000e+00 - accuracy: 1.0000 - val_loss: 22.4942 - val_accuracy: 0.0391
+Epoch 19/500
+4/4 - 1s - loss: 0.0000e+00 - accuracy: 1.0000 - val_loss: 22.4985 - val_accuracy: 0.0391
+Epoch 20/500
+4/4 - 1s - loss: 0.0000e+00 - accuracy: 1.0000 - val_loss: 22.5014 - val_accuracy: 0.0391
+Epoch 21/500
+4/4 - 1s - loss: 0.0000e+00 - accuracy: 1.0000 - val_loss: 22.5032 - val_accuracy: 0.0391
+WARNING:tensorflow:sample_weight modes were coerced from
+  ...
+    to  
+  ['...']
+WARNING:tensorflow:sample_weight modes were coerced from
+  ...
+    to  
+  ['...']
+2020-05-20 13:32:42.883550: I tensorflow/core/profiler/lib/profiler_session.cc:225] Profiler session started.
+2020-05-20 13:32:42.883705: E tensorflow/core/profiler/internal/gpu/cupti_tracer.cc:1307] function cupti_interface_->Subscribe( &subscriber_, (CUpti_CallbackFunc)ApiCallback, this)failed with error CUPTI_ERROR_NOT_INITIALIZED
+2020-05-20 13:32:42.883738: E tensorflow/core/profiler/internal/gpu/cupti_tracer.cc:1346] function cupti_interface_->ActivityRegisterCallbacks( AllocCuptiActivityBuffer, FreeCuptiActivityBuffer)failed with error CUPTI_ERROR_NOT_INITIALIZED
+2020-05-20 13:32:43.084413: E tensorflow/core/profiler/internal/gpu/cupti_tracer.cc:1329] function cupti_interface_->EnableCallback( 0 , subscriber_, CUPTI_CB_DOMAIN_DRIVER_API, cbid)failed with error CUPTI_ERROR_INVALID_PARAMETER
+2020-05-20 13:32:43.084515: I tensorflow/core/profiler/internal/gpu/device_tracer.cc:88]  GpuTracer has collected 0 callback api events and 0 activity events.
+Epoch 00021: early stopping
+Labels in this part of split:  [0, 0, 0, 105, 0]
+Train for 4 steps, validate for 6 steps
+Epoch 1/500
+4/4 - 5s - loss: 0.9051 - accuracy: 0.8571 - val_loss: 7.1677 - val_accuracy: 0.0391
+Epoch 2/500
+4/4 - 1s - loss: 8.3132e-04 - accuracy: 1.0000 - val_loss: 12.7559 - val_accuracy: 0.0391
+Epoch 3/500
+4/4 - 1s - loss: 2.6520e-06 - accuracy: 1.0000 - val_loss: 16.1816 - val_accuracy: 0.0391
+Epoch 4/500
+4/4 - 1s - loss: 6.4730e-08 - accuracy: 1.0000 - val_loss: 18.4509 - val_accuracy: 0.0391
+Epoch 5/500
+4/4 - 1s - loss: 0.0000e+00 - accuracy: 1.0000 - val_loss: 19.9759 - val_accuracy: 0.0391
+Epoch 6/500
+4/4 - 1s - loss: 0.0000e+00 - accuracy: 1.0000 - val_loss: 20.9946 - val_accuracy: 0.0391
+Epoch 7/500
+4/4 - 1s - loss: 0.0000e+00 - accuracy: 1.0000 - val_loss: 21.6717 - val_accuracy: 0.0391
+Epoch 8/500
+4/4 - 1s - loss: 0.0000e+00 - accuracy: 1.0000 - val_loss: 22.1202 - val_accuracy: 0.0391
+Epoch 9/500
+4/4 - 1s - loss: 0.0000e+00 - accuracy: 1.0000 - val_loss: 22.4168 - val_accuracy: 0.0391
+Epoch 10/500
+4/4 - 1s - loss: 0.0000e+00 - accuracy: 1.0000 - val_loss: 22.6125 - val_accuracy: 0.0391
+Epoch 11/500
+4/4 - 1s - loss: 0.0000e+00 - accuracy: 1.0000 - val_loss: 22.7414 - val_accuracy: 0.0391
+Epoch 12/500
+4/4 - 1s - loss: 0.0000e+00 - accuracy: 1.0000 - val_loss: 22.8264 - val_accuracy: 0.0391
+Epoch 13/500
+4/4 - 1s - loss: 0.0000e+00 - accuracy: 1.0000 - val_loss: 22.8823 - val_accuracy: 0.0391
+Epoch 14/500
+4/4 - 1s - loss: 0.0000e+00 - accuracy: 1.0000 - val_loss: 22.9190 - val_accuracy: 0.0391
+Epoch 15/500
+4/4 - 1s - loss: 0.0000e+00 - accuracy: 1.0000 - val_loss: 22.9432 - val_accuracy: 0.0391
+Epoch 16/500
+4/4 - 1s - loss: 0.0000e+00 - accuracy: 1.0000 - val_loss: 22.9591 - val_accuracy: 0.0391
+Epoch 17/500
+4/4 - 1s - loss: 0.0000e+00 - accuracy: 1.0000 - val_loss: 22.9696 - val_accuracy: 0.0391
+Epoch 18/500
+4/4 - 1s - loss: 0.0000e+00 - accuracy: 1.0000 - val_loss: 22.9765 - val_accuracy: 0.0391
+Epoch 19/500
+4/4 - 1s - loss: 0.0000e+00 - accuracy: 1.0000 - val_loss: 22.9810 - val_accuracy: 0.0391
+Epoch 20/500
+4/4 - 1s - loss: 0.0000e+00 - accuracy: 1.0000 - val_loss: 22.9840 - val_accuracy: 0.0391
+Epoch 21/500
+4/4 - 1s - loss: 0.0000e+00 - accuracy: 1.0000 - val_loss: 22.9859 - val_accuracy: 0.0391
+WARNING:tensorflow:sample_weight modes were coerced from
+  ...
+    to  
+  ['...']
+WARNING:tensorflow:sample_weight modes were coerced from
+  ...
+    to  
+  ['...']
+2020-05-20 13:33:15.139842: I tensorflow/core/profiler/lib/profiler_session.cc:225] Profiler session started.
+2020-05-20 13:33:15.139997: E tensorflow/core/profiler/internal/gpu/cupti_tracer.cc:1307] function cupti_interface_->Subscribe( &subscriber_, (CUpti_CallbackFunc)ApiCallback, this)failed with error CUPTI_ERROR_NOT_INITIALIZED
+2020-05-20 13:33:15.140029: E tensorflow/core/profiler/internal/gpu/cupti_tracer.cc:1346] function cupti_interface_->ActivityRegisterCallbacks( AllocCuptiActivityBuffer, FreeCuptiActivityBuffer)failed with error CUPTI_ERROR_NOT_INITIALIZED
+2020-05-20 13:33:15.341535: E tensorflow/core/profiler/internal/gpu/cupti_tracer.cc:1329] function cupti_interface_->EnableCallback( 0 , subscriber_, CUPTI_CB_DOMAIN_DRIVER_API, cbid)failed with error CUPTI_ERROR_INVALID_PARAMETER
+2020-05-20 13:33:15.341654: I tensorflow/core/profiler/internal/gpu/device_tracer.cc:88]  GpuTracer has collected 0 callback api events and 0 activity events.
+Epoch 00021: early stopping
+Labels in this part of split:  [0, 0, 0, 105, 0]
+Train for 4 steps, validate for 6 steps
+Epoch 1/500
+4/4 - 5s - loss: 1.0051 - accuracy: 0.6667 - val_loss: 6.9984 - val_accuracy: 0.0391
+Epoch 2/500
+4/4 - 1s - loss: 0.0010 - accuracy: 1.0000 - val_loss: 12.4493 - val_accuracy: 0.0391
+Epoch 3/500
+4/4 - 1s - loss: 4.4908e-06 - accuracy: 1.0000 - val_loss: 15.7821 - val_accuracy: 0.0391
+Epoch 4/500
+4/4 - 1s - loss: 1.4461e-07 - accuracy: 1.0000 - val_loss: 17.9845 - val_accuracy: 0.0391
+Epoch 5/500
+4/4 - 1s - loss: 0.0000e+00 - accuracy: 1.0000 - val_loss: 19.4669 - val_accuracy: 0.0391
+Epoch 6/500
+4/4 - 1s - loss: 0.0000e+00 - accuracy: 1.0000 - val_loss: 20.4591 - val_accuracy: 0.0391
+Epoch 7/500
+4/4 - 1s - loss: 0.0000e+00 - accuracy: 1.0000 - val_loss: 21.1182 - val_accuracy: 0.0391
+Epoch 8/500
+4/4 - 1s - loss: 0.0000e+00 - accuracy: 1.0000 - val_loss: 21.5547 - val_accuracy: 0.0391
+Epoch 9/500
+4/4 - 1s - loss: 0.0000e+00 - accuracy: 1.0000 - val_loss: 21.8432 - val_accuracy: 0.0391
+Epoch 10/500
+4/4 - 1s - loss: 0.0000e+00 - accuracy: 1.0000 - val_loss: 22.0337 - val_accuracy: 0.0391
+Epoch 11/500
+4/4 - 1s - loss: 0.0000e+00 - accuracy: 1.0000 - val_loss: 22.1594 - val_accuracy: 0.0391
+Epoch 12/500
+4/4 - 1s - loss: 0.0000e+00 - accuracy: 1.0000 - val_loss: 22.2421 - val_accuracy: 0.0391
+Epoch 13/500
+4/4 - 1s - loss: 0.0000e+00 - accuracy: 1.0000 - val_loss: 22.2966 - val_accuracy: 0.0391
+Epoch 14/500
+4/4 - 1s - loss: 0.0000e+00 - accuracy: 1.0000 - val_loss: 22.3324 - val_accuracy: 0.0391
+Epoch 15/500
+4/4 - 1s - loss: 0.0000e+00 - accuracy: 1.0000 - val_loss: 22.3560 - val_accuracy: 0.0391
+Epoch 16/500
+4/4 - 1s - loss: 0.0000e+00 - accuracy: 1.0000 - val_loss: 22.3715 - val_accuracy: 0.0391
+Epoch 17/500
+4/4 - 1s - loss: 0.0000e+00 - accuracy: 1.0000 - val_loss: 22.3817 - val_accuracy: 0.0391
+Epoch 18/500
+4/4 - 1s - loss: 0.0000e+00 - accuracy: 1.0000 - val_loss: 22.3884 - val_accuracy: 0.0391
+Epoch 19/500
+4/4 - 1s - loss: 0.0000e+00 - accuracy: 1.0000 - val_loss: 22.3928 - val_accuracy: 0.0391
+Epoch 20/500
+4/4 - 1s - loss: 0.0000e+00 - accuracy: 1.0000 - val_loss: 22.3957 - val_accuracy: 0.0391
+Epoch 21/500
+4/4 - 1s - loss: 0.0000e+00 - accuracy: 1.0000 - val_loss: 22.3976 - val_accuracy: 0.0391
+WARNING:tensorflow:sample_weight modes were coerced from
+  ...
+    to  
+  ['...']
+WARNING:tensorflow:sample_weight modes were coerced from
+  ...
+    to  
+  ['...']
+2020-05-20 13:33:47.776417: I tensorflow/core/profiler/lib/profiler_session.cc:225] Profiler session started.
+2020-05-20 13:33:47.776605: E tensorflow/core/profiler/internal/gpu/cupti_tracer.cc:1307] function cupti_interface_->Subscribe( &subscriber_, (CUpti_CallbackFunc)ApiCallback, this)failed with error CUPTI_ERROR_NOT_INITIALIZED
+2020-05-20 13:33:47.776645: E tensorflow/core/profiler/internal/gpu/cupti_tracer.cc:1346] function cupti_interface_->ActivityRegisterCallbacks( AllocCuptiActivityBuffer, FreeCuptiActivityBuffer)failed with error CUPTI_ERROR_NOT_INITIALIZED
+2020-05-20 13:33:47.977060: E tensorflow/core/profiler/internal/gpu/cupti_tracer.cc:1329] function cupti_interface_->EnableCallback( 0 , subscriber_, CUPTI_CB_DOMAIN_DRIVER_API, cbid)failed with error CUPTI_ERROR_INVALID_PARAMETER
+2020-05-20 13:33:47.977162: I tensorflow/core/profiler/internal/gpu/device_tracer.cc:88]  GpuTracer has collected 0 callback api events and 0 activity events.
+Epoch 00021: early stopping
+Labels in this part of split:  [0, 0, 0, 105, 0]
+Train for 4 steps, validate for 6 steps
+Epoch 1/500
+4/4 - 5s - loss: 0.9250 - accuracy: 0.7714 - val_loss: 6.9082 - val_accuracy: 0.0391
+Epoch 2/500
+4/4 - 1s - loss: 0.0011 - accuracy: 1.0000 - val_loss: 12.5021 - val_accuracy: 0.0391
+Epoch 3/500
+4/4 - 1s - loss: 4.0037e-06 - accuracy: 1.0000 - val_loss: 15.9765 - val_accuracy: 0.0391
+Epoch 4/500
+4/4 - 1s - loss: 1.1277e-07 - accuracy: 1.0000 - val_loss: 18.2869 - val_accuracy: 0.0391
+Epoch 5/500
+4/4 - 1s - loss: 0.0000e+00 - accuracy: 1.0000 - val_loss: 19.8402 - val_accuracy: 0.0391
+Epoch 6/500
+4/4 - 1s - loss: 0.0000e+00 - accuracy: 1.0000 - val_loss: 20.8780 - val_accuracy: 0.0391
+Epoch 7/500
+4/4 - 1s - loss: 0.0000e+00 - accuracy: 1.0000 - val_loss: 21.5691 - val_accuracy: 0.0391
+Epoch 8/500
+4/4 - 1s - loss: 0.0000e+00 - accuracy: 1.0000 - val_loss: 22.0277 - val_accuracy: 0.0391
+Epoch 9/500
+4/4 - 1s - loss: 0.0000e+00 - accuracy: 1.0000 - val_loss: 22.3312 - val_accuracy: 0.0391
+Epoch 10/500
+4/4 - 1s - loss: 0.0000e+00 - accuracy: 1.0000 - val_loss: 22.5315 - val_accuracy: 0.0391
+Epoch 11/500
+4/4 - 1s - loss: 0.0000e+00 - accuracy: 1.0000 - val_loss: 22.6634 - val_accuracy: 0.0391
+Epoch 12/500
+4/4 - 1s - loss: 0.0000e+00 - accuracy: 1.0000 - val_loss: 22.7504 - val_accuracy: 0.0391
+Epoch 13/500
+4/4 - 1s - loss: 0.0000e+00 - accuracy: 1.0000 - val_loss: 22.8076 - val_accuracy: 0.0391
+Epoch 14/500
+4/4 - 1s - loss: 0.0000e+00 - accuracy: 1.0000 - val_loss: 22.8453 - val_accuracy: 0.0391
+Epoch 15/500
+4/4 - 1s - loss: 0.0000e+00 - accuracy: 1.0000 - val_loss: 22.8701 - val_accuracy: 0.0391
+Epoch 16/500
+4/4 - 1s - loss: 0.0000e+00 - accuracy: 1.0000 - val_loss: 22.8863 - val_accuracy: 0.0391
+Epoch 17/500
+4/4 - 1s - loss: 0.0000e+00 - accuracy: 1.0000 - val_loss: 22.8971 - val_accuracy: 0.0391
+Epoch 18/500
+4/4 - 1s - loss: 0.0000e+00 - accuracy: 1.0000 - val_loss: 22.9041 - val_accuracy: 0.0391
+Epoch 19/500
+4/4 - 1s - loss: 0.0000e+00 - accuracy: 1.0000 - val_loss: 22.9087 - val_accuracy: 0.0391
+Epoch 20/500
+4/4 - 1s - loss: 0.0000e+00 - accuracy: 1.0000 - val_loss: 22.9118 - val_accuracy: 0.0391
+Epoch 21/500
+4/4 - 1s - loss: 0.0000e+00 - accuracy: 1.0000 - val_loss: 22.9138 - val_accuracy: 0.0391
+WARNING:tensorflow:sample_weight modes were coerced from
+  ...
+    to  
+  ['...']
+WARNING:tensorflow:sample_weight modes were coerced from
+  ...
+    to  
+  ['...']
+2020-05-20 13:34:19.795225: I tensorflow/core/profiler/lib/profiler_session.cc:225] Profiler session started.
+2020-05-20 13:34:19.795395: E tensorflow/core/profiler/internal/gpu/cupti_tracer.cc:1307] function cupti_interface_->Subscribe( &subscriber_, (CUpti_CallbackFunc)ApiCallback, this)failed with error CUPTI_ERROR_NOT_INITIALIZED
+2020-05-20 13:34:19.795428: E tensorflow/core/profiler/internal/gpu/cupti_tracer.cc:1346] function cupti_interface_->ActivityRegisterCallbacks( AllocCuptiActivityBuffer, FreeCuptiActivityBuffer)failed with error CUPTI_ERROR_NOT_INITIALIZED
+2020-05-20 13:34:19.996403: E tensorflow/core/profiler/internal/gpu/cupti_tracer.cc:1329] function cupti_interface_->EnableCallback( 0 , subscriber_, CUPTI_CB_DOMAIN_DRIVER_API, cbid)failed with error CUPTI_ERROR_INVALID_PARAMETER
+2020-05-20 13:34:19.996504: I tensorflow/core/profiler/internal/gpu/device_tracer.cc:88]  GpuTracer has collected 0 callback api events and 0 activity events.
+Epoch 00021: early stopping
+Labels in this part of split:  [0, 0, 0, 23, 82]
+Train for 4 steps, validate for 6 steps
+Epoch 1/500
+4/4 - 4s - loss: 1.1199 - accuracy: 0.7143 - val_loss: 5.5169 - val_accuracy: 0.0168
+Epoch 2/500
+4/4 - 1s - loss: 0.6427 - accuracy: 0.7810 - val_loss: 6.6278 - val_accuracy: 0.0391
+Epoch 3/500
+4/4 - 1s - loss: 0.5845 - accuracy: 0.6762 - val_loss: 8.1476 - val_accuracy: 0.0168
+Epoch 4/500
+4/4 - 1s - loss: 0.4892 - accuracy: 0.7810 - val_loss: 8.3069 - val_accuracy: 0.0223
+Epoch 5/500
+4/4 - 1s - loss: 0.4428 - accuracy: 0.8190 - val_loss: 9.4298 - val_accuracy: 0.0168
+Epoch 6/500
+4/4 - 1s - loss: 0.3833 - accuracy: 0.8190 - val_loss: 9.6062 - val_accuracy: 0.0279
+Epoch 7/500
+4/4 - 1s - loss: 0.3489 - accuracy: 0.8762 - val_loss: 10.2532 - val_accuracy: 0.0168
+Epoch 8/500
+4/4 - 1s - loss: 0.2972 - accuracy: 0.8857 - val_loss: 10.2347 - val_accuracy: 0.0223
+Epoch 9/500
+4/4 - 1s - loss: 0.2679 - accuracy: 0.8952 - val_loss: 10.7593 - val_accuracy: 0.0223
+Epoch 10/500
+4/4 - 1s - loss: 0.2054 - accuracy: 0.9143 - val_loss: 10.6552 - val_accuracy: 0.0223
+Epoch 11/500
+4/4 - 1s - loss: 0.1694 - accuracy: 0.9333 - val_loss: 11.3190 - val_accuracy: 0.0223
+Epoch 12/500
+4/4 - 1s - loss: 0.1680 - accuracy: 0.9333 - val_loss: 11.0669 - val_accuracy: 0.0223
+Epoch 13/500
+4/4 - 1s - loss: 0.1293 - accuracy: 0.9333 - val_loss: 11.5231 - val_accuracy: 0.0223
+Epoch 14/500
+4/4 - 1s - loss: 0.0997 - accuracy: 0.9714 - val_loss: 11.7666 - val_accuracy: 0.0223
+Epoch 15/500
+4/4 - 1s - loss: 0.0715 - accuracy: 0.9524 - val_loss: 11.7780 - val_accuracy: 0.0223
+Epoch 16/500
+4/4 - 1s - loss: 0.0501 - accuracy: 0.9905 - val_loss: 11.7106 - val_accuracy: 0.0279
+Epoch 17/500
+4/4 - 1s - loss: 0.0302 - accuracy: 1.0000 - val_loss: 12.8994 - val_accuracy: 0.0223
+Epoch 18/500
+4/4 - 1s - loss: 0.0398 - accuracy: 0.9714 - val_loss: 12.2054 - val_accuracy: 0.0223
+Epoch 19/500
+4/4 - 1s - loss: 0.0182 - accuracy: 1.0000 - val_loss: 12.8628 - val_accuracy: 0.0223
+Epoch 20/500
+4/4 - 1s - loss: 0.0120 - accuracy: 1.0000 - val_loss: 12.8369 - val_accuracy: 0.0223
+Epoch 21/500
+4/4 - 1s - loss: 0.0069 - accuracy: 1.0000 - val_loss: 13.0176 - val_accuracy: 0.0223
+Epoch 22/500
+4/4 - 1s - loss: 0.0056 - accuracy: 1.0000 - val_loss: 13.3432 - val_accuracy: 0.0223
+WARNING:tensorflow:sample_weight modes were coerced from
+  ...
+    to  
+  ['...']
+WARNING:tensorflow:sample_weight modes were coerced from
+  ...
+    to  
+  ['...']
+2020-05-20 13:34:53.994781: I tensorflow/core/profiler/lib/profiler_session.cc:225] Profiler session started.
+2020-05-20 13:34:53.994942: E tensorflow/core/profiler/internal/gpu/cupti_tracer.cc:1307] function cupti_interface_->Subscribe( &subscriber_, (CUpti_CallbackFunc)ApiCallback, this)failed with error CUPTI_ERROR_NOT_INITIALIZED
+2020-05-20 13:34:53.994975: E tensorflow/core/profiler/internal/gpu/cupti_tracer.cc:1346] function cupti_interface_->ActivityRegisterCallbacks( AllocCuptiActivityBuffer, FreeCuptiActivityBuffer)failed with error CUPTI_ERROR_NOT_INITIALIZED
+2020-05-20 13:34:54.195237: E tensorflow/core/profiler/internal/gpu/cupti_tracer.cc:1329] function cupti_interface_->EnableCallback( 0 , subscriber_, CUPTI_CB_DOMAIN_DRIVER_API, cbid)failed with error CUPTI_ERROR_INVALID_PARAMETER
+2020-05-20 13:34:54.195358: I tensorflow/core/profiler/internal/gpu/device_tracer.cc:88]  GpuTracer has collected 0 callback api events and 0 activity events.
+Epoch 00022: early stopping
+Labels in this part of split:  [0, 0, 0, 0, 104]
+Train for 4 steps, validate for 6 steps
+Epoch 1/500
+4/4 - 6s - loss: 0.5631 - accuracy: 0.9231 - val_loss: 7.5213 - val_accuracy: 0.0168
+Epoch 2/500
+4/4 - 1s - loss: 6.1618e-04 - accuracy: 1.0000 - val_loss: 12.7188 - val_accuracy: 0.0168
+Epoch 3/500
+4/4 - 1s - loss: 4.1637e-06 - accuracy: 1.0000 - val_loss: 15.9582 - val_accuracy: 0.0168
+Epoch 4/500
+4/4 - 1s - loss: 2.0592e-07 - accuracy: 1.0000 - val_loss: 18.0382 - val_accuracy: 0.0168
+Epoch 5/500
+4/4 - 1s - loss: 4.1838e-09 - accuracy: 1.0000 - val_loss: 19.4003 - val_accuracy: 0.0168
+Epoch 6/500
+4/4 - 1s - loss: 0.0000e+00 - accuracy: 1.0000 - val_loss: 20.2966 - val_accuracy: 0.0168
+Epoch 7/500
+4/4 - 1s - loss: 0.0000e+00 - accuracy: 1.0000 - val_loss: 20.8865 - val_accuracy: 0.0168
+Epoch 8/500
+4/4 - 1s - loss: 0.0000e+00 - accuracy: 1.0000 - val_loss: 21.2747 - val_accuracy: 0.0168
+Epoch 9/500
+4/4 - 1s - loss: 0.0000e+00 - accuracy: 1.0000 - val_loss: 21.5301 - val_accuracy: 0.0168
+Epoch 10/500
+4/4 - 1s - loss: 0.0000e+00 - accuracy: 1.0000 - val_loss: 21.6982 - val_accuracy: 0.0168
+Epoch 11/500
+4/4 - 1s - loss: 0.0000e+00 - accuracy: 1.0000 - val_loss: 21.8088 - val_accuracy: 0.0168
+Epoch 12/500
+4/4 - 1s - loss: 0.0000e+00 - accuracy: 1.0000 - val_loss: 21.8815 - val_accuracy: 0.0168
+Epoch 13/500
+4/4 - 1s - loss: 0.0000e+00 - accuracy: 1.0000 - val_loss: 21.9293 - val_accuracy: 0.0168
+Epoch 14/500
+4/4 - 1s - loss: 0.0000e+00 - accuracy: 1.0000 - val_loss: 21.9608 - val_accuracy: 0.0168
+Epoch 15/500
+4/4 - 1s - loss: 0.0000e+00 - accuracy: 1.0000 - val_loss: 21.9814 - val_accuracy: 0.0168
+Epoch 16/500
+4/4 - 1s - loss: 0.0000e+00 - accuracy: 1.0000 - val_loss: 21.9950 - val_accuracy: 0.0168
+Epoch 17/500
+4/4 - 1s - loss: 0.0000e+00 - accuracy: 1.0000 - val_loss: 22.0040 - val_accuracy: 0.0168
+Epoch 18/500
+4/4 - 1s - loss: 0.0000e+00 - accuracy: 1.0000 - val_loss: 22.0098 - val_accuracy: 0.0168
+Epoch 19/500
+4/4 - 1s - loss: 0.0000e+00 - accuracy: 1.0000 - val_loss: 22.0137 - val_accuracy: 0.0168
+Epoch 20/500
+4/4 - 1s - loss: 0.0000e+00 - accuracy: 1.0000 - val_loss: 22.0162 - val_accuracy: 0.0168
+Epoch 21/500
+4/4 - 1s - loss: 0.0000e+00 - accuracy: 1.0000 - val_loss: 22.0179 - val_accuracy: 0.0168
+WARNING:tensorflow:sample_weight modes were coerced from
+  ...
+    to  
+  ['...']
+WARNING:tensorflow:sample_weight modes were coerced from
+  ...
+    to  
+  ['...']
+2020-05-20 13:35:26.346414: I tensorflow/core/profiler/lib/profiler_session.cc:225] Profiler session started.
+2020-05-20 13:35:26.346575: E tensorflow/core/profiler/internal/gpu/cupti_tracer.cc:1307] function cupti_interface_->Subscribe( &subscriber_, (CUpti_CallbackFunc)ApiCallback, this)failed with error CUPTI_ERROR_NOT_INITIALIZED
+2020-05-20 13:35:26.346610: E tensorflow/core/profiler/internal/gpu/cupti_tracer.cc:1346] function cupti_interface_->ActivityRegisterCallbacks( AllocCuptiActivityBuffer, FreeCuptiActivityBuffer)failed with error CUPTI_ERROR_NOT_INITIALIZED
+2020-05-20 13:35:26.415321: E tensorflow/core/profiler/internal/gpu/cupti_tracer.cc:1329] function cupti_interface_->EnableCallback( 0 , subscriber_, CUPTI_CB_DOMAIN_DRIVER_API, cbid)failed with error CUPTI_ERROR_INVALID_PARAMETER
+2020-05-20 13:35:26.415419: I tensorflow/core/profiler/internal/gpu/device_tracer.cc:88]  GpuTracer has collected 0 callback api events and 0 activity events.
+Epoch 00021: early stopping
+Labels in this part of split:  [0, 0, 0, 0, 104]
+Train for 4 steps, validate for 6 steps
+Epoch 1/500
+4/4 - 5s - loss: 0.6306 - accuracy: 0.6923 - val_loss: 7.2003 - val_accuracy: 0.0168
+Epoch 2/500
+4/4 - 1s - loss: 7.7771e-04 - accuracy: 1.0000 - val_loss: 12.1425 - val_accuracy: 0.0168
+Epoch 3/500
+4/4 - 1s - loss: 6.5115e-06 - accuracy: 1.0000 - val_loss: 15.1775 - val_accuracy: 0.0168
+Epoch 4/500
+4/4 - 1s - loss: 4.3678e-07 - accuracy: 1.0000 - val_loss: 17.1105 - val_accuracy: 0.0168
+Epoch 5/500
+4/4 - 1s - loss: 7.9779e-08 - accuracy: 1.0000 - val_loss: 18.3652 - val_accuracy: 0.0168
+Epoch 6/500
+4/4 - 1s - loss: 0.0000e+00 - accuracy: 1.0000 - val_loss: 19.1866 - val_accuracy: 0.0168
+Epoch 7/500
+4/4 - 1s - loss: 0.0000e+00 - accuracy: 1.0000 - val_loss: 19.7270 - val_accuracy: 0.0168
+Epoch 8/500
+4/4 - 1s - loss: 0.0000e+00 - accuracy: 1.0000 - val_loss: 20.0831 - val_accuracy: 0.0168
+Epoch 9/500
+4/4 - 1s - loss: 0.0000e+00 - accuracy: 1.0000 - val_loss: 20.3175 - val_accuracy: 0.0168
+Epoch 10/500
+4/4 - 1s - loss: 0.0000e+00 - accuracy: 1.0000 - val_loss: 20.4718 - val_accuracy: 0.0168
+Epoch 11/500
+4/4 - 1s - loss: 0.0000e+00 - accuracy: 1.0000 - val_loss: 20.5733 - val_accuracy: 0.0168
+Epoch 12/500
+4/4 - 1s - loss: 0.0000e+00 - accuracy: 1.0000 - val_loss: 20.6400 - val_accuracy: 0.0168
+Epoch 13/500
+4/4 - 1s - loss: 0.0000e+00 - accuracy: 1.0000 - val_loss: 20.6839 - val_accuracy: 0.0168
+Epoch 14/500
+4/4 - 1s - loss: 0.0000e+00 - accuracy: 1.0000 - val_loss: 20.7128 - val_accuracy: 0.0168
+Epoch 15/500
+4/4 - 1s - loss: 0.0000e+00 - accuracy: 1.0000 - val_loss: 20.7318 - val_accuracy: 0.0168
+Epoch 16/500
+4/4 - 1s - loss: 0.0000e+00 - accuracy: 1.0000 - val_loss: 20.7442 - val_accuracy: 0.0168
+Epoch 17/500
+4/4 - 1s - loss: 0.0000e+00 - accuracy: 1.0000 - val_loss: 20.7524 - val_accuracy: 0.0168
+Epoch 18/500
+4/4 - 1s - loss: 0.0000e+00 - accuracy: 1.0000 - val_loss: 20.7578 - val_accuracy: 0.0168
+Epoch 19/500
+4/4 - 1s - loss: 0.0000e+00 - accuracy: 1.0000 - val_loss: 20.7614 - val_accuracy: 0.0168
+Epoch 20/500
+4/4 - 1s - loss: 0.0000e+00 - accuracy: 1.0000 - val_loss: 20.7637 - val_accuracy: 0.0168
+Epoch 21/500
+4/4 - 1s - loss: 0.0000e+00 - accuracy: 1.0000 - val_loss: 20.7652 - val_accuracy: 0.0168
+WARNING:tensorflow:sample_weight modes were coerced from
+  ...
+    to  
+  ['...']
+WARNING:tensorflow:sample_weight modes were coerced from
+  ...
+    to  
+  ['...']
+2020-05-20 13:35:58.171597: I tensorflow/core/profiler/lib/profiler_session.cc:225] Profiler session started.
+2020-05-20 13:35:58.171777: E tensorflow/core/profiler/internal/gpu/cupti_tracer.cc:1307] function cupti_interface_->Subscribe( &subscriber_, (CUpti_CallbackFunc)ApiCallback, this)failed with error CUPTI_ERROR_NOT_INITIALIZED
+2020-05-20 13:35:58.171814: E tensorflow/core/profiler/internal/gpu/cupti_tracer.cc:1346] function cupti_interface_->ActivityRegisterCallbacks( AllocCuptiActivityBuffer, FreeCuptiActivityBuffer)failed with error CUPTI_ERROR_NOT_INITIALIZED
+2020-05-20 13:35:58.371578: E tensorflow/core/profiler/internal/gpu/cupti_tracer.cc:1329] function cupti_interface_->EnableCallback( 0 , subscriber_, CUPTI_CB_DOMAIN_DRIVER_API, cbid)failed with error CUPTI_ERROR_INVALID_PARAMETER
+2020-05-20 13:35:58.371681: I tensorflow/core/profiler/internal/gpu/device_tracer.cc:88]  GpuTracer has collected 0 callback api events and 0 activity events.
+Epoch 00021: early stopping
+Labels in this part of split:  [0, 0, 0, 0, 104]
+Train for 4 steps, validate for 6 steps
+Epoch 1/500
+4/4 - 5s - loss: 0.6586 - accuracy: 0.6923 - val_loss: 7.0881 - val_accuracy: 0.0168
+Epoch 2/500
+4/4 - 1s - loss: 8.4137e-04 - accuracy: 1.0000 - val_loss: 12.0132 - val_accuracy: 0.0168
+Epoch 3/500
+4/4 - 1s - loss: 6.6943e-06 - accuracy: 1.0000 - val_loss: 15.0655 - val_accuracy: 0.0168
+Epoch 4/500
+4/4 - 1s - loss: 4.4205e-07 - accuracy: 1.0000 - val_loss: 17.0207 - val_accuracy: 0.0168
+Epoch 5/500
+4/4 - 1s - loss: 8.2300e-08 - accuracy: 1.0000 - val_loss: 18.2906 - val_accuracy: 0.0168
+Epoch 6/500
+4/4 - 1s - loss: 3.8972e-09 - accuracy: 1.0000 - val_loss: 19.1255 - val_accuracy: 0.0168
+Epoch 7/500
+4/4 - 1s - loss: 0.0000e+00 - accuracy: 1.0000 - val_loss: 19.6758 - val_accuracy: 0.0168
+Epoch 8/500
+4/4 - 1s - loss: 0.0000e+00 - accuracy: 1.0000 - val_loss: 20.0386 - val_accuracy: 0.0168
+Epoch 9/500
+4/4 - 1s - loss: 0.0000e+00 - accuracy: 1.0000 - val_loss: 20.2775 - val_accuracy: 0.0168
+Epoch 10/500
+4/4 - 1s - loss: 0.0000e+00 - accuracy: 1.0000 - val_loss: 20.4347 - val_accuracy: 0.0168
+Epoch 11/500
+4/4 - 1s - loss: 0.0000e+00 - accuracy: 1.0000 - val_loss: 20.5381 - val_accuracy: 0.0168
+Epoch 12/500
+4/4 - 1s - loss: 0.0000e+00 - accuracy: 1.0000 - val_loss: 20.6061 - val_accuracy: 0.0168
+Epoch 13/500
+4/4 - 1s - loss: 0.0000e+00 - accuracy: 1.0000 - val_loss: 20.6509 - val_accuracy: 0.0168
+Epoch 14/500
+4/4 - 1s - loss: 0.0000e+00 - accuracy: 1.0000 - val_loss: 20.6803 - val_accuracy: 0.0168
+Epoch 15/500
+4/4 - 1s - loss: 0.0000e+00 - accuracy: 1.0000 - val_loss: 20.6996 - val_accuracy: 0.0168
+Epoch 16/500
+4/4 - 1s - loss: 0.0000e+00 - accuracy: 1.0000 - val_loss: 20.7123 - val_accuracy: 0.0168
+Epoch 17/500
+4/4 - 1s - loss: 0.0000e+00 - accuracy: 1.0000 - val_loss: 20.7207 - val_accuracy: 0.0168
+Epoch 18/500
+4/4 - 1s - loss: 0.0000e+00 - accuracy: 1.0000 - val_loss: 20.7262 - val_accuracy: 0.0168
+Epoch 19/500
+4/4 - 1s - loss: 0.0000e+00 - accuracy: 1.0000 - val_loss: 20.7298 - val_accuracy: 0.0168
+Epoch 20/500
+4/4 - 1s - loss: 0.0000e+00 - accuracy: 1.0000 - val_loss: 20.7322 - val_accuracy: 0.0168
+Epoch 21/500
+4/4 - 1s - loss: 0.0000e+00 - accuracy: 1.0000 - val_loss: 20.7337 - val_accuracy: 0.0168
+WARNING:tensorflow:sample_weight modes were coerced from
+  ...
+    to  
+  ['...']
+WARNING:tensorflow:sample_weight modes were coerced from
+  ...
+    to  
+  ['...']
+2020-05-20 13:36:30.974338: I tensorflow/core/profiler/lib/profiler_session.cc:225] Profiler session started.
+2020-05-20 13:36:30.974501: E tensorflow/core/profiler/internal/gpu/cupti_tracer.cc:1307] function cupti_interface_->Subscribe( &subscriber_, (CUpti_CallbackFunc)ApiCallback, this)failed with error CUPTI_ERROR_NOT_INITIALIZED
+2020-05-20 13:36:30.974535: E tensorflow/core/profiler/internal/gpu/cupti_tracer.cc:1346] function cupti_interface_->ActivityRegisterCallbacks( AllocCuptiActivityBuffer, FreeCuptiActivityBuffer)failed with error CUPTI_ERROR_NOT_INITIALIZED
+2020-05-20 13:36:31.177870: E tensorflow/core/profiler/internal/gpu/cupti_tracer.cc:1329] function cupti_interface_->EnableCallback( 0 , subscriber_, CUPTI_CB_DOMAIN_DRIVER_API, cbid)failed with error CUPTI_ERROR_INVALID_PARAMETER
+2020-05-20 13:36:31.177998: I tensorflow/core/profiler/internal/gpu/device_tracer.cc:88]  GpuTracer has collected 0 callback api events and 0 activity events.
+Epoch 00021: early stopping
+Labels in this part of split:  [0, 0, 0, 0, 104]
+Train for 4 steps, validate for 6 steps
+Epoch 1/500
+4/4 - 7s - loss: 0.6745 - accuracy: 0.6923 - val_loss: 7.1029 - val_accuracy: 0.0168
+Epoch 2/500
+4/4 - 1s - loss: 8.8101e-04 - accuracy: 1.0000 - val_loss: 12.0919 - val_accuracy: 0.0168
+Epoch 3/500
+4/4 - 1s - loss: 8.4421e-06 - accuracy: 1.0000 - val_loss: 15.1925 - val_accuracy: 0.0168
+Epoch 4/500
+4/4 - 1s - loss: 5.1879e-07 - accuracy: 1.0000 - val_loss: 17.1764 - val_accuracy: 0.0168
+Epoch 5/500
+4/4 - 1s - loss: 9.4737e-08 - accuracy: 1.0000 - val_loss: 18.4660 - val_accuracy: 0.0168
+Epoch 6/500
+4/4 - 1s - loss: 6.4190e-09 - accuracy: 1.0000 - val_loss: 19.3111 - val_accuracy: 0.0168
+Epoch 7/500
+4/4 - 1s - loss: 0.0000e+00 - accuracy: 1.0000 - val_loss: 19.8674 - val_accuracy: 0.0168
+Epoch 8/500
+4/4 - 1s - loss: 0.0000e+00 - accuracy: 1.0000 - val_loss: 20.2336 - val_accuracy: 0.0168
+Epoch 9/500
+4/4 - 1s - loss: 0.0000e+00 - accuracy: 1.0000 - val_loss: 20.4748 - val_accuracy: 0.0168
+Epoch 10/500
+4/4 - 1s - loss: 0.0000e+00 - accuracy: 1.0000 - val_loss: 20.6336 - val_accuracy: 0.0168
+Epoch 11/500
+4/4 - 1s - loss: 0.0000e+00 - accuracy: 1.0000 - val_loss: 20.7381 - val_accuracy: 0.0168
+Epoch 12/500
+4/4 - 1s - loss: 0.0000e+00 - accuracy: 1.0000 - val_loss: 20.8068 - val_accuracy: 0.0168
+Epoch 13/500
+4/4 - 1s - loss: 0.0000e+00 - accuracy: 1.0000 - val_loss: 20.8520 - val_accuracy: 0.0168
+Epoch 14/500
+4/4 - 1s - loss: 0.0000e+00 - accuracy: 1.0000 - val_loss: 20.8817 - val_accuracy: 0.0168
+Epoch 15/500
+4/4 - 1s - loss: 0.0000e+00 - accuracy: 1.0000 - val_loss: 20.9013 - val_accuracy: 0.0168
+Epoch 16/500
+4/4 - 1s - loss: 0.0000e+00 - accuracy: 1.0000 - val_loss: 20.9141 - val_accuracy: 0.0168
+Epoch 17/500
+4/4 - 1s - loss: 0.0000e+00 - accuracy: 1.0000 - val_loss: 20.9226 - val_accuracy: 0.0168
+Epoch 18/500
+4/4 - 1s - loss: 0.0000e+00 - accuracy: 1.0000 - val_loss: 20.9281 - val_accuracy: 0.0168
+Epoch 19/500
+4/4 - 1s - loss: 0.0000e+00 - accuracy: 1.0000 - val_loss: 20.9318 - val_accuracy: 0.0168
+Epoch 20/500
+4/4 - 1s - loss: 0.0000e+00 - accuracy: 1.0000 - val_loss: 20.9342 - val_accuracy: 0.0168
+Epoch 21/500
+4/4 - 1s - loss: 0.0000e+00 - accuracy: 1.0000 - val_loss: 20.9357 - val_accuracy: 0.0168
+WARNING:tensorflow:sample_weight modes were coerced from
+  ...
+    to  
+  ['...']
+WARNING:tensorflow:sample_weight modes were coerced from
+  ...
+    to  
+  ['...']
+2020-05-20 13:37:05.437057: I tensorflow/core/profiler/lib/profiler_session.cc:225] Profiler session started.
+2020-05-20 13:37:05.437211: E tensorflow/core/profiler/internal/gpu/cupti_tracer.cc:1307] function cupti_interface_->Subscribe( &subscriber_, (CUpti_CallbackFunc)ApiCallback, this)failed with error CUPTI_ERROR_NOT_INITIALIZED
+2020-05-20 13:37:05.437244: E tensorflow/core/profiler/internal/gpu/cupti_tracer.cc:1346] function cupti_interface_->ActivityRegisterCallbacks( AllocCuptiActivityBuffer, FreeCuptiActivityBuffer)failed with error CUPTI_ERROR_NOT_INITIALIZED
+2020-05-20 13:37:05.505572: E tensorflow/core/profiler/internal/gpu/cupti_tracer.cc:1329] function cupti_interface_->EnableCallback( 0 , subscriber_, CUPTI_CB_DOMAIN_DRIVER_API, cbid)failed with error CUPTI_ERROR_INVALID_PARAMETER
+2020-05-20 13:37:05.505697: I tensorflow/core/profiler/internal/gpu/device_tracer.cc:88]  GpuTracer has collected 0 callback api events and 0 activity events.
+Epoch 00021: early stopping
+Labels in this part of split:  [0, 0, 0, 0, 104]
+Train for 4 steps, validate for 6 steps
+Epoch 1/500
+4/4 - 4s - loss: 0.6454 - accuracy: 0.6923 - val_loss: 6.9678 - val_accuracy: 0.0168
+Epoch 2/500
+4/4 - 1s - loss: 0.0011 - accuracy: 1.0000 - val_loss: 11.9086 - val_accuracy: 0.0168
+Epoch 3/500
+4/4 - 1s - loss: 9.8760e-06 - accuracy: 1.0000 - val_loss: 14.9979 - val_accuracy: 0.0168
+Epoch 4/500
+4/4 - 1s - loss: 5.2091e-07 - accuracy: 1.0000 - val_loss: 16.9748 - val_accuracy: 0.0168
+Epoch 5/500
+4/4 - 1s - loss: 1.0333e-07 - accuracy: 1.0000 - val_loss: 18.2546 - val_accuracy: 0.0168
+Epoch 6/500
+4/4 - 1s - loss: 6.8201e-09 - accuracy: 1.0000 - val_loss: 19.0955 - val_accuracy: 0.0168
+Epoch 7/500
+4/4 - 1s - loss: 0.0000e+00 - accuracy: 1.0000 - val_loss: 19.6498 - val_accuracy: 0.0168
+Epoch 8/500
+4/4 - 1s - loss: 0.0000e+00 - accuracy: 1.0000 - val_loss: 20.0155 - val_accuracy: 0.0168
+Epoch 9/500
+4/4 - 1s - loss: 0.0000e+00 - accuracy: 1.0000 - val_loss: 20.2564 - val_accuracy: 0.0168
+Epoch 10/500
+4/4 - 1s - loss: 0.0000e+00 - accuracy: 1.0000 - val_loss: 20.4151 - val_accuracy: 0.0168
+Epoch 11/500
+4/4 - 1s - loss: 0.0000e+00 - accuracy: 1.0000 - val_loss: 20.5195 - val_accuracy: 0.0168
+Epoch 12/500
+4/4 - 1s - loss: 0.0000e+00 - accuracy: 1.0000 - val_loss: 20.5882 - val_accuracy: 0.0168
+Epoch 13/500
+4/4 - 1s - loss: 0.0000e+00 - accuracy: 1.0000 - val_loss: 20.6334 - val_accuracy: 0.0168
+Epoch 14/500
+4/4 - 1s - loss: 0.0000e+00 - accuracy: 1.0000 - val_loss: 20.6631 - val_accuracy: 0.0168
+Epoch 15/500
+4/4 - 1s - loss: 0.0000e+00 - accuracy: 1.0000 - val_loss: 20.6827 - val_accuracy: 0.0168
+Epoch 16/500
+4/4 - 1s - loss: 0.0000e+00 - accuracy: 1.0000 - val_loss: 20.6955 - val_accuracy: 0.0168
+Epoch 17/500
+4/4 - 1s - loss: 0.0000e+00 - accuracy: 1.0000 - val_loss: 20.7040 - val_accuracy: 0.0168
+Epoch 18/500
+4/4 - 1s - loss: 0.0000e+00 - accuracy: 1.0000 - val_loss: 20.7095 - val_accuracy: 0.0168
+Epoch 19/500
+4/4 - 1s - loss: 0.0000e+00 - accuracy: 1.0000 - val_loss: 20.7132 - val_accuracy: 0.0168
+Epoch 20/500
+4/4 - 1s - loss: 0.0000e+00 - accuracy: 1.0000 - val_loss: 20.7156 - val_accuracy: 0.0168
+Epoch 21/500
+4/4 - 1s - loss: 0.0000e+00 - accuracy: 1.0000 - val_loss: 20.7171 - val_accuracy: 0.0168
+WARNING:tensorflow:sample_weight modes were coerced from
+  ...
+    to  
+  ['...']
+WARNING:tensorflow:sample_weight modes were coerced from
+  ...
+    to  
+  ['...']
+2020-05-20 13:37:37.045681: I tensorflow/core/profiler/lib/profiler_session.cc:225] Profiler session started.
+2020-05-20 13:37:37.045838: E tensorflow/core/profiler/internal/gpu/cupti_tracer.cc:1307] function cupti_interface_->Subscribe( &subscriber_, (CUpti_CallbackFunc)ApiCallback, this)failed with error CUPTI_ERROR_NOT_INITIALIZED
+2020-05-20 13:37:37.045872: E tensorflow/core/profiler/internal/gpu/cupti_tracer.cc:1346] function cupti_interface_->ActivityRegisterCallbacks( AllocCuptiActivityBuffer, FreeCuptiActivityBuffer)failed with error CUPTI_ERROR_NOT_INITIALIZED
+2020-05-20 13:37:37.245733: E tensorflow/core/profiler/internal/gpu/cupti_tracer.cc:1329] function cupti_interface_->EnableCallback( 0 , subscriber_, CUPTI_CB_DOMAIN_DRIVER_API, cbid)failed with error CUPTI_ERROR_INVALID_PARAMETER
+2020-05-20 13:37:37.245832: I tensorflow/core/profiler/internal/gpu/device_tracer.cc:88]  GpuTracer has collected 0 callback api events and 0 activity events.
+Epoch 00021: early stopping
+Labels in this part of split:  [0, 0, 0, 0, 104]
+Train for 4 steps, validate for 6 steps
+Epoch 1/500
+4/4 - 5s - loss: 0.6797 - accuracy: 0.6923 - val_loss: 7.0953 - val_accuracy: 0.0168
+Epoch 2/500
+4/4 - 1s - loss: 8.1069e-04 - accuracy: 1.0000 - val_loss: 12.1436 - val_accuracy: 0.0168
+Epoch 3/500
+4/4 - 1s - loss: 7.1211e-06 - accuracy: 1.0000 - val_loss: 15.3031 - val_accuracy: 0.0168
+Epoch 4/500
+4/4 - 1s - loss: 4.5580e-07 - accuracy: 1.0000 - val_loss: 17.3131 - val_accuracy: 0.0168
+Epoch 5/500
+4/4 - 1s - loss: 7.9205e-08 - accuracy: 1.0000 - val_loss: 18.6280 - val_accuracy: 0.0168
+Epoch 6/500
+4/4 - 1s - loss: 1.9486e-09 - accuracy: 1.0000 - val_loss: 19.4951 - val_accuracy: 0.0168
+Epoch 7/500
+4/4 - 1s - loss: 0.0000e+00 - accuracy: 1.0000 - val_loss: 20.0660 - val_accuracy: 0.0168
+Epoch 8/500
+4/4 - 1s - loss: 0.0000e+00 - accuracy: 1.0000 - val_loss: 20.4419 - val_accuracy: 0.0168
+Epoch 9/500
+4/4 - 1s - loss: 0.0000e+00 - accuracy: 1.0000 - val_loss: 20.6891 - val_accuracy: 0.0168
+Epoch 10/500
+4/4 - 1s - loss: 0.0000e+00 - accuracy: 1.0000 - val_loss: 20.8517 - val_accuracy: 0.0168
+Epoch 11/500
+4/4 - 1s - loss: 0.0000e+00 - accuracy: 1.0000 - val_loss: 20.9586 - val_accuracy: 0.0168
+Epoch 12/500
+4/4 - 1s - loss: 0.0000e+00 - accuracy: 1.0000 - val_loss: 21.0290 - val_accuracy: 0.0168
+Epoch 13/500
+4/4 - 1s - loss: 0.0000e+00 - accuracy: 1.0000 - val_loss: 21.0753 - val_accuracy: 0.0168
+Epoch 14/500
+4/4 - 1s - loss: 0.0000e+00 - accuracy: 1.0000 - val_loss: 21.1057 - val_accuracy: 0.0168
+Epoch 15/500
+4/4 - 1s - loss: 0.0000e+00 - accuracy: 1.0000 - val_loss: 21.1257 - val_accuracy: 0.0168
+Epoch 16/500
+4/4 - 1s - loss: 0.0000e+00 - accuracy: 1.0000 - val_loss: 21.1388 - val_accuracy: 0.0168
+Epoch 17/500
+4/4 - 1s - loss: 0.0000e+00 - accuracy: 1.0000 - val_loss: 21.1475 - val_accuracy: 0.0168
+Epoch 18/500
+4/4 - 1s - loss: 0.0000e+00 - accuracy: 1.0000 - val_loss: 21.1532 - val_accuracy: 0.0168
+Epoch 19/500
+4/4 - 1s - loss: 0.0000e+00 - accuracy: 1.0000 - val_loss: 21.1569 - val_accuracy: 0.0168
+Epoch 20/500
+4/4 - 1s - loss: 0.0000e+00 - accuracy: 1.0000 - val_loss: 21.1594 - val_accuracy: 0.0168
+Epoch 21/500
+4/4 - 1s - loss: 0.0000e+00 - accuracy: 1.0000 - val_loss: 21.1610 - val_accuracy: 0.0168
+WARNING:tensorflow:sample_weight modes were coerced from
+  ...
+    to  
+  ['...']
+WARNING:tensorflow:sample_weight modes were coerced from
+  ...
+    to  
+  ['...']
+2020-05-20 13:38:09.073997: I tensorflow/core/profiler/lib/profiler_session.cc:225] Profiler session started.
+2020-05-20 13:38:09.074152: E tensorflow/core/profiler/internal/gpu/cupti_tracer.cc:1307] function cupti_interface_->Subscribe( &subscriber_, (CUpti_CallbackFunc)ApiCallback, this)failed with error CUPTI_ERROR_NOT_INITIALIZED
+2020-05-20 13:38:09.074186: E tensorflow/core/profiler/internal/gpu/cupti_tracer.cc:1346] function cupti_interface_->ActivityRegisterCallbacks( AllocCuptiActivityBuffer, FreeCuptiActivityBuffer)failed with error CUPTI_ERROR_NOT_INITIALIZED
+2020-05-20 13:38:09.274993: E tensorflow/core/profiler/internal/gpu/cupti_tracer.cc:1329] function cupti_interface_->EnableCallback( 0 , subscriber_, CUPTI_CB_DOMAIN_DRIVER_API, cbid)failed with error CUPTI_ERROR_INVALID_PARAMETER
+2020-05-20 13:38:09.275096: I tensorflow/core/profiler/internal/gpu/device_tracer.cc:88]  GpuTracer has collected 0 callback api events and 0 activity events.
+Epoch 00021: early stopping
+Labels in this part of split:  [0, 0, 0, 0, 104]
+Train for 4 steps, validate for 6 steps
+Epoch 1/500
+4/4 - 5s - loss: 0.6079 - accuracy: 0.9231 - val_loss: 6.9449 - val_accuracy: 0.0168
+Epoch 2/500
+4/4 - 1s - loss: 0.0011 - accuracy: 1.0000 - val_loss: 11.9881 - val_accuracy: 0.0168
+Epoch 3/500
+4/4 - 1s - loss: 9.0644e-06 - accuracy: 1.0000 - val_loss: 15.1162 - val_accuracy: 0.0168
+Epoch 4/500
+4/4 - 1s - loss: 5.4418e-07 - accuracy: 1.0000 - val_loss: 17.1187 - val_accuracy: 0.0168
+Epoch 5/500
+4/4 - 1s - loss: 1.0001e-07 - accuracy: 1.0000 - val_loss: 18.4289 - val_accuracy: 0.0168
+Epoch 6/500
+4/4 - 1s - loss: 3.8972e-09 - accuracy: 1.0000 - val_loss: 19.2938 - val_accuracy: 0.0168
+Epoch 7/500
+4/4 - 1s - loss: 0.0000e+00 - accuracy: 1.0000 - val_loss: 19.8645 - val_accuracy: 0.0168
+Epoch 8/500
+4/4 - 1s - loss: 0.0000e+00 - accuracy: 1.0000 - val_loss: 20.2408 - val_accuracy: 0.0168
+Epoch 9/500
+4/4 - 1s - loss: 0.0000e+00 - accuracy: 1.0000 - val_loss: 20.4887 - val_accuracy: 0.0168
+Epoch 10/500
+4/4 - 1s - loss: 0.0000e+00 - accuracy: 1.0000 - val_loss: 20.6518 - val_accuracy: 0.0168
+Epoch 11/500
+4/4 - 1s - loss: 0.0000e+00 - accuracy: 1.0000 - val_loss: 20.7592 - val_accuracy: 0.0168
+Epoch 12/500
+4/4 - 1s - loss: 0.0000e+00 - accuracy: 1.0000 - val_loss: 20.8298 - val_accuracy: 0.0168
+Epoch 13/500
+4/4 - 1s - loss: 0.0000e+00 - accuracy: 1.0000 - val_loss: 20.8763 - val_accuracy: 0.0168
+Epoch 14/500
+4/4 - 1s - loss: 0.0000e+00 - accuracy: 1.0000 - val_loss: 20.9068 - val_accuracy: 0.0168
+Epoch 15/500
+4/4 - 1s - loss: 0.0000e+00 - accuracy: 1.0000 - val_loss: 20.9269 - val_accuracy: 0.0168
+Epoch 16/500
+4/4 - 1s - loss: 0.0000e+00 - accuracy: 1.0000 - val_loss: 20.9401 - val_accuracy: 0.0168
+Epoch 17/500
+4/4 - 1s - loss: 0.0000e+00 - accuracy: 1.0000 - val_loss: 20.9488 - val_accuracy: 0.0168
+Epoch 18/500
+4/4 - 1s - loss: 0.0000e+00 - accuracy: 1.0000 - val_loss: 20.9545 - val_accuracy: 0.0168
+Epoch 19/500
+4/4 - 1s - loss: 0.0000e+00 - accuracy: 1.0000 - val_loss: 20.9583 - val_accuracy: 0.0168
+Epoch 20/500
+4/4 - 1s - loss: 0.0000e+00 - accuracy: 1.0000 - val_loss: 20.9608 - val_accuracy: 0.0168
+Epoch 21/500
+4/4 - 1s - loss: 0.0000e+00 - accuracy: 1.0000 - val_loss: 20.9624 - val_accuracy: 0.0168
+Epoch 00021: early stopping
+
+
+###############################################################################
+Peregrine Cluster
+Job 11623219 for user 's2934833'
+Finished at: Wed May 20 13:38:50 CEST 2020
+
+Job details:
+============
+
+Name                : MESEN
+User                : s2934833
+Partition           : gpu
+Nodes               : pg-gpu26
+Cores               : 12
+State               : COMPLETED
+Submit              : 2020-05-20T11:55:20
+Start               : 2020-05-20T13:12:02
+End                 : 2020-05-20T13:38:50
+Reserved walltime   : 1-00:00:00
+Used walltime       :   00:26:48
+Used CPU time       :   00:20:16 (efficiency:  6.31%)
+% User (Computation): 63.09%
+% System (I/O)      : 36.91%
+Mem reserved        : 125G/node
+Max Mem used        : 6.44G (pg-gpu26)
+Max Disk Write      : 153.60K (pg-gpu26)
+Max Disk Read       : 5.83M (pg-gpu26)
+Average GPU usage   : 51.9% (pg-gpu26)
+
+
+Acknowledgements:
+=================
+
+Please see this page for information about acknowledging Peregrine in your publications:
+
+https://wiki.hpc.rug.nl/peregrine/additional_information/scientific_output
+
+################################################################################

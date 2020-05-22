@@ -42,18 +42,18 @@ WEIGHTS_PATH_NO_TOP = ('https://github.com/fchollet/deep-learning-models/'
 IMG_HEIGHT, IMG_WIDTH, IMG_DEPTH = 32, 32, 3
 DATASET_NAME = os.path.sep + 'CIFAR10'
 
-BATCH_SIZE = 64
+BATCH_SIZE = 128
 NUM_CLASSES = 10
 EPOCHS_1 = 150
-ES_PATIENCE_1 = 20
+ES_PATIENCE_1 = 10
 EPOCHS_2 = 30
-ES_PATIENCE_2 = 5
+ES_PATIENCE_2 = 10
 EPOCHS_3 = 5
-ES_PATIENCE_3 = 5
+ES_PATIENCE_3 = 2
 
 TEST_BATCH_SIZE = 250
 TRAIN_TEST_SPLIT = 0.8 # Value between 0 and 1, e.g. 0.8 creates 80%/20% division train/test
-TRAIN_VAL_SPLIT = 0.9
+TRAIN_VAL_SPLIT = 0.875
 
 TRAIN_ALL_LAYERS = True
 WEIGHTS_TO_USE = 'imagenet'
@@ -108,6 +108,24 @@ def main():
     # Load data
     x_train, y_train, x_test, y_test, test_img_idx = prepare_data()
 
+    x_test, x_val = np.split(x_test, [int(TRAIN_VAL_SPLIT*len(x_test))])
+    y_test, y_val = np.split(y_test, [int(TRAIN_VAL_SPLIT*len(y_test))])
+
+    label_count = [0] * NUM_CLASSES
+    for lab in y_train:
+        label_count[np.argmax(lab)] += 1
+    print("Total labels in train set: ", label_count)   
+
+    label_count = [0] * NUM_CLASSES
+    for lab in y_val:
+        label_count[np.argmax(lab)] += 1
+    print("Labels in validation set: ", label_count)   
+    
+    label_count = [0] * NUM_CLASSES
+    for lab in y_test:
+        label_count[np.argmax(lab)] += 1
+    print("Labels in test set: ", label_count) 
+
     # VGG16 since it does not include batch normalization of dropout by itself
     Error_model = VGG16(weights=WEIGHTS_TO_USE, include_top=False,
                        input_shape=(IMG_HEIGHT, IMG_WIDTH, IMG_DEPTH),
@@ -122,9 +140,10 @@ def main():
     # Classification block
     x = Flatten(name='flatten')(x)
     x = Dense(4096, activation='relu', name='fc1')(x)
-    last_layer = Dense(4096, activation='relu', name='fc2')(x)
-    classification = Dense(NUM_CLASSES, activation='softmax')(last_layer)
-    Error = Dense(NUM_CLASSES, activation='softmax')(last_layer)
+    last_layer_1 = Dense(4096, activation='relu', name='fc2_1')(x)
+    last_layer_2 = Dense(4096, activation='relu', name='fc2_2')(x)
+    classification = Dense(NUM_CLASSES, activation='softmax')(last_layer_1)
+    Error = Dense(NUM_CLASSES, activation='softmax')(last_layer_2)
 
     out = concatenate([classification, Error])
 
@@ -160,12 +179,12 @@ def main():
 
 
     datagen = ImageDataGenerator(rescale=1./255, dtype='ndarray')
-    train_generator = datagen.flow(x_train[0:int(TRAIN_VAL_SPLIT*len(x_train))],
-                                   y_train[0:int(TRAIN_VAL_SPLIT*len(y_train))],
+    train_generator = datagen.flow(x_train,
+                                   y_train,
                                    batch_size=BATCH_SIZE)
     
-    val_generator = datagen.flow(x_train[int(TRAIN_VAL_SPLIT*len(x_train)):],
-                                 y_train[int(TRAIN_VAL_SPLIT*len(y_train)):],
+    val_generator = datagen.flow(x_val,
+                                 y_val,
                                  batch_size=BATCH_SIZE)
 
 
@@ -225,8 +244,9 @@ def main():
     Error_model.save_weights('Error_weights.h5')
 
     Error_predictions = Error_model.predict(x_test)
+    Uncertainty_output(NUM_CLASSES).results_if_label(Error_predictions, y_test, scatter=True, name='CIFAR10_No_Conv')
+
     Error_predictions = Uncertainty_output(NUM_CLASSES).convert_output_to_uncertainty(Error_predictions)
-    
     Uncertainty_output(NUM_CLASSES).results_if_label(Error_predictions, y_test, scatter=True, name='CIFAR10')
 
 

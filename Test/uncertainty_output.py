@@ -186,7 +186,7 @@ class Uncertainty_output:
         print("creating scatterplot")
         plt.clf()
         plt.style.use("ggplot")
-        plt.xlim(0,1)
+        plt.xlim(0,1.05)
         plt.scatter(high_wrong_prob, high_wrong_unc, c='r', label='Wrongly predicted')
         plt.scatter(correct_prob, correct_unc, c='g', label='Correctly predicted')
         plt.legend()

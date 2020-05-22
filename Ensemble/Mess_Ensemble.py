@@ -31,7 +31,7 @@ WEIGHTS_PATH_NO_TOP = ('https://github.com/fchollet/deep-learning-models/'
 
 # Input image dimensions
 IMG_HEIGHT, IMG_WIDTH, IMG_DEPTH = 256, 256, 3
-DATASET_NAME = '/Messidor2_PNG_' + str(IMG_HEIGHT) + '.hdf5'
+DATASET_NAME = '/Messidor2_PNG_AUG_' + str(IMG_HEIGHT) + '.hdf5'
 
 BATCH_SIZE = 32
 NUM_CLASSES = 5
@@ -39,8 +39,9 @@ EPOCHS = 500
 N_ENSEMBLE_MEMBERS = 40
 AMOUNT_OF_PREDICTIONS = 50
 TEST_BATCH_SIZE = 250
-TRAIN_TEST_SPLIT = 0.8 # Value between 0 and 1, e.g. 0.8 creates 80%/20% division train/test
-TRAIN_VAL_SPLIT = 0.9
+TRAIN_TEST_SPLIT = 0.7 # Value between 0 and 1, e.g. 0.8 creates 80%/20% division train/test
+TRAIN_VAL_SPLIT = 0.875
+TEST_VAL_SPLIT = 0.66
 SAVE_AUGMENTATION_TO_HDF5 = False
 
 TO_SHUFFLE = False
@@ -82,55 +83,70 @@ def shuffle_data(x_to_shuff, y_to_shuff):
     return (x_shuffled, y_shuffled)
 
 
-def data_augmentation(x_aug, y_aug, label_count):
+def data_augmentation(x_train, y_train, x_test, y_test):
     ''' Augment the data according to the settings of imagedatagenerator '''
     # Initialising the ImageDataGenerator class.
     # We will pass in the augmentation parameters in the constructor.
     datagen = ImageDataGenerator(
-        rotation_range=40,
+        rotation_range=20,
         shear_range=0.2,
         zoom_range=0.2,
         horizontal_flip=True,
         brightness_range=(0.5, 1.5))
 
     if LABEL_NORMALIZER:
+        print(x_train.shape, y_train.shape)
+        # x_train, x_val = np.split(x_train, [int(TRAIN_VAL_SPLIT*len(x_train))])
+        # y_train, y_val = np.split(y_train, [int(TRAIN_VAL_SPLIT*len(y_train))])
+        # print(x_train.shape, y_train.shape)
+        # print(x_val.shape, y_val.shape)
         start_aug = time.time()
+
+
+        # Sort by class
+        sorted_imgs = []
+        for num in range(0, NUM_CLASSES):
+            sorted_imgs.append([])
+        for idx, label in enumerate(y_train):
+            sorted_imgs[label].append(x_train[idx])
+
+        label_count = [0] * NUM_CLASSES
+        for i in range(0, NUM_CLASSES):
+            label_count[i] = len(sorted_imgs[i])
+        print(label_count)
+
         # Also perform some augmentation on the class with most examples
         goal_amount = int(max(label_count) * 1.2)
         print("goal amount", goal_amount)
-
-        # Sort by class
-        sorted_tup = []
-        for num in range(0, NUM_CLASSES):
-            sorted_tup.append([])
-        for idx, label in enumerate(y_aug):
-            sorted_tup[label].append((x_aug[idx], y_aug[idx]))
-
+        
         for label, label_amount in enumerate(label_count):
+            print("label {}, label_amount {}".format(label, label_amount))
             # Divided by 5 since 5 augmentations will be performed at a time
             amount_to_augment = int((goal_amount - label_amount)/5)
             print("amount to aug", amount_to_augment*NUM_CLASSES)
             print("class", label)
-            tups_to_augment = random.choices(sorted_tup[label], k=amount_to_augment)
+            imgs_to_augment = random.choices(sorted_imgs[label], k=amount_to_augment)
 
-            to_augment_x = [(tups_to_augment[0])[0]]
+            to_augment_x = [imgs_to_augment[0]]
             to_augment_y = np.empty(amount_to_augment)
             to_augment_y.fill(label)
 
-            x_org_len = len(x_aug)
+            x_org_len = len(x_train)
 
             for i in range(1, amount_to_augment):
-                to_augment_x = np.append(to_augment_x, [(tups_to_augment[i])[0]], axis=0)
+                to_augment_x = np.append(to_augment_x, [(imgs_to_augment[i])], axis=0)
+
+            print(to_augment_x.shape)
 
             for i in range(0, amount_to_augment): #amount to augment
-                i = 0
+                i = 1
                 # for batch in datagen.flow(to_augment_x, to_augment_y, batch_size=1,
                 #             save_to_dir ='preview/' + str(label),
                 #             save_prefix = str(label) + '_image', save_format ='png'):
                 for batch in datagen.flow(to_augment_x, to_augment_y, batch_size=1):
-                    x_aug = np.append(x_aug[:], batch[0], axis=0)
-                    y_aug = np.append(y_aug[:], batch[1], axis=0)
-                    print("{}/{}".format((len(x_aug) - x_org_len), amount_to_augment*NUM_CLASSES))
+                    x_train = np.append(x_train[:], batch[0], axis=0)
+                    y_train = np.append(y_train[:], batch[1], axis=0)
+                    print("{}/{}".format((len(x_train) - x_org_len), amount_to_augment*NUM_CLASSES))
                     i += 1
                     if i > 5:
                         break
@@ -138,9 +154,15 @@ def data_augmentation(x_aug, y_aug, label_count):
         norm_done = time.time()
         print("Augmenting normalization finished after {0} seconds".format(norm_done - start_aug))
         label_count = [0] * NUM_CLASSES
-        for lab in y_aug:
+        for lab in y_train:
             label_count[int(lab)] += 1
         print('label count after norm:', label_count)
+        print(x_train.shape, y_train.shape)
+        print(x_test.shape, y_test.shape)
+        # x_train = np.vstack((x_train, x_val))
+        # y_train = np.append(y_train, y_val)
+        # print(x_train.shape, y_train.shape)
+        
 
     if SAVE_AUGMENTATION_TO_HDF5:
         start_sav = time.time()
@@ -152,48 +174,48 @@ def data_augmentation(x_aug, y_aug, label_count):
         # open a hdf5 file and create earrays
         f = h5py.File(hdf5_path, mode='w')
 
-        f.create_dataset("x_aug", data=x_aug, dtype='uint8')
-        f.create_dataset("y_aug", data=y_aug, dtype='uint8')
+        f.create_dataset("x_train", data=x_train, dtype='uint8')
+        f.create_dataset("y_train", data=y_train, dtype='uint8')
+        f.create_dataset("x_test", data=x_test, dtype='uint8')
+        f.create_dataset("y_test", data=y_test, dtype='uint8')
 
         f.close()
         save_done = time.time()
         print("Saving finished after {0} seconds".format(save_done - start_sav))
-    return (x_aug, y_aug)
+    return (x_train, y_train)
 
 
 def load_data(path, to_shuffle):
     '''' Load a dataset from a hdf5 file '''
     with h5py.File(path, "r") as f:
-        (x_load, y_load) = np.array(f['x']), np.array(f['y'])
+        x_train, y_train, x_test, y_test = np.array(f['x_train']), np.array(f['y_train']), np.array(f['x_test']), np.array(f['y_test'])
     label_count = [0] * NUM_CLASSES
-    for lab in y_load:
+    for lab in y_train:
         label_count[lab] += 1
 
-    if to_shuffle:
-        (x_load, y_load) = shuffle_data(x_load, y_load)
+    print("loaded data")
+    # if to_shuffle:
+    #     (x_load, y_load) = shuffle_data(x_load, y_load)
+
+    # Divide the test data (not augmented) into a validation and test set
+    x_test, x_val = np.split(x_test, [int(TEST_VAL_SPLIT*len(x_test))])
+    y_test, y_val = np.split(y_test, [int(TEST_VAL_SPLIT*len(y_test))])
 
     if AUGMENTATION:
-        (x_load, y_load) = data_augmentation(x_load, y_load, label_count)
+        print("starting augmentation")
+        (x_load, y_load) = data_augmentation(x_train, y_train, x_test, y_test)
         print("augmentation done")
         label_count = [0] * NUM_CLASSES
         for lab in y_load:
             label_count[lab] += 1
 
-
-    # Divide the data into a train and test set
-    x_train = x_load[0:int(TRAIN_TEST_SPLIT*len(x_load))]
-    y_train = y_load[0:int(TRAIN_TEST_SPLIT*len(y_load))]
-
-    x_test = x_load[int(TRAIN_TEST_SPLIT*len(x_load)):]
-    y_test = y_load[int(TRAIN_TEST_SPLIT*len(y_load)):]
-
-    return (x_train, y_train), (x_test, y_test), label_count
+    return (x_train, y_train), (x_val, y_val), (x_test, y_test), label_count
 
 
 def prepare_data():
     ''' Load the data and perform shuffle/augmentations if needed '''
     # Split the data between train and test sets
-    (x_train, y_train), (x_test, y_test), label_count = load_data(DATA_PATH, TO_SHUFFLE)
+    (x_train, y_train), (x_val, y_val), (x_test, y_test), label_count = load_data(DATA_PATH, TO_SHUFFLE)
 
     # For evaluation, this image is put in the fig_dir created above
     test_img_idx = random.randint(0, len(x_test) - 1)
@@ -213,6 +235,8 @@ def prepare_data():
 
     x_train = np.asarray(x_train)
     y_train = np.asarray(y_train)
+    x_val = np.asarray(x_val)
+    y_val = np.asarray(y_val)
     x_test = np.asarray(x_test)
     y_test = np.asarray(y_test)
 
@@ -222,28 +246,33 @@ def prepare_data():
 
     # convert class vectors to binary class matrices
     y_train = tf.keras.utils.to_categorical(y_train, NUM_CLASSES)
+    y_val = tf.keras.utils.to_categorical(y_val, NUM_CLASSES)
     y_test = tf.keras.utils.to_categorical(y_test, NUM_CLASSES)
 
-    return(x_train, y_train, x_test, y_test, test_img_idx)
+    return(x_train, y_train, x_val, y_val, x_test, y_test, test_img_idx)
 
 
-def fit_model(x_train, y_train, ensemble_model, log_dir, i):
+def fit_model(x_train_splits, y_train_splits, x_val, y_val, ensemble_model, log_dir, i):
     ensemble_model.load_weights('initial_weights.h5')
 
-    datagen = ImageDataGenerator(rescale=1./255)
-    train_generator = datagen.flow(x_train[0:int(TRAIN_VAL_SPLIT*len(x_train))],
-                                   y_train[0:int(TRAIN_VAL_SPLIT*len(y_train))],
-                                   batch_size=BATCH_SIZE)
+    label_count = [0] * NUM_CLASSES
+    for lab in y_train_splits[i]:
+        label_count[np.argmax(lab)] += 1
+    print("Labels in this part of split: ", label_count)    
 
-    val_generator = datagen.flow(x_train[int(TRAIN_VAL_SPLIT*len(x_train)):],
-                                 y_train[int(TRAIN_VAL_SPLIT*len(y_train)):],
+    datagen = ImageDataGenerator(rescale=1./255)
+    train_generator = datagen.flow(x_train_splits[i],
+                                   y_train_splits[i],
+                                   batch_size=BATCH_SIZE)
+    
+    val_generator = datagen.flow(x_val,
+                                 y_val,
                                  batch_size=BATCH_SIZE)
 
     mc = tf.keras.callbacks.ModelCheckpoint('best_model.h5', monitor=MC_MONITOR, mode='auto', save_best_only=True)
     tensorboard_callback = tf.keras.callbacks.TensorBoard(log_dir=log_dir)
     early_stopping = tf.keras.callbacks.EarlyStopping(monitor=EARLY_MONITOR, min_delta = MIN_DELTA,
                                                     mode='auto', verbose=1, patience=ES_PATIENCE)
-
 
     ensemble_model.fit(train_generator,
                        epochs=EPOCHS,
@@ -270,7 +299,22 @@ def fit_model(x_train, y_train, ensemble_model, log_dir, i):
 def main():
     ''' Main function '''
     # Load data
-    x_train, y_train, x_test, y_test, test_img_idx = prepare_data()
+    x_train, y_train, x_val, y_val, x_test, y_test, test_img_idx = prepare_data()
+
+    label_count = [0] * NUM_CLASSES
+    for lab in y_train:
+        label_count[np.argmax(lab)] += 1
+    print("Total labels in train set: ", label_count)   
+
+    label_count = [0] * NUM_CLASSES
+    for lab in y_val:
+        label_count[np.argmax(lab)] += 1
+    print("Labels in validation set: ", label_count)   
+    
+    label_count = [0] * NUM_CLASSES
+    for lab in y_test:
+        label_count[np.argmax(lab)] += 1
+    print("Labels in test set: ", label_count) 
 
     # VGG16 since it does not include batch normalization of dropout by itself
     ensemble_model = VGG16(weights=WEIGHTS_TO_USE, include_top=False,
@@ -326,7 +370,13 @@ def main():
     # Save initial weights
     ensemble_model.save_weights('initial_weights.h5')
 
-    ensemble = [fit_model(x_train, y_train, ensemble_model, log_dir, i) for i in range(N_ENSEMBLE_MEMBERS)]
+    # Split train dataset so every enemble can train on an unique part of the data for maximum variance between the models
+    x_train_splits = np.array_split(x_train, N_ENSEMBLE_MEMBERS)
+    y_train_splits = np.array_split(y_train, N_ENSEMBLE_MEMBERS)
+
+    print("Length split part: ", len(x_train_splits[i]))
+
+    ensemble = [fit_model(x_train_splits, y_train_splits, x_val, y_val, ensemble_model, log_dir, i) for i in range(N_ENSEMBLE_MEMBERS)]
 
     os.remove('initial_weights.h5')
 

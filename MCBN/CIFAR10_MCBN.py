@@ -40,7 +40,7 @@ EPOCHS = 50
 MCBN_PREDICTIONS = 25
 MINIBATCH_SIZE = BATCH_SIZE
 TRAIN_TEST_SPLIT = 0.8 # Value between 0 and 1, e.g. 0.8 creates 80%/20% division train/test
-TRAIN_VAL_SPLIT = 0.9
+TRAIN_VAL_SPLIT = 0.875
 SAVE_AUGMENTATION_TO_HDF5 = False
 ADD_BATCH_NORMALIZATION = True
 ADD_BATCH_NORMALIZATION_INSIDE = True
@@ -353,6 +353,24 @@ def main():
     # Load data
     x_train, y_train, x_test, y_test, test_img_idx = prepare_data()
 
+    x_test, x_val = np.split(x_test, [int(TRAIN_VAL_SPLIT*len(x_test))])
+    y_test, y_val = np.split(y_test, [int(TRAIN_VAL_SPLIT*len(y_test))])
+
+    label_count = [0] * NUM_CLASSES
+    for lab in y_train:
+        label_count[np.argmax(lab)] += 1
+    print("Total labels in train set: ", label_count)   
+
+    label_count = [0] * NUM_CLASSES
+    for lab in y_val:
+        label_count[np.argmax(lab)] += 1
+    print("Labels in validation set: ", label_count)   
+    
+    label_count = [0] * NUM_CLASSES
+    for lab in y_test:
+        label_count[np.argmax(lab)] += 1
+    print("Labels in test set: ", label_count)  
+
     # # VGG16 since it does not include batch normalization of dropout by itself
     # MCBN_model = VGG16(weights=WEIGHTS_TO_USE, include_top=False,
     #                    input_shape=(IMG_HEIGHT, IMG_WIDTH, IMG_DEPTH))
@@ -504,12 +522,12 @@ def main():
     mc = tf.keras.callbacks.ModelCheckpoint('best_model.h5', monitor=MC_MONITOR, mode='auto', save_best_only=True)
 
     datagen = ImageDataGenerator(rescale=1./255)
-    train_generator = datagen.flow(x_train[0:int(TRAIN_VAL_SPLIT*len(x_train))],
-                                   y_train[0:int(TRAIN_VAL_SPLIT*len(y_train))],
-                                   batch_size = BATCH_SIZE)
+    train_generator = datagen.flow(x_train,
+                                   y_train,
+                                   batch_size=BATCH_SIZE)
     
-    val_generator = datagen.flow(x_train[int(TRAIN_VAL_SPLIT*len(x_train)):],
-                                 y_train[int(TRAIN_VAL_SPLIT*len(y_train)):],
+    val_generator = datagen.flow(x_val,
+                                 y_val,
                                  batch_size=BATCH_SIZE)
 
 

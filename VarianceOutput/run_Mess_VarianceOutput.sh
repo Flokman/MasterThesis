@@ -2,7 +2,7 @@
 #SBATCH --time=08:00:00
 
 #SBATCH --partition=gpu
-#SBATCH --gres=gpu:1
+#SBATCH --gres=gpu:v100:1
 #SBATCH --job-name=MESVAR
 #SBATCH --mem=32000
 
