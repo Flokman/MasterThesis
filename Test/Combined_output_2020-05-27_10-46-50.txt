@@ -1,0 +1,65 @@
+
+START Ensemble
+Dataset_name: MES, N_folders: 1, total mebers: 3
+Total labels in train set:  [840, 840, 839, 838, 836]
+Labels in test set:  [272, 74, 92, 12, 9]
+loaded: ensemble_weights_Xception_0.h5
+loaded: ensemble_weights_Xception_1.h5
+loaded: ensemble_weights_Xception_2.h5
+loaded: ensemble_weights_VGG16_0.h5
+loaded: ensemble_weights_VGG16_1.h5
+loaded: ensemble_weights_VGG16_2.h5
+loaded: ensemble_weights_VGG19_0.h5
+loaded: ensemble_weights_VGG19_1.h5
+loaded: ensemble_weights_VGG19_2.h5
+loaded: ensemble_weights_ResNet50_0.h5
+loaded: ensemble_weights_ResNet50_1.h5
+loaded: ensemble_weights_ResNet50_2.h5
+loaded: ensemble_weights_ResNet101_0.h5
+loaded: ensemble_weights_ResNet101_1.h5
+loaded: ensemble_weights_ResNet101_2.h5
+loaded: ensemble_weights_ResNet152_0.h5
+loaded: ensemble_weights_ResNet152_1.h5
+loaded: ensemble_weights_ResNet152_2.h5
+loaded: ensemble_weights_ResNet50V2_0.h5
+loaded: ensemble_weights_ResNet50V2_1.h5
+loaded: ensemble_weights_ResNet50V2_2.h5
+loaded: ensemble_weights_ResNet101V2_0.h5
+loaded: ensemble_weights_ResNet101V2_1.h5
+loaded: ensemble_weights_ResNet101V2_2.h5
+loaded: ensemble_weights_ResNet152V2_0.h5
+loaded: ensemble_weights_ResNet152V2_1.h5
+loaded: ensemble_weights_ResNet152V2_2.h5
+loaded: ensemble_weights_InceptionV3_0.h5
+loaded: ensemble_weights_InceptionV3_1.h5
+loaded: ensemble_weights_InceptionV3_2.h5
+loaded: ensemble_weights_InceptionResNetV2_0.h5
+loaded: ensemble_weights_InceptionResNetV2_1.h5
+loaded: ensemble_weights_InceptionResNetV2_2.h5
+loaded: ensemble_weights_DenseNet121_0.h5
+loaded: ensemble_weights_DenseNet121_1.h5
+Ensemble combined accuracy: 64.5%
+tf.Tensor(
+[[261   5   5   1   0]
+ [ 64   3   7   0   0]
+ [ 60   0  29   3   0]
+ [  6   0   4   2   0]
+ [  3   0   1   4   1]], shape=(5, 5), dtype=int32)
+Correct: 296, wrong: 163, accuracy: 64.4880174291939%
+
+Mean probability on true label of MES test dataset when correctly predicted = 62.14%
+Mean uncertainty on true label of MES test dataset when correctly predicted = 28.01%
+Mean probability on true label of MES test dataset when wrongly predicted = 21.70%
+Mean uncertainty on true label of MES test dataset when wrongly predicted = 21.01%
+
+Mean probability on highest predicted on MES test dataset when wrong = 57.64%
+Mean uncertainty on highest predicted on MES test dataset when wrong = 28.25%
+
+Mean probability on all not true label on MES test dataset = 10.59%
+Mean uncertainty on all not true label on MES test dataset = 12.42%
+creating scatterplot
+
+#################################
+Function main called 1 times. 
+Execution time max: 415.291, average: 415.291
+#################################

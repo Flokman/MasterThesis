@@ -60,6 +60,46 @@ class Uncertainty_output:
 
         return error_loss
 
+
+    def categorical_errorV2(self, y_true, y_pred, from_logits=False):
+        # Determine the loss by calculating the categorical crossentropy on only the first num_classes outputs
+        # and the mean squared error on the error outputs
+        y_pred = K.constant(y_pred) if not tf.is_tensor(y_pred) else y_pred
+        y_true = K.cast(y_true, y_pred.dtype)
+
+        y_true_cat = y_true[:, :self.num_classes]
+        y_pred_cat = y_pred[:, :self.num_classes]
+        cat_loss = K.categorical_crossentropy(y_true_cat, y_pred_cat, from_logits=from_logits)
+
+        y_pred_cat_abs = K.abs(y_pred_cat)
+        y_true_error = K.square(y_pred_cat_abs - y_true_cat)
+        y_pred_error = y_pred[:, self.num_classes:]
+        error_loss = K.mean(K.square(y_pred_error - y_true_error), axis=-1)
+        total_loss = cat_loss + error_loss
+
+        return total_loss
+
+    def errorV2(self, y_true, y_pred, from_logits=False):
+        # Determine the loss by calculating the categorical crossentropy on only the first num_classes outputs
+        # and the mean squared error on the error outputs
+        y_pred = K.constant(y_pred) if not tf.is_tensor(y_pred) else y_pred
+        y_true = K.cast(y_true, y_pred.dtype)
+
+        # Format [batchsize, num of classes]
+        y_true_cat = y_true[:, :self.num_classes]
+        y_pred_cat = y_pred[:, :self.num_classes]
+        
+        true_class = K.argmax(y_true_cat)
+        pred_true_class = y_pred[:, true_class]
+
+        y_pred_cat_abs = K.abs(y_pred_cat)
+        y_true_error = K.square(y_pred_cat_abs - y_true_cat)
+        y_pred_error = y_pred[:, self.num_classes:]
+        error_loss = K.mean(K.square(y_pred_error - y_true_error), axis=-1)
+        # total_loss = cat_loss + error_loss
+
+        return error_loss
+
     
     def create_uncertainty_model(self, model):
         # Replace last layer of network by uncertainty layer

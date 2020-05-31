@@ -1,0 +1,268 @@
+
+START MCDO
+MNIST data returning
+Total labels in train set:  [5000, 5000, 5000, 5000, 5000, 5000, 5000, 5000, 5000, 5000]
+Labels in test set:  [861, 885, 878, 895, 882, 878, 873, 871, 869, 858]
+/data/s2934833/MasterThesis/MCDO/CIFAR10/2020-05-20_11-01_imagenet_32B_68.6%A
+MCDO combined accuracy: 85.4%
+tf.Tensor(
+[[777   5  20   8   8   3   6   8  19   7]
+ [ 14 815   0   0   0   4   1   2  12  37]
+ [ 21   1 720  16  41  36  34   7   1   1]
+ [  6   3  34 508  42 230  37  19   5  11]
+ [ 10   1  31  18 744  25  19  28   5   1]
+ [  4   0  11  49  19 763  15  15   0   2]
+ [  3   0  19  19   9  15 801   1   4   2]
+ [  4   1   9  13  24  50   1 764   1   4]
+ [ 36   7   5   3   4   2   1   1 802   8]
+ [ 12  35   2   4   1   3   8   3  11 779]], shape=(10, 10), dtype=int32)
+Correct: 7473, wrong: 1277, accuracy: 85.40571428571428%
+
+Mean probability on true label of CIFAR10 test dataset when correctly predicted = 94.57%
+Mean uncertainty on true label of CIFAR10 test dataset when correctly predicted = 2.40%
+Mean probability on true label of CIFAR10 test dataset when wrongly predicted = 13.81%
+Mean uncertainty on true label of CIFAR10 test dataset when wrongly predicted = 6.13%
+
+Mean probability on highest predicted on CIFAR10 test dataset when wrong = 91.30%
+Mean uncertainty on highest predicted on CIFAR10 test dataset when wrong = 3.38%
+
+Mean probability on all not true label on CIFAR10 test dataset = 0.97%
+Mean uncertainty on all not true label on CIFAR10 test dataset = 0.49%
+creating scatterplot
+
+Mean probability on highest predicted class of MNIST data = 75.65%
+Mean uncertainty on highest predicted class of MNIST data = 8.63%
+Mean probability on not predicted classes of MNIST data = 2.71%
+Mean uncertainty on not predicted classes of MNIST data = 1.47%
+
+START MCBN
+MNIST data returning
+Total labels in train set:  [5000, 5000, 5000, 5000, 5000, 5000, 5000, 5000, 5000, 5000]
+Labels in test set:  [861, 885, 878, 895, 882, 878, 873, 871, 869, 858]
+/data/s2934833/MasterThesis/MCBN/CIFAR10/2020-05-20_11-04_imagenet_32B_82.8%A
+MCBN combined accuracy: 83.4%
+tf.Tensor(
+[[739   7  16  13  11   3   6  14  29  23]
+ [  8 804   0   6   0   0   0   1  15  51]
+ [ 38   3 654  57  41  33  25  17   4   6]
+ [  9   3  22 640  34 123  22  26   2  14]
+ [ 15   1  31  49 711  27  20  23   3   2]
+ [  5   0  20 133  15 662   9  30   1   3]
+ [  5   4  19  61  17  13 741   6   3   4]
+ [  7   1   9  27  14  33   3 767   4   6]
+ [ 31   9   5   9   2   0   1   2 793  17]
+ [ 14  28   0   4   0   2   3   7  13 787]], shape=(10, 10), dtype=int32)
+Correct: 7298, wrong: 1452, accuracy: 83.40571428571428%
+
+Mean probability on true label of CIFAR10 test dataset when correctly predicted = 93.10%
+Mean uncertainty on true label of CIFAR10 test dataset when correctly predicted = 4.45%
+Mean probability on true label of CIFAR10 test dataset when wrongly predicted = 15.11%
+Mean uncertainty on true label of CIFAR10 test dataset when wrongly predicted = 9.30%
+
+Mean probability on highest predicted on CIFAR10 test dataset when wrong = 89.36%
+Mean uncertainty on highest predicted on CIFAR10 test dataset when wrong = 5.93%
+
+Mean probability on all not true label on CIFAR10 test dataset = 1.18%
+Mean uncertainty on all not true label on CIFAR10 test dataset = 0.86%
+creating scatterplot
+
+Mean probability on highest predicted class of MNIST data = 75.25%
+Mean uncertainty on highest predicted class of MNIST data = 2.14%
+Mean probability on not predicted classes of MNIST data = 2.75%
+Mean uncertainty on not predicted classes of MNIST data = 0.32%
+
+START Ensemble
+Dataset_name: CIFAR10, N_folders: 1, total mebers: 3
+MNIST data returning
+(8750, 75, 75, 3)
+Total labels in train set:  [5000, 5000, 5000, 5000, 5000, 5000, 5000, 5000, 5000, 5000]
+Labels in test set:  [861, 885, 878, 895, 882, 878, 873, 871, 869, 858]
+loaded: ensemble_weights_Xception_0.h5
+loaded: ensemble_weights_Xception_1.h5
+loaded: ensemble_weights_Xception_2.h5
+loaded: ensemble_weights_VGG16_0.h5
+loaded: ensemble_weights_VGG16_1.h5
+loaded: ensemble_weights_VGG16_2.h5
+loaded: ensemble_weights_VGG19_0.h5
+loaded: ensemble_weights_VGG19_1.h5
+loaded: ensemble_weights_VGG19_2.h5
+loaded: ensemble_weights_ResNet50_0.h5
+loaded: ensemble_weights_ResNet50_1.h5
+loaded: ensemble_weights_ResNet50_2.h5
+loaded: ensemble_weights_ResNet101_0.h5
+loaded: ensemble_weights_ResNet101_1.h5
+loaded: ensemble_weights_ResNet101_2.h5
+loaded: ensemble_weights_ResNet152_0.h5
+loaded: ensemble_weights_ResNet152_1.h5
+loaded: ensemble_weights_ResNet152_2.h5
+loaded: ensemble_weights_ResNet50V2_0.h5
+loaded: ensemble_weights_ResNet50V2_1.h5
+loaded: ensemble_weights_ResNet50V2_2.h5
+loaded: ensemble_weights_ResNet101V2_0.h5
+loaded: ensemble_weights_ResNet101V2_1.h5
+loaded: ensemble_weights_ResNet101V2_2.h5
+loaded: ensemble_weights_ResNet152V2_0.h5
+loaded: ensemble_weights_ResNet152V2_1.h5
+loaded: ensemble_weights_ResNet152V2_2.h5
+loaded: ensemble_weights_InceptionV3_0.h5
+loaded: ensemble_weights_InceptionV3_1.h5
+loaded: ensemble_weights_InceptionV3_2.h5
+loaded: ensemble_weights_InceptionResNetV2_0.h5
+loaded: ensemble_weights_InceptionResNetV2_1.h5
+loaded: ensemble_weights_InceptionResNetV2_2.h5
+loaded: ensemble_weights_DenseNet121_0.h5
+loaded: ensemble_weights_DenseNet121_1.h5
+loaded: ensemble_weights_DenseNet121_2.h5
+loaded: ensemble_weights_DenseNet169_0.h5
+loaded: ensemble_weights_DenseNet169_1.h5
+loaded: ensemble_weights_DenseNet169_2.h5
+loaded: ensemble_weights_DenseNet201_0.h5
+loaded: ensemble_weights_DenseNet201_1.h5
+loaded: ensemble_weights_DenseNet201_2.h5
+Ensemble combined accuracy: 79.3%
+tf.Tensor(
+[[715  12  17  11   5   2   7  10  55  27]
+ [  9 794   1   1   0   3   5   2  14  56]
+ [ 52   2 601  33  73  32  47  21   8   9]
+ [ 13   6  53 569  38 113  47  30  12  14]
+ [ 22   2  36  42 669  17  37  47   8   2]
+ [ 10   4  31 138  36 611  11  29   1   7]
+ [  5   4  20  38  24  16 759   2   3   2]
+ [ 12   3  15  28  38  36   5 719   2  13]
+ [ 35  25   9   5   3   1   1   2 770  18]
+ [ 14  51   7   9   2   5   4   6  29 731]], shape=(10, 10), dtype=int32)
+Correct: 6938, wrong: 1812, accuracy: 79.29142857142857%
+
+Mean probability on true label of CIFAR10 test dataset when correctly predicted = 68.10%
+Mean uncertainty on true label of CIFAR10 test dataset when correctly predicted = 25.07%
+Mean probability on true label of CIFAR10 test dataset when wrongly predicted = 20.31%
+Mean uncertainty on true label of CIFAR10 test dataset when wrongly predicted = 20.21%
+
+Mean probability on highest predicted on CIFAR10 test dataset when wrong = 63.16%
+Mean uncertainty on highest predicted on CIFAR10 test dataset when wrong = 25.64%
+
+Mean probability on all not true label on CIFAR10 test dataset = 4.09%
+Mean uncertainty on all not true label on CIFAR10 test dataset = 5.68%
+creating scatterplot
+loaded: ensemble_weights_Xception_0.h5
+loaded: ensemble_weights_Xception_1.h5
+loaded: ensemble_weights_Xception_2.h5
+loaded: ensemble_weights_VGG16_0.h5
+loaded: ensemble_weights_VGG16_1.h5
+loaded: ensemble_weights_VGG16_2.h5
+loaded: ensemble_weights_VGG19_0.h5
+loaded: ensemble_weights_VGG19_1.h5
+loaded: ensemble_weights_VGG19_2.h5
+loaded: ensemble_weights_ResNet50_0.h5
+loaded: ensemble_weights_ResNet50_1.h5
+loaded: ensemble_weights_ResNet50_2.h5
+loaded: ensemble_weights_ResNet101_0.h5
+loaded: ensemble_weights_ResNet101_1.h5
+loaded: ensemble_weights_ResNet101_2.h5
+loaded: ensemble_weights_ResNet152_0.h5
+loaded: ensemble_weights_ResNet152_1.h5
+loaded: ensemble_weights_ResNet152_2.h5
+loaded: ensemble_weights_ResNet50V2_0.h5
+loaded: ensemble_weights_ResNet50V2_1.h5
+loaded: ensemble_weights_ResNet50V2_2.h5
+loaded: ensemble_weights_ResNet101V2_0.h5
+loaded: ensemble_weights_ResNet101V2_1.h5
+loaded: ensemble_weights_ResNet101V2_2.h5
+loaded: ensemble_weights_ResNet152V2_0.h5
+loaded: ensemble_weights_ResNet152V2_1.h5
+loaded: ensemble_weights_ResNet152V2_2.h5
+loaded: ensemble_weights_InceptionV3_0.h5
+loaded: ensemble_weights_InceptionV3_1.h5
+loaded: ensemble_weights_InceptionV3_2.h5
+loaded: ensemble_weights_InceptionResNetV2_0.h5
+loaded: ensemble_weights_InceptionResNetV2_1.h5
+loaded: ensemble_weights_InceptionResNetV2_2.h5
+loaded: ensemble_weights_DenseNet121_0.h5
+loaded: ensemble_weights_DenseNet121_1.h5
+loaded: ensemble_weights_DenseNet121_2.h5
+loaded: ensemble_weights_DenseNet169_0.h5
+loaded: ensemble_weights_DenseNet169_1.h5
+loaded: ensemble_weights_DenseNet169_2.h5
+loaded: ensemble_weights_DenseNet201_0.h5
+loaded: ensemble_weights_DenseNet201_1.h5
+loaded: ensemble_weights_DenseNet201_2.h5
+
+Mean probability on highest predicted class of MNIST data = 35.60%
+Mean uncertainty on highest predicted class of MNIST data = 27.74%
+Mean probability on not predicted classes of MNIST data = 7.16%
+Mean uncertainty on not predicted classes of MNIST data = 11.28%
+
+START VarianceOutput
+MNIST data returning
+Total labels in train set:  [5000, 5000, 5000, 5000, 5000, 5000, 5000, 5000, 5000, 5000]
+Labels in test set:  [861, 885, 878, 895, 882, 878, 873, 871, 869, 858]
+/data/s2934833/MasterThesis/VarianceOutput/CIFAR10/2020-05-20_11-16_imagenet_128B_69.4%A
+Accuracy on original test dataset: 83.7%
+tf.Tensor(
+[[758   6  13  24   7   1   2   7  33  10]
+ [  9 807   1   9   0   2   3   1  10  43]
+ [ 35   2 669  63  39  29  26  12   2   1]
+ [  8   3  20 667  33 113  23  18   4   6]
+ [ 10   1  20  74 711  19  17  22   7   1]
+ [  1   1   9 153  17 663  10  21   1   2]
+ [  3   1  13  55  14  16 766   2   3   0]
+ [  9   3   8  40  33  50   3 721   0   4]
+ [ 36   9   5   7   3   1   1   2 796   9]
+ [ 13  46   1  11   0   3   4   2  13 765]], shape=(10, 10), dtype=int32)
+Correct: 7323, wrong: 1427, accuracy: 83.69142857142857%
+
+Mean probability on true label of original test dataset when correctly predicted = 98.55%
+Mean uncertainty on true label of original test dataset when correctly predicted = 10.22%
+Mean probability on true label of original test dataset when wrongly predicted = 6.29%
+Mean uncertainty on true label of original test dataset when wrongly predicted = 10.55%
+
+Mean probability on highest predicted on original test dataset when wrong = 89.14%
+Mean uncertainty on highest predicted on original test dataset when wrong = 10.74%
+
+Mean probability on all not true label on original test dataset = 1.83%
+Mean uncertainty on all not true label on original test dataset = 9.97%
+creating scatterplot
+With error converted to uncertainty
+Accuracy on original test dataset: 83.7%
+tf.Tensor(
+[[758   6  13  24   7   1   2   7  33  10]
+ [  9 807   1   9   0   2   3   1  10  43]
+ [ 35   2 669  63  39  29  26  12   2   1]
+ [  8   3  20 667  33 113  23  18   4   6]
+ [ 10   1  20  74 711  19  17  22   7   1]
+ [  1   1   9 153  17 663  10  21   1   2]
+ [  3   1  13  55  14  16 766   2   3   0]
+ [  9   3   8  40  33  50   3 721   0   4]
+ [ 36   9   5   7   3   1   1   2 796   9]
+ [ 13  46   1  11   0   3   4   2  13 765]], shape=(10, 10), dtype=int32)
+Correct: 7323, wrong: 1427, accuracy: 83.69142857142857%
+
+Mean probability on true label of original test dataset when correctly predicted = 98.55%
+Mean uncertainty on true label of original test dataset when correctly predicted = 10.04%
+Mean probability on true label of original test dataset when wrongly predicted = 6.29%
+Mean uncertainty on true label of original test dataset when wrongly predicted = 9.57%
+
+Mean probability on highest predicted on original test dataset when wrong = 89.14%
+Mean uncertainty on highest predicted on original test dataset when wrong = 9.78%
+
+Mean probability on all not true label on original test dataset = 1.83%
+Mean uncertainty on all not true label on original test dataset = 9.92%
+creating scatterplot
+
+Mean probability on highest predicted class of new data = 88.48%
+Mean uncertainty on highest predicted class of new data = 10.35%
+Mean probability on not highest predicted class of new data = 1.28%
+Mean uncertainty on not predicted classes of new data = 9.96%
+creating scatterplot
+With error converted to uncertainty
+
+Mean probability on highest predicted class of new data = 88.48%
+Mean uncertainty on highest predicted class of new data = 9.77%
+Mean probability on not highest predicted class of new data = 1.28%
+Mean uncertainty on not predicted classes of new data = 9.77%
+creating scatterplot
+
+#################################
+Function main called 1 times. 
+Execution time max: 1841.994, average: 1841.994
+#################################

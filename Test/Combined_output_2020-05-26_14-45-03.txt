@@ -1,0 +1,106 @@
+
+START MCDO
+Total labels in train set:  [840, 840, 839, 838, 836]
+Labels in test set:  [272, 74, 92, 12, 9]
+/data/s2934833/MasterThesis/MCDO/MES/2020-05-20_13-11_imagenet_64B_54.9%A
+MCDO combined accuracy: 63.0%
+tf.Tensor(
+[[233  20  17   0   2]
+ [ 47  13  13   1   0]
+ [ 38   8  38   7   1]
+ [  0   1   7   3   1]
+ [  1   0   2   4   2]], shape=(5, 5), dtype=int32)
+Correct: 289, wrong: 170, accuracy: 62.96296296296296%
+
+Mean probability on true label of MES test dataset when correctly predicted = 91.03%
+Mean uncertainty on true label of MES test dataset when correctly predicted = 5.91%
+Mean probability on true label of MES test dataset when wrongly predicted = 9.18%
+Mean uncertainty on true label of MES test dataset when wrongly predicted = 7.52%
+
+Mean probability on highest predicted on MES test dataset when wrong = 88.12%
+Mean uncertainty on highest predicted on MES test dataset when wrong = 7.99%
+
+Mean probability on all not true label on MES test dataset = 2.97%
+Mean uncertainty on all not true label on MES test dataset = 2.47%
+creating scatterplot
+
+START MCBN
+Total labels in train set:  [840, 840, 839, 838, 836]
+Labels in test set:  [272, 74, 92, 12, 9]
+/data/s2934833/MasterThesis/MCBN/MES/2020-05-20_14-11_imagenet_64B_58.4%A
+MCBN combined accuracy: 29.2%
+tf.Tensor(
+[[ 47 171  41  13   0]
+ [  6  58  10   0   0]
+ [  5  53  24  10   0]
+ [  1   6   1   4   0]
+ [  1   1   0   6   1]], shape=(5, 5), dtype=int32)
+Correct: 134, wrong: 325, accuracy: 29.193899782135073%
+
+Mean probability on true label of MES test dataset when correctly predicted = 58.35%
+Mean uncertainty on true label of MES test dataset when correctly predicted = 32.64%
+Mean probability on true label of MES test dataset when wrongly predicted = 18.23%
+Mean uncertainty on true label of MES test dataset when wrongly predicted = 22.68%
+
+Mean probability on highest predicted on MES test dataset when wrong = 57.62%
+Mean uncertainty on highest predicted on MES test dataset when wrong = 32.80%
+
+Mean probability on all not true label on MES test dataset = 10.60%
+Mean uncertainty on all not true label on MES test dataset = 15.14%
+creating scatterplot
+
+START Ensemble
+Dataset_name: MES, N_folders: 1, total mebers: 3
+Total labels in train set:  [840, 840, 839, 838, 836]
+Labels in test set:  [272, 74, 92, 12, 9]
+
+START VarianceOutput
+Total labels in train set:  [840, 840, 839, 838, 836]
+Labels in test set:  [272, 74, 92, 12, 9]
+/data/s2934833/MasterThesis/VarianceOutput/MES/2020-05-20_14-49_imagenet_64B_50.0%A
+Accuracy on original test dataset: 61.7%
+tf.Tensor(
+[[216  36  19   1   0]
+ [ 40  20  13   1   0]
+ [ 31  13  42   5   1]
+ [  0   0   8   4   0]
+ [  2   0   1   5   1]], shape=(5, 5), dtype=int32)
+Correct: 283, wrong: 176, accuracy: 61.6557734204793%
+
+Mean probability on true label of original test dataset when correctly predicted = 90.01%
+Mean uncertainty on true label of original test dataset when correctly predicted = 22.45%
+Mean probability on true label of original test dataset when wrongly predicted = 11.52%
+Mean uncertainty on true label of original test dataset when wrongly predicted = 20.79%
+
+Mean probability on highest predicted on original test dataset when wrong = 79.30%
+Mean uncertainty on highest predicted on original test dataset when wrong = 22.81%
+
+Mean probability on all not true label on original test dataset = 10.02%
+Mean uncertainty on all not true label on original test dataset = 19.55%
+creating scatterplot
+With error converted to uncertainty
+Accuracy on original test dataset: 61.7%
+tf.Tensor(
+[[216  36  19   1   0]
+ [ 40  20  13   1   0]
+ [ 31  13  42   5   1]
+ [  0   0   8   4   0]
+ [  2   0   1   5   1]], shape=(5, 5), dtype=int32)
+Correct: 283, wrong: 176, accuracy: 61.6557734204793%
+
+Mean probability on true label of original test dataset when correctly predicted = 90.01%
+Mean uncertainty on true label of original test dataset when correctly predicted = 19.93%
+Mean probability on true label of original test dataset when wrongly predicted = 11.52%
+Mean uncertainty on true label of original test dataset when wrongly predicted = 17.84%
+
+Mean probability on highest predicted on original test dataset when wrong = 79.30%
+Mean uncertainty on highest predicted on original test dataset when wrong = 16.81%
+
+Mean probability on all not true label on original test dataset = 10.02%
+Mean uncertainty on all not true label on original test dataset = 18.41%
+creating scatterplot
+
+#################################
+Function main called 1 times. 
+Execution time max: 729.869, average: 729.869
+#################################

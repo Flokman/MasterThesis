@@ -17,6 +17,7 @@ from tensorflow.keras.models import Model
 from tensorflow.keras.layers import Dense, BatchNormalization, Flatten, Lambda
 from tensorflow.keras.models import load_model
 from tensorflow.keras.applications.vgg16 import VGG16
+from tensorflow.keras.applications import *
 from tensorflow.keras.datasets import cifar10, mnist
 from tensorflow.keras.preprocessing.image import img_to_array, load_img
 from tensorflow.keras.preprocessing.image import ImageDataGenerator
@@ -73,15 +74,16 @@ def clear_prof_data():
 
 
 # Hyperparameters
-DATANAME = 'MNIST'
+DATANAME = 'CIFAR10'
 NEW_DATA = 'MNIST' # or 'local' for local folder
 METHODNAMES = ['MCDO', 'MCBN', 'Ensemble', 'VarianceOutput']
+# METHODNAMES = ['Ensemble']
 # METHODNAMES = ['VarianceOutput']
 
 TRAIN_TEST_SPLIT = 0.8 # Value between 0 and 1, e.g. 0.8 creates 80%/20% division train/test
 TRAIN_VAL_SPLIT = 0.875
 
-TEST_ON_OWN_AND_NEW_DATASET = False
+TEST_ON_OWN_AND_NEW_DATASET = True
 TEST_ON_OWN_DATASET = True
 TEST_ON_NEW_DATASET = False
 LABELS_AVAILABLE = False
@@ -183,10 +185,18 @@ def load_hdf5_dataset(DATA_PATH, new_data=False):
 
         if DATANAME == 'CIFAR10':
             (x_train, y_train), (x_test, y_test) = cifar10.load_data()
+            x_test, x_val = np.split(x_test, [int(TRAIN_VAL_SPLIT*len(x_test))])
+            y_test, y_val = np.split(y_test, [int(TRAIN_VAL_SPLIT*len(y_test))])
 
     else:
         if NEW_DATA == 'MNIST':
             (x_train, y_train), (x_test, y_test) = mnist.load_data()
+            x_train = np.asarray(x_train)
+            y_train = np.asarray(y_train)
+            x_test = np.asarray(x_test)
+            y_test = np.asarray(y_test)
+            print("MNIST data returning")
+            return((x_train, y_train), (x_test, y_test))
 
     
     x_train = np.asarray(x_train)
@@ -205,7 +215,7 @@ def load_hdf5_dataset(DATA_PATH, new_data=False):
     return((x_train, y_train), (x_test, y_test))
 
 
-def load_new_images():
+def load_new_images(img_height = IMG_HEIGHT):
     if NEW_DATA == 'local':
         ''' Load, convert and resize the test images into numpy arrays '''
         images_path = os.getcwd() + TEST_IMAGES_LOCATION + os.path.sep + '*'
@@ -293,13 +303,13 @@ def load_new_images():
         for ind, img_ar in enumerate(x_test):
             if ind == 0:
                 img = Image.fromarray(img_ar)
-                img = img.resize((32, 32))
+                img = img.resize((img_height, img_height))
                 img_ar = np.array(img)
                 img_ar = np.stack((img_ar, img_ar, img_ar), axis=2)
                 x_pred = img_ar.reshape((1,) + img_ar.shape)
             else:    
                 img = Image.fromarray(img_ar)
-                img = img.resize((32, 32))
+                img = img.resize((img_height, img_height))
                 img_ar = np.array(img)
                 img_ar = np.stack((img_ar, img_ar, img_ar), axis=2)
                 img_ar = img_ar.reshape((1,) + img_ar.shape)
@@ -594,7 +604,7 @@ def test_on_new_func(new_images_predictions, x_pred, methodname, y_pred = None, 
 def scatterplot(accuracies, uncertainties, methodname, own_or_new):
     # os.chdir(HOME_DIR + os.path.sep + methodname)
 
-    plt.scatter(accuracies, uncertainties)
+    plt.scatter(accuracies, uncertainties, c='r')
     plt.xlabel('probability')
     plt.ylabel('uncertainty')
     plt.title('Scatterplot for {} on {}'.format(methodname, own_or_new))
@@ -648,6 +658,7 @@ def MCDO(q, METHODNAME):
             y_p = pre_trained_model.predict(pred_generator)
             mcdo_predictions.append(y_p)
         return mcdo_predictions
+
 
     def method_main():
         ''' Main function '''
@@ -731,7 +742,7 @@ def MCBN(q, METHODNAME):
     if DATANAME == 'MES':
         MINIBATCH_SIZE = 128
         MODEL_TO_USE = os.path.sep + METHODNAME
-        MODEL_VERSION = os.path.sep + '2020-05-20_14-11_imagenet_64B_58.4%A'
+        MODEL_VERSION = os.path.sep + '2020-05-30_11-16_imagenet_180B_58.4%A'
         MODEL_NAME = 'MCBN_model.h5'
         DATASET_LOCATION = os.path.sep + 'Datasets'
         DATASET_HDF5 = os.path.sep + 'Messidor2_PNG_AUG_' + str(IMG_HEIGHT) + '.hdf5'
@@ -894,9 +905,11 @@ def Ensemble(q, METHODNAME):
     if DATANAME == 'MES':
         # Hyperparameters Messidor
         N_FOLDERS = 1
-        N_ENSEMBLE_MEMBERS = [40]
-        MODEL_VERSION = ['2020-05-20_13-12-22']
+        N_ENSEMBLE_MEMBERS = [3]
+        ARCHI_NAME = ['Xception', 'VGG16', 'VGG19', 'ResNet50', 'ResNet101', 'ResNet152', 'ResNet50V2', 'ResNet101V2', 'ResNet152V2', 'InceptionV3', 'InceptionResNetV2', 'DenseNet121', 'DenseNet169', 'DenseNet201']
+        MODEL_VERSION = ['2020-05-27_10-02-19']
         DATASET_LOCATION = os.path.sep + 'Datasets'
+        IMG_HEIGHT, IMG_WIDTH, IMG_DEPTH = 256, 256, 3
         DATASET_HDF5 = os.path.sep + 'Messidor2_PNG_AUG_' + str(IMG_HEIGHT) + '.hdf5'
         DATA_PATH = DATA_ROOT_PATH + DATASET_LOCATION + DATASET_HDF5
 
@@ -905,9 +918,11 @@ def Ensemble(q, METHODNAME):
         # Hyperparameters Cifar
         N_FOLDERS = 1
         # N_ENSEMBLE_MEMBERS = [20, 20]
-        N_ENSEMBLE_MEMBERS = [40]
+        N_ENSEMBLE_MEMBERS = [3]
+        ARCHI_NAME = ['Xception', 'VGG16', 'VGG19', 'ResNet50', 'ResNet101', 'ResNet152', 'ResNet50V2', 'ResNet101V2', 'ResNet152V2', 'InceptionV3', 'InceptionResNetV2', 'DenseNet121', 'DenseNet169', 'DenseNet201']
         # MODEL_VERSION = ['CIF_ImageNet_32B_20EN', 'CIF_ImageNet_32B_20EN_2']
-        MODEL_VERSION = ['2020-05-20_10-56-49']
+        MODEL_VERSION = ['2020-05-25_17-26-23']
+        IMG_HEIGHT, IMG_WIDTH, IMG_DEPTH = 75, 75, 3 # target image size to resize to
         DATA_PATH = None
 
 
@@ -928,22 +943,23 @@ def Ensemble(q, METHODNAME):
         datagen = ImageDataGenerator(rescale=1./255)
         pred_generator = datagen.flow(x_pred, batch_size=64, shuffle=False)
         # progress_bar = tf.keras.utils.Progbar(target=sum(N_ENSEMBLE_MEMBERS), interval=5)
-        for i in range(N_FOLDERS):
+        for i, archi in enumerate(ARCHI_NAME):
             old_dir = os.getcwd()
-            os.chdir(ROOT_PATH + os.path.sep + ONE_HIGHER_PATH[1] + MODEL_TO_USE + os.path.sep + DATANAME + os.path.sep + MODEL_VERSION[i] + os.path.sep)
-            with open('ensemble_model_config_0.json') as json_file:
+            os.chdir(ROOT_PATH + os.path.sep + ONE_HIGHER_PATH[1] + MODEL_TO_USE + os.path.sep + DATANAME + os.path.sep + MODEL_VERSION[0] + os.path.sep)
+            with open('ensemble_model_config_{}_0.json'.format(archi)) as json_file:
                 json_config = json_file.read()
             pre_trained_model = tf.keras.models.model_from_json(json_config)
             os.chdir(old_dir)
 
-            for j in range(N_ENSEMBLE_MEMBERS[i]):
+            for j in range(0, N_ENSEMBLE_MEMBERS[0]):
                 old_dir = os.getcwd()
-                os.chdir(ROOT_PATH + os.path.sep + ONE_HIGHER_PATH[1] + MODEL_TO_USE + os.path.sep + DATANAME + os.path.sep + MODEL_VERSION[i] + os.path.sep)
+                os.chdir(ROOT_PATH + os.path.sep + ONE_HIGHER_PATH[1] + MODEL_TO_USE + os.path.sep + DATANAME + os.path.sep + MODEL_VERSION[0] + os.path.sep)
                 # print(os.getcwd())
 
                 # Reload the model from the 2 files we saved
 
-                pre_trained_model.load_weights('ensemble_weights_{}.h5'.format(j))
+                pre_trained_model.load_weights('ensemble_weights_{}_{}.h5'.format(archi, j))
+                print('loaded: ensemble_weights_{}_{}.h5'.format(archi, j))
                 # pre_trained_model.summary()
                 os.chdir(old_dir)
 
@@ -954,6 +970,15 @@ def Ensemble(q, METHODNAME):
             K.clear_session()
         
         return mc_predictions
+
+
+    def pad(img, h, w):
+        #  in case when you have odd number
+        top_pad = np.floor((h - img.shape[0]) / 2).astype(np.uint16)
+        bottom_pad = np.ceil((h - img.shape[0]) / 2).astype(np.uint16)
+        right_pad = np.ceil((w - img.shape[1]) / 2).astype(np.uint16)
+        left_pad = np.floor((w - img.shape[1]) / 2).astype(np.uint16)
+        return np.copy(np.pad(img, ((top_pad, bottom_pad), (left_pad, right_pad), (0, 0)), mode='constant', constant_values=0))
 
 
     def method_main():
@@ -967,15 +992,24 @@ def Ensemble(q, METHODNAME):
 
         elif LABELS_AVAILABLE:
             (x_train, y_train), (x_test, y_test) = load_hdf5_dataset(DATA_PATH)
-            (x_pred, y_pred) = load_new_images()
+            (x_pred, y_pred) = load_new_images(img_height = IMG_HEIGHT)
 
         elif TEST_ON_OWN_AND_NEW_DATASET:
             (x_train, y_train), (x_test, y_test) = load_hdf5_dataset(DATA_PATH)
-            x_pred = load_new_images()           
+            x_pred = load_new_images(img_height = IMG_HEIGHT)         
 
         elif TEST_ON_NEW_DATASET:
             (x_train, y_train), (x_test, y_test) = load_hdf5_dataset(DATA_PATH)
-            x_pred = load_new_images()
+            x_pred = load_new_images(img_height = IMG_HEIGHT)
+
+
+        x_test_re = np.empty((len(x_test), IMG_HEIGHT, IMG_HEIGHT, 3))
+
+        for ind, img in enumerate(x_test):
+            x_test_re[ind, ...] = pad(img, IMG_HEIGHT, IMG_HEIGHT)
+
+        x_test = x_test_re
+        print(x_test.shape)
 
         label_count = [0] * NUM_CLASSES
         for lab in y_train:
@@ -1278,6 +1312,12 @@ def VarianceOutput(q, METHODNAME):
                 print("With error converted to uncertainty")
                 variance_new_images_predictions = convert_to_var(variance_new_images_predictions)
                 Uncertainty_output(NUM_CLASSES).results_if_label(variance_new_images_predictions, y_pred, scatter=True, name = NEW_DATA)
+            else:
+                Uncertainty_output(NUM_CLASSES).results_if_no_label(variance_new_images_predictions, scatter=True, name = NEW_DATA)
+                print("With error converted to uncertainty")
+                variance_new_images_predictions = convert_to_var(variance_new_images_predictions)
+                Uncertainty_output(NUM_CLASSES).results_if_no_label(variance_new_images_predictions, scatter=True, name = NEW_DATA)
+
         
         else:
             variance_new_images_predictions = pre_trained_model.predict(pred_generator)

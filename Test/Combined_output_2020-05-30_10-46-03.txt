@@ -1,0 +1,73 @@
+
+START Ensemble
+Dataset_name: MES, N_folders: 1, total mebers: 3
+(459, 256, 256, 3)
+Total labels in train set:  [840, 840, 839, 838, 836]
+Labels in test set:  [272, 74, 92, 12, 9]
+loaded: ensemble_weights_Xception_0.h5
+loaded: ensemble_weights_Xception_1.h5
+loaded: ensemble_weights_Xception_2.h5
+loaded: ensemble_weights_VGG16_0.h5
+loaded: ensemble_weights_VGG16_1.h5
+loaded: ensemble_weights_VGG16_2.h5
+loaded: ensemble_weights_VGG19_0.h5
+loaded: ensemble_weights_VGG19_1.h5
+loaded: ensemble_weights_VGG19_2.h5
+loaded: ensemble_weights_ResNet50_0.h5
+loaded: ensemble_weights_ResNet50_1.h5
+loaded: ensemble_weights_ResNet50_2.h5
+loaded: ensemble_weights_ResNet101_0.h5
+loaded: ensemble_weights_ResNet101_1.h5
+loaded: ensemble_weights_ResNet101_2.h5
+loaded: ensemble_weights_ResNet152_0.h5
+loaded: ensemble_weights_ResNet152_1.h5
+loaded: ensemble_weights_ResNet152_2.h5
+loaded: ensemble_weights_ResNet50V2_0.h5
+loaded: ensemble_weights_ResNet50V2_1.h5
+loaded: ensemble_weights_ResNet50V2_2.h5
+loaded: ensemble_weights_ResNet101V2_0.h5
+loaded: ensemble_weights_ResNet101V2_1.h5
+loaded: ensemble_weights_ResNet101V2_2.h5
+loaded: ensemble_weights_ResNet152V2_0.h5
+loaded: ensemble_weights_ResNet152V2_1.h5
+loaded: ensemble_weights_ResNet152V2_2.h5
+loaded: ensemble_weights_InceptionV3_0.h5
+loaded: ensemble_weights_InceptionV3_1.h5
+loaded: ensemble_weights_InceptionV3_2.h5
+loaded: ensemble_weights_InceptionResNetV2_0.h5
+loaded: ensemble_weights_InceptionResNetV2_1.h5
+loaded: ensemble_weights_InceptionResNetV2_2.h5
+loaded: ensemble_weights_DenseNet121_0.h5
+loaded: ensemble_weights_DenseNet121_1.h5
+loaded: ensemble_weights_DenseNet121_2.h5
+loaded: ensemble_weights_DenseNet169_0.h5
+loaded: ensemble_weights_DenseNet169_1.h5
+loaded: ensemble_weights_DenseNet169_2.h5
+loaded: ensemble_weights_DenseNet201_0.h5
+loaded: ensemble_weights_DenseNet201_1.h5
+loaded: ensemble_weights_DenseNet201_2.h5
+Ensemble combined accuracy: 67.3%
+tf.Tensor(
+[[259   6   6   1   0]
+ [ 59   7   8   0   0]
+ [ 50   2  37   3   0]
+ [  3   0   4   5   0]
+ [  2   0   2   4   1]], shape=(5, 5), dtype=int32)
+Correct: 309, wrong: 150, accuracy: 67.3202614379085%
+
+Mean probability on true label of MES test dataset when correctly predicted = 64.30%
+Mean uncertainty on true label of MES test dataset when correctly predicted = 27.86%
+Mean probability on true label of MES test dataset when wrongly predicted = 22.26%
+Mean uncertainty on true label of MES test dataset when wrongly predicted = 22.02%
+
+Mean probability on highest predicted on MES test dataset when wrong = 59.99%
+Mean uncertainty on highest predicted on MES test dataset when wrong = 28.39%
+
+Mean probability on all not true label on MES test dataset = 10.00%
+Mean uncertainty on all not true label on MES test dataset = 12.22%
+creating scatterplot
+
+#################################
+Function main called 1 times. 
+Execution time max: 444.522, average: 444.522
+#################################

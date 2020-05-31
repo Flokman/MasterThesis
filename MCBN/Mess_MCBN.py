@@ -32,7 +32,7 @@ WEIGHTS_PATH_NO_TOP = ('https://github.com/fchollet/deep-learning-models/'
 IMG_HEIGHT, IMG_WIDTH, IMG_DEPTH = 256, 256, 3
 DATASET_NAME = '/Messidor2_PNG_AUG_' + str(IMG_HEIGHT) + '.hdf5'
 
-BATCH_SIZE = 64
+BATCH_SIZE = 180
 NUM_CLASSES = 5
 EPOCHS = 500
 MCBN_PREDICTIONS = 256
@@ -56,13 +56,13 @@ LEARN_RATE = 0.00001
 ES_PATIENCE = 50
 MIN_DELTA = 0.005
 EARLY_MONITOR = 'val_accuracy'
-MC_MONITOR = 'val_loss'
+MC_MONITOR = 'loss'
 RESULTFOLDER = 'MES'
 
 adam = optimizers.Adam(lr=LEARN_RATE)
-sgd = optimizers.SGD(lr=0.00001, momentum=0.9)
+sgd = optimizers.SGD(lr=0.01, momentum=0.9)
 
-OPTIMZ = adam
+OPTIMZ = sgd
 
 
 # Get dataset path

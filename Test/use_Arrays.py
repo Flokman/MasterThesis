@@ -73,11 +73,12 @@ def clear_prof_data():
 
 
 # Hyperparameters
-DATANAME = 'MES'
+DATANAME = 'CIFAR10'
 NEW_DATA = 'MNIST' # or 'local' for local folder
 METHODNAMES = ['MCDO', 'MCBN', 'Ensemble', 'VarianceOutput']
 
 TRAIN_TEST_SPLIT = 0.8 # Value between 0 and 1, e.g. 0.8 creates 80%/20% division train/test
+TRAIN_VAL_SPLIT = 0.875
 
 TEST_ON_OWN_AND_NEW_DATASET = False
 TEST_ON_OWN_DATASET = True
@@ -151,22 +152,19 @@ def load_data(path, to_shuffle):
     if DATANAME == 'MES':
         '''' Load a dataset from a hdf5 file '''
         with h5py.File(path, "r") as f:
-            (x_load, y_load) = np.array(f['x']), np.array(f['y'])
+            x_train, y_train, x_test, y_test = np.array(f['x_train']), np.array(f['y_train']), np.array(f['x_test']), np.array(f['y_test'])
         label_count = [0] * NUM_CLASSES
-        for lab in y_load:
+        for lab in y_train:
             label_count[lab] += 1
 
         if to_shuffle:
             (x_load, y_load) = shuffle_data(x_load, y_load)
 
         # Divide the data into a train and test set
-        x_train = x_load[0:int(TRAIN_TEST_SPLIT*len(x_load))]
-        y_train = y_load[0:int(TRAIN_TEST_SPLIT*len(y_load))]
+        x_test, x_val = np.split(x_test, [int(TRAIN_VAL_SPLIT*len(x_test))])
+        y_test, y_val = np.split(y_test, [int(TRAIN_VAL_SPLIT*len(y_test))])
 
-        x_test = x_load[int(TRAIN_TEST_SPLIT*len(x_load)):]
-        y_test = y_load[int(TRAIN_TEST_SPLIT*len(y_load)):]
-
-        return (x_train, y_train), (x_test, y_test), label_count
+        return (x_train, y_train), (x_val, y_val), (x_test, y_test), label_count
 
 
 def load_hdf5_dataset(DATA_PATH, new_data=False):
@@ -178,14 +176,24 @@ def load_hdf5_dataset(DATA_PATH, new_data=False):
             (x_train, y_train), (x_test, y_test), train_label_count, test_label_count = load_data(DATA_PATH, TO_SHUFFLE)
 
         if DATANAME == 'MES':
-            (x_train, y_train), (x_test, y_test), label_count = load_data(DATA_PATH, TO_SHUFFLE)
+            (x_train, y_train), (x_val, y_val), (x_test, y_test), label_count = load_data(DATA_PATH, TO_SHUFFLE)
+            x_val = np.asarray(x_val)
+            y_val = np.asarray(y_val)
 
         if DATANAME == 'CIFAR10':
             (x_train, y_train), (x_test, y_test) = cifar10.load_data()
+            x_test, x_val = np.split(x_test, [int(TRAIN_VAL_SPLIT*len(x_test))])
+            y_test, y_val = np.split(y_test, [int(TRAIN_VAL_SPLIT*len(y_test))])
 
     else:
         if NEW_DATA == 'MNIST':
             (x_train, y_train), (x_test, y_test) = mnist.load_data()
+            x_train = np.asarray(x_train)
+            y_train = np.asarray(y_train)
+            x_test = np.asarray(x_test)
+            y_test = np.asarray(y_test)
+            print("MNIST data returning")
+            return((x_train, y_train), (x_test, y_test))
 
     
     x_train = np.asarray(x_train)
@@ -204,7 +212,7 @@ def load_hdf5_dataset(DATA_PATH, new_data=False):
     return((x_train, y_train), (x_test, y_test))
 
 
-def load_new_images():
+def load_new_images(img_height = IMG_HEIGHT):
     if NEW_DATA == 'local':
         ''' Load, convert and resize the test images into numpy arrays '''
         images_path = os.getcwd() + TEST_IMAGES_LOCATION + os.path.sep + '*'
@@ -292,13 +300,13 @@ def load_new_images():
         for ind, img_ar in enumerate(x_test):
             if ind == 0:
                 img = Image.fromarray(img_ar)
-                img = img.resize((32, 32))
+                img = img.resize((img_height, img_height))
                 img_ar = np.array(img)
                 img_ar = np.stack((img_ar, img_ar, img_ar), axis=2)
                 x_pred = img_ar.reshape((1,) + img_ar.shape)
             else:    
                 img = Image.fromarray(img_ar)
-                img = img.resize((32, 32))
+                img = img.resize((img_height, img_height))
                 img_ar = np.array(img)
                 img_ar = np.stack((img_ar, img_ar, img_ar), axis=2)
                 img_ar = img_ar.reshape((1,) + img_ar.shape)
@@ -401,6 +409,14 @@ def test_on_own_func(methodname, predictions, y_test):
     all_probabilities = []
     all_uncertainties = []
 
+    print("shape predicitons:", predictions.shape)
+
+    # Squared errors per example per amount of predictions per example
+    SEs = np.empty([len(y_test), 250])
+    # Variance for specific predicted class over all predictions for that class per example per amount of predictions per example
+    VARs = np.empty([len(y_test), 250])
+
+
     for ind in range(len(y_test)):
         all_predictions_single = np.array([p[ind] for p in predictions])
         # print("posterior mean: {}".format(all_predictions_single.mean(axis=0).argmax()))
@@ -409,6 +425,25 @@ def test_on_own_func(methodname, predictions, y_test):
         true_label = true_labels[ind]
         highest_pred_ind = all_predictions_single.mean(axis=0).argmax()
 
+
+
+        all_var_single = all_predictions_single.std(axis=0)
+        print("all var single shpae: ", all_var_single.shape)
+        for index, single_pred in enumerate(all_predictions_single):
+            # For this one single prediction, what is the index of highest class
+            high_single_pred_ind = np.argmax(single_pred)
+
+            # Calculate Squared Error
+            if high_single_pred_ind == true_label:
+                SEs[ind, index] = pow((single_pred[high_single_pred_ind] - 1), 2)
+            else:
+                SEs[ind, index] = pow((single_pred[high_single_pred_ind]), 2)
+            
+            # Accompining variance calculated over all predictions for that specific class
+            VARs[ind, index] = all_var_single[high_single_pred_ind]
+
+
+            
         for l, (prob, var) in enumerate(zip(all_predictions_single.mean(axis=0), all_predictions_single.std(axis=0))):
             all_probabilities.append(prob)
             all_uncertainties.append(var)
@@ -439,7 +474,6 @@ def test_on_own_func(methodname, predictions, y_test):
                 not_true_label_prob.append(prob)  
 
 
-
     print("Correct: {}, wrong: {}, accuracy: {}%".format(correct, wrong, (correct/(correct+wrong))*100))
     print("")
     print("Mean probability on true label of {} test dataset when correctly predicted = {:.2%}".format(DATANAME, mean(correct_prob)))
@@ -456,6 +490,12 @@ def test_on_own_func(methodname, predictions, y_test):
     print("Mean uncertainty on all not true label on {} test dataset = {:.2%}".format(DATANAME, mean(not_true_label_unc)))
 
     Uncertainty_output(NUM_CLASSES).scatterplot(correct_prob, correct_unc, high_wrong_prob, high_wrong_unc, methodname, DATANAME)
+
+        
+    MSE = SEs.mean(axis=1)
+    UNC = VARs.mean(axis=1)
+    print("MSE shape: ", MSE.shape)
+    Uncertainty_output(NUM_CLASSES).MSE_scatterplot(MSE, UNC, methodname, DATANAME)
 
 
 def test_on_new_func(new_images_predictions, x_pred, methodname, y_pred = None, more_info=False):
@@ -593,7 +633,7 @@ def test_on_new_func(new_images_predictions, x_pred, methodname, y_pred = None, 
 def scatterplot(accuracies, uncertainties, methodname, own_or_new):
     # os.chdir(HOME_DIR + os.path.sep + methodname)
 
-    plt.scatter(accuracies, uncertainties)
+    plt.scatter(accuracies, uncertainties, c='r')
     plt.xlabel('probability')
     plt.ylabel('uncertainty')
     plt.title('Scatterplot for {} on {}'.format(methodname, own_or_new))
@@ -628,7 +668,7 @@ def MCDO(q, METHODNAME):
         MODEL_VERSION = os.path.sep + 'CIFAR_ImageNet_retrain_32B_95E_86A'
         MODEL_NAME = 'MCDO_model.h5'
         DATA_PATH = None
-        mcdo_own_predictions = np.load('MCDO_CIFAR10.npy')
+        mcdo_own_predictions = np.load('CIFAR10_MCDO_CIFAR10.npy')
 
     if DATANAME == 'POLAR':
         MCDO_BATCH_SIZE = 16
@@ -666,7 +706,7 @@ def MCDO(q, METHODNAME):
             test_on_own_func(METHODNAME, mcdo_own_predictions, y_test)
         
         if TEST_ON_OWN_AND_NEW_DATASET:
-            mcdo_new_predictions = np.load('MCDO_MNIST.npy')
+            mcdo_new_predictions = np.load('CIFAR10_MCDO_MNIST.npy')
             if LABELS_AVAILABLE:
                 test_on_new_func(mcdo_new_predictions, x_pred, METHODNAME, y_pred = y_pred)
             else:
@@ -698,7 +738,7 @@ def MCBN(q, METHODNAME):
         MODEL_VERSION = os.path.sep + '2020-04-10_14-30_imagenet_32B_82.3%A'
         MODEL_NAME = 'MCBN_model.h5'
         DATA_PATH = None
-        MCBN_own_predictions = np.load('MCBN_CIFAR10.npy')
+        MCBN_own_predictions = np.load('CIFAR10_MCBN_CIFAR10.npy')
 
     if DATANAME == 'POLAR':
         MINIBATCH_SIZE = 16
@@ -736,7 +776,7 @@ def MCBN(q, METHODNAME):
             test_on_own_func(METHODNAME, MCBN_own_predictions, y_test)
         
         if TEST_ON_OWN_AND_NEW_DATASET:
-            MCBN_new_predictions = np.load('MCBN_MNIST.npy')
+            MCBN_new_predictions = np.load('CIFAR10_MCBN_MNIST.npy')
             if LABELS_AVAILABLE:
                 test_on_new_func(MCBN_new_predictions, x_pred, METHODNAME, y_pred = y_pred)
             else:
@@ -768,7 +808,7 @@ def Ensemble(q, METHODNAME):
         # MODEL_VERSION = ['CIF_ImageNet_32B_20EN', 'CIF_ImageNet_32B_20EN_2']
         MODEL_VERSION = ['2020-03-19_16-19-18']
         DATA_PATH = None
-        Ensemble_own_predictions = np.load('Ensemble_CIFAR10.npy')
+        Ensemble_own_predictions = np.load('CIFAR10_Ensemble_CIFAR10.npy')
 
 
     if DATANAME == 'POLAR':
@@ -810,7 +850,7 @@ def Ensemble(q, METHODNAME):
             test_on_own_func(METHODNAME, Ensemble_own_predictions, y_test)
         
         if TEST_ON_OWN_AND_NEW_DATASET:
-            Ensemble_new_predictions = np.load('Ensemble_MNIST.npy')
+            Ensemble_new_predictions = np.load('CIFAR10_Ensemble_MNIST.npy')
             if LABELS_AVAILABLE:
                 test_on_new_func(Ensemble_new_predictions, x_pred, METHODNAME, y_pred = y_pred)
             else:
@@ -840,7 +880,7 @@ def VarianceOutput(q, METHODNAME):
         MODEL_VERSION = os.path.sep + 'CIF_ImageNet_32B_95E_68A'
         MODEL_NAME = 'variance_model.h5'
         DATA_PATH = None
-        Error_own_predictions = np.load('Error_CIFAR10.npy')
+        Error_own_predictions = np.load('CIFAR10_Error_CIFAR10.npy')
 
     if DATANAME == 'POLAR':
         MCDO_BATCH_SIZE = 16
@@ -875,14 +915,16 @@ def VarianceOutput(q, METHODNAME):
 
         if TEST_ON_OWN_DATASET or LABELS_AVAILABLE or TEST_ON_OWN_AND_NEW_DATASET:
             Uncertainty_output(NUM_CLASSES).results_if_label(Error_own_predictions, y_test, scatter=True, name = DATANAME)
-        
+            Uncertainty_output(NUM_CLASSES).MSE(Error_own_predictions, y_test, name = DATANAME)
         if TEST_ON_OWN_AND_NEW_DATASET:
-            Error_new_predictions = np.load('Error_MNIST.npy')
+            Error_new_predictions = np.load('CIFAR10_Error_MNIST.npy')
             if LABELS_AVAILABLE:
                 Uncertainty_output(NUM_CLASSES).results_if_label(Error_new_predictions, y_pred, scatter=True, name = NEW_DATA)
+            else:
+                Uncertainty_output(NUM_CLASSES).results_if_no_label(Error_new_predictions, more_info = True)
         
         else:
-            Error_new_predictions = np.load('Error_MNIST.npy')
+            Error_new_predictions = np.load('CIFAR10_Error_MNIST.npy')
             Uncertainty_output(NUM_CLASSES).results_if_no_label(Error_new_predictions, more_info = True)
 
         os.chdir(HOME_DIR)

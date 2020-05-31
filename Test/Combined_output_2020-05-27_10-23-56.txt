@@ -1,0 +1,54 @@
+
+START Ensemble
+Dataset_name: MES, N_folders: 1, total mebers: 2
+Total labels in train set:  [840, 840, 839, 838, 836]
+Labels in test set:  [272, 74, 92, 12, 9]
+loaded: ensemble_weights_Xception_0.h5
+loaded: ensemble_weights_Xception_1.h5
+loaded: ensemble_weights_VGG16_0.h5
+loaded: ensemble_weights_VGG16_1.h5
+loaded: ensemble_weights_VGG19_0.h5
+loaded: ensemble_weights_VGG19_1.h5
+loaded: ensemble_weights_ResNet50_0.h5
+loaded: ensemble_weights_ResNet50_1.h5
+loaded: ensemble_weights_ResNet101_0.h5
+loaded: ensemble_weights_ResNet101_1.h5
+loaded: ensemble_weights_ResNet152_0.h5
+loaded: ensemble_weights_ResNet152_1.h5
+loaded: ensemble_weights_ResNet50V2_0.h5
+loaded: ensemble_weights_ResNet50V2_1.h5
+loaded: ensemble_weights_ResNet101V2_0.h5
+loaded: ensemble_weights_ResNet101V2_1.h5
+loaded: ensemble_weights_ResNet152V2_0.h5
+loaded: ensemble_weights_ResNet152V2_1.h5
+loaded: ensemble_weights_InceptionV3_0.h5
+loaded: ensemble_weights_InceptionV3_1.h5
+loaded: ensemble_weights_InceptionResNetV2_0.h5
+loaded: ensemble_weights_InceptionResNetV2_1.h5
+loaded: ensemble_weights_DenseNet121_0.h5
+loaded: ensemble_weights_DenseNet121_1.h5
+Ensemble combined accuracy: 63.0%
+tf.Tensor(
+[[259   7   5   1   0]
+ [ 66   3   5   0   0]
+ [ 64   0  23   3   2]
+ [  6   0   3   3   0]
+ [  3   0   1   4   1]], shape=(5, 5), dtype=int32)
+Correct: 289, wrong: 170, accuracy: 62.96296296296296%
+
+Mean probability on true label of MES test dataset when correctly predicted = 64.01%
+Mean uncertainty on true label of MES test dataset when correctly predicted = 27.42%
+Mean probability on true label of MES test dataset when wrongly predicted = 22.13%
+Mean uncertainty on true label of MES test dataset when wrongly predicted = 21.07%
+
+Mean probability on highest predicted on MES test dataset when wrong = 58.88%
+Mean uncertainty on highest predicted on MES test dataset when wrong = 27.89%
+
+Mean probability on all not true label on MES test dataset = 10.28%
+Mean uncertainty on all not true label on MES test dataset = 11.68%
+creating scatterplot
+
+#################################
+Function main called 1 times. 
+Execution time max: 297.139, average: 297.139
+#################################
