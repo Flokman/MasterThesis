@@ -190,8 +190,8 @@ class Uncertainty_output:
             plt.xlim(0,1.05)
             plt.scatter(high_wrong_prob, high_wrong_unc, c='r')
             plt.legend()
-            plt.xlabel('probability')
-            plt.ylabel('uncertainty')
+            plt.xlabel('Probability')
+            plt.ylabel('Uncertainty')
             plt.title('Scatterplot for {} on {}'.format(methodname, own_or_new))
             plt.savefig('{}_scatter_{}.png'.format(methodname, own_or_new))
             plt.clf()
@@ -204,8 +204,8 @@ class Uncertainty_output:
             plt.scatter(high_wrong_prob, high_wrong_unc, c='r', label='Wrongly predicted')
             plt.scatter(correct_prob, correct_unc, c='g', label='Correctly predicted')
             plt.legend()
-            plt.xlabel('probability')
-            plt.ylabel('uncertainty')
+            plt.xlabel('Probability')
+            plt.ylabel('Uncertainty')
             plt.title('Scatterplot for {} on {}'.format(methodname, own_or_new))
             plt.savefig('{}_scatter_{}.png'.format(methodname, own_or_new))
             plt.clf()
@@ -219,16 +219,16 @@ class Uncertainty_output:
         print("creating MSE scatterplot")
         plt.clf()
         plt.style.use("ggplot")
-        plt.scatter(MSE, UNC, c='b', label='Correctly predicted')
+        plt.scatter(UNC, MSE, c='b')
         plt.legend()
         plt.xlabel('MSE')
-        plt.ylabel('Predicted Error')
+        plt.ylabel('Uncertainty')
         plt.title('Scatterplot for {} on {}'.format(methodname, own_or_new))
         plt.savefig('{}_MSE_scatter_{}.png'.format(methodname, own_or_new))
         plt.clf()
 
 
-    def results_if_no_label(self, new_images_predictions, details_per_example = False, name = ''):
+    def results_if_no_label(self, new_images_predictions, details_per_example = False, name = '', scatter = False):
         highest_probs = []
         highest_probs_uncs = []
         not_highest_probs = []
@@ -272,12 +272,12 @@ class Uncertainty_output:
                     print("Class: {}; Probability: {:.1%}; Uncertainty: {:.2%} ".format(class_ind, prob, unc))
         
         if scatter:
-            self.scatterplot(None, None, all_probs, all_uncs, 'ErrorOutput', name)
+            self.scatterplot(None, None, highest_probs, highest_probs_uncs, 'ErrorOutput', name)
 
 
     def MSE(self, org_data_prediction, y_test, scatter = False, name = ''):
         true_labels = [np.argmax(i) for i in y_test]
-        SSE = []
+        SEs = []
         Hi_Error = []
 
         for ind, pred in enumerate(org_data_prediction):
@@ -287,8 +287,8 @@ class Uncertainty_output:
             uncertainties = pred[self.num_classes:]
 
             Squared_Error = pow((predictions[highest_pred_ind] - 1), 2)
-            SSE.append(Squared_Error)
+            SEs.append(Squared_Error)
             Hi_Error.append(uncertainties[highest_pred_ind])
         
-        MSE = mean(SSE)
-        self.MSE_scatterplot(MSE, Hi_Error, 'ErrorOutput', name)
+        # MSE = mean(SSE)
+        self.MSE_scatterplot(SEs, Hi_Error, 'ErrorOutput', name)

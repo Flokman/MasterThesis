@@ -30,15 +30,15 @@ WEIGHTS_PATH_NO_TOP = ('https://github.com/fchollet/deep-learning-models/'
 
 # Input image dimensions
 IMG_HEIGHT, IMG_WIDTH, IMG_DEPTH = 256, 256, 3
-DATASET_NAME = '/Messidor2_PNG_AUG_' + str(IMG_HEIGHT) + '.hdf5'
+DATASET_NAME = '/Messidor2_PNG_' + str(IMG_HEIGHT) + '.hdf5'
 
 BATCH_SIZE = 180
 NUM_CLASSES = 5
 EPOCHS = 500
 MCBN_PREDICTIONS = 256
 MINIBATCH_SIZE = 64
-TRAIN_TEST_SPLIT = 0.7 # Value between 0 and 1, e.g. 0.8 creates 80%/20% division train/test
-TRAIN_VAL_SPLIT = 0.875
+TRAIN_TEST_SPLIT = 0.8 # Value between 0 and 1, e.g. 0.8 creates 80%/20% division train/test
+TRAIN_VAL_SPLIT = 0.875 # Creates a 0.7 test, 0.1 val split
 TEST_VAL_SPLIT = 0.66
 
 SAVE_AUGMENTATION_TO_HDF5 = False
@@ -56,7 +56,7 @@ LEARN_RATE = 0.00001
 ES_PATIENCE = 50
 MIN_DELTA = 0.005
 EARLY_MONITOR = 'val_accuracy'
-MC_MONITOR = 'loss'
+MC_MONITOR = 'val_loss'
 RESULTFOLDER = 'MES'
 
 adam = optimizers.Adam(lr=LEARN_RATE)
@@ -190,11 +190,38 @@ def data_augmentation(x_train, y_train, x_test, y_test):
 
 def load_data(path, to_shuffle):
     '''' Load a dataset from a hdf5 file '''
+    # with h5py.File(path, "r") as f:
+    #     x_train, y_train, x_test, y_test = np.array(f['x_train']), np.array(f['y_train']), np.array(f['x_test']), np.array(f['y_test'])
+    # label_count = [0] * NUM_CLASSES
+    # for lab in y_train:
+    #     label_count[lab] += 1
     with h5py.File(path, "r") as f:
-        x_train, y_train, x_test, y_test = np.array(f['x_train']), np.array(f['y_train']), np.array(f['x_test']), np.array(f['y_test'])
+        x, y = np.array(f['x']), np.array(f['y'])
+    label_count = [0] * NUM_CLASSES
+    for lab in y:
+        label_count[lab] += 1
+    print(lab)
+
+    x_train, x_test = np.split(x, [int(TRAIN_TEST_SPLIT*len(x))])
+    y_train, y_test = np.split(y, [int(TRAIN_TEST_SPLIT*len(y))])
+
+    x_train, x_val = np.split(x_train, [int(TRAIN_VAL_SPLIT*len(x_train))])
+    y_train, y_val = np.split(y_train, [int(TRAIN_VAL_SPLIT*len(y_train))])
+
+
     label_count = [0] * NUM_CLASSES
     for lab in y_train:
         label_count[lab] += 1
+    print("count train: ", lab)
+    label_count = [0] * NUM_CLASSES
+    for lab in y_val:
+        label_count[lab] += 1
+    print("count val: ", lab)
+    label_count = [0] * NUM_CLASSES
+    for lab in y_test:
+        label_count[lab] += 1
+    print("count test: ", lab)
+
 
     print("loaded data")
     # if to_shuffle:

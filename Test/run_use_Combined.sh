@@ -4,7 +4,7 @@
 #SBATCH --partition=gpu
 #SBATCH --gres=gpu:v100:1
 #SBATCH --job-name=CombTest
-#SBATCH --mem=32000
+#SBATCH --mem=128000
 
 module load Python/3.7.4-GCCcore-8.3.0
 module load TensorFlow/2.1.0-fosscuda-2019b-Python-3.7.4 

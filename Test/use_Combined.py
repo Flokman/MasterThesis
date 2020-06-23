@@ -76,16 +76,16 @@ def clear_prof_data():
 # Hyperparameters
 DATANAME = 'CIFAR10'
 NEW_DATA = 'MNIST' # or 'local' for local folder
-METHODNAMES = ['MCDO', 'MCBN', 'Ensemble', 'VarianceOutput']
-# METHODNAMES = ['Ensemble']
-# METHODNAMES = ['VarianceOutput']
+# METHODNAMES = ['MCDO', 'MCBN', 'Ensemble', 'VarianceOutput']
+# METHODNAMES = ['MCBN', 'Ensemble', 'VarianceOutput']
+METHODNAMES = ['Ensemble']
 
 TRAIN_TEST_SPLIT = 0.8 # Value between 0 and 1, e.g. 0.8 creates 80%/20% division train/test
 TRAIN_VAL_SPLIT = 0.875
 
 TEST_ON_OWN_AND_NEW_DATASET = True
-TEST_ON_OWN_DATASET = True
-TEST_ON_NEW_DATASET = False
+TEST_ON_OWN_DATASET = False
+TEST_ON_NEW_DATASET = True
 LABELS_AVAILABLE = False
 TO_SHUFFLE = False
 TEST_IMAGES_LOCATION = os.path.sep + 'test_images'
@@ -298,9 +298,19 @@ def load_new_images(img_height = IMG_HEIGHT):
             return x_pred
 
     elif NEW_DATA == 'MNIST':
+        old_dir = os.getcwd()
+        os.chdir(HOME_DIR)
+        print("loading MNIST")
+        x_pred = np.load('MNIST_256' + '.npy')
+        os.chdir(old_dir)
+        print('MNIST loaded')
+        return x_pred
+
         (x_train, y_train), (x_test, y_test) = load_hdf5_dataset(None, new_data=True)
 
         for ind, img_ar in enumerate(x_test):
+            if ind % 10 == 0 and ind > 1:
+                print('Image data: {}/{}'.format(ind, len(x_test)))
             if ind == 0:
                 img = Image.fromarray(img_ar)
                 img = img.resize((img_height, img_height))
@@ -675,19 +685,23 @@ def MCDO(q, METHODNAME):
             x_pred = load_new_images()           
 
         elif TEST_ON_NEW_DATASET:
-            (x_train, y_train), (x_test, y_test) = load_hdf5_dataset(DATA_PATH)
+            # (x_train, y_train), (x_test, y_test) = load_hdf5_dataset(DATA_PATH)
             x_pred = load_new_images()
+            # old_dir = os.getcwd()
+            # os.chdir(HOME_DIR)
+            # save_array('MNIST_256', x_pred)
+            # os.chdir(old_dir)
 
         
-        label_count = [0] * NUM_CLASSES
-        for lab in y_train:
-            label_count[np.argmax(lab)] += 1
-        print("Total labels in train set: ", label_count)      
+        # label_count = [0] * NUM_CLASSES
+        # for lab in y_train:
+        #     label_count[np.argmax(lab)] += 1
+        # print("Total labels in train set: ", label_count)      
         
-        label_count = [0] * NUM_CLASSES
-        for lab in y_test:
-            label_count[np.argmax(lab)] += 1
-        print("Labels in test set: ", label_count) 
+        # label_count = [0] * NUM_CLASSES
+        # for lab in y_test:
+        #     label_count[np.argmax(lab)] += 1
+        # print("Labels in test set: ", label_count) 
         
         
         os.chdir(HOME_DIR)
@@ -727,7 +741,11 @@ def MCDO(q, METHODNAME):
         
         else:
             mcdo_new_images_predictions = mcdo_predict(pre_trained_model, x_pred)
-            test_on_new_func(mcdo_new_images_predictions, x_pred, METHODNAME, more_info = True)
+            old_dir = os.getcwd()
+            os.chdir(HOME_DIR)
+            save_array(DATANAME + '_MCDO_' + NEW_DATA, mcdo_new_images_predictions)
+            os.chdir(old_dir)
+            test_on_new_func(mcdo_new_images_predictions, x_pred, METHODNAME)
 
         os.chdir(HOME_DIR)
 
@@ -893,7 +911,11 @@ def MCBN(q, METHODNAME):
         
         else:
             mcbn_new_images_predictions = mcbn_predict(pre_trained_model, x_train, y_train, x_pred)
-            test_on_new_func(mcbn_new_images_predictions, x_pred, METHODNAME, more_info = True)
+            old_dir = os.getcwd()
+            os.chdir(HOME_DIR)
+            save_array(DATANAME + '_MCBN_' + NEW_DATA, mcbn_new_images_predictions)
+            os.chdir(old_dir)
+            test_on_new_func(mcbn_new_images_predictions, x_pred, METHODNAME)
 
         os.chdir(HOME_DIR)
 
@@ -921,7 +943,7 @@ def Ensemble(q, METHODNAME):
         N_ENSEMBLE_MEMBERS = [3]
         ARCHI_NAME = ['Xception', 'VGG16', 'VGG19', 'ResNet50', 'ResNet101', 'ResNet152', 'ResNet50V2', 'ResNet101V2', 'ResNet152V2', 'InceptionV3', 'InceptionResNetV2', 'DenseNet121', 'DenseNet169', 'DenseNet201']
         # MODEL_VERSION = ['CIF_ImageNet_32B_20EN', 'CIF_ImageNet_32B_20EN_2']
-        MODEL_VERSION = ['2020-05-25_17-26-23']
+        MODEL_VERSION = ['2020-06-14_13-33-26']
         IMG_HEIGHT, IMG_WIDTH, IMG_DEPTH = 75, 75, 3 # target image size to resize to
         DATA_PATH = None
 
@@ -1047,7 +1069,11 @@ def Ensemble(q, METHODNAME):
         
         else:
             ensemble_only_new_images_predictions = ensemble_predict(x_pred)
-            test_on_new_func(ensemble_new_images_predictions, x_pred, METHODNAME, more_info = True)
+            old_dir = os.getcwd()
+            os.chdir(HOME_DIR)
+            save_array(DATANAME + '_Ensemble_' + NEW_DATA, ensemble_only_new_images_predictions)
+            os.chdir(old_dir)
+            test_on_new_func(ensemble_new_images_predictions, x_pred, METHODNAME)
 
         os.chdir(HOME_DIR)
 
@@ -1257,15 +1283,15 @@ def VarianceOutput(q, METHODNAME):
             (x_train, y_train), (x_test, y_test) = load_hdf5_dataset(DATA_PATH)
             x_pred = load_new_images()
 
-        label_count = [0] * NUM_CLASSES
-        for lab in y_train:
-            label_count[np.argmax(lab)] += 1
-        print("Total labels in train set: ", label_count)      
+        # label_count = [0] * NUM_CLASSES
+        # for lab in y_train:
+        #     label_count[np.argmax(lab)] += 1
+        # print("Total labels in train set: ", label_count)      
         
-        label_count = [0] * NUM_CLASSES
-        for lab in y_test:
-            label_count[np.argmax(lab)] += 1
-        print("Labels in test set: ", label_count) 
+        # label_count = [0] * NUM_CLASSES
+        # for lab in y_test:
+        #     label_count[np.argmax(lab)] += 1
+        # print("Labels in test set: ", label_count) 
 
         os.chdir(HOME_DIR)
         os.chdir(ROOT_PATH + os.path.sep + ONE_HIGHER_PATH[1] + MODEL_TO_USE + os.path.sep + DATANAME + MODEL_VERSION + os.path.sep)
@@ -1320,11 +1346,16 @@ def VarianceOutput(q, METHODNAME):
 
         
         else:
+            pred_generator = datagen.flow(x_pred, batch_size=64, shuffle=False)
             variance_new_images_predictions = pre_trained_model.predict(pred_generator)
-            Uncertainty_output(NUM_CLASSES).results_if_no_label(variance_new_images_predictions, more_info = True)
+            old_dir = os.getcwd()
+            os.chdir(HOME_DIR)
+            save_array(DATANAME + '_Error_' + NEW_DATA, variance_new_images_predictions)
+            os.chdir(old_dir)
+            Uncertainty_output(NUM_CLASSES).results_if_no_label(variance_new_images_predictions)
             print("With error converted to uncertainty")
             variance_new_images_predictions = convert_to_var(variance_new_images_predictions)
-            Uncertainty_output(NUM_CLASSES).results_if_no_label(variance_new_images_predictions, more_info = True)
+            Uncertainty_output(NUM_CLASSES).results_if_no_label(variance_new_images_predictions)
 
         os.chdir(HOME_DIR)
 

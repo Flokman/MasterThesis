@@ -31,10 +31,10 @@ WEIGHTS_PATH_NO_TOP = ('https://github.com/fchollet/deep-learning-models/'
 IMG_HEIGHT, IMG_WIDTH, IMG_DEPTH = 32, 32, 3
 DATASET_NAME = 'CIFAR10'
 
-BATCH_SIZE = 32
+BATCH_SIZE = 256
 NUM_CLASSES = 10
 EPOCHS = 500
-AMOUNT_OF_PREDICTIONS = 50
+AMOUNT_OF_PREDICTIONS = 250
 MCDO_BATCH_SIZE = 250
 TRAIN_TEST_SPLIT = 0.8 # Value between 0 and 1, e.g. 0.8 creates 80%/20% division train/test
 TRAIN_VAL_SPLIT = 0.875

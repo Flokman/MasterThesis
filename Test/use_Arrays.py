@@ -76,6 +76,7 @@ def clear_prof_data():
 DATANAME = 'CIFAR10'
 NEW_DATA = 'MNIST' # or 'local' for local folder
 METHODNAMES = ['MCDO', 'MCBN', 'Ensemble', 'VarianceOutput']
+# METHODNAMES = ['MCDO', 'MCBN', 'Ensemble']
 
 TRAIN_TEST_SPLIT = 0.8 # Value between 0 and 1, e.g. 0.8 creates 80%/20% division train/test
 TRAIN_VAL_SPLIT = 0.875
@@ -409,13 +410,6 @@ def test_on_own_func(methodname, predictions, y_test):
     all_probabilities = []
     all_uncertainties = []
 
-    print("shape predicitons:", predictions.shape)
-
-    # Squared errors per example per amount of predictions per example
-    SEs = np.empty([len(y_test), 250])
-    # Variance for specific predicted class over all predictions for that class per example per amount of predictions per example
-    VARs = np.empty([len(y_test), 250])
-
 
     for ind in range(len(y_test)):
         all_predictions_single = np.array([p[ind] for p in predictions])
@@ -424,24 +418,6 @@ def test_on_own_func(methodname, predictions, y_test):
         # probability + variance
         true_label = true_labels[ind]
         highest_pred_ind = all_predictions_single.mean(axis=0).argmax()
-
-
-
-        all_var_single = all_predictions_single.std(axis=0)
-        print("all var single shpae: ", all_var_single.shape)
-        for index, single_pred in enumerate(all_predictions_single):
-            # For this one single prediction, what is the index of highest class
-            high_single_pred_ind = np.argmax(single_pred)
-
-            # Calculate Squared Error
-            if high_single_pred_ind == true_label:
-                SEs[ind, index] = pow((single_pred[high_single_pred_ind] - 1), 2)
-            else:
-                SEs[ind, index] = pow((single_pred[high_single_pred_ind]), 2)
-            
-            # Accompining variance calculated over all predictions for that specific class
-            VARs[ind, index] = all_var_single[high_single_pred_ind]
-
 
             
         for l, (prob, var) in enumerate(zip(all_predictions_single.mean(axis=0), all_predictions_single.std(axis=0))):
@@ -489,13 +465,374 @@ def test_on_own_func(methodname, predictions, y_test):
     print("Mean probability on all not true label on {} test dataset = {:.2%}".format(DATANAME, mean(not_true_label_prob))) 
     print("Mean uncertainty on all not true label on {} test dataset = {:.2%}".format(DATANAME, mean(not_true_label_unc)))
 
-    Uncertainty_output(NUM_CLASSES).scatterplot(correct_prob, correct_unc, high_wrong_prob, high_wrong_unc, methodname, DATANAME)
+    Uncertainty_output(NUM_CLASSES).scatterplot(correct_prob, correct_unc, high_wrong_prob, high_wrong_unc, methodname, DATANAME, ylabel_name = 'STD')
+    
 
+def test_on_own_funcV2(methodname, predictions, y_test):
+    # uncertainties = gaussian_unc(predictions)
+    # old_dir = os.getcwd()
+    # os.chdir(HOME_DIR)
+    # save_array(DATANAME + '_CDF_' + methodname, uncertainties)
+    # os.chdir(old_dir)
+
+    old_dir = os.getcwd()
+    os.chdir(HOME_DIR)
+    uncertainties = np.load(DATANAME + '_CDF_' + methodname + '.npy')
+    os.chdir(old_dir)
+
+
+    true_labels = [np.argmax(i) for i in y_test]
+    wrong = 0
+    correct = 0
+    # Only when correctly predict, info of true class
+    correct_unc = []
+    correct_prob = []
+    # Only when wrongly predicted, info of highest wrong pred
+    high_wrong_unc = []
+    high_wrong_prob = []
+    # Only when wrongly predicted, info of true class
+    true_wrong_unc = []
+    true_wrong_prob = []        
+    # Info of all incorrect classes
+    all_wrong_unc = []
+    all_wrong_prob = []
+    # Info of all not true label classes
+    not_true_label_unc = []
+    not_true_label_prob = []
+    # Info of all classes
+    all_probabilities = []
+    all_uncertainties = []
+
+
+    for ind in range(len(y_test)):
+        all_predictions_single = np.array([p[ind] for p in predictions])
+        all_uncertanties_single = np.array([p[ind] for p in uncertainties])
+        # print("posterior mean: {}".format(all_predictions_single.mean(axis=0).argmax()))
+        
+        # probability + variance
+        true_label = true_labels[ind]
+        highest_pred_ind = all_predictions_single.mean(axis=0).argmax()
+
+            
+        for l, (prob, var) in enumerate(zip(all_predictions_single.mean(axis=0), all_uncertanties_single.mean(axis=0))):
+            all_probabilities.append(prob)
+            all_uncertainties.append(var)
+
+            if l == true_label:
+                if highest_pred_ind == true_label:
+                    correct += 1
+                    correct_unc.append(var)
+                    correct_prob.append(prob)
+
+                else:
+                    wrong += 1
+                    true_wrong_unc.append(var)
+                    true_wrong_prob.append(prob)
+
+                    all_wrong_unc.append(var)
+                    all_wrong_prob.append(prob)
+            
+            if l == highest_pred_ind:
+                high_wrong_unc.append(var)
+                high_wrong_prob.append(prob)
+
+            else:
+                all_wrong_unc.append(var)
+                all_wrong_prob.append(prob)
+
+                not_true_label_unc.append(var)
+                not_true_label_prob.append(prob)  
+
+
+    print("Correct: {}, wrong: {}, accuracy: {}%".format(correct, wrong, (correct/(correct+wrong))*100))
+    print("")
+    print("Mean probability on true label of {} test dataset when correctly predicted = {:.2%}".format(DATANAME, mean(correct_prob)))
+    print("Mean uncertainty on true label of {} test dataset when correctly predicted = {:.2%}".format(DATANAME, mean(correct_unc)))
+    print("Mean probability on true label of {} test dataset when wrongly predicted = {:.2%}".format(DATANAME, mean(true_wrong_prob))) 
+    print("Mean uncertainty on true label of {} test dataset when wrongly predicted = {:.2%}".format(DATANAME, mean(true_wrong_unc)))    
+
+    print("")
+    print("Mean probability on highest predicted on {} test dataset when wrong = {:.2%}".format(DATANAME, mean(high_wrong_prob))) 
+    print("Mean uncertainty on highest predicted on {} test dataset when wrong = {:.2%}".format(DATANAME, mean(high_wrong_unc)))
+
+    print("")
+    print("Mean probability on all not true label on {} test dataset = {:.2%}".format(DATANAME, mean(not_true_label_prob))) 
+    print("Mean uncertainty on all not true label on {} test dataset = {:.2%}".format(DATANAME, mean(not_true_label_unc)))
+
+    Uncertainty_output(NUM_CLASSES).scatterplot(correct_prob, correct_unc, high_wrong_prob, high_wrong_unc, methodname, DATANAME, ylabel_name = 'PDF')
+
+
+def MSE_STD(methodname, predictions, y_test):
+    # mean_predictions_all = np.array(predictions).mean(axis=0).argmax(axis=1)
+    # acc = accuracy_score(y_test.argmax(axis=1), mean_predictions_all)
+    # print("{} combined accuracy: {:.1%}".format(methodname, acc))
+
+    # confusion = tf.math.confusion_matrix(labels=y_test.argmax(axis=1), predictions=mean_predictions_all,
+    #                                 num_classes=NUM_CLASSES)
+    # print(confusion)
+
+    true_labels = [np.argmax(i) for i in y_test]
+    
+    # Squared errors per example per amount of predictions per example
+    SEs = np.empty([len(y_test), predictions.shape[0]])
+    # Variance for specific predicted class over all predictions for that class per example per amount of predictions per example
+    VARs = np.empty([len(y_test)])
+
+    for ind in range(len(y_test)):
+        all_predictions_single = np.array([p[ind] for p in predictions])
+        all_uncertanties_single = all_predictions_single.std(axis=0)
+        
+        mean_pred_single_examp = all_predictions_single.mean(axis=0)
+        # mean_uncert_single_examp = all_uncertanties_single.mean(axis=0)
+        
+        # probability + variance
+        true_label = true_labels[ind]
+        highest_pred_ind = mean_pred_single_examp.argmax()
+        # print(highest_pred_ind)
+        # print(all_uncertanties_single)
+        mean_uncert_highest_single_examp = all_uncertanties_single[highest_pred_ind]
+        VARs[ind] = mean_uncert_highest_single_examp
+        
+        # print("all var single shape: ", mean_uncert_single_examp.shape)
+        for index, single_pred in enumerate(all_predictions_single):
+            # For this one single prediction, what is the index of highest class
+            high_single_pred_ind = np.argmax(single_pred)
+
+            # Calculate Squared Error
+            if high_single_pred_ind == true_label:
+                SEs[ind, index] = pow((single_pred[high_single_pred_ind] - 1), 2)
+            else:
+                SEs[ind, index] = pow((single_pred[high_single_pred_ind]), 2)
+            
+            # Accompining variance calculated over all predictions for that specific class
+            # VARs[ind, index] = mean_uncert_single_examp[high_single_pred_ind]
+        
+    MSE = SEs.mean(axis=1)
+    UNC = VARs
+    print("MSE shape: ", MSE.shape)
+    import matplotlib as mpl
+    mpl.use('Agg')
+    import matplotlib.pyplot as plt
+
+    print("creating MSE scatterplot")
+    plt.clf()
+    plt.style.use("ggplot")
+    plt.scatter(UNC, MSE, c='b')
+    plt.legend()
+    plt.ylabel('Uncertainty (STD)')
+    plt.xlabel('MSE')
+    plt.title('Scatterplot for {} on {}'.format(methodname, DATANAME))
+    plt.savefig('{}_MSE_STD_scatter_{}.png'.format(methodname, DATANAME))
+    plt.clf()
+
+
+def MSE_PDF(methodname, predictions, y_test):
+    old_dir = os.getcwd()
+    os.chdir(HOME_DIR)
+    uncertainties = np.load(DATANAME + '_CDF_' + methodname + '.npy')
+    os.chdir(old_dir)    
+
+    true_labels = [np.argmax(i) for i in y_test]
+    
+    # Squared errors per example per amount of predictions per example
+    SEs = np.empty([len(y_test), predictions.shape[0]])
+    # Variance for specific predicted class over all predictions for that class per example per amount of predictions per example
+    VARs = np.empty([len(y_test)])
+
+    for ind in range(len(y_test)):
+        all_predictions_single = np.array([p[ind] for p in predictions])
+        all_uncertanties_single = np.array([p[ind] for p in uncertainties])
+        
+        mean_pred_single_examp = all_predictions_single.mean(axis=0)
+        mean_uncert_single_examp = all_uncertanties_single.mean(axis=0)
+        
+        # probability + variance
+        true_label = true_labels[ind]
+        highest_pred_ind = mean_pred_single_examp.argmax()
+        mean_uncert_highest_single_examp = mean_uncert_single_examp[highest_pred_ind]
+        VARs[ind] = mean_uncert_highest_single_examp
+        
+        # print("all var single shape: ", mean_uncert_single_examp.shape)
+        for index, single_pred in enumerate(all_predictions_single):
+            # For this one single prediction, what is the index of highest class
+            high_single_pred_ind = np.argmax(single_pred)
+
+            # Calculate Squared Error
+            if high_single_pred_ind == true_label:
+                SEs[ind, index] = pow((single_pred[high_single_pred_ind] - 1), 2)
+            else:
+                SEs[ind, index] = pow((single_pred[high_single_pred_ind]), 2)
+            
+            # Accompining variance calculated over all predictions for that specific class
+            # VARs[ind, index] = mean_uncert_single_examp[high_single_pred_ind]
+        
+    MSE = SEs.mean(axis=1)
+    UNC = VARs
+    print("MSE shape: ", MSE.shape)
+    import matplotlib as mpl
+    mpl.use('Agg')
+    import matplotlib.pyplot as plt
+
+    print("creating MSE scatterplot")
+    plt.clf()
+    plt.style.use("ggplot")
+    plt.scatter(UNC, MSE, c='b')
+    plt.legend()
+    plt.ylabel('Uncertainty (PDF)')
+    plt.xlabel('MSE')
+    plt.title('Scatterplot for {} on {}'.format(methodname, DATANAME))
+    plt.savefig('{}_MSE_PDF_scatter_{}.png'.format(methodname, DATANAME))
+    plt.clf()
+
+
+def MSE_STDV2(methodname, predictions, y_test):
+    # mean_predictions_all = np.array(predictions).mean(axis=0).argmax(axis=1)
+    # acc = accuracy_score(y_test.argmax(axis=1), mean_predictions_all)
+    # print("{} combined accuracy: {:.1%}".format(methodname, acc))
+
+    # confusion = tf.math.confusion_matrix(labels=y_test.argmax(axis=1), predictions=mean_predictions_all,
+    #                                 num_classes=NUM_CLASSES)
+    # print(confusion)
+
+    true_labels = [np.argmax(i) for i in y_test]
+    
+    # Squared errors per example per amount of predictions per example
+    SEs = np.empty([len(y_test), predictions.shape[0]])
+    # Variance for specific predicted class over all predictions for that class per example per amount of predictions per example
+    VARs = np.empty([len(y_test), predictions.shape[0]])
+
+    for ind in range(len(y_test)):
+        all_predictions_single = np.array([p[ind] for p in predictions])
+        all_var_single = all_predictions_single.std(axis=0)
+        # print("posterior mean: {}".format(all_predictions_single.mean(axis=0).argmax()))
+        
+        # probability + variance
+        true_label = true_labels[ind]
+        highest_pred_ind = all_predictions_single.mean(axis=0).argmax()
+
+        
+        # print("all var single shape: ", all_var_single.shape)
+        for index, single_pred in enumerate(all_predictions_single):
+            # For this one single prediction, what is the index of highest class
+            high_single_pred_ind = np.argmax(single_pred)
+
+            # Calculate Squared Error
+            if high_single_pred_ind == true_label:
+                SEs[ind, index] = pow((single_pred[high_single_pred_ind] - 1), 2)
+            else:
+                SEs[ind, index] = pow((single_pred[high_single_pred_ind]), 2)
+            
+            # Accompining variance calculated over all predictions for that specific class
+            VARs[ind, index] = all_var_single[high_single_pred_ind]
         
     MSE = SEs.mean(axis=1)
     UNC = VARs.mean(axis=1)
     print("MSE shape: ", MSE.shape)
-    Uncertainty_output(NUM_CLASSES).MSE_scatterplot(MSE, UNC, methodname, DATANAME)
+    import matplotlib as mpl
+    mpl.use('Agg')
+    import matplotlib.pyplot as plt
+
+    print("creating MSE scatterplot")
+    plt.clf()
+    plt.style.use("ggplot")
+    plt.scatter(UNC, MSE, c='b')
+    plt.legend()
+    plt.ylabel('Uncertainty (STD)')
+    plt.xlabel('MSE')
+    plt.title('Scatterplot for {} on {}'.format(methodname, DATANAME))
+    plt.savefig('{}_MSE_STD_scatter_{}.png'.format(methodname, DATANAME))
+    plt.clf()
+
+
+def MSE_PDFV2(methodname, predictions, y_test):
+    old_dir = os.getcwd()
+    os.chdir(HOME_DIR)
+    uncertainties = np.load(DATANAME + '_CDF_' + methodname + '.npy')
+    os.chdir(old_dir)    
+
+    true_labels = [np.argmax(i) for i in y_test]
+    
+    # Squared errors per example per amount of predictions per example
+    SEs = np.empty([len(y_test), predictions.shape[0]])
+    # Variance for specific predicted class over all predictions for that class per example per amount of predictions per example
+    VARs = np.empty([len(y_test), predictions.shape[0]])
+
+    for ind in range(len(y_test)):
+        all_predictions_single = np.array([p[ind] for p in predictions])
+        all_uncertanties_single = np.array([p[ind] for p in uncertainties])
+        
+        all_var_single = all_uncertanties_single.mean(axis=0)
+        
+        # probability + variance
+        true_label = true_labels[ind]
+        highest_pred_ind = all_predictions_single.mean(axis=0).argmax()
+
+        
+        # print("all var single shape: ", all_var_single.shape)
+        for index, single_pred in enumerate(all_predictions_single):
+            # For this one single prediction, what is the index of highest class
+            high_single_pred_ind = np.argmax(single_pred)
+
+            # Calculate Squared Error
+            if high_single_pred_ind == true_label:
+                SEs[ind, index] = pow((single_pred[high_single_pred_ind] - 1), 2)
+            else:
+                SEs[ind, index] = pow((single_pred[high_single_pred_ind]), 2)
+            
+            # Accompining variance calculated over all predictions for that specific class
+            VARs[ind, index] = all_var_single[high_single_pred_ind]
+        
+    MSE = SEs.mean(axis=1)
+    UNC = VARs.mean(axis=1)
+    print("MSE shape: ", MSE.shape)
+    import matplotlib as mpl
+    mpl.use('Agg')
+    import matplotlib.pyplot as plt
+
+    print("creating MSE scatterplot")
+    plt.clf()
+    plt.style.use("ggplot")
+    plt.scatter(UNC, MSE, c='b')
+    plt.legend()
+    plt.ylabel('Uncertainty (PDF)')
+    plt.xlabel('MSE')
+    plt.title('Scatterplot for {} on {}'.format(methodname, DATANAME))
+    plt.savefig('{}_MSE_PDF_scatter_{}.png'.format(methodname, DATANAME))
+    plt.clf()
+
+
+def gaussian_unc(predictions):
+    from scipy.stats import norm
+    # Predictions shape (N_models, N_examples_ N_classes)
+
+    for exam in range(predictions.shape[1]):
+        all_predictions_single = np.array([p[exam] for p in predictions]) # Shape (N_models, N_classes)
+        std = all_predictions_single.std(axis=0)
+        mean = all_predictions_single.mean(axis=0)
+        gaussian_list = []
+        ultrapdfs = []
+        for i, s in enumerate(std):
+            gaussian_list.append(norm(loc=mean[i], scale=s))
+            ultrapdfs.append(gaussian_list[i].pdf(mean[i]))
+        print("{}/{}".format(exam, predictions.shape[1]))
+
+
+        for model_index, model_pred in enumerate(all_predictions_single):
+            # print('########')
+            for single_classs_index, single_class in enumerate(model_pred):
+                pdf = gaussian_list[single_classs_index].pdf(single_class)
+                # ultrapdf = gaussian_list[single_classs_index].pdf(mean[single_classs_index])
+                uncer = 1 - (pdf / ultrapdfs[single_classs_index])
+                # print("")
+                # print(mean[single_classs_index], std[single_classs_index])
+                # print(single_class)
+                # print('PDF: ',pdf)
+                # print('ultra PDF: ', ultrapdf)
+                # print(uncer)
+                # print("")
+                predictions[model_index, exam, single_classs_index] = uncer                
+
+    return predictions
 
 
 def test_on_new_func(new_images_predictions, x_pred, methodname, y_pred = None, more_info=False):
@@ -530,7 +867,151 @@ def test_on_new_func(new_images_predictions, x_pred, methodname, y_pred = None, 
     print("Mean probability on not predicted classes of {} data = {:.2%}".format(NEW_DATA, mean(new_acc_not_pred)))
     print("Mean uncertainty on not predicted classes of {} data = {:.2%}".format(NEW_DATA, mean(new_var_not_pred)))
     
-    scatterplot(all_accuracies, all_uncertainties, methodname, 'new_all')
+    Uncertainty_output(NUM_CLASSES).scatterplot(None, None, all_accuracies, all_uncertainties, methodname, NEW_DATA)
+
+    if LABELS_AVAILABLE:
+        pred = np.array(new_images_predictions).mean(axis=0).argmax(axis=1)
+        acc = accuracy_score(y_pred.argmax(axis=1), pred)
+        print("{} combined accuracy: {:.1%}".format(methodname, acc))
+
+        confusion = tf.math.confusion_matrix(labels=y_pred.argmax(axis=1), predictions=pred,
+                                        num_classes=NUM_CLASSES)
+        print(confusion)
+
+        true_labels = [np.argmax(i) for i in y_pred]
+        wrong = 0
+        correct = 0
+        # Only when correctly predict, info of true class
+        correct_unc = []
+        correct_prob = []
+        # Only when wrongly predicted, info of highest wrong pred
+        high_wrong_unc = []
+        high_wrong_prob = []
+        # Only when wrongly predicted, info of true class
+        true_wrong_unc = []
+        true_wrong_prob = []        
+        # Info of all incorrect classes
+        all_wrong_unc = []
+        all_wrong_prob = []
+        # Info of all not true label classes
+        not_true_label_unc = []
+        not_true_label_prob = []
+        # Info of all classes
+        all_probabilities = []
+        all_uncertainties = []
+
+        for ind in range(len(y_pred)):
+            all_predictions_single = np.array([p[ind] for p in new_images_predictions])
+            # print("posterior mean: {}".format(all_predictions_single.mean(axis=0).argmax()))
+            
+            # probability + variance
+            true_label = true_labels[ind]
+            highest_pred_ind = all_predictions_single.mean(axis=0).argmax()
+
+            for l, (prob, var) in enumerate(zip(all_predictions_single.mean(axis=0), all_predictions_single.std(axis=0))):
+                all_probabilities.append(prob)
+                all_uncertainties.append(var)
+
+                if l == true_label:
+                    if highest_pred_ind == true_label:
+                        correct += 1
+                        correct_unc.append(var)
+                        correct_prob.append(prob)
+
+                    else:
+                        wrong += 1
+                        true_wrong_unc.append(var)
+                        true_wrong_prob.append(prob)
+
+                        all_wrong_unc.append(var)
+                        all_wrong_prob.append(prob)
+                
+                if l == highest_pred_ind:
+                    high_wrong_unc.append(var)
+                    high_wrong_prob.append(prob)
+
+                else:
+                    all_wrong_unc.append(var)
+                    all_wrong_prob.append(prob)
+
+                    not_true_label_unc.append(var)
+                    not_true_label_prob.append(prob)  
+
+
+
+        print("Correct: {}, wrong: {}, accuracy: {}%".format(correct, wrong, (correct/(correct+wrong))*100))
+        print("")
+        print("Mean probability on true label of {} test dataset when correctly predicted = {:.2%}".format(NEW_DATA, mean(correct_prob)))
+        print("Mean uncertainty on true label of {} test dataset when correctly predicted = {:.2%}".format(NEW_DATA, mean(correct_unc)))
+        print("Mean probability on true label of {} test dataset when wrongly predicted = {:.2%}".format(NEW_DATA, mean(true_wrong_prob))) 
+        print("Mean uncertainty on true label of {} test dataset when wrongly predicted = {:.2%}".format(NEW_DATA, mean(true_wrong_unc)))    
+
+        print("")
+        print("Mean probability on highest predicted on {} test dataset when wrong = {:.2%}".format(NEW_DATA, mean(high_wrong_prob))) 
+        print("Mean uncertainty on highest predicted on {} test dataset when wrong = {:.2%}".format(NEW_DATA, mean(high_wrong_unc)))
+
+        print("")
+        print("Mean probability on all not true label on {} test dataset = {:.2%}".format(NEW_DATA, mean(not_true_label_prob))) 
+        print("Mean uncertainty on all not true label on {} test dataset = {:.2%}".format(NEW_DATA, mean(not_true_label_unc)))
+
+
+        Uncertainty_output(NUM_CLASSES).scatterplot(correct_prob, correct_unc, high_wrong_prob, high_wrong_unc, methodname, NEW_DATA)
+
+
+    if more_info:
+        for i in range(len(x_pred)):
+            p_0 = np.array([p[i] for p in new_images_predictions])
+            print("posterior mean: {}".format(p_0.mean(axis=0).argmax()))
+            # probability + variance
+            for l, (prob, var) in enumerate(zip(p_0.mean(axis=0), p_0.std(axis=0))):
+                print("class: {}; proba: {:.1%}; var: {:.2%} ".format(l, prob, var))
+
+
+def test_on_new_funcV2(new_images_predictions, x_pred, methodname, y_pred = None, more_info=False):
+    uncertainties = gaussian_unc(new_images_predictions)
+    old_dir = os.getcwd()
+    os.chdir(HOME_DIR)
+    save_array(DATANAME + '_PDF_' + methodname + '_' + NEW_DATA, uncertainties)
+    os.chdir(old_dir)
+
+    # old_dir = os.getcwd()
+    # os.chdir(HOME_DIR)
+    # uncertainties = np.load(DATANAME + '_PDF_' + methodname + '_' + NEW_DATA + '.npy')
+    # os.chdir(old_dir)
+
+    new_var_pred = []
+    new_acc_pred = []
+    new_var_not_pred = []
+    new_acc_not_pred = []
+    all_accuracies = []
+    all_uncertainties = []
+
+    for i in range(len(x_pred)):
+        p_0 = np.array([p[i] for p in new_images_predictions])
+        all_uncertanties_single = np.array([p[ind] for p in uncertainties])
+        predicted_ind = p_0.mean(axis=0).argmax()
+        # print("posterior mean: {}".format(p_0.mean(axis=0).argmax()))
+        
+        # probability + variance
+        for l, (prob, var) in enumerate(zip(p_0.mean(axis=0), all_uncertanties_single.mean(axis=0))):
+            # print("class: {}; proba: {:.1%}; var: {:.2%} ".format(l, prob, var))
+            all_accuracies.append(prob)
+            all_uncertainties.append(var)
+
+            if l == predicted_ind:
+                new_var_pred.append(var)
+                new_acc_pred.append(prob)
+            else:
+                new_var_not_pred.append(var)
+                new_acc_not_pred.append(prob)
+
+    print("")
+    print("Mean probability on highest predicted class of {} data = {:.2%}".format(NEW_DATA, mean(new_acc_pred)))
+    print("Mean uncertainty on highest predicted class of {} data = {:.2%}".format(NEW_DATA, mean(new_var_pred)))
+    print("Mean probability on not predicted classes of {} data = {:.2%}".format(NEW_DATA, mean(new_acc_not_pred)))
+    print("Mean uncertainty on not predicted classes of {} data = {:.2%}".format(NEW_DATA, mean(new_var_not_pred)))
+    
+    Uncertainty_output(NUM_CLASSES).scatterplot(None, None, new_acc_pred, new_var_pred, methodname, NEW_DATA)
 
     if LABELS_AVAILABLE:
         pred = np.array(new_images_predictions).mean(axis=0).argmax(axis=1)
@@ -704,9 +1185,14 @@ def MCDO(q, METHODNAME):
 
         if TEST_ON_OWN_DATASET or LABELS_AVAILABLE or TEST_ON_OWN_AND_NEW_DATASET:
             test_on_own_func(METHODNAME, mcdo_own_predictions, y_test)
+            MSE_STD(METHODNAME, mcdo_own_predictions, y_test)
+            test_on_own_funcV2(METHODNAME, mcdo_own_predictions, y_test)
+            MSE_PDF(METHODNAME, mcdo_own_predictions, y_test)
         
         if TEST_ON_OWN_AND_NEW_DATASET:
+            os.chdir(HOME_DIR)
             mcdo_new_predictions = np.load('CIFAR10_MCDO_MNIST.npy')
+            os.chdir(fig_dir)
             if LABELS_AVAILABLE:
                 test_on_new_func(mcdo_new_predictions, x_pred, METHODNAME, y_pred = y_pred)
             else:
@@ -774,9 +1260,14 @@ def MCBN(q, METHODNAME):
    
         if TEST_ON_OWN_DATASET or LABELS_AVAILABLE or TEST_ON_OWN_AND_NEW_DATASET:
             test_on_own_func(METHODNAME, MCBN_own_predictions, y_test)
+            MSE_STD(METHODNAME, MCBN_own_predictions, y_test)
+            test_on_own_funcV2(METHODNAME, MCBN_own_predictions, y_test)
+            MSE_PDF(METHODNAME, MCBN_own_predictions, y_test)
         
         if TEST_ON_OWN_AND_NEW_DATASET:
+            os.chdir(HOME_DIR)
             MCBN_new_predictions = np.load('CIFAR10_MCBN_MNIST.npy')
+            os.chdir(fig_dir)
             if LABELS_AVAILABLE:
                 test_on_new_func(MCBN_new_predictions, x_pred, METHODNAME, y_pred = y_pred)
             else:
@@ -848,9 +1339,14 @@ def Ensemble(q, METHODNAME):
 
         if TEST_ON_OWN_DATASET or LABELS_AVAILABLE or TEST_ON_OWN_AND_NEW_DATASET:
             test_on_own_func(METHODNAME, Ensemble_own_predictions, y_test)
+            MSE_STD(METHODNAME, Ensemble_own_predictions, y_test)
+            test_on_own_funcV2(METHODNAME, Ensemble_own_predictions, y_test)
+            MSE_PDF(METHODNAME, Ensemble_own_predictions, y_test)
         
         if TEST_ON_OWN_AND_NEW_DATASET:
+            os.chdir(HOME_DIR)
             Ensemble_new_predictions = np.load('CIFAR10_Ensemble_MNIST.npy')
+            os.chdir(fig_dir)
             if LABELS_AVAILABLE:
                 test_on_new_func(Ensemble_new_predictions, x_pred, METHODNAME, y_pred = y_pred)
             else:
@@ -902,11 +1398,11 @@ def VarianceOutput(q, METHODNAME):
 
         elif TEST_ON_OWN_AND_NEW_DATASET:
             (x_train, y_train), (x_test, y_test) = load_hdf5_dataset(DATA_PATH)
-            x_pred = load_new_images()           
+            # x_pred = load_new_images()           
 
         elif TEST_ON_NEW_DATASET:
             (x_train, y_train), (x_test, y_test) = load_hdf5_dataset(DATA_PATH)
-            x_pred = load_new_images()
+            # x_pred = load_new_images()
        
 
         fig_dir = os.path.join(HOME_DIR + os.path.sep + METHODNAME, datetime.datetime.now().strftime('%Y-%m-%d_%H-%M-%S'))
@@ -914,19 +1410,19 @@ def VarianceOutput(q, METHODNAME):
         os.chdir(fig_dir)
 
         if TEST_ON_OWN_DATASET or LABELS_AVAILABLE or TEST_ON_OWN_AND_NEW_DATASET:
-            Uncertainty_output(NUM_CLASSES).results_if_label(Error_own_predictions, y_test, scatter=True, name = DATANAME)
-            Uncertainty_output(NUM_CLASSES).MSE(Error_own_predictions, y_test, name = DATANAME)
+            Error_own_predictions_CONV = Uncertainty_output(NUM_CLASSES).convert_output_to_uncertainty(Error_own_predictions)
+            Uncertainty_output(NUM_CLASSES).results_if_label(Error_own_predictions_CONV, y_test, scatter=True, name = DATANAME)
+            Uncertainty_output(NUM_CLASSES).MSE(Error_own_predictions_CONV, y_test, name = DATANAME)
         if TEST_ON_OWN_AND_NEW_DATASET:
+            os.chdir(HOME_DIR)
             Error_new_predictions = np.load('CIFAR10_Error_MNIST.npy')
+            Error_own_predictions_CONV = Uncertainty_output(NUM_CLASSES).convert_output_to_uncertainty(Error_new_predictions)
+            os.chdir(fig_dir)
             if LABELS_AVAILABLE:
-                Uncertainty_output(NUM_CLASSES).results_if_label(Error_new_predictions, y_pred, scatter=True, name = NEW_DATA)
+                Uncertainty_output(NUM_CLASSES).results_if_label(Error_own_predictions_CONV, y_pred, scatter=True, name = NEW_DATA)
             else:
-                Uncertainty_output(NUM_CLASSES).results_if_no_label(Error_new_predictions, more_info = True)
+                Uncertainty_output(NUM_CLASSES).results_if_no_label(Error_own_predictions_CONV, scatter = True, name = NEW_DATA)
         
-        else:
-            Error_new_predictions = np.load('CIFAR10_Error_MNIST.npy')
-            Uncertainty_output(NUM_CLASSES).results_if_no_label(Error_new_predictions, more_info = True)
-
         os.chdir(HOME_DIR)
 
     method_main()
