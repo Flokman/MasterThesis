@@ -1,0 +1,34 @@
+
+START MCDO
+loading MNIST
+MNIST loaded
+/data/s2934833/MasterThesis/MCDO/MES/2020-05-20_13-11_imagenet_64B_54.9%A
+MES MCDO Time: 300.0466 seconds
+MCDO combined accuracy: 63.0%
+tf.Tensor(
+[[232  20  18   0   2]
+ [ 47  13  13   1   0]
+ [ 39   7  39   6   1]
+ [  0   1   7   3   1]
+ [  1   0   2   4   2]], shape=(5, 5), dtype=int32)
+Correct: 289, wrong: 170, accuracy: 62.96296296296296%
+
+Mean probability on true label of MES test dataset when correctly predicted = 91.07%
+Mean uncertainty on true label of MES test dataset when correctly predicted = 6.02%
+Mean probability on true label of MES test dataset when wrongly predicted = 9.28%
+Mean uncertainty on true label of MES test dataset when wrongly predicted = 7.58%
+
+Mean probability on highest predicted on MES test dataset when wrong = 88.14%
+Mean uncertainty on highest predicted on MES test dataset when wrong = 8.07%
+
+Mean probability on all not true label on MES test dataset = 2.97%
+Mean uncertainty on all not true label on MES test dataset = 2.48%
+creating scatterplot
+MNIST MCDO Time: 4853.6017 seconds
+
+Mean probability on highest predicted class of MNIST data = 77.83%
+Mean uncertainty on highest predicted class of MNIST data = 20.08%
+Mean probability on not predicted classes of MNIST data = 5.54%
+Mean uncertainty on not predicted classes of MNIST data = 7.38%
+
+START MCBN

@@ -1,498 +1,0 @@
-
-The following have been reloaded with a version change:
-  1) FFTW/3.3.8-gompic-2019b => FFTW/3.3.8-gompi-2019b
-  2) OpenMPI/3.1.4-gcccuda-2019b => OpenMPI/3.1.4-GCC-8.3.0
-  3) ScaLAPACK/2.0.2-gompic-2019b => ScaLAPACK/2.0.2-gompi-2019b
-  4) SciPy-bundle/2019.10-fosscuda-2019b-Python-3.7.4 => SciPy-bundle/2019.10-foss-2019b-Python-3.7.4
-
-2020-05-12 13:15:28.348894: I tensorflow/stream_executor/platform/default/dso_loader.cc:44] Successfully opened dynamic library libcudart.so.10.1
-2020-05-12 13:15:35.950758: I tensorflow/stream_executor/platform/default/dso_loader.cc:44] Successfully opened dynamic library libcuda.so.1
-2020-05-12 13:15:35.957955: I tensorflow/stream_executor/cuda/cuda_gpu_executor.cc:981] successful NUMA node read from SysFS had negative value (-1), but there must be at least one NUMA node, so returning NUMA node zero
-2020-05-12 13:15:35.958536: I tensorflow/core/common_runtime/gpu/gpu_device.cc:1555] Found device 0 with properties: 
-pciBusID: 0000:02:00.0 name: GRID V100D-32Q computeCapability: 7.0
-coreClock: 1.38GHz coreCount: 80 deviceMemorySize: 31.88GiB deviceMemoryBandwidth: 836.37GiB/s
-2020-05-12 13:15:35.958638: I tensorflow/stream_executor/platform/default/dso_loader.cc:44] Successfully opened dynamic library libcudart.so.10.1
-2020-05-12 13:15:35.963339: I tensorflow/stream_executor/platform/default/dso_loader.cc:44] Successfully opened dynamic library libcublas.so.10
-2020-05-12 13:15:35.966873: I tensorflow/stream_executor/platform/default/dso_loader.cc:44] Successfully opened dynamic library libcufft.so.10
-2020-05-12 13:15:35.968306: I tensorflow/stream_executor/platform/default/dso_loader.cc:44] Successfully opened dynamic library libcurand.so.10
-2020-05-12 13:15:35.971965: I tensorflow/stream_executor/platform/default/dso_loader.cc:44] Successfully opened dynamic library libcusolver.so.10
-2020-05-12 13:15:35.974243: I tensorflow/stream_executor/platform/default/dso_loader.cc:44] Successfully opened dynamic library libcusparse.so.10
-2020-05-12 13:15:35.979959: I tensorflow/stream_executor/platform/default/dso_loader.cc:44] Successfully opened dynamic library libcudnn.so.7
-2020-05-12 13:15:35.980184: I tensorflow/stream_executor/cuda/cuda_gpu_executor.cc:981] successful NUMA node read from SysFS had negative value (-1), but there must be at least one NUMA node, so returning NUMA node zero
-2020-05-12 13:15:35.980857: I tensorflow/stream_executor/cuda/cuda_gpu_executor.cc:981] successful NUMA node read from SysFS had negative value (-1), but there must be at least one NUMA node, so returning NUMA node zero
-2020-05-12 13:15:35.981324: I tensorflow/core/common_runtime/gpu/gpu_device.cc:1697] Adding visible gpu devices: 0
-2020-05-12 13:15:35.984277: I tensorflow/stream_executor/cuda/cuda_gpu_executor.cc:981] successful NUMA node read from SysFS had negative value (-1), but there must be at least one NUMA node, so returning NUMA node zero
-2020-05-12 13:15:35.985051: I tensorflow/core/common_runtime/gpu/gpu_device.cc:1555] Found device 0 with properties: 
-pciBusID: 0000:02:00.0 name: GRID V100D-32Q computeCapability: 7.0
-coreClock: 1.38GHz coreCount: 80 deviceMemorySize: 31.88GiB deviceMemoryBandwidth: 836.37GiB/s
-2020-05-12 13:15:35.985139: I tensorflow/stream_executor/platform/default/dso_loader.cc:44] Successfully opened dynamic library libcudart.so.10.1
-2020-05-12 13:15:35.985216: I tensorflow/stream_executor/platform/default/dso_loader.cc:44] Successfully opened dynamic library libcublas.so.10
-2020-05-12 13:15:35.985279: I tensorflow/stream_executor/platform/default/dso_loader.cc:44] Successfully opened dynamic library libcufft.so.10
-2020-05-12 13:15:35.985341: I tensorflow/stream_executor/platform/default/dso_loader.cc:44] Successfully opened dynamic library libcurand.so.10
-2020-05-12 13:15:35.985402: I tensorflow/stream_executor/platform/default/dso_loader.cc:44] Successfully opened dynamic library libcusolver.so.10
-2020-05-12 13:15:35.985475: I tensorflow/stream_executor/platform/default/dso_loader.cc:44] Successfully opened dynamic library libcusparse.so.10
-2020-05-12 13:15:35.985536: I tensorflow/stream_executor/platform/default/dso_loader.cc:44] Successfully opened dynamic library libcudnn.so.7
-2020-05-12 13:15:35.985675: I tensorflow/stream_executor/cuda/cuda_gpu_executor.cc:981] successful NUMA node read from SysFS had negative value (-1), but there must be at least one NUMA node, so returning NUMA node zero
-2020-05-12 13:15:35.986203: I tensorflow/stream_executor/cuda/cuda_gpu_executor.cc:981] successful NUMA node read from SysFS had negative value (-1), but there must be at least one NUMA node, so returning NUMA node zero
-2020-05-12 13:15:35.986664: I tensorflow/core/common_runtime/gpu/gpu_device.cc:1697] Adding visible gpu devices: 0
-2020-05-12 13:15:35.986757: I tensorflow/stream_executor/platform/default/dso_loader.cc:44] Successfully opened dynamic library libcudart.so.10.1
-2020-05-12 13:15:36.647409: I tensorflow/core/common_runtime/gpu/gpu_device.cc:1096] Device interconnect StreamExecutor with strength 1 edge matrix:
-2020-05-12 13:15:36.647548: I tensorflow/core/common_runtime/gpu/gpu_device.cc:1102]      0 
-2020-05-12 13:15:36.647606: I tensorflow/core/common_runtime/gpu/gpu_device.cc:1115] 0:   N 
-2020-05-12 13:15:36.647920: I tensorflow/stream_executor/cuda/cuda_gpu_executor.cc:981] successful NUMA node read from SysFS had negative value (-1), but there must be at least one NUMA node, so returning NUMA node zero
-2020-05-12 13:15:36.648679: I tensorflow/stream_executor/cuda/cuda_gpu_executor.cc:981] successful NUMA node read from SysFS had negative value (-1), but there must be at least one NUMA node, so returning NUMA node zero
-2020-05-12 13:15:36.649258: I tensorflow/stream_executor/cuda/cuda_gpu_executor.cc:981] successful NUMA node read from SysFS had negative value (-1), but there must be at least one NUMA node, so returning NUMA node zero
-2020-05-12 13:15:36.649740: I tensorflow/core/common_runtime/gpu/gpu_device.cc:1241] Created TensorFlow device (/job:localhost/replica:0/task:0/device:GPU:0 with 28652 MB memory) -> physical GPU (device: 0, name: GRID V100D-32Q, pci bus id: 0000:02:00.0, compute capability: 7.0)
-2020-05-12 13:15:36.650146: I tensorflow/core/common_runtime/process_util.cc:147] Creating new thread pool with default inter op setting: 12. Tune using inter_op_parallelism_threads for best performance.
-WARNING:tensorflow:sample_weight modes were coerced from
-  ...
-    to  
-  ['...']
-WARNING:tensorflow:sample_weight modes were coerced from
-  ...
-    to  
-  ['...']
-2020-05-12 13:15:42.718776: I tensorflow/stream_executor/platform/default/dso_loader.cc:44] Successfully opened dynamic library libcublas.so.10
-2020-05-12 13:15:43.004249: I tensorflow/stream_executor/platform/default/dso_loader.cc:44] Successfully opened dynamic library libcudnn.so.7
-2020-05-12 13:15:48.986012: I tensorflow/core/profiler/lib/profiler_session.cc:225] Profiler session started.
-2020-05-12 13:15:48.986165: I tensorflow/core/profiler/internal/gpu/cupti_tracer.cc:1259] Profiler found 1 GPUs
-2020-05-12 13:15:48.988715: I tensorflow/stream_executor/platform/default/dso_loader.cc:44] Successfully opened dynamic library libcupti.so.10.1
-2020-05-12 13:15:49.089355: E tensorflow/core/profiler/internal/gpu/cupti_tracer.cc:1307] function cupti_interface_->Subscribe( &subscriber_, (CUpti_CallbackFunc)ApiCallback, this)failed with error CUPTI_ERROR_VIRTUALIZED_DEVICE_NOT_SUPPORTED
-2020-05-12 13:15:49.089954: E tensorflow/core/profiler/internal/gpu/cupti_tracer.cc:1346] function cupti_interface_->ActivityRegisterCallbacks( AllocCuptiActivityBuffer, FreeCuptiActivityBuffer)failed with error CUPTI_ERROR_VIRTUALIZED_DEVICE_NOT_SUPPORTED
-2020-05-12 13:15:49.484802: E tensorflow/core/profiler/internal/gpu/cupti_tracer.cc:1329] function cupti_interface_->EnableCallback( 0 , subscriber_, CUPTI_CB_DOMAIN_DRIVER_API, cbid)failed with error CUPTI_ERROR_INVALID_PARAMETER
-2020-05-12 13:15:49.484949: I tensorflow/core/profiler/internal/gpu/device_tracer.cc:88]  GpuTracer has collected 0 callback api events and 0 activity events.
-main
-loaded data
-dataset_name = /Messidor2_PNG_AUG_256.hdf5, batch_size = 64, num_classes = 5, epochs = 500,
-        MCDO_amount_of_predictions = 256, MCDO_batch_size = 250, test_img_idx = 25,
-        train_test_split = 0.8, to_shuffle = False, augmentation = False, label_count = [1261, 1416, 1397, 1455, 1463],
-        label_normalizer = False, save_augmentation_to_hdf5 = False, learn rate = 1e-05,
-        add_dropout_inside = True, train_all_layers = True, weights_to_use = imagenet,
-        mcdo = True, es_patience = 50, train_val_split = 0.9, Dropoutrates: [0.05, 0.1, 0.15, 0.2, 0.2, 0.2, 0.25, 0.25], MIN_DELTA = 0.005, Early_monitor = val_accuracy
-x_train shape: (5593, 256, 256, 3)
-5593 train samples
-1399 test samples
-Model: "model_5"
-_________________________________________________________________
-Layer (type)                 Output Shape              Param #   
-=================================================================
-input_1 (InputLayer)         [(None, 256, 256, 3)]     0         
-_________________________________________________________________
-block1_conv1 (Conv2D)        (None, 256, 256, 64)      1792      
-_________________________________________________________________
-block1_conv2 (Conv2D)        (None, 256, 256, 64)      36928     
-_________________________________________________________________
-block1_pool (MaxPooling2D)   (None, 128, 128, 64)      0         
-_________________________________________________________________
-dropout (Dropout)            (None, 128, 128, 64)      0         
-_________________________________________________________________
-block2_conv1 (Conv2D)        (None, 128, 128, 128)     73856     
-_________________________________________________________________
-block2_conv2 (Conv2D)        (None, 128, 128, 128)     147584    
-_________________________________________________________________
-block2_pool (MaxPooling2D)   (None, 64, 64, 128)       0         
-_________________________________________________________________
-dropout_1 (Dropout)          (None, 64, 64, 128)       0         
-_________________________________________________________________
-block3_conv1 (Conv2D)        (None, 64, 64, 256)       295168    
-_________________________________________________________________
-block3_conv2 (Conv2D)        (None, 64, 64, 256)       590080    
-_________________________________________________________________
-block3_conv3 (Conv2D)        (None, 64, 64, 256)       590080    
-_________________________________________________________________
-block3_pool (MaxPooling2D)   (None, 32, 32, 256)       0         
-_________________________________________________________________
-dropout_2 (Dropout)          (None, 32, 32, 256)       0         
-_________________________________________________________________
-block4_conv1 (Conv2D)        (None, 32, 32, 512)       1180160   
-_________________________________________________________________
-block4_conv2 (Conv2D)        (None, 32, 32, 512)       2359808   
-_________________________________________________________________
-block4_conv3 (Conv2D)        (None, 32, 32, 512)       2359808   
-_________________________________________________________________
-block4_pool (MaxPooling2D)   (None, 16, 16, 512)       0         
-_________________________________________________________________
-dropout_3 (Dropout)          (None, 16, 16, 512)       0         
-_________________________________________________________________
-block5_conv1 (Conv2D)        (None, 16, 16, 512)       2359808   
-_________________________________________________________________
-block5_conv2 (Conv2D)        (None, 16, 16, 512)       2359808   
-_________________________________________________________________
-block5_conv3 (Conv2D)        (None, 16, 16, 512)       2359808   
-_________________________________________________________________
-block5_pool (MaxPooling2D)   (None, 8, 8, 512)         0         
-_________________________________________________________________
-dropout_4 (Dropout)          (None, 8, 8, 512)         0         
-_________________________________________________________________
-flatten (Flatten)            (None, 32768)             0         
-_________________________________________________________________
-fc1 (Dense)                  (None, 4096)              134221824 
-_________________________________________________________________
-dropout_5 (Dropout)          (None, 4096)              0         
-_________________________________________________________________
-fc2 (Dense)                  (None, 4096)              16781312  
-_________________________________________________________________
-dropout_6 (Dropout)          (None, 4096)              0         
-_________________________________________________________________
-predictions (Dense)          (None, 5)                 20485     
-=================================================================
-Total params: 165,738,309
-Trainable params: 165,738,309
-Non-trainable params: 0
-_________________________________________________________________
-Start fitting monte carlo dropout model
-Train for 79 steps, validate for 9 steps
-Epoch 1/500
-79/79 - 50s - loss: 1.3955 - accuracy: 0.3541 - val_loss: 1.6560 - val_accuracy: 0.1946
-Epoch 2/500
-79/79 - 37s - loss: 1.2489 - accuracy: 0.4220 - val_loss: 1.4490 - val_accuracy: 0.3321
-Epoch 3/500
-79/79 - 37s - loss: 1.1685 - accuracy: 0.4663 - val_loss: 1.2887 - val_accuracy: 0.4893
-Epoch 4/500
-79/79 - 36s - loss: 1.1061 - accuracy: 0.5059 - val_loss: 1.1649 - val_accuracy: 0.5554
-Epoch 5/500
-79/79 - 33s - loss: 1.0197 - accuracy: 0.5488 - val_loss: 1.2727 - val_accuracy: 0.5661
-Epoch 6/500
-79/79 - 37s - loss: 0.9519 - accuracy: 0.5901 - val_loss: 0.9514 - val_accuracy: 0.6875
-Epoch 7/500
-79/79 - 32s - loss: 0.8806 - accuracy: 0.6449 - val_loss: 1.1270 - val_accuracy: 0.6089
-Epoch 8/500
-79/79 - 32s - loss: 0.8139 - accuracy: 0.6658 - val_loss: 1.0285 - val_accuracy: 0.6696
-Epoch 9/500
-79/79 - 32s - loss: 0.7602 - accuracy: 0.6952 - val_loss: 0.9642 - val_accuracy: 0.6732
-Epoch 10/500
-79/79 - 36s - loss: 0.6875 - accuracy: 0.7296 - val_loss: 0.9261 - val_accuracy: 0.7214
-Epoch 11/500
-79/79 - 37s - loss: 0.6431 - accuracy: 0.7405 - val_loss: 0.8171 - val_accuracy: 0.7661
-Epoch 12/500
-79/79 - 37s - loss: 0.5740 - accuracy: 0.7739 - val_loss: 0.8169 - val_accuracy: 0.7482
-Epoch 13/500
-79/79 - 32s - loss: 0.5232 - accuracy: 0.7952 - val_loss: 0.8968 - val_accuracy: 0.7357
-Epoch 14/500
-79/79 - 37s - loss: 0.4938 - accuracy: 0.8071 - val_loss: 0.7645 - val_accuracy: 0.7893
-Epoch 15/500
-79/79 - 37s - loss: 0.4438 - accuracy: 0.8317 - val_loss: 0.6021 - val_accuracy: 0.8518
-Epoch 16/500
-79/79 - 32s - loss: 0.4085 - accuracy: 0.8424 - val_loss: 0.8006 - val_accuracy: 0.7786
-Epoch 17/500
-79/79 - 33s - loss: 0.3783 - accuracy: 0.8546 - val_loss: 0.8615 - val_accuracy: 0.7786
-Epoch 18/500
-79/79 - 33s - loss: 0.3420 - accuracy: 0.8687 - val_loss: 0.8789 - val_accuracy: 0.7554
-Epoch 19/500
-79/79 - 33s - loss: 0.3169 - accuracy: 0.8810 - val_loss: 0.7962 - val_accuracy: 0.8018
-Epoch 20/500
-79/79 - 33s - loss: 0.2738 - accuracy: 0.8969 - val_loss: 0.8112 - val_accuracy: 0.8161
-Epoch 21/500
-79/79 - 33s - loss: 0.2663 - accuracy: 0.8999 - val_loss: 0.7288 - val_accuracy: 0.8429
-Epoch 22/500
-79/79 - 38s - loss: 0.2420 - accuracy: 0.9138 - val_loss: 0.5496 - val_accuracy: 0.8911
-Epoch 23/500
-79/79 - 33s - loss: 0.2172 - accuracy: 0.9223 - val_loss: 0.6940 - val_accuracy: 0.8857
-Epoch 24/500
-79/79 - 33s - loss: 0.2061 - accuracy: 0.9255 - val_loss: 0.8148 - val_accuracy: 0.8125
-Epoch 25/500
-79/79 - 33s - loss: 0.2011 - accuracy: 0.9253 - val_loss: 0.6852 - val_accuracy: 0.8446
-Epoch 26/500
-79/79 - 33s - loss: 0.1942 - accuracy: 0.9320 - val_loss: 0.6261 - val_accuracy: 0.9000
-Epoch 27/500
-79/79 - 33s - loss: 0.1607 - accuracy: 0.9430 - val_loss: 0.7939 - val_accuracy: 0.8571
-Epoch 28/500
-79/79 - 33s - loss: 0.1578 - accuracy: 0.9428 - val_loss: 0.6940 - val_accuracy: 0.8768
-Epoch 29/500
-79/79 - 33s - loss: 0.1457 - accuracy: 0.9485 - val_loss: 0.6737 - val_accuracy: 0.8679
-Epoch 30/500
-79/79 - 33s - loss: 0.1432 - accuracy: 0.9483 - val_loss: 0.6319 - val_accuracy: 0.8911
-Epoch 31/500
-79/79 - 33s - loss: 0.1288 - accuracy: 0.9529 - val_loss: 0.8155 - val_accuracy: 0.8375
-Epoch 32/500
-79/79 - 33s - loss: 0.1341 - accuracy: 0.9513 - val_loss: 0.6542 - val_accuracy: 0.8929
-Epoch 33/500
-79/79 - 33s - loss: 0.1245 - accuracy: 0.9573 - val_loss: 0.8047 - val_accuracy: 0.8393
-Epoch 34/500
-79/79 - 33s - loss: 0.1043 - accuracy: 0.9630 - val_loss: 0.7541 - val_accuracy: 0.9036
-Epoch 35/500
-79/79 - 33s - loss: 0.1245 - accuracy: 0.9553 - val_loss: 0.7175 - val_accuracy: 0.8625
-Epoch 36/500
-79/79 - 33s - loss: 0.0983 - accuracy: 0.9660 - val_loss: 0.6529 - val_accuracy: 0.9161
-Epoch 37/500
-79/79 - 33s - loss: 0.1131 - accuracy: 0.9613 - val_loss: 0.6416 - val_accuracy: 0.8946
-Epoch 38/500
-79/79 - 33s - loss: 0.1005 - accuracy: 0.9636 - val_loss: 0.6204 - val_accuracy: 0.9143
-Epoch 39/500
-79/79 - 33s - loss: 0.0909 - accuracy: 0.9658 - val_loss: 0.7503 - val_accuracy: 0.8589
-Epoch 40/500
-79/79 - 33s - loss: 0.0868 - accuracy: 0.9680 - val_loss: 0.6694 - val_accuracy: 0.8982
-Epoch 41/500
-79/79 - 33s - loss: 0.0834 - accuracy: 0.9726 - val_loss: 0.6430 - val_accuracy: 0.8857
-Epoch 42/500
-79/79 - 33s - loss: 0.0818 - accuracy: 0.9708 - val_loss: 0.6278 - val_accuracy: 0.9000
-Epoch 43/500
-79/79 - 33s - loss: 0.0735 - accuracy: 0.9742 - val_loss: 0.6550 - val_accuracy: 0.8911
-Epoch 44/500
-79/79 - 33s - loss: 0.0834 - accuracy: 0.9680 - val_loss: 0.6921 - val_accuracy: 0.8750
-Epoch 45/500
-79/79 - 33s - loss: 0.0791 - accuracy: 0.9706 - val_loss: 0.6252 - val_accuracy: 0.9054
-Epoch 46/500
-79/79 - 33s - loss: 0.0710 - accuracy: 0.9742 - val_loss: 0.6840 - val_accuracy: 0.8786
-Epoch 47/500
-79/79 - 33s - loss: 0.0846 - accuracy: 0.9678 - val_loss: 0.6015 - val_accuracy: 0.8982
-Epoch 48/500
-79/79 - 33s - loss: 0.0859 - accuracy: 0.9692 - val_loss: 0.6792 - val_accuracy: 0.8839
-Epoch 49/500
-79/79 - 33s - loss: 0.0744 - accuracy: 0.9738 - val_loss: 0.6815 - val_accuracy: 0.8732
-Epoch 50/500
-79/79 - 33s - loss: 0.0589 - accuracy: 0.9781 - val_loss: 0.6415 - val_accuracy: 0.9107
-Epoch 51/500
-79/79 - 33s - loss: 0.0611 - accuracy: 0.9783 - val_loss: 0.6476 - val_accuracy: 0.9089
-Epoch 52/500
-79/79 - 33s - loss: 0.0661 - accuracy: 0.9752 - val_loss: 0.6244 - val_accuracy: 0.8982
-Epoch 53/500
-79/79 - 33s - loss: 0.0651 - accuracy: 0.9764 - val_loss: 0.6163 - val_accuracy: 0.8982
-Epoch 54/500
-79/79 - 33s - loss: 0.0653 - accuracy: 0.9756 - val_loss: 0.6747 - val_accuracy: 0.8893
-Epoch 55/500
-79/79 - 33s - loss: 0.0573 - accuracy: 0.9785 - val_loss: 0.7108 - val_accuracy: 0.8929
-Epoch 56/500
-79/79 - 39s - loss: 0.0692 - accuracy: 0.9752 - val_loss: 0.5358 - val_accuracy: 0.9232
-Epoch 57/500
-79/79 - 32s - loss: 0.0629 - accuracy: 0.9766 - val_loss: 0.6061 - val_accuracy: 0.9089
-Epoch 58/500
-79/79 - 33s - loss: 0.0637 - accuracy: 0.9764 - val_loss: 0.5751 - val_accuracy: 0.8964
-Epoch 59/500
-79/79 - 33s - loss: 0.0498 - accuracy: 0.9811 - val_loss: 0.6691 - val_accuracy: 0.9107
-Epoch 60/500
-79/79 - 33s - loss: 0.0534 - accuracy: 0.9791 - val_loss: 0.6205 - val_accuracy: 0.9143
-Epoch 61/500
-79/79 - 33s - loss: 0.0542 - accuracy: 0.9793 - val_loss: 0.6964 - val_accuracy: 0.9179
-Epoch 62/500
-79/79 - 33s - loss: 0.0534 - accuracy: 0.9775 - val_loss: 0.6706 - val_accuracy: 0.8964
-Epoch 63/500
-79/79 - 33s - loss: 0.0522 - accuracy: 0.9807 - val_loss: 0.7594 - val_accuracy: 0.8839
-Epoch 64/500
-79/79 - 33s - loss: 0.0546 - accuracy: 0.9783 - val_loss: 0.6968 - val_accuracy: 0.8982
-Epoch 65/500
-79/79 - 33s - loss: 0.0596 - accuracy: 0.9770 - val_loss: 0.6461 - val_accuracy: 0.9161
-Epoch 66/500
-79/79 - 33s - loss: 0.0459 - accuracy: 0.9811 - val_loss: 0.5539 - val_accuracy: 0.9232
-Epoch 67/500
-79/79 - 33s - loss: 0.0482 - accuracy: 0.9809 - val_loss: 0.5786 - val_accuracy: 0.9268
-Epoch 68/500
-79/79 - 33s - loss: 0.0464 - accuracy: 0.9805 - val_loss: 0.5962 - val_accuracy: 0.9286
-Epoch 69/500
-79/79 - 33s - loss: 0.0535 - accuracy: 0.9797 - val_loss: 0.6678 - val_accuracy: 0.9071
-Epoch 70/500
-79/79 - 33s - loss: 0.0459 - accuracy: 0.9815 - val_loss: 0.6519 - val_accuracy: 0.9179
-Epoch 71/500
-79/79 - 33s - loss: 0.0464 - accuracy: 0.9809 - val_loss: 0.6430 - val_accuracy: 0.8964
-Epoch 72/500
-79/79 - 33s - loss: 0.0463 - accuracy: 0.9829 - val_loss: 0.6546 - val_accuracy: 0.9107
-Epoch 73/500
-79/79 - 33s - loss: 0.0497 - accuracy: 0.9793 - val_loss: 0.5778 - val_accuracy: 0.9071
-Epoch 74/500
-79/79 - 33s - loss: 0.0437 - accuracy: 0.9809 - val_loss: 0.5931 - val_accuracy: 0.9143
-Epoch 75/500
-79/79 - 33s - loss: 0.0405 - accuracy: 0.9829 - val_loss: 0.6708 - val_accuracy: 0.9054
-Epoch 76/500
-79/79 - 33s - loss: 0.0468 - accuracy: 0.9805 - val_loss: 0.7283 - val_accuracy: 0.8786
-Epoch 77/500
-79/79 - 33s - loss: 0.0433 - accuracy: 0.9815 - val_loss: 0.6050 - val_accuracy: 0.9018
-Epoch 78/500
-79/79 - 33s - loss: 0.0431 - accuracy: 0.9809 - val_loss: 0.7139 - val_accuracy: 0.8911
-Epoch 79/500
-79/79 - 33s - loss: 0.0520 - accuracy: 0.9801 - val_loss: 0.6474 - val_accuracy: 0.9089
-Epoch 80/500
-79/79 - 33s - loss: 0.0539 - accuracy: 0.9772 - val_loss: 0.7527 - val_accuracy: 0.8911
-Epoch 81/500
-79/79 - 33s - loss: 0.0568 - accuracy: 0.9785 - val_loss: 0.5596 - val_accuracy: 0.9214
-Epoch 82/500
-79/79 - 37s - loss: 0.0572 - accuracy: 0.9766 - val_loss: 0.5047 - val_accuracy: 0.9196
-Epoch 83/500
-79/79 - 33s - loss: 0.0449 - accuracy: 0.9799 - val_loss: 0.5955 - val_accuracy: 0.9161
-Epoch 84/500
-79/79 - 33s - loss: 0.0442 - accuracy: 0.9807 - val_loss: 0.7035 - val_accuracy: 0.8732
-Epoch 85/500
-79/79 - 33s - loss: 0.0372 - accuracy: 0.9835 - val_loss: 0.6558 - val_accuracy: 0.9286
-Epoch 86/500
-79/79 - 33s - loss: 0.0392 - accuracy: 0.9819 - val_loss: 0.6495 - val_accuracy: 0.9179
-Epoch 87/500
-79/79 - 33s - loss: 0.0375 - accuracy: 0.9819 - val_loss: 0.6327 - val_accuracy: 0.9071
-Epoch 88/500
-79/79 - 33s - loss: 0.0452 - accuracy: 0.9811 - val_loss: 0.5762 - val_accuracy: 0.9286
-Epoch 89/500
-79/79 - 33s - loss: 0.0350 - accuracy: 0.9859 - val_loss: 0.6923 - val_accuracy: 0.9214
-Epoch 90/500
-79/79 - 33s - loss: 0.0420 - accuracy: 0.9811 - val_loss: 0.6235 - val_accuracy: 0.9054
-Epoch 91/500
-79/79 - 33s - loss: 0.0396 - accuracy: 0.9821 - val_loss: 0.6792 - val_accuracy: 0.8946
-Epoch 92/500
-79/79 - 33s - loss: 0.0447 - accuracy: 0.9815 - val_loss: 0.6664 - val_accuracy: 0.8964
-Epoch 93/500
-79/79 - 33s - loss: 0.0422 - accuracy: 0.9811 - val_loss: 0.6787 - val_accuracy: 0.9071
-Epoch 94/500
-79/79 - 33s - loss: 0.0493 - accuracy: 0.9789 - val_loss: 0.6055 - val_accuracy: 0.9286
-Epoch 95/500
-79/79 - 33s - loss: 0.0380 - accuracy: 0.9825 - val_loss: 0.6967 - val_accuracy: 0.8875
-Epoch 96/500
-79/79 - 33s - loss: 0.0317 - accuracy: 0.9833 - val_loss: 0.6547 - val_accuracy: 0.9089
-Epoch 97/500
-79/79 - 33s - loss: 0.0352 - accuracy: 0.9833 - val_loss: 0.6919 - val_accuracy: 0.9232
-Epoch 98/500
-79/79 - 33s - loss: 0.0424 - accuracy: 0.9823 - val_loss: 0.6998 - val_accuracy: 0.8821
-Epoch 99/500
-79/79 - 38s - loss: 0.0440 - accuracy: 0.9807 - val_loss: 0.4426 - val_accuracy: 0.9464
-Epoch 100/500
-79/79 - 33s - loss: 0.0433 - accuracy: 0.9819 - val_loss: 0.6733 - val_accuracy: 0.8946
-Epoch 101/500
-79/79 - 33s - loss: 0.0342 - accuracy: 0.9827 - val_loss: 0.5796 - val_accuracy: 0.9054
-Epoch 102/500
-79/79 - 33s - loss: 0.0327 - accuracy: 0.9835 - val_loss: 0.6646 - val_accuracy: 0.9018
-Epoch 103/500
-79/79 - 33s - loss: 0.0434 - accuracy: 0.9803 - val_loss: 0.5178 - val_accuracy: 0.9411
-Epoch 104/500
-79/79 - 33s - loss: 0.0379 - accuracy: 0.9825 - val_loss: 0.6245 - val_accuracy: 0.9107
-Epoch 105/500
-79/79 - 33s - loss: 0.0382 - accuracy: 0.9837 - val_loss: 0.5586 - val_accuracy: 0.9125
-Epoch 106/500
-79/79 - 33s - loss: 0.0372 - accuracy: 0.9831 - val_loss: 0.6147 - val_accuracy: 0.9036
-Epoch 107/500
-79/79 - 33s - loss: 0.0365 - accuracy: 0.9815 - val_loss: 0.5847 - val_accuracy: 0.9107
-Epoch 108/500
-79/79 - 33s - loss: 0.0316 - accuracy: 0.9855 - val_loss: 0.7345 - val_accuracy: 0.9036
-Epoch 109/500
-79/79 - 33s - loss: 0.0425 - accuracy: 0.9799 - val_loss: 0.7185 - val_accuracy: 0.8821
-Epoch 110/500
-79/79 - 33s - loss: 0.0401 - accuracy: 0.9801 - val_loss: 0.7411 - val_accuracy: 0.8732
-Epoch 111/500
-79/79 - 33s - loss: 0.0332 - accuracy: 0.9827 - val_loss: 0.5846 - val_accuracy: 0.9304
-Epoch 112/500
-79/79 - 33s - loss: 0.0381 - accuracy: 0.9815 - val_loss: 0.7001 - val_accuracy: 0.9018
-Epoch 113/500
-79/79 - 33s - loss: 0.0337 - accuracy: 0.9835 - val_loss: 0.6663 - val_accuracy: 0.9161
-Epoch 114/500
-79/79 - 33s - loss: 0.0306 - accuracy: 0.9841 - val_loss: 0.6316 - val_accuracy: 0.9232
-Epoch 115/500
-79/79 - 33s - loss: 0.0364 - accuracy: 0.9803 - val_loss: 0.7878 - val_accuracy: 0.8964
-Epoch 116/500
-79/79 - 33s - loss: 0.0346 - accuracy: 0.9841 - val_loss: 0.6766 - val_accuracy: 0.9107
-Epoch 117/500
-79/79 - 33s - loss: 0.0370 - accuracy: 0.9807 - val_loss: 0.5985 - val_accuracy: 0.9268
-Epoch 118/500
-79/79 - 33s - loss: 0.0321 - accuracy: 0.9825 - val_loss: 0.7487 - val_accuracy: 0.9018
-Epoch 119/500
-79/79 - 33s - loss: 0.0337 - accuracy: 0.9833 - val_loss: 0.7205 - val_accuracy: 0.9196
-Epoch 120/500
-79/79 - 33s - loss: 0.0313 - accuracy: 0.9839 - val_loss: 0.6896 - val_accuracy: 0.9214
-Epoch 121/500
-79/79 - 33s - loss: 0.0295 - accuracy: 0.9849 - val_loss: 0.5896 - val_accuracy: 0.9250
-Epoch 122/500
-79/79 - 33s - loss: 0.0275 - accuracy: 0.9863 - val_loss: 0.6917 - val_accuracy: 0.9161
-Epoch 123/500
-79/79 - 33s - loss: 0.0541 - accuracy: 0.9758 - val_loss: 0.6091 - val_accuracy: 0.8982
-Epoch 124/500
-79/79 - 33s - loss: 0.0376 - accuracy: 0.9821 - val_loss: 0.6569 - val_accuracy: 0.9071
-Epoch 125/500
-79/79 - 33s - loss: 0.0323 - accuracy: 0.9845 - val_loss: 0.5751 - val_accuracy: 0.9214
-Epoch 126/500
-79/79 - 33s - loss: 0.0397 - accuracy: 0.9823 - val_loss: 0.6114 - val_accuracy: 0.9250
-Epoch 127/500
-79/79 - 33s - loss: 0.0358 - accuracy: 0.9819 - val_loss: 0.7732 - val_accuracy: 0.9089
-Epoch 128/500
-79/79 - 33s - loss: 0.0370 - accuracy: 0.9845 - val_loss: 0.7487 - val_accuracy: 0.9179
-Epoch 129/500
-79/79 - 33s - loss: 0.0341 - accuracy: 0.9831 - val_loss: 0.6158 - val_accuracy: 0.9196
-Epoch 130/500
-79/79 - 33s - loss: 0.0308 - accuracy: 0.9843 - val_loss: 0.6045 - val_accuracy: 0.9304
-Epoch 131/500
-79/79 - 33s - loss: 0.0294 - accuracy: 0.9855 - val_loss: 0.6529 - val_accuracy: 0.9214
-Epoch 132/500
-79/79 - 33s - loss: 0.0314 - accuracy: 0.9813 - val_loss: 0.7188 - val_accuracy: 0.9018
-Epoch 133/500
-79/79 - 33s - loss: 0.0318 - accuracy: 0.9849 - val_loss: 0.6251 - val_accuracy: 0.9339
-Epoch 134/500
-79/79 - 33s - loss: 0.0317 - accuracy: 0.9829 - val_loss: 0.7284 - val_accuracy: 0.9089
-Epoch 135/500
-79/79 - 33s - loss: 0.0347 - accuracy: 0.9827 - val_loss: 0.7014 - val_accuracy: 0.9125
-Epoch 136/500
-79/79 - 33s - loss: 0.0364 - accuracy: 0.9823 - val_loss: 0.6401 - val_accuracy: 0.9357
-Epoch 137/500
-79/79 - 33s - loss: 0.0290 - accuracy: 0.9859 - val_loss: 0.7564 - val_accuracy: 0.9036
-Epoch 138/500
-79/79 - 33s - loss: 0.0325 - accuracy: 0.9835 - val_loss: 0.6741 - val_accuracy: 0.9232
-Epoch 139/500
-79/79 - 33s - loss: 0.0352 - accuracy: 0.9829 - val_loss: 0.6903 - val_accuracy: 0.9107
-Epoch 140/500
-79/79 - 33s - loss: 0.0325 - accuracy: 0.9823 - val_loss: 0.6398 - val_accuracy: 0.9321
-Epoch 141/500
-79/79 - 33s - loss: 0.0312 - accuracy: 0.9815 - val_loss: 0.6916 - val_accuracy: 0.9357
-Epoch 142/500
-79/79 - 33s - loss: 0.0293 - accuracy: 0.9833 - val_loss: 0.5553 - val_accuracy: 0.9179
-Epoch 143/500
-79/79 - 33s - loss: 0.0287 - accuracy: 0.9843 - val_loss: 0.6192 - val_accuracy: 0.9268
-Epoch 144/500
-79/79 - 33s - loss: 0.0304 - accuracy: 0.9847 - val_loss: 0.6704 - val_accuracy: 0.9232
-Epoch 145/500
-79/79 - 33s - loss: 0.0277 - accuracy: 0.9851 - val_loss: 0.7202 - val_accuracy: 0.9161
-Epoch 146/500
-79/79 - 33s - loss: 0.0409 - accuracy: 0.9793 - val_loss: 0.5184 - val_accuracy: 0.9357
-Epoch 147/500
-79/79 - 33s - loss: 0.0282 - accuracy: 0.9835 - val_loss: 0.6496 - val_accuracy: 0.9232
-Epoch 148/500
-79/79 - 33s - loss: 0.0298 - accuracy: 0.9835 - val_loss: 0.6271 - val_accuracy: 0.9214
-Epoch 149/500
-79/79 - 33s - loss: 0.0322 - accuracy: 0.9837 - val_loss: 0.6553 - val_accuracy: 0.9089
-Epoch 00149: early stopping
-  0/256 [..............................] - ETA: 0s  1/256 [..............................] - ETA: 45:36  3/256 [..............................] - ETA: 23:19  5/256 [..............................] - ETA: 18:46  7/256 [..............................] - ETA: 16:42  9/256 [>.............................] - ETA: 15:33 11/256 [>.............................] - ETA: 14:46 13/256 [>.............................] - ETA: 14:12 15/256 [>.............................] - ETA: 13:45 17/256 [>.............................] - ETA: 13:24 19/256 [=>............................] - ETA: 13:05 21/256 [=>............................] - ETA: 12:50 23/256 [=>............................] - ETA: 12:35 25/256 [=>............................] - ETA: 12:23 27/256 [==>...........................] - ETA: 12:11 29/256 [==>...........................] - ETA: 12:00 31/256 [==>...........................] - ETA: 11:50 33/256 [==>...........................] - ETA: 11:40 35/256 [===>..........................] - ETA: 11:31 37/256 [===>..........................] - ETA: 11:22 39/256 [===>..........................] - ETA: 11:13 41/256 [===>..........................] - ETA: 11:05 43/256 [====>.........................] - ETA: 10:57 45/256 [====>.........................] - ETA: 10:49 47/256 [====>.........................] - ETA: 10:41 49/256 [====>.........................] - ETA: 10:34 51/256 [====>.........................] - ETA: 10:26 53/256 [=====>........................] - ETA: 10:19 55/256 [=====>........................] - ETA: 10:12 57/256 [=====>........................] - ETA: 10:05 59/256 [=====>........................] - ETA: 9:58  61/256 [======>.......................] - ETA: 9:51 63/256 [======>.......................] - ETA: 9:44 65/256 [======>.......................] - ETA: 9:37 67/256 [======>.......................] - ETA: 9:30 69/256 [=======>......................] - ETA: 9:24 71/256 [=======>......................] - ETA: 9:17 73/256 [=======>......................] - ETA: 9:10 75/256 [=======>......................] - ETA: 9:04 77/256 [========>.....................] - ETA: 8:58 79/256 [========>.....................] - ETA: 8:51 81/256 [========>.....................] - ETA: 8:45 83/256 [========>.....................] - ETA: 8:38 85/256 [========>.....................] - ETA: 8:32 87/256 [=========>....................] - ETA: 8:25 89/256 [=========>....................] - ETA: 8:19 91/256 [=========>....................] - ETA: 8:13 93/256 [=========>....................] - ETA: 8:06 95/256 [==========>...................] - ETA: 8:00 97/256 [==========>...................] - ETA: 7:54 99/256 [==========>...................] - ETA: 7:48101/256 [==========>...................] - ETA: 7:41103/256 [===========>..................] - ETA: 7:35105/256 [===========>..................] - ETA: 7:29107/256 [===========>..................] - ETA: 7:23109/256 [===========>..................] - ETA: 7:17111/256 [============>.................] - ETA: 7:10113/256 [============>.................] - ETA: 7:04115/256 [============>.................] - ETA: 6:58117/256 [============>.................] - ETA: 6:52119/256 [============>.................] - ETA: 6:46121/256 [=============>................] - ETA: 6:40123/256 [=============>................] - ETA: 6:34125/256 [=============>................] - ETA: 6:28127/256 [=============>................] - ETA: 6:22129/256 [==============>...............] - ETA: 6:15131/256 [==============>...............] - ETA: 6:09133/256 [==============>...............] - ETA: 6:03135/256 [==============>...............] - ETA: 5:57137/256 [===============>..............] - ETA: 5:51139/256 [===============>..............] - ETA: 5:45141/256 [===============>..............] - ETA: 5:39143/256 [===============>..............] - ETA: 5:33145/256 [===============>..............] - ETA: 5:27147/256 [================>.............] - ETA: 5:21149/256 [================>.............] - ETA: 5:15151/256 [================>.............] - ETA: 5:09153/256 [================>.............] - ETA: 5:03155/256 [=================>............] - ETA: 4:57157/256 [=================>............] - ETA: 4:51159/256 [=================>............] - ETA: 4:45161/256 [=================>............] - ETA: 4:39163/256 [==================>...........] - ETA: 4:33165/256 [==================>...........] - ETA: 4:28167/256 [==================>...........] - ETA: 4:22169/256 [==================>...........] - ETA: 4:16171/256 [===================>..........] - ETA: 4:10173/256 [===================>..........] - ETA: 4:04175/256 [===================>..........] - ETA: 3:58177/256 [===================>..........] - ETA: 3:52179/256 [===================>..........] - ETA: 3:46181/256 [====================>.........] - ETA: 3:40183/256 [====================>.........] - ETA: 3:34185/256 [====================>.........] - ETA: 3:28187/256 [====================>.........] - ETA: 3:22189/256 [=====================>........] - ETA: 3:17191/256 [=====================>........] - ETA: 3:11193/256 [=====================>........] - ETA: 3:05195/256 [=====================>........] - ETA: 2:59197/256 [======================>.......] - ETA: 2:53199/256 [======================>.......] - ETA: 2:47201/256 [======================>.......] - ETA: 2:41203/256 [======================>.......] - ETA: 2:35205/256 [=======================>......] - ETA: 2:29207/256 [=======================>......] - ETA: 2:23209/256 [=======================>......] - ETA: 2:18211/256 [=======================>......] - ETA: 2:12213/256 [=======================>......] - ETA: 2:06215/256 [========================>.....] - ETA: 2:00217/256 [========================>.....] - ETA: 1:54219/256 [========================>.....] - ETA: 1:48221/256 [========================>.....] - ETA: 1:42223/256 [=========================>....] - ETA: 1:36225/256 [=========================>....] - ETA: 1:30227/256 [=========================>....] - ETA: 1:25229/256 [=========================>....] - ETA: 1:19231/256 [==========================>...] - ETA: 1:13233/256 [==========================>...] - ETA: 1:07235/256 [==========================>...] - ETA: 1:01237/256 [==========================>...] - ETA: 55s 239/256 [===========================>..] - ETA: 49s241/256 [===========================>..] - ETA: 43s243/256 [===========================>..] - ETA: 38s245/256 [===========================>..] - ETA: 32s247/256 [===========================>..] - ETA: 26s249/256 [============================>.] - ETA: 20s251/256 [============================>.] - ETA: 14s253/256 [============================>.] - ETA: 8s 255/256 [============================>.] - ETA: 2sMCDO accuracy: 1.4%
-MCDO-ensemble accuracy: 1.2%
-tf.Tensor(
-[[  0   0   0   0   0]
- [  0   0   0   0   0]
- [  0   0   0   0   0]
- [  0   0   0   0   0]
- [336 164 722 160  17]], shape=(5, 5), dtype=int32)
-posterior mean: 3
-true label: 4
-
-class: 0; proba: 0.0%; var: 0.00% 
-class: 1; proba: 0.0%; var: 0.00% 
-class: 2; proba: 19.9%; var: 39.62% 
-class: 3; proba: 80.1%; var: 39.62% 
-class: 4; proba: 0.0%; var: 0.00% 
-
-
-###############################################################################
-Peregrine Cluster
-Job 11394654 for user 's2934833'
-Finished at: Tue May 12 14:50:31 CEST 2020
-
-Job details:
-============
-
-Name                : MESDO
-User                : s2934833
-Partition           : gpu
-Nodes               : pg-gpu28
-Cores               : 12
-State               : COMPLETED
-Submit              : 2020-05-12T13:14:28
-Start               : 2020-05-12T13:15:23
-End                 : 2020-05-12T14:50:31
-Reserved walltime   : 03:00:00
-Used walltime       : 01:35:08
-Used CPU time       : 01:19:35 (efficiency:  6.97%)
-% User (Computation): 67.37%
-% System (I/O)      : 32.65%
-Mem reserved        : 62.50G/node
-Max Mem used        : 22.30G (pg-gpu28)
-Max Disk Write      : 153.60K (pg-gpu28)
-Max Disk Read       : 5.83M (pg-gpu28)
-Average GPU usage   : 92.6% (pg-gpu28)
-
-
-Acknowledgements:
-=================
-
-Please see this page for information about acknowledging Peregrine in your publications:
-
-https://wiki.hpc.rug.nl/peregrine/additional_information/scientific_output
-
-################################################################################

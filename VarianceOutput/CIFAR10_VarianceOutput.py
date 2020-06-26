@@ -143,7 +143,7 @@ def main():
     last_layer_1 = Dense(4096, activation='relu', name='fc2_1')(x)
     last_layer_2 = Dense(4096, activation='relu', name='fc2_2')(x)
     classification = Dense(NUM_CLASSES, activation='softmax')(last_layer_1)
-    Error = Dense(NUM_CLASSES, activation='softmax')(last_layer_2)
+    Error = Dense(NUM_CLASSES, activation='linear')(last_layer_2)
 
     out = concatenate([classification, Error])
 

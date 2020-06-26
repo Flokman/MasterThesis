@@ -1,0 +1,39 @@
+
+START MCDO
+loading MNIST
+MNIST loaded
+/data/s2934833/MasterThesis/MCDO/CIFAR10/2020-05-20_11-01_imagenet_32B_68.6%A
+CIFAR10 MCDO Time: 136.7865 seconds
+MCDO combined accuracy: 85.3%
+tf.Tensor(
+[[775   5  20   8   8   3   7   8  20   7]
+ [ 14 816   0   0   0   4   1   2  11  37]
+ [ 21   1 719  16  41  36  35   7   1   1]
+ [  7   4  34 508  43 229  36  18   5  11]
+ [ 10   1  31  18 743  25  19  29   5   1]
+ [  4   0  11  50  19 762  15  15   0   2]
+ [  3   0  19  19   9  15 802   1   3   2]
+ [  4   1  10  13  23  51   1 763   1   4]
+ [ 36   7   5   3   4   2   1   1 802   8]
+ [ 12  36   2   4   1   4   7   3  11 778]], shape=(10, 10), dtype=int32)
+Correct: 7468, wrong: 1282, accuracy: 85.34857142857143%
+
+Mean probability on true label of CIFAR10 test dataset when correctly predicted = 94.61%
+Mean uncertainty on true label of CIFAR10 test dataset when correctly predicted = 2.39%
+Mean probability on true label of CIFAR10 test dataset when wrongly predicted = 13.91%
+Mean uncertainty on true label of CIFAR10 test dataset when wrongly predicted = 6.14%
+
+Mean probability on highest predicted on CIFAR10 test dataset when wrong = 91.30%
+Mean uncertainty on highest predicted on CIFAR10 test dataset when wrong = 3.38%
+
+Mean probability on all not true label on CIFAR10 test dataset = 0.97%
+Mean uncertainty on all not true label on CIFAR10 test dataset = 0.49%
+creating scatterplot
+MNIST MCDO Time: 5428.7922 seconds
+
+Mean probability on highest predicted class of MNIST data = 60.78%
+Mean uncertainty on highest predicted class of MNIST data = 13.46%
+Mean probability on not predicted classes of MNIST data = 4.36%
+Mean uncertainty on not predicted classes of MNIST data = 2.54%
+
+START MCBN

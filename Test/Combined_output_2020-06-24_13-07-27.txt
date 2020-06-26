@@ -1,0 +1,217 @@
+
+START MCBN
+loading MNIST
+MNIST loaded
+Total labels in train set:  [840, 840, 839, 838, 836]
+Labels in test set:  [272, 74, 92, 12, 9]
+/data/s2934833/MasterThesis/MCBN/MES/2020-05-20_14-11_imagenet_64B_58.4%A
+MES MCBN Time: 438.7031 seconds
+MCBN combined accuracy: 33.8%
+tf.Tensor(
+[[ 64 157  44   7   0]
+ [  2  57  15   0   0]
+ [  7  50  25  10   0]
+ [  0   2   2   8   0]
+ [  1   1   0   6   1]], shape=(5, 5), dtype=int32)
+Correct: 155, wrong: 304, accuracy: 33.769063180827885%
+
+Mean probability on true label of MES test dataset when correctly predicted = 55.56%
+Mean uncertainty on true label of MES test dataset when correctly predicted = 33.02%
+Mean probability on true label of MES test dataset when wrongly predicted = 18.48%
+Mean uncertainty on true label of MES test dataset when wrongly predicted = 22.34%
+
+Mean probability on highest predicted on MES test dataset when wrong = 57.58%
+Mean uncertainty on highest predicted on MES test dataset when wrong = 32.09%
+
+Mean probability on all not true label on MES test dataset = 10.61%
+Mean uncertainty on all not true label on MES test dataset = 14.38%
+creating scatterplot
+MNIST MCBN Time: 4686.5287 seconds
+
+Mean probability on highest predicted class of MNIST data = 63.36%
+Mean uncertainty on highest predicted class of MNIST data = 36.94%
+Mean probability on not predicted classes of MNIST data = 9.16%
+Mean uncertainty on not predicted classes of MNIST data = 13.67%
+
+START Ensemble
+Dataset_name: MES, N_folders: 1, total mebers: 3
+loading MNIST
+MNIST loaded
+(459, 256, 256, 3)
+Total labels in train set:  [840, 840, 839, 838, 836]
+Labels in test set:  [272, 74, 92, 12, 9]
+loaded: ensemble_weights_Xception_0.h5
+loaded: ensemble_weights_Xception_1.h5
+loaded: ensemble_weights_Xception_2.h5
+loaded: ensemble_weights_VGG16_0.h5
+loaded: ensemble_weights_VGG16_1.h5
+loaded: ensemble_weights_VGG16_2.h5
+loaded: ensemble_weights_VGG19_0.h5
+loaded: ensemble_weights_VGG19_1.h5
+loaded: ensemble_weights_VGG19_2.h5
+loaded: ensemble_weights_ResNet50_0.h5
+loaded: ensemble_weights_ResNet50_1.h5
+loaded: ensemble_weights_ResNet50_2.h5
+loaded: ensemble_weights_ResNet101_0.h5
+loaded: ensemble_weights_ResNet101_1.h5
+loaded: ensemble_weights_ResNet101_2.h5
+loaded: ensemble_weights_ResNet152_0.h5
+loaded: ensemble_weights_ResNet152_1.h5
+loaded: ensemble_weights_ResNet152_2.h5
+loaded: ensemble_weights_ResNet50V2_0.h5
+loaded: ensemble_weights_ResNet50V2_1.h5
+loaded: ensemble_weights_ResNet50V2_2.h5
+loaded: ensemble_weights_ResNet101V2_0.h5
+loaded: ensemble_weights_ResNet101V2_1.h5
+loaded: ensemble_weights_ResNet101V2_2.h5
+loaded: ensemble_weights_ResNet152V2_0.h5
+loaded: ensemble_weights_ResNet152V2_1.h5
+loaded: ensemble_weights_ResNet152V2_2.h5
+loaded: ensemble_weights_InceptionV3_0.h5
+loaded: ensemble_weights_InceptionV3_1.h5
+loaded: ensemble_weights_InceptionV3_2.h5
+loaded: ensemble_weights_InceptionResNetV2_0.h5
+loaded: ensemble_weights_InceptionResNetV2_1.h5
+loaded: ensemble_weights_InceptionResNetV2_2.h5
+loaded: ensemble_weights_DenseNet121_0.h5
+loaded: ensemble_weights_DenseNet121_1.h5
+loaded: ensemble_weights_DenseNet121_2.h5
+loaded: ensemble_weights_DenseNet169_0.h5
+loaded: ensemble_weights_DenseNet169_1.h5
+loaded: ensemble_weights_DenseNet169_2.h5
+loaded: ensemble_weights_DenseNet201_0.h5
+loaded: ensemble_weights_DenseNet201_1.h5
+loaded: ensemble_weights_DenseNet201_2.h5
+MES Ensemble Time: 670.2301 seconds
+Ensemble combined accuracy: 67.3%
+tf.Tensor(
+[[259   6   6   1   0]
+ [ 59   7   8   0   0]
+ [ 50   2  37   3   0]
+ [  3   0   4   5   0]
+ [  2   0   2   4   1]], shape=(5, 5), dtype=int32)
+Correct: 309, wrong: 150, accuracy: 67.3202614379085%
+
+Mean probability on true label of MES test dataset when correctly predicted = 64.30%
+Mean uncertainty on true label of MES test dataset when correctly predicted = 27.86%
+Mean probability on true label of MES test dataset when wrongly predicted = 22.26%
+Mean uncertainty on true label of MES test dataset when wrongly predicted = 22.02%
+
+Mean probability on highest predicted on MES test dataset when wrong = 59.99%
+Mean uncertainty on highest predicted on MES test dataset when wrong = 28.39%
+
+Mean probability on all not true label on MES test dataset = 10.00%
+Mean uncertainty on all not true label on MES test dataset = 12.22%
+creating scatterplot
+loaded: ensemble_weights_Xception_0.h5
+loaded: ensemble_weights_Xception_1.h5
+loaded: ensemble_weights_Xception_2.h5
+loaded: ensemble_weights_VGG16_0.h5
+loaded: ensemble_weights_VGG16_1.h5
+loaded: ensemble_weights_VGG16_2.h5
+loaded: ensemble_weights_VGG19_0.h5
+loaded: ensemble_weights_VGG19_1.h5
+loaded: ensemble_weights_VGG19_2.h5
+loaded: ensemble_weights_ResNet50_0.h5
+loaded: ensemble_weights_ResNet50_1.h5
+loaded: ensemble_weights_ResNet50_2.h5
+loaded: ensemble_weights_ResNet101_0.h5
+loaded: ensemble_weights_ResNet101_1.h5
+loaded: ensemble_weights_ResNet101_2.h5
+loaded: ensemble_weights_ResNet152_0.h5
+loaded: ensemble_weights_ResNet152_1.h5
+loaded: ensemble_weights_ResNet152_2.h5
+loaded: ensemble_weights_ResNet50V2_0.h5
+loaded: ensemble_weights_ResNet50V2_1.h5
+loaded: ensemble_weights_ResNet50V2_2.h5
+loaded: ensemble_weights_ResNet101V2_0.h5
+loaded: ensemble_weights_ResNet101V2_1.h5
+loaded: ensemble_weights_ResNet101V2_2.h5
+loaded: ensemble_weights_ResNet152V2_0.h5
+loaded: ensemble_weights_ResNet152V2_1.h5
+loaded: ensemble_weights_ResNet152V2_2.h5
+loaded: ensemble_weights_InceptionV3_0.h5
+loaded: ensemble_weights_InceptionV3_1.h5
+loaded: ensemble_weights_InceptionV3_2.h5
+loaded: ensemble_weights_InceptionResNetV2_0.h5
+loaded: ensemble_weights_InceptionResNetV2_1.h5
+loaded: ensemble_weights_InceptionResNetV2_2.h5
+loaded: ensemble_weights_DenseNet121_0.h5
+loaded: ensemble_weights_DenseNet121_1.h5
+loaded: ensemble_weights_DenseNet121_2.h5
+loaded: ensemble_weights_DenseNet169_0.h5
+loaded: ensemble_weights_DenseNet169_1.h5
+loaded: ensemble_weights_DenseNet169_2.h5
+loaded: ensemble_weights_DenseNet201_0.h5
+loaded: ensemble_weights_DenseNet201_1.h5
+loaded: ensemble_weights_DenseNet201_2.h5
+MNIST Ensemlbe Time: 1270.0208 seconds
+
+Mean probability on highest predicted class of MNIST data = 37.55%
+Mean uncertainty on highest predicted class of MNIST data = 32.69%
+Mean probability on not predicted classes of MNIST data = 15.61%
+Mean uncertainty on not predicted classes of MNIST data = 17.90%
+
+START VarianceOutput
+loading MNIST
+MNIST loaded
+/data/s2934833/MasterThesis/VarianceOutput/MES/2020-05-20_14-49_imagenet_64B_50.0%A
+MES Error Time: 4.9030 seconds
+Accuracy on original test dataset: 61.7%
+tf.Tensor(
+[[216  36  19   1   0]
+ [ 40  20  13   1   0]
+ [ 31  13  42   5   1]
+ [  0   0   8   4   0]
+ [  2   0   1   5   1]], shape=(5, 5), dtype=int32)
+Correct: 283, wrong: 176, accuracy: 61.6557734204793%
+
+Mean probability on true label of original test dataset when correctly predicted = 90.01%
+Mean uncertainty on true label of original test dataset when correctly predicted = 22.45%
+Mean probability on true label of original test dataset when wrongly predicted = 11.52%
+Mean uncertainty on true label of original test dataset when wrongly predicted = 20.79%
+
+Mean probability on highest predicted on original test dataset when wrong = 79.30%
+Mean uncertainty on highest predicted on original test dataset when wrong = 22.81%
+
+Mean probability on all not true label on original test dataset = 10.02%
+Mean uncertainty on all not true label on original test dataset = 19.55%
+creating scatterplot
+With error converted to uncertainty
+Accuracy on original test dataset: 61.7%
+tf.Tensor(
+[[216  36  19   1   0]
+ [ 40  20  13   1   0]
+ [ 31  13  42   5   1]
+ [  0   0   8   4   0]
+ [  2   0   1   5   1]], shape=(5, 5), dtype=int32)
+Correct: 283, wrong: 176, accuracy: 61.6557734204793%
+
+Mean probability on true label of original test dataset when correctly predicted = 90.01%
+Mean uncertainty on true label of original test dataset when correctly predicted = 19.93%
+Mean probability on true label of original test dataset when wrongly predicted = 11.52%
+Mean uncertainty on true label of original test dataset when wrongly predicted = 17.84%
+
+Mean probability on highest predicted on original test dataset when wrong = 79.30%
+Mean uncertainty on highest predicted on original test dataset when wrong = 16.81%
+
+Mean probability on all not true label on original test dataset = 10.02%
+Mean uncertainty on all not true label on original test dataset = 18.41%
+creating scatterplot
+MNIST Error Time: 20.1681 seconds
+
+Mean probability on highest predicted class of new data = 67.06%
+Mean uncertainty on highest predicted class of new data = 22.17%
+Mean probability on not highest predicted class of new data = 8.24%
+Mean uncertainty on not predicted classes of new data = 19.46%
+creating scatterplot
+With error converted to uncertainty
+
+Mean probability on highest predicted class of new data = 67.06%
+Mean uncertainty on highest predicted class of new data = 14.80%
+Mean probability on not highest predicted class of new data = 8.24%
+Mean uncertainty on not predicted classes of new data = 17.76%
+creating scatterplot
+
+#################################
+#################################

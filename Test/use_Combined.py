@@ -83,7 +83,7 @@ METHODNAMES = ['Ensemble']
 TRAIN_TEST_SPLIT = 0.8 # Value between 0 and 1, e.g. 0.8 creates 80%/20% division train/test
 TRAIN_VAL_SPLIT = 0.875
 
-TEST_ON_OWN_AND_NEW_DATASET = True
+TEST_ON_OWN_AND_NEW_DATASET = False
 TEST_ON_OWN_DATASET = False
 TEST_ON_NEW_DATASET = True
 LABELS_AVAILABLE = False
@@ -298,13 +298,13 @@ def load_new_images(img_height = IMG_HEIGHT):
             return x_pred
 
     elif NEW_DATA == 'MNIST':
-        old_dir = os.getcwd()
-        os.chdir(HOME_DIR)
-        print("loading MNIST")
-        x_pred = np.load('MNIST_256' + '.npy')
-        os.chdir(old_dir)
-        print('MNIST loaded')
-        return x_pred
+        # old_dir = os.getcwd()
+        # os.chdir(HOME_DIR)
+        # print("loading MNIST")
+        # x_pred = np.load('MNIST_256' + '.npy')
+        # os.chdir(old_dir)
+        # print('MNIST loaded')
+        # return x_pred
 
         (x_train, y_train), (x_test, y_test) = load_hdf5_dataset(None, new_data=True)
 
@@ -628,7 +628,7 @@ def save_array(filename, nparray):
     np.save(filename, nparray)
 
 
-@profile
+
 def MCDO(q, METHODNAME):
 
     MCDO_PREDICTIONS = 250
@@ -721,7 +721,10 @@ def MCDO(q, METHODNAME):
         os.chdir(fig_dir)
 
         if TEST_ON_OWN_DATASET or LABELS_AVAILABLE or TEST_ON_OWN_AND_NEW_DATASET:
+            tic = time.perf_counter()
             mcdo_predictions = mcdo_predict(pre_trained_model, x_test)
+            toc = time.perf_counter()
+            print(f"{DATANAME} MCDO Time: {toc - tic:0.4f} seconds")
             old_dir = os.getcwd()
             os.chdir(HOME_DIR)
             save_array(DATANAME + '_MCDO_' + DATANAME, mcdo_predictions)
@@ -729,7 +732,10 @@ def MCDO(q, METHODNAME):
             test_on_own_func(METHODNAME, mcdo_predictions, y_test)
         
         if TEST_ON_OWN_AND_NEW_DATASET:
+            tic = time.perf_counter()
             mcdo_new_images_predictions = mcdo_predict(pre_trained_model, x_pred)
+            toc = time.perf_counter()
+            print(f"{NEW_DATA} MCDO Time: {toc - tic:0.4f} seconds")
             old_dir = os.getcwd()
             os.chdir(HOME_DIR)
             save_array(DATANAME + '_MCDO_' + NEW_DATA, mcdo_new_images_predictions)
@@ -752,7 +758,7 @@ def MCDO(q, METHODNAME):
     method_main()
 
 
-@profile
+
 def MCBN(q, METHODNAME):
     MCBN_PREDICTIONS = 250
     LEARN_RATE = 1
@@ -760,7 +766,7 @@ def MCBN(q, METHODNAME):
     if DATANAME == 'MES':
         MINIBATCH_SIZE = 128
         MODEL_TO_USE = os.path.sep + METHODNAME
-        MODEL_VERSION = os.path.sep + '2020-05-30_11-16_imagenet_180B_58.4%A'
+        MODEL_VERSION = os.path.sep + '2020-05-20_14-11_imagenet_64B_58.4%A'
         MODEL_NAME = 'MCBN_model.h5'
         DATASET_LOCATION = os.path.sep + 'Datasets'
         DATASET_HDF5 = os.path.sep + 'Messidor2_PNG_AUG_' + str(IMG_HEIGHT) + '.hdf5'
@@ -891,7 +897,10 @@ def MCBN(q, METHODNAME):
         # pre_trained_model.summary()  
    
         if TEST_ON_OWN_DATASET or LABELS_AVAILABLE or TEST_ON_OWN_AND_NEW_DATASET:
+            tic = time.perf_counter()
             mcbn_predictions = mcbn_predict(pre_trained_model, x_train, y_train, x_test)
+            toc = time.perf_counter()
+            print(f"{DATANAME} MCBN Time: {toc - tic:0.4f} seconds")
             old_dir = os.getcwd()
             os.chdir(HOME_DIR)
             save_array(DATANAME + '_MCBN_' + DATANAME, mcbn_predictions)
@@ -899,7 +908,10 @@ def MCBN(q, METHODNAME):
             test_on_own_func(METHODNAME, mcbn_predictions, y_test)
         
         if TEST_ON_OWN_AND_NEW_DATASET:
+            tic = time.perf_counter()
             mcbn_new_images_predictions = mcbn_predict(pre_trained_model, x_train, y_train, x_pred)
+            toc = time.perf_counter()
+            print(f"{NEW_DATA} MCBN Time: {toc - tic:0.4f} seconds")
             old_dir = os.getcwd()
             os.chdir(HOME_DIR)
             save_array(DATANAME + '_MCBN_' + NEW_DATA, mcbn_new_images_predictions)
@@ -922,7 +934,7 @@ def MCBN(q, METHODNAME):
     method_main()
 
 
-@profile
+
 def Ensemble(q, METHODNAME):
     if DATANAME == 'MES':
         # Hyperparameters Messidor
@@ -943,7 +955,7 @@ def Ensemble(q, METHODNAME):
         N_ENSEMBLE_MEMBERS = [3]
         ARCHI_NAME = ['Xception', 'VGG16', 'VGG19', 'ResNet50', 'ResNet101', 'ResNet152', 'ResNet50V2', 'ResNet101V2', 'ResNet152V2', 'InceptionV3', 'InceptionResNetV2', 'DenseNet121', 'DenseNet169', 'DenseNet201']
         # MODEL_VERSION = ['CIF_ImageNet_32B_20EN', 'CIF_ImageNet_32B_20EN_2']
-        MODEL_VERSION = ['2020-06-14_13-33-26']
+        MODEL_VERSION = ['2020-05-25_17-26-23']
         IMG_HEIGHT, IMG_WIDTH, IMG_DEPTH = 75, 75, 3 # target image size to resize to
         DATA_PATH = None
 
@@ -1033,6 +1045,14 @@ def Ensemble(q, METHODNAME):
         x_test = x_test_re
         print(x_test.shape)
 
+        # x_pred_re = np.empty((len(x_pred), IMG_HEIGHT, IMG_HEIGHT, 3))
+
+        # for ind, img in enumerate(x_pred):
+        #     x_pred_re[ind, ...] = pad(img, IMG_HEIGHT, IMG_HEIGHT)
+
+        # x_pred = x_pred_re
+        # print(x_pred.shape)
+
         label_count = [0] * NUM_CLASSES
         for lab in y_train:
             label_count[np.argmax(lab)] += 1
@@ -1049,7 +1069,10 @@ def Ensemble(q, METHODNAME):
         os.chdir(fig_dir)
 
         if TEST_ON_OWN_DATASET or LABELS_AVAILABLE or TEST_ON_OWN_AND_NEW_DATASET:
+            tic = time.perf_counter()
             ensemble_predictions = ensemble_predict(x_test)
+            toc = time.perf_counter()
+            print(f"{DATANAME} Ensemble Time: {toc - tic:0.4f} seconds")
             old_dir = os.getcwd()
             os.chdir(HOME_DIR)
             save_array(DATANAME + '_Ensemble_' + DATANAME, ensemble_predictions)
@@ -1057,7 +1080,10 @@ def Ensemble(q, METHODNAME):
             test_on_own_func(METHODNAME, ensemble_predictions, y_test)
         
         if TEST_ON_OWN_AND_NEW_DATASET:
+            tic = time.perf_counter()
             ensemble_new_images_predictions = ensemble_predict(x_pred)
+            toc = time.perf_counter()
+            print(f"{NEW_DATA} Ensemlbe Time: {toc - tic:0.4f} seconds")
             old_dir = os.getcwd()
             os.chdir(HOME_DIR)
             save_array(DATANAME + '_Ensemble_' + NEW_DATA, ensemble_new_images_predictions)
@@ -1068,7 +1094,10 @@ def Ensemble(q, METHODNAME):
                 test_on_new_func(ensemble_new_images_predictions, x_pred, METHODNAME)
         
         else:
+            tic = time.perf_counter()
             ensemble_only_new_images_predictions = ensemble_predict(x_pred)
+            toc = time.perf_counter()
+            print(f"{NEW_DATA} Ensemlbe Time: {toc - tic:0.4f} seconds")
             old_dir = os.getcwd()
             os.chdir(HOME_DIR)
             save_array(DATANAME + '_Ensemble_' + NEW_DATA, ensemble_only_new_images_predictions)
@@ -1081,7 +1110,7 @@ def Ensemble(q, METHODNAME):
     # TODO: save testimage with in title predicted class, acc and prob
 
 
-@profile
+
 def VarianceOutput(q, METHODNAME):
     # Hyperparameters
     MODEL_TO_USE = os.path.sep + METHODNAME
@@ -1315,8 +1344,10 @@ def VarianceOutput(q, METHODNAME):
             pred_generator = datagen.flow(x_pred, batch_size=64, shuffle=False)
 
         if TEST_ON_OWN_DATASET or LABELS_AVAILABLE or TEST_ON_OWN_AND_NEW_DATASET:
+            tic = time.perf_counter()
             variance_org_dataset = pre_trained_model.predict(test_generator)
-            
+            toc = time.perf_counter()
+            print(f"{DATANAME} Error Time: {toc - tic:0.4f} seconds")
             old_dir = os.getcwd()
             os.chdir(HOME_DIR)
             save_array(DATANAME + '_Error_' + DATANAME, variance_org_dataset)
@@ -1327,8 +1358,10 @@ def VarianceOutput(q, METHODNAME):
             Uncertainty_output(NUM_CLASSES).results_if_label(variance_org_dataset, y_test, scatter=True, name = DATANAME)
         
         if TEST_ON_OWN_AND_NEW_DATASET:
+            tic = time.perf_counter()
             variance_new_images_predictions = pre_trained_model.predict(pred_generator)
-            
+            toc = time.perf_counter()
+            print(f"{NEW_DATA} Error Time: {toc - tic:0.4f} seconds")
             old_dir = os.getcwd()
             os.chdir(HOME_DIR)
             save_array(DATANAME + '_Error_' + NEW_DATA, variance_new_images_predictions)
@@ -1362,7 +1395,7 @@ def VarianceOutput(q, METHODNAME):
     method_main()
 
 
-@profile
+
 def main():
     for method_ind, METHODNAME in enumerate(METHODNAMES):
         if METHODNAME == 'MCDO':
